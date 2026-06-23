@@ -81,7 +81,7 @@ const C={white:"#FCFCFC",cream:"#F2EFF1",mute:"#CAC4CA",black:"#080809"};
 const cv=document.getElementById('card'),ctx=cv.getContext('2d');
 const E={};['name','title','firm','roleSel','roleCustom','photo','status','vnote','ul','pill','pname','rm','adjust','zoom'].forEach(i=>E[i]=document.getElementById(i));
 let imgs={},hs=null,ready=false,hsOffX=0,hsOffY=0,hsZoom=1,circle=null,dragging=false,lastP=null;
-function load(src){return new Promise((r,j)=>{const i=new Image();i.onload=()=>r(i);i.onerror=j;i.src=src;});}
+function load(src){return new Promise((r,j)=>{const i=new Image();let done=false;const fin=(ok)=>{if(done)return;done=true;clearTimeout(t);ok?r(i):j(new Error('image failed to load'));};const t=setTimeout(()=>fin(false),8000);i.onload=()=>fin(true);i.onerror=()=>fin(false);i.src=src;});}
 function loadFonts(){
   try{
     const f=Promise.all([document.fonts.load('300 60px RTRaleway'),document.fonts.load('400 28px RTRaleway'),document.fonts.load('500 39px RTRaleway')]).then(()=>document.fonts.ready);
@@ -96,7 +96,12 @@ async function boot(){try{
   imgs={sky:s,pcs:p,cap:c};ready=true;E.status.textContent='Ready.';draw();
   // If fonts arrive after the 3s fallback, redraw once they're available.
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(ready)draw();}).catch(()=>{});
-}catch(e){E.status.textContent='Error loading assets: '+e;}}
+}catch(e){
+  // Make failures visible instead of leaving a silent black box.
+  E.status.textContent='Could not load — tap to reload.';E.vnote.textContent='Load failed';
+  try{ctx.fillStyle='#2A1228';ctx.fillRect(0,0,S,H);ctx.fillStyle='#FCFCFC';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='30px system-ui,-apple-system,sans-serif';ctx.fillText('Could not load the card.',S/2,H/2-26);ctx.fillText('Please reload this page.',S/2,H/2+26);}catch(_){}
+  cv.addEventListener('click',()=>location.reload(),{once:true});
+}}
 function setF(w,px){ctx.font=w+' '+px+'px RTRaleway';}
 function mt(t,tr){let s=0;for(const c of t)s+=ctx.measureText(c).width;return s+tr*Math.max(0,t.length-1);}
 function dc(t,cx,y,tr,f){ctx.textAlign='left';ctx.textBaseline='top';ctx.fillStyle=f;let x=cx-mt(t,tr)/2;for(const c of t){ctx.fillText(c,x,y);x+=ctx.measureText(c).width+tr;}}
