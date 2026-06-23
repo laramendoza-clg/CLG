@@ -56,7 +56,7 @@ canvas{width:100%;height:100%;display:block;touch-action:none;-webkit-user-selec
     </div>
     <div class="sep"></div>
     <label>Headshot (optional)</label>
-    <label class="upload" id="dz"><input id="photo" type="file" accept="image/*"><div class="u-label" id="ul">Upload a headshot</div><div class="u-sub">Switches to the portrait layout</div></label>
+    <label class="upload" id="dz"><input id="photo" type="file" accept="image/*"><div class="u-label" id="ul">Upload a headshot</div></label>
     <div class="pill" id="pill" style="display:none"><span id="pname">photo.jpg</span><button class="btn-ghost" id="rm">Remove</button></div>
     <div id="adjust" style="display:none;margin-top:12px">
       <div style="font-size:11px;color:#8a7f86;line-height:1.45">Drag the photo in the preview to reposition the face inside the circle.</div>
@@ -80,12 +80,21 @@ const cv=document.getElementById('card'),ctx=cv.getContext('2d');
 const E={};['name','title','firm','roleSel','roleCustom','photo','status','vnote','ul','pill','pname','rm','adjust','zoom'].forEach(i=>E[i]=document.getElementById(i));
 let imgs={},hs=null,ready=false,hsOffX=0,hsOffY=0,hsZoom=1,circle=null,dragging=false,lastP=null;
 function load(src){return new Promise((r,j)=>{const i=new Image();i.onload=()=>r(i);i.onerror=j;i.src=src;});}
+function loadFonts(){
+  try{
+    const f=Promise.all([document.fonts.load('300 60px RTRaleway'),document.fonts.load('400 28px RTRaleway'),document.fonts.load('500 39px RTRaleway')]).then(()=>document.fonts.ready);
+    // Never let font loading block rendering: some mobile / in-app browsers
+    // leave document.fonts.ready pending forever. Cap the wait at 3s.
+    return Promise.race([f,new Promise(r=>setTimeout(r,3000))]).catch(()=>{});
+  }catch(_){return Promise.resolve();}
+}
 async function boot(){try{
-  await Promise.all([document.fonts.load('300 60px RTRaleway'),document.fonts.load('400 28px RTRaleway'),document.fonts.load('500 39px RTRaleway')]);
-  await document.fonts.ready;
+  await loadFonts();
   const[s,p,c]=await Promise.all([load(AS.sky),load(AS.pcs),load(AS.cap)]);
   imgs={sky:s,pcs:p,cap:c};ready=true;E.status.textContent='Ready.';draw();
-}catch(e){E.status.textContent='Error: '+e;}}
+  // If fonts arrive after the 3s fallback, redraw once they're available.
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(ready)draw();}).catch(()=>{});
+}catch(e){E.status.textContent='Error loading assets: '+e;}}
 function setF(w,px){ctx.font=w+' '+px+'px RTRaleway';}
 function mt(t,tr){let s=0;for(const c of t)s+=ctx.measureText(c).width;return s+tr*Math.max(0,t.length-1);}
 function dc(t,cx,y,tr,f){ctx.textAlign='left';ctx.textBaseline='top';ctx.fillStyle=f;let x=cx-mt(t,tr)/2;for(const c of t){ctx.fillText(c,x,y);x+=ctx.measureText(c).width+tr;}}
@@ -154,7 +163,23 @@ cv.addEventListener('pointerdown',e=>{if(!circle)return;const p=cpt(e);if(Math.h
 cv.addEventListener('pointermove',e=>{if(!dragging)return;const p=cpt(e);hsOffX+=p.x-lastP.x;hsOffY+=p.y-lastP.y;lastP=p;draw();});
 cv.addEventListener('pointerup',()=>{if(dragging){dragging=false;cv.style.cursor='grab';}});
 cv.addEventListener('pointercancel',()=>{dragging=false;});
-E.dl.addEventListener('click',()=>{if(!ready)return;cv.toBlob(b=>{const a=document.createElement('a');const nm=(E.name.value||'card').replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'');a.download='Dubai-PCS-Im-Attending-'+nm+(hs?'-photo':'')+'.png';a.href=URL.createObjectURL(b);a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500);},'image/png');});
+E.dl.addEventListener('click',()=>{
+  if(!ready)return;
+  const nm=(E.name.value||'card').replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'');
+  const filename='Dubai-PCS-Im-Attending-'+nm+(hs?'-photo':'')+'.png';
+  const trigger=(href,revoke)=>{
+    const a=document.createElement('a');a.download=filename;a.href=href;a.rel='noopener';
+    // The anchor MUST be in the document or a.click() is a no-op in Firefox
+    // and many mobile in-app browsers.
+    document.body.appendChild(a);a.click();a.remove();
+    if(revoke)setTimeout(()=>URL.revokeObjectURL(href),4000);
+  };
+  const fallback=()=>{try{trigger(cv.toDataURL('image/png'),false);}catch(e){E.status.textContent='Could not export: '+e;}};
+  try{
+    if(cv.toBlob)cv.toBlob(b=>{b?trigger(URL.createObjectURL(b),true):fallback();},'image/png');
+    else fallback();
+  }catch(_){fallback();}
+});
 boot();
 </script>
 </body>
