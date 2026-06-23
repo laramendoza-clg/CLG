@@ -45,7 +45,7 @@ canvas{width:100%;height:100%;display:block;touch-action:none;-webkit-user-selec
 </style>
 </head>
 <body>
-<header><h1>Dubai Private Capital Summit 2026</h1> <span>&ldquo;I&rsquo;m Attending&rdquo; card &middot; 1080 &times; 1350 &middot; build 2026-06-23 r2</span></header>
+<header><h1>Dubai Private Capital Summit 2026</h1> <span>&ldquo;I&rsquo;m Attending&rdquo; card &middot; 1080 &times; 1350 &middot; build 2026-06-23 r3</span></header>
 <div class="wrap">
   <div class="panel">
     <label for="name">Name</label><input id="name" type="text" value="Timur Kudratov" autocomplete="off">
@@ -82,7 +82,7 @@ const NODARK=[[0.0, 0.16], [0.042, 0.103], [0.083, 0.016], [0.125, 0.0], [0.167,
 const S=1080,H=1350,CX=540,MARGIN=96;
 const C={white:"#FCFCFC",cream:"#F2EFF1",mute:"#CAC4CA",black:"#080809"};
 const cv=document.getElementById('card'),ctx=cv.getContext('2d');
-const E={};['name','title','firm','roleSel','roleCustom','photo','status','vnote','ul','pill','pname','rm','adjust','zoom'].forEach(i=>E[i]=document.getElementById(i));
+const E={};['name','title','firm','roleSel','roleCustom','photo','status','vnote','ul','pill','pname','rm','adjust','zoom','dl'].forEach(i=>E[i]=document.getElementById(i));
 let imgs={},hs=null,ready=false,hsOffX=0,hsOffY=0,hsZoom=1,circle=null,dragging=false,lastP=null;
 function load(src){return new Promise((r,j)=>{const i=new Image();let done=false;const fin=(ok)=>{if(done)return;done=true;clearTimeout(t);ok?r(i):j(new Error('image failed to load'));};const t=setTimeout(()=>fin(false),8000);i.onload=()=>fin(true);i.onerror=()=>fin(false);i.src=src;});}
 function loadFonts(){
@@ -94,13 +94,8 @@ function loadFonts(){
   }catch(_){return Promise.resolve();}
 }
 async function boot(){try{
-  E.status.textContent='Step 1: fonts…';
   await loadFonts();
-  E.status.textContent='Step 2: images…';
-  const okAS=AS&&AS.sky&&AS.pcs&&AS.cap;
-  E.status.textContent='Step 2: images… (AS '+(okAS?'ok':'MISSING')+')';
   const[s,p,c]=await Promise.all([load(AS.sky),load(AS.pcs),load(AS.cap)]);
-  E.status.textContent='Step 3: drawing…';
   imgs={sky:s,pcs:p,cap:c};ready=true;draw();E.status.textContent='Ready.';
   // If fonts arrive after the 3s fallback, redraw once they're available.
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(ready)draw();}).catch(()=>{});
