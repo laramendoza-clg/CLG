@@ -6,53 +6,95 @@
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
 <meta name="googlebot" content="noindex, nofollow">
 <title>CapLink Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--plum:#2A1228;--accent:#531639;--cream:#FAFAFA;--ink:#2A1228;--line:#e6e0e3;--mute:#9a8f96}
+:root{
+  --plum:#2A1228;--accent:#531639;--cream:#FAFAFA;--ink:#241020;--line:#e7e1e4;--mute:#9a8f96;
+  --web:#2F5D63;--app:#8A7547;--email:#A15D50;--social:#6B2554;
+}
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--cream);color:var(--ink);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
-header{background:var(--plum);color:var(--cream);padding:26px 22px}
-header h1{font-weight:600;font-size:18px;letter-spacing:.16em;text-transform:uppercase;margin:0}
-header p{margin:6px 0 0;font-size:13px;font-weight:300;letter-spacing:.04em;opacity:.74}
-.wrap{max-width:980px;margin:0 auto;padding:24px 22px 44px}
-.lead{font-size:14px;color:#6b6068;margin:0 0 8px;line-height:1.5}
-.section{margin-top:30px}
-.section h2{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--plum);margin:0 0 14px;display:flex;align-items:center;gap:14px}
-.section h2::after{content:'';flex:1;height:1px;background:var(--line)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
-.card{display:flex;flex-direction:column;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);border-radius:6px;padding:20px;transition:box-shadow .15s,transform .15s,border-color .15s}
-.card:hover,.card:focus{box-shadow:0 14px 34px rgba(42,18,40,.14);transform:translateY(-2px);border-color:var(--accent);outline:none}
-.tag{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
-.card h3{font-size:17px;font-weight:600;margin:10px 0 6px;letter-spacing:.01em}
-.card p{font-size:13px;line-height:1.5;color:#6b6068;margin:0;flex:1}
-.go{margin-top:16px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
-.soon{border-style:dashed;background:transparent}
+html,body{margin:0;background:var(--cream);color:var(--ink);font-family:'Raleway',system-ui,-apple-system,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
+
+/* ---- hero / brand header ---- */
+header{position:relative;overflow:hidden;color:var(--cream);padding:42px 26px 36px;
+  background:radial-gradient(130% 150% at 16% -10%,#42284f 0%,#2A1228 46%,#190b18 100%)}
+header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
+  background:linear-gradient(90deg,var(--social),var(--email),var(--app),var(--web))}
+.brand{display:flex;align-items:center;gap:18px;max-width:980px;margin:0 auto}
+.brand .mark{height:48px;width:auto;display:block;flex:0 0 auto}
+.wordmark{font-size:26px;letter-spacing:.03em;line-height:1;color:#fff}
+.wordmark .w1{font-weight:300;opacity:.92}
+.wordmark .w2{font-weight:700}
+.tagline{margin-top:8px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.58);font-weight:500}
+
+/* ---- layout ---- */
+.wrap{max-width:980px;margin:0 auto;padding:30px 22px 10px}
+.lead{font-size:14.5px;color:#6b6068;margin:0;line-height:1.55;font-weight:400}
+
+.section{margin-top:34px}
+.section h2{display:flex;align-items:center;gap:11px;margin:0 0 16px;
+  font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--plum)}
+.section h2 .dot{width:9px;height:9px;border-radius:2px;background:var(--cat);flex:0 0 auto}
+.section h2 .count{font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--cat)}
+.section h2::after{content:'';flex:1;height:1px;background:var(--line);margin-left:3px}
+.cat-web{--cat:var(--web)}.cat-app{--cat:var(--app)}.cat-email{--cat:var(--email)}.cat-social{--cat:var(--social)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(264px,1fr));gap:16px}
+.card{position:relative;display:flex;flex-direction:column;text-decoration:none;color:inherit;
+  background:#fff;border:1px solid var(--line);border-top:3px solid var(--cat);border-radius:8px;
+  padding:20px 20px 18px;transition:box-shadow .18s ease,transform .18s ease,border-color .18s ease}
+.card:hover,.card:focus{box-shadow:0 16px 40px rgba(42,18,40,.16);transform:translateY(-3px);
+  border-color:var(--cat);border-top-color:var(--cat);outline:none}
+.tag{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--cat)}
+.card h3{font-size:17px;font-weight:600;margin:11px 0 6px;letter-spacing:.005em;line-height:1.25}
+.card p{font-size:13px;line-height:1.55;color:#6b6068;margin:0;flex:1;font-weight:400}
+.go{margin-top:16px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--cat);display:inline-flex;gap:7px}
+.go .arw{transition:transform .18s ease}
+.card:hover .go .arw{transform:translateX(4px)}
+.soon{border-top-color:var(--line);border-style:dashed;background:transparent;cursor:default}
 .soon:hover{box-shadow:none;transform:none;border-color:var(--line)}
 .soon .tag{color:var(--mute)}
-.foot{margin-top:36px;font-size:11px;color:var(--mute);line-height:1.6}
+
+.foot{display:flex;align-items:center;gap:15px;flex-wrap:wrap;
+  max-width:980px;margin:42px auto 0;padding:20px 22px 40px;border-top:1px solid var(--line)}
+.foot img{height:17px;width:auto;filter:brightness(0);opacity:.32}
+.foot p{margin:0;font-size:11px;color:var(--mute);line-height:1.6}
+@media(max-width:560px){
+  header{padding:30px 20px 26px}
+  .brand{gap:14px}.brand .mark{height:40px}.wordmark{font-size:22px}
+}
 </style>
 </head>
 <body>
 <header>
-  <h1>CapLink Studio</h1>
-  <p>Internal generators &middot; choose a category, then pick a tool</p>
+  <div class="brand">
+    <img class="mark" src="./assets/caplink-mark.png" alt="CapLink">
+    <div>
+      <div class="wordmark"><span class="w1">CapLink</span> <span class="w2">Studio</span></div>
+      <div class="tagline">Creative generators</div>
+    </div>
+  </div>
 </header>
-<div class="wrap">
-  <p class="lead">Everything runs in your browser &mdash; nothing is uploaded. Pick what you&rsquo;re making:</p>
 
-  <div class="section">
-    <h2>Website</h2>
+<div class="wrap">
+  <p class="lead">Pick what you&rsquo;re making. Everything runs in your browser &mdash; nothing is uploaded.</p>
+
+  <section class="section cat-web">
+    <h2><span class="dot"></span>Website <span class="count">1</span></h2>
     <div class="grid">
       <a class="card" href="./sponsor-generator/">
         <span class="tag">Event Page &middot; Embed</span>
         <h3>Event Page &mdash; Sponsor Section</h3>
         <p>Build the embeddable sponsor roster (tiers, logos, pop-up bios) for an event page &mdash; themed per city, with live preview and copy-paste code.</p>
-        <span class="go">Open &rarr;</span>
+        <span class="go">Open <span class="arw">&rarr;</span></span>
       </a>
     </div>
-  </div>
+  </section>
 
-  <div class="section">
-    <h2>App</h2>
+  <section class="section cat-app">
+    <h2><span class="dot"></span>App <span class="count">Soon</span></h2>
     <div class="grid">
       <div class="card soon">
         <span class="tag">Coming soon</span>
@@ -60,10 +102,10 @@ header p{margin:6px 0 0;font-size:13px;font-weight:300;letter-spacing:.04em;opac
         <p>In-app graphics and assets will live here. Tell Lara what you need first.</p>
       </div>
     </div>
-  </div>
+  </section>
 
-  <div class="section">
-    <h2>Email campaigns</h2>
+  <section class="section cat-email">
+    <h2><span class="dot"></span>Email campaigns <span class="count">Soon</span></h2>
     <div class="grid">
       <div class="card soon">
         <span class="tag">Coming soon</span>
@@ -71,27 +113,30 @@ header p{margin:6px 0 0;font-size:13px;font-weight:300;letter-spacing:.04em;opac
         <p>Campaign headers, banners and templated blocks will live here.</p>
       </div>
     </div>
-  </div>
+  </section>
 
-  <div class="section">
-    <h2>Social media</h2>
+  <section class="section cat-social">
+    <h2><span class="dot"></span>Social media <span class="count">2</span></h2>
     <div class="grid">
       <a class="card" href="./dubai-pcs-card/">
         <span class="tag">Event &middot; Social</span>
         <h3>Dubai PCS &mdash; &ldquo;I&rsquo;m Attending&rdquo; Card</h3>
         <p>Personalised 1080&times;1350 attendance card for the Dubai Private Capital Summit 2026, with an optional headshot.</p>
-        <span class="go">Open &rarr;</span>
+        <span class="go">Open <span class="arw">&rarr;</span></span>
       </a>
       <a class="card" href="./speaker-card/">
         <span class="tag">Event &middot; Speakers</span>
         <h3>Dubai PCS &mdash; Speaker &amp; Panel Card</h3>
         <p>Landscape 1200&times;675 social card for keynote speakers, panellists and moderators &mdash; skyline background, session title and sponsor logo.</p>
-        <span class="go">Open &rarr;</span>
+        <span class="go">Open <span class="arw">&rarr;</span></span>
       </a>
     </div>
-  </div>
+  </section>
 
-  <p class="foot">CapLink Studio &middot; internal tools, unlisted (not indexed by search engines). Share within CapLink only.</p>
+  <div class="foot">
+    <img src="./assets/caplink-group.png" alt="CapLink Group">
+    <p>A CapLink Group studio &middot; internal tools, unlisted (not indexed by search engines). Share within CapLink only.</p>
+  </div>
 </div>
 </body>
 </html>
