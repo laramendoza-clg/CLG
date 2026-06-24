@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<title>CapLink Event-Page Sponsor Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Raleway',sans-serif;-webkit-font-smoothing:antialiased;background:#ececed;color:#222}
+  .app{display:flex;height:100vh;overflow:hidden}
+  .left{width:54%;min-width:420px;overflow-y:auto;padding:16px 22px 48px}
+  .right{flex:1;overflow-y:auto;background:#f5f5f6;border-left:1px solid #d6d6d6;padding:14px 18px 48px}
+  .scaler{overflow:hidden;background:#fff;border:1px solid #ddd;border-radius:6px;margin-bottom:20px}
+  .scaler iframe{border:0;display:block;background:#fff;transform-origin:top left}
+  .builder h2{font-size:15px;font-weight:700;letter-spacing:.5px;margin-bottom:4px}
+  .builder .hint{font-size:12px;color:#888;margin-bottom:12px}
+  .topbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+  .topbar select,.topbar button,.topbar input[type=text]{font-family:inherit;font-size:13px;padding:7px 12px;border:1px solid #ccc;border-radius:4px;background:#fff;cursor:pointer}
+  .topbar input[type=text]{cursor:text}
+  .topbar button:hover{background:#f4f4f4}
+  .topbar .primary{background:#2A1228;color:#fff;border-color:#2A1228}
+  .topbar .primary:hover{background:#3d1c3a}
+  .headrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px;font-size:12px;color:#666}
+  .headrow input{font-family:inherit;font-size:12px;padding:6px 9px;border:1px solid #ccc;border-radius:4px;width:320px}
+  .tier-edit{border:1px solid #e2e2e2;border-radius:6px;padding:10px 12px;margin-bottom:10px;background:#fafafa}
+  .tier-edit__head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  .row{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;margin:4px 0;font-size:12px;color:#555}
+  .row input[type=text]{font-family:inherit;font-size:12px;padding:5px 8px;border:1px solid #ccc;border-radius:4px}
+  .row input.name{width:140px}.row input.url{width:300px}.row input.bio{width:100%;margin-top:4px}
+  .row input[type=range]{width:120px;cursor:pointer}
+  .row .val{width:38px;text-align:right;color:#999}
+  .row label.lbl{color:#888}
+  .mini{font-size:11px;padding:4px 8px;border:1px solid #ccc;border-radius:4px;background:#fff;cursor:pointer}
+  .mini:hover{background:#f0f0f0}
+  .mini.del{color:#a33;border-color:#e3b3b3}
+  .logo-edit{border-top:1px dashed #e0e0e0;padding-top:6px;margin-top:6px}
+  .cap{font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#888;margin:6px 0 8px;display:flex;align-items:center;gap:10px}
+  .out{margin-top:14px}
+  .out textarea{width:100%;height:200px;font-family:ui-monospace,Menlo,monospace;font-size:11px;border:1px solid #ccc;border-radius:6px;padding:12px;background:#fbfbfb;color:#333}
+  .out .bar{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .copybtn{background:#2A1228;color:#fff;border:none;border-radius:4px;padding:9px 18px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer}
+  .copybtn:hover{background:#3d1c3a}
+  .copied{font-size:12px;color:#3f8a5a;font-weight:600;display:none}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="left">
+    <div class="builder">
+      <h2>CapLink Event-Page Sponsor Generator</h2>
+      <p class="hint">Each event is a city + year with its own sponsor roster. To set up next year, pick the event and hit <strong>Duplicate for new year</strong> — it copies every sponsor so you only tweak what changed. Saves per event in this browser; use Save backup to keep a file copy.</p>
+      <div class="topbar">
+        <label style="font-size:13px;color:#666">Event:</label>
+        <select id="eventSel"></select>
+        <button id="dupBtn" class="primary">Duplicate for new year</button>
+        <button id="newBtn">+ New event</button>
+        <button id="renameBtn">Rename</button>
+        <button id="delBtn">Delete</button>
+      </div>
+      <div class="topbar">
+        <label style="font-size:13px;color:#666">Colours:</label>
+        <select id="themeSel">
+          <option value="newyork">New York (terracotta)</option>
+          <option value="european">European (deep plum)</option>
+          <option value="dubai">Dubai (petrol teal)</option>
+          <option value="london">London / JV (navy + gold)</option>
+        </select>
+        <button id="loadPreset">Reset roster to starter set</button>
+        <button id="addTier">+ Add tier</button>
+        <button id="backupBtn">⬇ Save backup</button>
+        <button id="restoreBtn">⬆ Load backup</button>
+        <button id="resetBtn">Clear all</button>
+        <input id="restoreFile" type="file" accept="application/json" style="display:none">
+      </div>
+      <div class="headrow">
+        <label>Heading:</label><input id="headIn" type="text">
+        <label>Subheading:</label><input id="subIn" type="text">
+      </div>
+      <div id="tiersEditor"></div>
+    </div>
+    <div class="out">
+      <div class="bar"><button class="copybtn" id="copyBtn">Copy code block</button><span class="copied" id="copied">Copied</span></div>
+      <textarea id="outCode" readonly></textarea>
+    </div>
+  </div>
+  <div class="right">
+    <p class="cap">Desktop preview</p>
+    <div class="scaler" id="deskScaler"><iframe id="desk"></iframe></div>
+    <p class="cap">Mobile preview</p>
+    <div class="scaler" id="mobScaler"><iframe id="mob"></iframe></div>
+  </div>
+</div>
+
+<script>
+const CDN="https://images.squarespace-cdn.com/content/5dc9f095a5705651ea40e08b/";
+const THEMES={
+  dubai:{cardGrad:"linear-gradient(135deg,#0a1620 0%,#152c33 30%,#2c4148 60%,#4a5c65 90%,#6c7e85 100%)",modalGrad:"linear-gradient(150deg,#0a1620,#152c33 50%,#385158)",tier:"#385158",divider:"#385158",badge:"#152c33"},
+  london:{cardGrad:"linear-gradient(135deg,#060e1e 0%,#0D1426 30%,#152040 60%,#243057 90%,#34406a 100%)",modalGrad:"linear-gradient(150deg,#060e1e,#0D1426 50%,#243057)",tier:"#8A7547",divider:"#C7A66B",badge:"#0D1426"},
+  newyork:{cardGrad:"linear-gradient(135deg,#130E15 0%,#472E40 40%,#7B4349 75%,#A15D50 100%)",modalGrad:"linear-gradient(150deg,#130E15,#472E40 55%,#7B4349)",tier:"#A15D50",divider:"#A15D50",badge:"#7B4349"},
+  european:{cardGrad:"linear-gradient(135deg,#140d1a 0%,#2A1228 22%,#3c254a 52%,#5a4068 80%,#7e6490 100%)",modalGrad:"linear-gradient(150deg,#140d1a,#3c254a 55%,#5a4068)",tier:"#6b2554",divider:"#6b2554",badge:"#3c254a"}
+};
+const L=(name,file,h,whiten,bio)=>({name,url:file.startsWith("http")?file:CDN+file,h:h||52,mh:Math.min(h||52,52),whiten:!!whiten,bio:bio||""});
+const tier=(name,logos,logoGap,lineGap)=>({name,logos:logos||[],logoGap:logoGap!=null?logoGap:40,lineGap:lineGap!=null?lineGap:22});
+const PRESETS={
+  dubai:{head:"The firms that make<br><strong>this possible.</strong>",sub:"Representing the leading firms across private capital",tiers:[
+    tier("Headline Partner",[L("EY","0661592a-89f2-4441-85c6-9c2f5a7cba35/EY+-+white.png?content-type=image%2Fpng",70,false,"Our global private equity team can help you identify, invest in and transform companies to create more value across your portfolio.")]),
+    tier("Platinum",[
+      L("A&O Shearman","482cebf2-c418-42d9-8468-20e7a6c171ce/ao+shearman+-+white.png?content-type=image%2Fpng",30,false,"A&O Shearman is a global elite law firm advising on the most complex transactions, disputes, and regulatory matters in private capital."),
+      L("Akin","d631f114-d545-4f7c-9a0c-50550cf4d3aa/Akin+-+white.png?content-type=image%2Fpng",24,false,"Akin is a leading international law firm with more than 900 lawyers and advisors across the US, Europe, Asia and the Middle East."),
+      L("Clifford Chance","31e9e3f0-2b2d-40d8-b78e-e875bffb2202/clifford+chance.png?content-type=image%2Fpng",52,false,"Clifford Chance is one of the world's pre-eminent law firms, advising on complex transactions across borders and asset classes."),
+      L("Gibson Dunn","a87073bc-0f7b-4446-831c-ccc0648c968f/Gibson+Dunn+-+white.png?content-type=image%2Fpng",46,false,"Gibson Dunn is a leading international law firm advising on private equity, M&A, capital markets, and disputes worldwide."),
+      L("White & Case","341d8ce8-25d2-4b89-b7e9-abf18d0339ff/White+Case+-+white.png?content-type=image%2Fpng",30,false,"White & Case is a leading global law firm with lawyers in 45 offices across 30 countries.")
+    ]),
+    tier("Gold",[
+      L("Abacus Group","dbc1cd25-6309-4026-b723-782177b6694d/Abacus_Logo+-+white.png?content-type=image%2Fpng",60,false,"Abacus Group provides world-class managed IT and cybersecurity solutions to alternative investment firms."),
+      L("Cleary Gottlieb","54b75d85-da5f-4cfc-b334-30e9da6dfd96/Cleary+Gottlieb+white.png?content-type=image%2Fpng",34,false,"Cleary Gottlieb Steen & Hamilton LLP is a leading international law firm advising on complex cross-border M&A, capital markets, and financing.")
+    ]),
+    tier("Data Partner",[L("Preqin","830dbd41-9b8d-437b-9c9b-3093d1194a2a/preqin+-+white.png?content-type=image%2Fpng",34,false,"Preqin, a part of BlackRock, is the official data partner and the leading global provider of alternative assets data and insights.")]),
+    Object.assign(tier("Media Partner",[L("PE150","b79cabcd-6e2b-4ad1-a66d-216e2376b596/PE150+-+white.png?content-type=image%2Fpng",40,false,"PE150 is the official media partner, delivering news, analysis and intelligence to senior private capital professionals.")]),{join:true}),
+    Object.assign(tier("Association Partner",[L("Emirates Family Office","1e51c300-7af2-47de-96c1-0b9f53b52bef/Emirates+Family+Office+-+white.png?content-type=image%2Fpng",62,false,"Emirates Family Office is the leading community for single family offices and ultra-high-net-worth families across the region.")]),{join:true})
+  ]},
+  london:{head:"The firms that make<br><strong>this possible.</strong>",sub:"Representing the leading firms across private capital",tiers:[
+    tier("Platinum",[
+      L("EY","0661592a-89f2-4441-85c6-9c2f5a7cba35/EY+-+white.png?content-type=image%2Fpng",66,false,"Global professional services firm advising private equity firms across the full investment lifecycle, from diligence to value creation and exit."),
+      L("PwC","8b081560-e9b6-4ea5-ba78-b8260a0ea414/PWC+-+White+Logo.png?content-type=image%2Fpng",54,false,"Global professional services firm providing audit, tax, and advisory services to private capital funds and portfolio companies.")
+    ]),
+    tier("Gold",[
+      L("Accordion","https://PASTE_HOSTED_URL/Accordion.png",30,true,"Financial consulting firm supporting private equity sponsors and CFOs across finance, technology, business transformation, and transaction support."),
+      L("BlueFlame AI","https://PASTE_HOSTED_URL/BlueFlame.png",30,true,"Purpose-built agentic AI platform for alternative investment managers: enterprise search, document processing, and workflow automation."),
+      L("Auquan","https://PASTE_HOSTED_URL/Auquan.png",34,true,"AI-driven platform that automates manual, time-intensive research and analysis tasks for financial services professionals.")
+    ]),
+    tier("Associate Partner",[L("ECI","https://PASTE_HOSTED_URL/ECI.png",30,true,"UK growth-focused private equity firm investing in technology and tech-enabled service businesses across the mid-market.")]),
+    tier("Media Partner",[L("PE150","b79cabcd-6e2b-4ad1-a66d-216e2376b596/PE150+-+white.png?content-type=image%2Fpng",40,false,"PE150 is the official media partner, delivering news, analysis and intelligence to senior private capital professionals.")])
+  ]},
+  newyork:{head:"The firms that make<br><strong>this possible.</strong>",sub:"Representing the leading firms across private capital",tiers:[
+    tier("Headline Partner",[L("EY","0661592a-89f2-4441-85c6-9c2f5a7cba35/EY+-+white.png?content-type=image%2Fpng",70,false,"Our global private equity team helps you identify, invest in and transform companies to create more value across your portfolio.")]),
+    tier("Gold",[L("Cleary Gottlieb","54b75d85-da5f-4cfc-b334-30e9da6dfd96/Cleary+Gottlieb+white.png?content-type=image%2Fpng",34,false,"Cleary Gottlieb Steen & Hamilton LLP is a leading international law firm advising on complex cross-border M&A, capital markets, and financing.")])
+  ]},
+  european:{head:"The firms that make<br><strong>this possible.</strong>",sub:"Representing the leading firms across private capital",tiers:[
+    tier("Headline Partner",[L("EY","0661592a-89f2-4441-85c6-9c2f5a7cba35/EY+-+white.png?content-type=image%2Fpng",66,false,"Our global private equity team can help you identify, invest in and transform companies to create more value across your portfolio.")]),
+    tier("Platinum",[
+      L("Accordion","6ce31330-2925-4e07-b1e1-e8cfda1fdafb/Accordion.png?content-type=image%2Fpng",30,true,"Financial consulting firm supporting private equity sponsors and CFOs across finance, technology, business transformation, and transaction support."),
+      L("BlueFlame AI","https://PASTE_HOSTED_URL/BlueFlame.png",30,true,"Purpose-built agentic AI platform for alternative investment managers: enterprise search, document processing, and workflow automation."),
+      L("Clifford Chance","31e9e3f0-2b2d-40d8-b78e-e875bffb2202/clifford+chance.png?content-type=image%2Fpng",52,false,"Clifford Chance is one of the world's pre-eminent law firms, advising on complex transactions across borders and asset classes."),
+      L("Macfarlanes","1c49ac12-1a68-41ff-9a7f-42490d4c23b0/Macfarlanes+-+white.png?content-type=image%2Fpng",30,false,"Macfarlanes is a leading London law firm advising on private equity, funds, tax, and M&A across the asset management industry."),
+      L("Paul Hastings","https://PASTE_HOSTED_URL/PaulHastings.png",30,true,"Paul Hastings is a leading global law firm advising private capital sponsors on M&A, financing, and complex cross-border transactions."),
+      L("Ropes & Gray","b1812435-c71f-421e-8658-c38bf4bdda00/ropes+%26+gray.png?content-type=image%2Fpng",30,true,"Ropes & Gray is a leading global law firm advising private capital clients on M&A, fund formation, financing, and complex regulatory matters.")
+    ]),
+    tier("Data Partner",[L("Preqin","830dbd41-9b8d-437b-9c9b-3093d1194a2a/preqin+-+white.png?content-type=image%2Fpng",34,false,"Preqin, a part of BlackRock, is the official data partner and the leading global provider of alternative assets data and insights.")]),
+    Object.assign(tier("Media Partner",[L("PE150","b79cabcd-6e2b-4ad1-a66d-216e2376b596/PE150+-+white.png?content-type=image%2Fpng",40,false,"PE150 is the official media partner, delivering news, analysis and intelligence to senior private capital professionals.")]),{join:true})
+  ]}
+};
+const KEY="caplink-spx-gen-v1";          // legacy single-state
+const MKEY="caplink-spx-store-v1";       // legacy per-city store {last, ev:{}}
+const SKEY="caplink-spx-events-v2";      // event instances {last:id, events:{id:{id,name,theme,head,sub,tiers}}}
+const THEME_NAMES={dubai:"Dubai",london:"London / JV",newyork:"New York",european:"European"};
+const CUR_YEAR=new Date().getFullYear();
+let state, STORE={last:null,events:{}};
+function clone(o){return JSON.parse(JSON.stringify(o));}
+function newId(){return "ev_"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function mk(theme,name){const p=PRESETS[theme];return{id:newId(),name:name||(THEME_NAMES[theme]+" "+CUR_YEAR),theme:theme,head:p.head,sub:p.sub,tiers:clone(p.tiers)};}
+function firstEvent(){const k=Object.keys(STORE.events);return k.length?(STORE.events[STORE.last]||STORE.events[k[0]]):null;}
+function loadState(){
+  try{const m=JSON.parse(localStorage.getItem(SKEY));if(m&&m.events&&Object.keys(m.events).length){STORE=m;const c=firstEvent();STORE.last=c.id;return clone(c);}}catch(e){}
+  try{const m=JSON.parse(localStorage.getItem(MKEY));if(m&&m.ev&&Object.keys(m.ev).length){STORE={last:null,events:{}};Object.keys(m.ev).forEach(city=>{const s=m.ev[city];const ev=mk(city);ev.head=s.head;ev.sub=s.sub;ev.tiers=s.tiers;STORE.events[ev.id]=ev;if(city===m.last)STORE.last=ev.id;});const c=firstEvent();STORE.last=c.id;return clone(c);}}catch(e){}
+  try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.tiers){const ev=mk(s.event||"dubai");ev.head=s.head;ev.sub=s.sub;ev.tiers=s.tiers;STORE={last:ev.id,events:{}};STORE.events[ev.id]=ev;return clone(ev);}}catch(e){}
+  STORE={last:null,events:{}};["newyork","european","dubai","london"].forEach(th=>{const ev=mk(th);STORE.events[ev.id]=ev;if(!STORE.last)STORE.last=ev.id;});
+  return clone(firstEvent());
+}
+function save(){STORE.events[state.id]=state;STORE.last=state.id;try{localStorage.setItem(SKEY,JSON.stringify(STORE));}catch(e){}}
+function esc(s){return(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function escA(s){return(s||"").replace(/"/g,"&quot;");}
+function slug(s,i){return(s||"x").toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"")+"_"+i;}
+
+function generate(){
+  const t=THEMES[state.theme]||THEMES.dubai;
+  const data={};
+  let cards="";
+  const colHTML=state.tiers.map((tr,ti)=>{
+    let cells="";
+    tr.logos.forEach((lg,li)=>{
+      const id=slug(lg.name,ti+"_"+li);
+      data[id]={n:lg.name,t:tr.name,l:lg.url,b:lg.bio,w:!!lg.whiten};
+      const f=lg.whiten?"filter:brightness(0) invert(1);":"";
+      const mh=(lg.mh!=null?lg.mh:Math.min(lg.h,52));
+      cells+=`\n        <div class="spx__cell" onclick="spxOpen('${id}')"><img src="${escA(lg.url)}" alt="${escA(lg.name)}" style="--h:${lg.h}px;--mh:${mh}px;${f}"></div>`;
+    });
+    const cg=(tr.logoGap!=null?tr.logoGap:40), lng=(tr.lineGap!=null?tr.lineGap:22);
+    return `\n        <div class="spx__hd"><span>${esc(tr.name)}</span></div>\n        <div class="spx__logos" style="--cg:${cg}px;--lg:${lng}px">${cells}\n        </div>`;
+  });
+  let gi=0;
+  while(gi<state.tiers.length){
+    let gj=gi+1;
+    while(gj<state.tiers.length && state.tiers[gj].join) gj++;
+    if(gj-gi===1){
+      cards+=`\n      <div class="spx__card">${colHTML[gi]}\n      </div>`;
+    } else {
+      let cols="";
+      for(let gk=gi;gk<gj;gk++) cols+=`\n        <div class="spx__col">${colHTML[gk]}\n        </div>`;
+      cards+=`\n      <div class="spx__card spx__card--split">${cols}\n      </div>`;
+    }
+    gi=gj;
+  }
+  const css=`
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+.spx,.spx *{box-sizing:border-box;margin:0;padding:0;font-family:'Raleway',sans-serif;}
+.spx{width:100vw;position:relative;left:50%;transform:translateX(-50%);padding:72px 0 88px;-webkit-font-smoothing:antialiased;}
+.spx__in{max-width:1200px;margin:0 auto;padding:0 40px;}
+.spx__title{font-size:clamp(28px,3.5vw,46px);font-weight:300;color:#1a1a1a;letter-spacing:-.5px;line-height:1.15;margin-bottom:12px;}
+.spx__title strong{font-weight:700;}
+.spx__sub{font-size:14px;color:rgba(0,0,0,.4);font-weight:300;margin-bottom:46px;}
+.spx__card{background:${t.cardGrad};border:1px solid rgba(255,255,255,.08);border-radius:2px;margin-bottom:12px;overflow:hidden;}
+.spx__card--split{display:flex;}
+.spx__card--split .spx__col{flex:1;min-width:0;}
+.spx__card--split .spx__col+.spx__col{border-left:1px solid rgba(255,255,255,.08);}
+.spx__card--split .spx__logos{padding:16px 30px;}
+.spx__hd{padding:14px 28px;display:flex;align-items:center;gap:16px;}
+.spx__hd span{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:4px;color:rgba(255,255,255,.38);white-space:nowrap;}
+.spx__hd::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08);}
+.spx__logos{display:flex;align-items:center;justify-content:flex-start;flex-wrap:wrap;padding:16px 48px;gap:var(--lg,22px) var(--cg,40px);}
+.spx__cell{position:relative;flex:0 0 auto;min-height:96px;display:flex;align-items:center;justify-content:center;padding:6px 0;cursor:pointer;}
+.spx__cell img{display:block;object-fit:contain;opacity:.92;height:var(--h);width:auto;max-width:90%;transition:opacity .25s ease,transform .25s ease;}
+.spx__cell:hover img{opacity:1;transform:scale(1.05);}
+.spx-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);z-index:9999;align-items:center;justify-content:center;padding:16px;}
+.spx-ov.is-open{display:flex;}
+.spx-m{background:#fff;border-radius:2px;max-width:720px;width:100%;position:relative;box-shadow:0 40px 100px rgba(0,0,0,.4);overflow:hidden;}
+.spx-m__x{position:absolute;top:16px;right:18px;background:none;border:none;cursor:pointer;color:rgba(255,255,255,.5);font-size:22px;z-index:2;}
+.spx-m__x:hover{color:#fff;}
+.spx-m__b{display:flex;align-items:stretch;min-height:220px;}
+.spx-m__l{flex:0 0 220px;background:${t.modalGrad};display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px 24px;gap:18px;}
+.spx-m__logo{max-width:160px;max-height:90px;object-fit:contain;}
+.spx-m__r{flex:1;padding:40px 40px 40px 34px;display:flex;flex-direction:column;justify-content:center;gap:13px;}
+.spx-m__tier{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:3px;color:${t.tier};}
+.spx-m__name{font-size:22px;font-weight:300;color:#1a1a1a;line-height:1.2;}
+.spx-m__hr{width:32px;height:1px;background:${t.divider};border:none;}
+.spx-m__bio{font-size:13px;color:#555;line-height:1.8;font-weight:300;}
+.spx__badge{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:2px;padding:5px 11px;border-radius:2px;color:#fff;background:${t.badge};}
+@media(max-width:768px){
+  .spx{padding:54px 0 64px;}
+  .spx__in{padding:0 18px;}
+  .spx__card--split{flex-direction:column;}
+  .spx__card--split .spx__col+.spx__col{border-left:none;border-top:1px solid rgba(255,255,255,.08);}
+  .spx__logos{justify-content:center;gap:calc(var(--lg,22px)*.55) calc(var(--cg,40px)*.5);padding:10px 14px;}
+  .spx__cell{min-height:64px;padding:4px 0;}
+  .spx__cell img{height:var(--mh) !important;max-width:42vw !important;}
+  .spx-m__b{flex-direction:column;}
+  .spx-m__l{flex:none;flex-direction:row;justify-content:flex-start;padding:18px 20px;gap:14px;}
+  .spx-m__logo{max-width:90px;max-height:54px;}
+  .spx-m__r{padding:22px 20px 26px;}
+  .spx-m__name{font-size:18px;}
+}
+</style>`;
+  const body=`
+<div class="spx">
+  <div class="spx__in">
+    <h2 class="spx__title">${state.head}</h2>
+    <p class="spx__sub">${esc(state.sub)}</p>${cards}
+  </div>
+</div>
+<div class="spx-ov" id="spxOv" onclick="if(event.target===this)spxClose()">
+  <div class="spx-m">
+    <button class="spx-m__x" onclick="spxClose()">&times;</button>
+    <div class="spx-m__b">
+      <div class="spx-m__l"><img class="spx-m__logo" id="spxLogo" src="" alt=""><span class="spx__badge" id="spxBadge"></span></div>
+      <div class="spx-m__r"><p class="spx-m__tier" id="spxTier"></p><h3 class="spx-m__name" id="spxName"></h3><hr class="spx-m__hr"><p class="spx-m__bio" id="spxBio"></p></div>
+    </div>
+  </div>
+</div>
+<script>
+var SPX=${JSON.stringify(data)};
+function spxOpen(id){var s=SPX[id];if(!s)return;var lg=document.getElementById('spxLogo');lg.src=s.l;lg.alt=s.n;lg.style.filter=s.w?'brightness(0) invert(1)':'';document.getElementById('spxBadge').textContent=s.t;document.getElementById('spxTier').textContent=s.t;document.getElementById('spxName').textContent=s.n;document.getElementById('spxBio').textContent=s.b;document.getElementById('spxOv').classList.add('is-open');document.body.style.overflow='hidden';}
+function spxClose(){document.getElementById('spxOv').classList.remove('is-open');document.body.style.overflow='';}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')spxClose();});
+<\/script>`;
+  return css+body;
+}
+
+function renderBuilder(){
+  const sel=document.getElementById("eventSel");sel.innerHTML="";
+  Object.keys(STORE.events).forEach(id=>{const o=document.createElement("option");o.value=id;o.textContent=STORE.events[id].name;sel.appendChild(o);});
+  sel.value=state.id;
+  document.getElementById("themeSel").value=state.theme;
+  document.getElementById("headIn").value=state.head;
+  document.getElementById("subIn").value=state.sub;
+  const ed=document.getElementById("tiersEditor");ed.innerHTML="";
+  state.tiers.forEach((tr,ti)=>{
+    const box=document.createElement("div");box.className="tier-edit";
+    const hd=document.createElement("div");hd.className="tier-edit__head";
+    hd.innerHTML='<div class="row" style="margin:0"><label class="lbl">Tier</label><input type="text" class="name" value="'+escA(tr.name)+'" data-act="tname" data-t="'+ti+'"><button class="mini" data-act="addlogo" data-t="'+ti+'">+ logo</button></div>'+
+      '<button class="mini del" data-act="deltier" data-t="'+ti+'">remove tier</button>'+
+      (ti>0?'<label style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#888;margin-top:8px;cursor:pointer"><input type="checkbox" data-act="tjoin" data-t="'+ti+'" '+(tr.join?'checked':'')+'> share card with tier above</label>':'');
+    box.appendChild(hd);
+    const sp=document.createElement("div");sp.className="row";
+    const cgv=(tr.logoGap!=null?tr.logoGap:40), lnv=(tr.lineGap!=null?tr.lineGap:22);
+    sp.innerHTML='<label class="lbl">Logo spacing</label><input type="range" min="0" max="160" value="'+cgv+'" data-act="tgap" data-t="'+ti+'"><span class="val">'+cgv+'</span>'+
+      '<label class="lbl">Line spacing</label><input type="range" min="0" max="120" value="'+lnv+'" data-act="tline" data-t="'+ti+'"><span class="val">'+lnv+'</span>';
+    box.appendChild(sp);
+    tr.logos.forEach((lg,li)=>{
+      const lr=document.createElement("div");lr.className="row logo-edit";
+      lr.innerHTML='<input type="text" class="name" placeholder="name" value="'+escA(lg.name)+'" data-act="lname" data-t="'+ti+'" data-l="'+li+'">'+
+        '<input type="text" class="url" placeholder="logo URL" value="'+escA(lg.url)+'" data-act="lurl" data-t="'+ti+'" data-l="'+li+'">'+
+        '<label class="lbl">desktop</label><input type="range" min="18" max="100" value="'+lg.h+'" data-act="lh" data-t="'+ti+'" data-l="'+li+'"><span class="val">'+lg.h+'</span>'+
+        '<label class="lbl">mobile</label><input type="range" min="12" max="80" value="'+(lg.mh!=null?lg.mh:Math.min(lg.h,52))+'" data-act="lmh" data-t="'+ti+'" data-l="'+li+'"><span class="val">'+(lg.mh!=null?lg.mh:Math.min(lg.h,52))+'</span>'+
+        '<label><input type="checkbox" data-act="lw" data-t="'+ti+'" data-l="'+li+'" '+(lg.whiten?'checked':'')+'> whiten</label>'+
+        '<button class="mini del" data-act="dellogo" data-t="'+ti+'" data-l="'+li+'">x</button>'+
+        '<input type="text" class="bio" placeholder="bio (shown in pop-up)" value="'+escA(lg.bio)+'" data-act="lbio" data-t="'+ti+'" data-l="'+li+'">';
+      box.appendChild(lr);
+    });
+    ed.appendChild(box);
+  });
+}
+let _pvTimer=null;
+function renderPreview(){
+  const code=generate();
+  document.getElementById("outCode").value=code;
+  clearTimeout(_pvTimer);
+  _pvTimer=setTimeout(function(){document.getElementById("desk").srcdoc=code;document.getElementById("mob").srcdoc=code;},160);
+}
+function fitPreviews(){
+  const right=document.querySelector(".right");if(!right)return;
+  const w=right.clientWidth-36, DW=1200, MW=390;
+  const ds=Math.min(1,w/DW), ms=Math.min(1,w/MW);
+  const d=document.getElementById("desk"), m=document.getElementById("mob");
+  d.style.width=DW+"px"; d.style.transform="scale("+ds+")";
+  document.getElementById("deskScaler").style.width=(DW*ds)+"px";
+  document.getElementById("deskScaler").style.height=((d._h||1400)*ds)+"px";
+  m.style.width=MW+"px"; m.style.transform="scale("+ms+")";
+  document.getElementById("mobScaler").style.width=(MW*ms)+"px";
+  document.getElementById("mobScaler").style.height=((m._h||1700)*ms)+"px";
+}
+function autoHeight(f){try{const h=f.contentWindow.document.documentElement.scrollHeight;if(h>40){f._h=h;f.style.height=h+"px";fitPreviews();}}catch(e){}}
+document.getElementById("desk").addEventListener("load",function(){autoHeight(this);});
+document.getElementById("mob").addEventListener("load",function(){autoHeight(this);});
+window.addEventListener("resize",fitPreviews);
+function renderAll(){const l=document.querySelector(".left");const st=l?l.scrollTop:0;renderBuilder();renderPreview();if(l)l.scrollTop=st;save();}
+
+document.getElementById("eventSel").addEventListener("change",e=>{save();const id=e.target.value;const ev=STORE.events[id];state=(ev&&ev.tiers)?clone(ev):clone(firstEvent());STORE.last=state.id;renderAll();});
+document.getElementById("themeSel").addEventListener("change",e=>{state.theme=e.target.value;renderAll();});
+document.getElementById("dupBtn").addEventListener("click",()=>{save();let nm=state.name;const y=nm.match(/(19|20)\d{2}/);nm=y?nm.replace(y[0],String(+y[0]+1)):(nm+" (copy)");nm=prompt("Name the new event:",nm);if(nm==null)return;const ne=clone(state);ne.id=newId();ne.name=nm.trim()||nm;STORE.events[ne.id]=ne;state=clone(ne);STORE.last=ne.id;renderAll();});
+document.getElementById("newBtn").addEventListener("click",()=>{save();const th=document.getElementById("themeSel").value;let nm=prompt("Name the new event:",THEME_NAMES[th]+" "+CUR_YEAR);if(nm==null)return;const ev=mk(th,nm.trim()||undefined);STORE.events[ev.id]=ev;state=clone(ev);STORE.last=ev.id;renderAll();});
+document.getElementById("renameBtn").addEventListener("click",()=>{const nm=prompt("Rename event:",state.name);if(nm==null)return;state.name=nm.trim()||state.name;renderAll();});
+document.getElementById("delBtn").addEventListener("click",()=>{if(Object.keys(STORE.events).length<=1){alert("This is your only event. Create another before deleting this one.");return;}if(!confirm("Delete \""+state.name+"\"? This can't be undone (save a backup first if unsure)."))return;delete STORE.events[state.id];STORE.last=Object.keys(STORE.events)[0];state=clone(STORE.events[STORE.last]);renderAll();});
+document.getElementById("loadPreset").addEventListener("click",()=>{if(!confirm("Reset this event's roster to the "+THEME_NAMES[state.theme]+" starter set? Sponsors you've added here will be replaced."))return;const p=PRESETS[state.theme];state.head=p.head;state.sub=p.sub;state.tiers=clone(p.tiers);renderAll();});
+document.getElementById("addTier").addEventListener("click",()=>{state.tiers.push(tier("New Tier",[]));renderAll();});
+document.getElementById("resetBtn").addEventListener("click",()=>{if(!confirm("Clear ALL saved events in this browser and start fresh? Save a backup first if unsure."))return;try{localStorage.removeItem(KEY);localStorage.removeItem(MKEY);localStorage.removeItem(SKEY);}catch(e){}state=loadState();renderAll();});
+document.getElementById("backupBtn").addEventListener("click",()=>{save();const blob=new Blob([JSON.stringify(STORE,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="caplink-sponsor-events-backup.json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);});
+document.getElementById("restoreBtn").addEventListener("click",()=>document.getElementById("restoreFile").click());
+document.getElementById("restoreFile").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const m=JSON.parse(r.result);if(!m||!m.events||!Object.keys(m.events).length)throw 0;STORE=m;const c=firstEvent();STORE.last=c.id;state=clone(c);localStorage.setItem(SKEY,JSON.stringify(STORE));renderAll();}catch(err){alert("That file doesn't look like a sponsor backup.");}};r.readAsText(f);e.target.value="";});
+document.getElementById("headIn").addEventListener("input",e=>{state.head=e.target.value;renderPreview();save();});
+document.getElementById("subIn").addEventListener("input",e=>{state.sub=e.target.value;renderPreview();save();});
+document.getElementById("copyBtn").addEventListener("click",()=>{const ta=document.getElementById("outCode");ta.select();navigator.clipboard.writeText(ta.value).then(()=>{const c=document.getElementById("copied");c.style.display="inline";setTimeout(()=>c.style.display="none",1500);});});
+
+document.getElementById("tiersEditor").addEventListener("click",e=>{const b=e.target.closest("[data-act]");if(!b)return;const a=b.dataset.act,ti=+b.dataset.t,li=+b.dataset.l;
+  if(a==="addlogo"){state.tiers[ti].logos.push(L("New logo","https://",52));renderAll();}
+  else if(a==="deltier"){state.tiers.splice(ti,1);renderAll();}
+  else if(a==="dellogo"){state.tiers[ti].logos.splice(li,1);renderAll();}
+});
+document.getElementById("tiersEditor").addEventListener("input",e=>{const el=e.target,a=el.dataset.act;if(!a)return;const ti=+el.dataset.t,li=+el.dataset.l;
+  if(a==="tname"){state.tiers[ti].name=el.value;renderPreview();save();}
+  else if(a==="lname"){state.tiers[ti].logos[li].name=el.value;renderPreview();save();}
+  else if(a==="lurl"){state.tiers[ti].logos[li].url=el.value;renderPreview();save();}
+  else if(a==="lbio"){state.tiers[ti].logos[li].bio=el.value;renderPreview();save();}
+  else if(a==="lh"){const L=state.tiers[ti].logos[li];const oldAuto=Math.min(L.h,52);L.h=+el.value;el.nextElementSibling.textContent=el.value;if(L.mh==null||L.mh===oldAuto){L.mh=Math.min(L.h,52);const ms=el.closest(".row").querySelector('[data-act="lmh"]');if(ms){ms.value=L.mh;ms.nextElementSibling.textContent=L.mh;}}renderPreview();save();}
+  else if(a==="lmh"){state.tiers[ti].logos[li].mh=+el.value;el.nextElementSibling.textContent=el.value;renderPreview();save();}
+  else if(a==="tgap"){state.tiers[ti].logoGap=+el.value;el.nextElementSibling.textContent=el.value;renderPreview();save();}
+  else if(a==="tline"){state.tiers[ti].lineGap=+el.value;el.nextElementSibling.textContent=el.value;renderPreview();save();}
+});
+document.getElementById("tiersEditor").addEventListener("change",e=>{const el=e.target;if(el.dataset.act==="lw"){state.tiers[+el.dataset.t].logos[+el.dataset.l].whiten=el.checked;renderAll();}else if(el.dataset.act==="tjoin"){state.tiers[+el.dataset.t].join=el.checked;renderAll();}});
+
+function ensureEU2027(){
+  try{
+    var FLAG="caplink-eu2027-roster-v2"; // one-time refresh to the populated European 2027 roster
+    if(localStorage.getItem(FLAG))return;
+    var p=PRESETS.european;
+    var euId=Object.keys(STORE.events).find(function(k){return STORE.events[k].theme==="european";});
+    if(euId){var ev=STORE.events[euId];ev.head=p.head;ev.sub=p.sub;ev.tiers=JSON.parse(JSON.stringify(p.tiers));STORE.last=euId;state=clone(ev);}
+    else{var eu=mk("european","European 2027");STORE.events[eu.id]=eu;STORE.last=eu.id;state=clone(eu);}
+    save();
+    localStorage.setItem(FLAG,"1");
+  }catch(e){}
+}
+fitPreviews();state=loadState();ensureEU2027();renderAll();
+</script>
+</body>
+</html>
