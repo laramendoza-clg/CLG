@@ -13,53 +13,84 @@ html,body{margin:0;background:var(--cream);color:var(--ink);font-family:system-u
 header{background:var(--plum);color:var(--cream);padding:26px 22px}
 header h1{font-weight:600;font-size:18px;letter-spacing:.16em;text-transform:uppercase;margin:0}
 header p{margin:6px 0 0;font-size:13px;font-weight:300;letter-spacing:.04em;opacity:.74}
-.wrap{max-width:980px;margin:0 auto;padding:26px 22px 40px}
-.lead{font-size:14px;color:#6b6068;margin:0 0 22px;line-height:1.5}
+.wrap{max-width:980px;margin:0 auto;padding:24px 22px 44px}
+.lead{font-size:14px;color:#6b6068;margin:0 0 8px;line-height:1.5}
+.section{margin-top:30px}
+.section h2{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--plum);margin:0 0 14px;display:flex;align-items:center;gap:14px}
+.section h2::after{content:'';flex:1;height:1px;background:var(--line)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
 .card{display:flex;flex-direction:column;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);border-radius:6px;padding:20px;transition:box-shadow .15s,transform .15s,border-color .15s}
 .card:hover,.card:focus{box-shadow:0 14px 34px rgba(42,18,40,.14);transform:translateY(-2px);border-color:var(--accent);outline:none}
 .tag{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
-.card h2{font-size:17px;font-weight:600;margin:10px 0 6px;letter-spacing:.01em}
+.card h3{font-size:17px;font-weight:600;margin:10px 0 6px;letter-spacing:.01em}
 .card p{font-size:13px;line-height:1.5;color:#6b6068;margin:0;flex:1}
 .go{margin-top:16px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
 .soon{border-style:dashed;background:transparent}
 .soon:hover{box-shadow:none;transform:none;border-color:var(--line)}
 .soon .tag{color:var(--mute)}
-.foot{margin-top:30px;font-size:11px;color:var(--mute);line-height:1.6}
+.foot{margin-top:36px;font-size:11px;color:var(--mute);line-height:1.6}
 </style>
 </head>
 <body>
 <header>
   <h1>CapLink Tools</h1>
-  <p>Internal generators &middot; pick a tool to get started</p>
+  <p>Internal generators &middot; choose a category, then pick a tool</p>
 </header>
 <div class="wrap">
-  <p class="lead">Select a generator below. Everything runs in your browser &mdash; nothing is uploaded.</p>
-  <div class="grid">
-    <a class="card" href="./dubai-pcs-card/">
-      <span class="tag">Event &middot; Social</span>
-      <h2>Dubai PCS &mdash; &ldquo;I&rsquo;m Attending&rdquo; Card</h2>
-      <p>Personalised 1080&times;1350 attendance card for the Dubai Private Capital Summit 2026, with an optional headshot.</p>
-      <span class="go">Open &rarr;</span>
-    </a>
-    <a class="card" href="./speaker-card/">
-      <span class="tag">Event &middot; Speakers</span>
-      <h2>Dubai PCS &mdash; Speaker &amp; Panel Card</h2>
-      <p>Landscape 1200&times;675 social card for keynote speakers, panellists and moderators &mdash; skyline background, session title and sponsor logo.</p>
-      <span class="go">Open &rarr;</span>
-    </a>
-    <a class="card" href="./sponsor-generator/">
-      <span class="tag">Event Page &middot; Embed</span>
-      <h2>Event Page &mdash; Sponsor Section</h2>
-      <p>Build the embeddable sponsor roster (tiers, logos, pop-up bios) for an event page &mdash; themed per city, with live preview and copy-paste code.</p>
-      <span class="go">Open &rarr;</span>
-    </a>
-    <div class="card soon">
-      <span class="tag">Coming soon</span>
-      <h2>Next generator</h2>
-      <p>More CapLink tools will appear here as they&rsquo;re built. Tell Lara what you need next.</p>
+  <p class="lead">Everything runs in your browser &mdash; nothing is uploaded. Pick what you&rsquo;re making:</p>
+
+  <div class="section">
+    <h2>Website</h2>
+    <div class="grid">
+      <a class="card" href="./sponsor-generator/">
+        <span class="tag">Event Page &middot; Embed</span>
+        <h3>Event Page &mdash; Sponsor Section</h3>
+        <p>Build the embeddable sponsor roster (tiers, logos, pop-up bios) for an event page &mdash; themed per city, with live preview and copy-paste code.</p>
+        <span class="go">Open &rarr;</span>
+      </a>
     </div>
   </div>
+
+  <div class="section">
+    <h2>App</h2>
+    <div class="grid">
+      <div class="card soon">
+        <span class="tag">Coming soon</span>
+        <h3>App generators</h3>
+        <p>In-app graphics and assets will live here. Tell Lara what you need first.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Email campaigns</h2>
+    <div class="grid">
+      <div class="card soon">
+        <span class="tag">Coming soon</span>
+        <h3>Email generators</h3>
+        <p>Campaign headers, banners and templated blocks will live here.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Social media</h2>
+    <div class="grid">
+      <a class="card" href="./dubai-pcs-card/">
+        <span class="tag">Event &middot; Social</span>
+        <h3>Dubai PCS &mdash; &ldquo;I&rsquo;m Attending&rdquo; Card</h3>
+        <p>Personalised 1080&times;1350 attendance card for the Dubai Private Capital Summit 2026, with an optional headshot.</p>
+        <span class="go">Open &rarr;</span>
+      </a>
+      <a class="card" href="./speaker-card/">
+        <span class="tag">Event &middot; Speakers</span>
+        <h3>Dubai PCS &mdash; Speaker &amp; Panel Card</h3>
+        <p>Landscape 1200&times;675 social card for keynote speakers, panellists and moderators &mdash; skyline background, session title and sponsor logo.</p>
+        <span class="go">Open &rarr;</span>
+      </a>
+    </div>
+  </div>
+
   <p class="foot">CapLink internal tools &middot; unlisted (not indexed by search engines). Share within CapLink only.</p>
 </div>
 </body>
