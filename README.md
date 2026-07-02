@@ -10,6 +10,7 @@ GitHub Pages site with a dashboard landing page.
 /dubai-pcs-card/       "I'm Attending" social card generator (Dubai PCS 2026)
 /speaker-card/         Speaker & Panel social card generator (Dubai PCS 2026)
 /sponsor-generator/    Event-page sponsor section generator (embeddable code)
+/ticket-pricing/       Summit ticket rate-ladder embeds + checkout field text (NY & Dubai)
 ```
 
 Each tool is a self-contained `index.html` in its own folder. To add a new
