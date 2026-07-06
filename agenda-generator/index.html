@@ -73,7 +73,7 @@
 <body>
 <div class="app">
   <div class="left">
-    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v33</span></h1>
+    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v34</span></h1>
     <div class="tip">✏️ <b>Edit like Slides:</b> click any text on the page to type. Click a photo or logo to change it. Hover a session for <b>move / add / delete</b>.</div>
 
     <div class="stepbox">
@@ -100,6 +100,7 @@
     <details><summary>Contacts page</summary><div class="sec" id="secContacts"></div></details>
     <details><summary>Safety copies</summary><div class="sec">
       <div class="brow"><button class="b" id="backupBtn">⬇ Save backup file</button><button class="b" id="restoreBtn">⬆ Load backup file</button></div>
+      <div class="brow"><button class="b" id="seedBtn">📦 Load the prepared draft for this event</button></div>
       <div class="brow"><button class="b" id="starterBtn">Reset to Dubai starter</button></div>
       <input id="restoreFile" type="file" accept="application/json" style="display:none">
     </div></details>
@@ -118,7 +119,7 @@
 
 <div id="pop"></div>
 
-<script src="../agenda/render.js?v=33"></script>
+<script src="../agenda/render.js?v=34"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -588,6 +589,17 @@ document.getElementById("backupBtn").onclick=()=>{const blob=new Blob([JSON.stri
 document.getElementById("restoreBtn").onclick=()=>document.getElementById("restoreFile").click();
 document.getElementById("restoreFile").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const s=JSON.parse(r.result);if(!s||!s.sessions)throw 0;snapshot();state=s;renderForm();rebuild();setStatus("Backup loaded — hit Publish to make it live.");}catch(_){alert("That file doesn't look like an agenda backup.");}};r.readAsText(f);e.target.value="";});
 document.getElementById("starterBtn").onclick=()=>{if(!confirm("Replace the current agenda with the Dubai 2026 starter?"))return;snapshot();state=starter();renderForm();rebuild();};
+document.getElementById("seedBtn").onclick=async()=>{
+  const s=slugEl.value.trim();
+  if(!confirm("Replace what's on screen with the prepared draft for “"+s+"”? (Undo works, and nothing goes live until you Publish.)"))return;
+  try{
+    const r=await fetch("../agenda/seeds/"+encodeURIComponent(s)+".json?v="+Date.now());
+    if(!r.ok)throw 0;
+    const seed=await r.json();if(!seed||!seed.sessions)throw 0;
+    snapshot();state=seed;renderForm();rebuild();
+    setStatus("📦 Prepared draft loaded — review it, then hit <b>Publish now</b> to make it live.");
+  }catch(_){alert("No prepared draft exists for “"+s+"” (drafts are made by Claude and shipped with the site).");}
+};
 window.addEventListener("resize",fitPv);
 
 /* ---------- live presence (who's in this document) ---------- */
