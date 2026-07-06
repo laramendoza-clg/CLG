@@ -18,6 +18,16 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show github-pages environment config
+        run: |
+          curl -sS -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/environments/github-pages"
+          echo "---- pages config ----"
+          curl -sS -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/pages"
   deploy:
     runs-on: ubuntu-latest
     environment:
