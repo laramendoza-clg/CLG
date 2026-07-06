@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<title>Agenda · CapLink</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:#141016;font-family:'Raleway',system-ui,sans-serif;overflow:hidden}
+  #stage{position:fixed;inset:0 0 64px 0;display:flex;align-items:center;justify-content:center}
+  #deck{position:relative;transform-origin:center center}
+  #deck .sl{position:absolute;top:0;left:0;opacity:0;pointer-events:none;transition:opacity .28s ease;box-shadow:0 30px 90px rgba(0,0,0,.55)}
+  #deck .sl.on{opacity:1;pointer-events:auto}
+  #bar{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;align-items:center;justify-content:center;gap:18px;background:rgba(16,12,18,.92);border-top:1px solid rgba(255,255,255,.08)}
+  #bar button{font-family:inherit;background:rgba(255,255,255,.08);color:#eee;border:1px solid rgba(255,255,255,.16);border-radius:6px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.04em}
+  #bar button:hover{background:rgba(255,255,255,.16)}
+  #pg{color:#cfc8d2;font-size:13px;font-weight:600;min-width:74px;text-align:center;font-variant-numeric:tabular-nums}
+  #upd{position:fixed;top:12px;right:16px;color:rgba(255,255,255,.45);font-size:11px;letter-spacing:.06em}
+  #msg{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;color:#cfc8d2;font-size:15px;text-align:center;padding:30px;line-height:1.7}
+  @media print{
+    body{background:#fff;overflow:visible}
+    #bar,#upd,#msg{display:none!important}
+    #stage{position:static;display:block}
+    #deck{transform:none!important;width:auto!important;height:auto!important}
+    #deck .sl{position:static!important;opacity:1!important;box-shadow:none;page-break-after:always;break-after:page}
+    @page{size:1280px 720px;margin:0}
+  }
+</style>
+</head>
+<body>
+<div id="msg">Loading the latest agenda…</div>
+<div id="stage"><div id="deck"></div></div>
+<div id="upd"></div>
+<div id="bar" style="display:none">
+  <button id="prev">←&ensp;Back</button>
+  <span id="pg"></span>
+  <button id="next">Next&ensp;→</button>
+  <button id="pdf" title="Print or save as PDF">Download PDF</button>
+</div>
+<script src="./render.js"></script>
+<script>
+const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
+const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
+const slug=new URLSearchParams(location.search).get("e")||"dubai-2026";
+let cur=0,total=0;
+
+function fit(){
+  const stage=document.getElementById("stage"),deck=document.getElementById("deck");
+  const s=Math.min(stage.clientWidth/1300,stage.clientHeight/740,1.15);
+  deck.style.width="1280px";deck.style.height="720px";deck.style.transform="scale("+s+")";
+}
+function show(i){
+  const sl=document.querySelectorAll("#deck .sl");
+  cur=Math.max(0,Math.min(sl.length-1,i));
+  sl.forEach((el,j)=>el.classList.toggle("on",j===cur));
+  document.getElementById("pg").textContent=(cur+1)+" / "+total;
+}
+async function boot(){
+  try{
+    const r=await fetch(SUPA_URL+"/rest/v1/agendas?slug=eq."+encodeURIComponent(slug)+"&select=data,updated_at",{headers:{apikey:SUPA_KEY}});
+    if(!r.ok)throw new Error("could not reach the agenda service ("+r.status+")");
+    const rows=await r.json();
+    if(!rows.length)throw new Error('No published agenda called "'+slug+'" yet. Ask the CapLink team to publish it.');
+    const data=rows[0].data;
+    total=AgendaRender.buildDeck(document.getElementById("deck"),data);
+    document.title=((data.meta&&data.meta.city)||"")+" Agenda · CapLink";
+    const d=new Date(rows[0].updated_at);
+    document.getElementById("upd").textContent="Updated "+d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"});
+    document.getElementById("msg").style.display="none";
+    document.getElementById("bar").style.display="flex";
+    fit();show(0);
+  }catch(e){
+    document.getElementById("msg").textContent=(e&&e.message)||"Could not load the agenda. Please try again.";
+  }
+}
+document.getElementById("prev").onclick=()=>show(cur-1);
+document.getElementById("next").onclick=()=>show(cur+1);
+document.getElementById("pdf").onclick=()=>window.print();
+document.addEventListener("keydown",e=>{if(e.key==="ArrowRight"||e.key===" ")show(cur+1);if(e.key==="ArrowLeft")show(cur-1);});
+let tx=null;
+document.addEventListener("touchstart",e=>{tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener("touchend",e=>{if(tx==null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>48)show(cur+(dx<0?1:-1));tx=null;},{passive:true});
+window.addEventListener("resize",fit);
+boot();
+</script>
+</body>
+</html>

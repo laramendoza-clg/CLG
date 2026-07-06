@@ -11,227 +11,423 @@
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'Raleway',sans-serif;-webkit-font-smoothing:antialiased;background:#ececed;color:#222}
   .app{display:flex;height:100vh;overflow:hidden}
-  .left{width:52%;min-width:430px;overflow-y:auto;padding:16px 22px 48px}
-  .right{flex:1;overflow-y:auto;background:#f5f5f6;border-left:1px solid #d6d6d6;padding:14px 18px 48px}
-  .builder h1{font-size:16px;font-weight:700;letter-spacing:.4px;margin-bottom:3px}
-  .builder .hint{font-size:12px;color:#888;margin-bottom:14px;line-height:1.5}
-  .topbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
-  .topbar select,.topbar button,.topbar input[type=text]{font-family:inherit;font-size:13px;padding:7px 12px;border:1px solid #ccc;border-radius:4px;background:#fff;cursor:pointer}
-  .topbar input[type=text]{cursor:text}
-  .topbar button:hover{background:#f4f4f4}
-  .topbar .primary{background:#2A1228;color:#fff;border-color:#2A1228}
-  .topbar .primary:hover{background:#3d1c3a}
-  .fields{display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:14px}
-  .fields label{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8a8088;display:block;margin-bottom:3px}
-  .fields input{width:100%;font-family:inherit;font-size:14px;padding:8px 10px;border:1px solid #ccc;border-radius:4px}
-  .cap{font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#888;margin:14px 0 8px;display:flex;align-items:center;gap:10px}
-  .cap::after{content:'';flex:1;height:1px;background:#e0dde0}
-  .item{border:1px solid #e2e2e2;border-radius:6px;padding:10px 12px;margin-bottom:8px;background:#fafafa}
-  .item .r1{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-  .item input,.item select{font-family:inherit;font-size:13px;padding:6px 8px;border:1px solid #ccc;border-radius:4px;background:#fff}
-  .item input.time{width:92px}.item input.title{flex:1;min-width:150px}
-  .item input.detail{width:100%;margin-top:6px}
-  .item select.type{width:130px}
-  .item .tools{display:flex;gap:4px;margin-left:auto}
-  .mini{font-size:12px;line-height:1;padding:6px 9px;border:1px solid #ccc;border-radius:4px;background:#fff;cursor:pointer}
-  .mini:hover{background:#f0f0f0}
-  .mini.del{color:#a33;border-color:#e3b3b3}
-  .addbtn{font-family:inherit;font-size:13px;padding:9px 14px;border:1px dashed #b9a; border-radius:6px;background:#fff;color:#6b2554;cursor:pointer;width:100%;margin-top:2px}
-  .addbtn:hover{background:#fbf7fa}
-  .out{margin-top:16px}
-  .out .bar{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
-  .out textarea{width:100%;height:150px;font-family:ui-monospace,Menlo,monospace;font-size:11px;border:1px solid #ccc;border-radius:6px;padding:12px;background:#fbfbfb;color:#333}
-  .copybtn{background:#2A1228;color:#fff;border:none;border-radius:4px;padding:9px 18px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer}
-  .copybtn:hover{background:#3d1c3a}
-  .copied{font-size:12px;color:#3f8a5a;font-weight:600;display:none}
-  .scaler{background:#fff;border:1px solid #ddd;border-radius:6px;overflow:hidden}
-  .scaler iframe{border:0;display:block;width:100%;background:#fff}
+  .left{width:46%;min-width:430px;overflow-y:auto;padding:16px 20px 60px}
+  .right{flex:1;overflow:hidden;background:#1b161d;display:flex;flex-direction:column}
+  h1{font-size:16px;font-weight:700;margin-bottom:3px}
+  .hint{font-size:12px;color:#888;margin-bottom:12px;line-height:1.5}
+  .cloud{border:1px solid #d8cfd6;background:#faf7f9;border-radius:8px;padding:12px;margin-bottom:14px}
+  .cloud .row1{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .cloud input[type=text]{font-family:inherit;font-size:13px;padding:7px 10px;border:1px solid #ccc;border-radius:4px;width:150px}
+  .cloud button{font-family:inherit;font-size:13px;padding:8px 14px;border:1px solid #ccc;border-radius:4px;background:#fff;cursor:pointer}
+  .cloud button:hover{background:#f4f4f4}
+  .cloud .primary{background:#2A1228;color:#fff;border-color:#2A1228;font-weight:600}
+  .cloud .primary:hover{background:#3d1c3a}
+  .cloud .status{font-size:12px;margin-top:8px;color:#6b6068;line-height:1.5}
+  .cloud .status a{color:#531639;font-weight:600}
+  details{border:1px solid #e2e2e2;border-radius:8px;background:#fafafa;margin-bottom:10px}
+  details>summary{cursor:pointer;padding:11px 14px;font-size:13px;font-weight:700;letter-spacing:.04em;color:#3c2f3a;list-style:none;display:flex;justify-content:space-between}
+  details>summary::after{content:"+";color:#a99fa8}
+  details[open]>summary::after{content:"–"}
+  .sec{padding:4px 14px 14px}
+  label.f{display:block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8a8088;margin:10px 0 3px}
+  input.t,textarea.t,select.t{width:100%;font-family:inherit;font-size:13px;padding:7px 9px;border:1px solid #ccc;border-radius:4px;background:#fff}
+  textarea.t{resize:vertical}
+  .card{border:1px solid #e0dade;border-radius:6px;background:#fff;padding:10px;margin-top:10px}
+  .card .bar{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .card .bar .grow{flex:1;min-width:120px}
+  .mini{font-size:11px;line-height:1;padding:6px 8px;border:1px solid #ccc;border-radius:4px;background:#fff;cursor:pointer}
+  .mini:hover{background:#f0f0f0}.mini.del{color:#a33;border-color:#e3b3b3}
+  .kind{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:#6b2554;border-radius:3px;padding:3px 7px}
+  .ph{display:flex;gap:8px;align-items:center;margin-top:6px}
+  .ph img{width:34px;height:34px;object-fit:cover;border-radius:4px;background:#e6e2e6;border:1px solid #ddd}
+  .ph .up{position:relative;overflow:hidden}
+  .ph .up input{position:absolute;inset:0;opacity:0;cursor:pointer}
+  .ph input.url{flex:1;font-family:inherit;font-size:11px;padding:6px 8px;border:1px solid #ccc;border-radius:4px}
+  .addrow{display:flex;gap:8px;margin-top:10px}
+  .addrow select{font-family:inherit;font-size:12px;padding:7px;border:1px solid #ccc;border-radius:4px}
+  .addrow button{font-family:inherit;font-size:12px;padding:7px 12px;border:1px dashed #b09; border:1px dashed #b393ab;border-radius:5px;background:#fff;color:#6b2554;cursor:pointer}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .pvbar{display:flex;align-items:center;justify-content:center;gap:14px;padding:10px;background:rgba(255,255,255,.04)}
+  .pvbar button{font-family:inherit;background:rgba(255,255,255,.1);color:#eee;border:1px solid rgba(255,255,255,.18);border-radius:5px;padding:7px 13px;font-size:12px;font-weight:600;cursor:pointer}
+  .pvbar span{color:#cfc8d2;font-size:12px;font-weight:600;min-width:60px;text-align:center}
+  #pvwrap{flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  #pv{position:relative;width:1280px;height:720px;transform-origin:center center}
+  #pv .sl{position:absolute;top:0;left:0;display:none;box-shadow:0 24px 70px rgba(0,0,0,.5)}
+  #pv .sl.on{display:block}
 </style>
 </head>
 <body>
 <div class="app">
   <div class="left">
-    <div class="builder">
-      <h1>CapLink Agenda Builder</h1>
-      <p class="hint">Edit the schedule on the left; the preview updates live and always stays on-brand. Saves in this browser. Use <strong>Print / PDF</strong> for a shareable doc, or <strong>Copy code</strong> to embed it on the event site.</p>
-      <div class="topbar">
-        <label style="font-size:13px;color:#666">Colours:</label>
-        <select id="themeSel">
-          <option value="dubai">Dubai (petrol teal)</option>
-          <option value="european">European (deep plum)</option>
-          <option value="newyork">New York (terracotta)</option>
-          <option value="london">London / JV (navy + gold)</option>
-        </select>
-        <button id="starterBtn">Reset to starter</button>
-        <button id="backupBtn">⬇ Save backup</button>
-        <button id="restoreBtn">⬆ Load backup</button>
+    <h1>CapLink Agenda Builder</h1>
+    <p class="hint">Edit on the left, flip the preview on the right. <strong>Publish</strong> pushes the agenda live so the share link always shows the newest version. Roundtables? Just don't add that section (e.g. New York).</p>
+
+    <div class="cloud">
+      <div class="row1">
+        <label style="font-size:12px;color:#666;font-weight:600">Event ID:</label>
+        <input type="text" id="slug" value="dubai-2026">
+        <button id="loadBtn">Load latest</button>
+        <button id="publishBtn" class="primary">Publish ▲</button>
+      </div>
+      <div class="row1" style="margin-top:8px">
+        <button id="backupBtn">⬇ Backup file</button>
+        <button id="restoreBtn">⬆ Restore file</button>
+        <button id="starterBtn">Reset to Dubai starter</button>
         <input id="restoreFile" type="file" accept="application/json" style="display:none">
       </div>
-      <div class="fields">
-        <div><label>Heading</label><input id="titleIn" type="text"></div>
-        <div><label>Subheading</label><input id="subIn" type="text"></div>
-        <div><label>Date &amp; location</label><input id="dateIn" type="text"></div>
-      </div>
-      <p class="cap">Schedule</p>
-      <div id="itemsEditor"></div>
-      <button class="addbtn" id="addItem">+ Add session</button>
+      <div class="status" id="cloudStatus">Working locally — not yet loaded from cloud.</div>
     </div>
-    <div class="out">
-      <div class="bar">
-        <button class="copybtn" id="copyBtn">Copy embed code</button>
-        <button class="mini" id="printBtn" style="padding:9px 14px">🖶 Print / Save as PDF</button>
-        <span class="copied" id="copied">Copied</span>
-      </div>
-      <textarea id="outCode" readonly></textarea>
-    </div>
+
+    <details open><summary>Event &amp; cover</summary><div class="sec" id="secEvent"></div></details>
+    <details><summary>Welcome letter</summary><div class="sec" id="secWelcome"></div></details>
+    <details open><summary>Sessions</summary><div class="sec" id="secSessions"></div></details>
+    <details><summary>Sponsors</summary><div class="sec" id="secSponsors"></div></details>
+    <details><summary>Contacts page</summary><div class="sec" id="secContacts"></div></details>
   </div>
   <div class="right">
-    <p class="cap">Live preview</p>
-    <div class="scaler"><iframe id="preview"></iframe></div>
+    <div class="pvbar">
+      <button id="pvPrev">←</button><span id="pvPg">1 / 1</span><button id="pvNext">→</button>
+      <button id="pvOpen">Open share link</button><button id="pvCopy">Copy share link</button>
+    </div>
+    <div id="pvwrap"><div id="pv"></div></div>
   </div>
 </div>
 
+<script src="../agenda/render.js"></script>
 <script>
-const THEMES={
-  dubai:{band:"linear-gradient(135deg,#0a1620 0%,#152c33 55%,#385158 100%)",chip:"#385158",time:"#2f5d63"},
-  london:{band:"linear-gradient(135deg,#060e1e 0%,#0D1426 55%,#243057 100%)",chip:"#8A7547",time:"#7a6533"},
-  newyork:{band:"linear-gradient(135deg,#130E15 0%,#472E40 55%,#7B4349 100%)",chip:"#A15D50",time:"#9a4f43"},
-  european:{band:"linear-gradient(135deg,#140d1a 0%,#2A1228 45%,#5a4068 100%)",chip:"#6b2554",time:"#7a2c5e"}
-};
-const THEME_NAMES={dubai:"Dubai",london:"London / JV",newyork:"New York",european:"European"};
-const TYPES=[["registration","Registration"],["keynote","Keynote"],["session","Session"],["panel","Panel"],["fireside","Fireside Chat"],["networking","Networking"],["break","Break"]];
-const TAGGED={keynote:"Keynote",panel:"Panel",fireside:"Fireside Chat",networking:"Networking"};
-const SOFT={registration:1,break:1};
-const SKEY="caplink-agenda-v1";
+const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
+const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
+const LKEY="caplink-agenda-builder-v2", EKEY="caplink-edit-key";
 
-function it(time,title,detail,type){return{time:time||"",title:title||"",detail:detail||"",type:type||"session"};}
-const STARTER=()=>({theme:"dubai",title:"Agenda",sub:"Dubai Private Capital Summit 2026",date:"September 15, 2026  ·  Dubai, UAE",items:[
-  it("08:30","Registration &amp; Networking Breakfast","","registration"),
-  it("09:15","Welcome &amp; Opening Remarks","CapLink Group","keynote"),
-  it("09:30","The Middle East Moment: Private Equity in a Region Redefined","Julian Barratt-Due — Managing Director, KKR","keynote"),
-  it("10:15","Navigating Fundraising in the Middle East","Panel — moderated by CapLink Group","panel"),
-  it("11:00","Networking Break","","break"),
-  it("11:30","In Conversation: Building Enduring Platforms","Fireside chat","fireside"),
-  it("12:15","Lunch &amp; Networking","","break"),
-  it("13:30","Closing Remarks","","session")
-]});
+function starter(){return {
+ v:2, theme:"dubai",
+ meta:{
+  city:"DUBAI", event:"Private Capital Summit", year:"2026",
+  dateLine:"SEPTEMBER 15, 2026", locLine:"DUBAI",
+  bandLine:"SEPTEMBER 15, 2026  ·  THE LANA  ·  DUBAI",
+  headKicker:"Preliminary Agenda",
+  preliminary:"This is a preliminary agenda. Subject to change",
+  footerLeft:"DUBAI PRIVATE CAPITAL SUMMIT 2026  ·  PRELIMINARY AGENDA  ·  SEPT 15, 2026",
+  showSpeakers:true,
+  coverPartners:[
+   {label:"Official Conference Venue",name:"THE LANA",img:""},
+   {label:"Official Data Partner",name:"PREQIN",img:""},
+   {label:"Official Media Partner",name:"PE150",img:""}],
+  welcome:{paras:[
+   "The Dubai Private Capital Summit is a senior-level, one-day forum designed for private capital funds, institutional investors, dealmakers, and industry service providers. The event is built to deliver actionable insights and foster meaningful dialogue that supports capital deployment, fundraising, and long-term value creation across US private markets. The agenda is carefully curated to ensure highly relevant, market-led content for those managing, advising, allocating to, or overseeing private capital investments.",
+   "Bringing together over 300 senior decision-makers across investment, operational, and regulatory functions, the summit provides a focused environment to explore institutional capital flows and the strategies shaping today's investment landscape.",
+   "The programme offers a comprehensive macro and thematic outlook across private markets, featuring leading voices from top-tier firms. Discussions will cover key areas including value creation, AI and digital transformation, fund structuring and regulation, tax and compliance, operational due diligence, secondaries, and private credit—equipping attendees with practical insights to navigate an increasingly complex market.",
+   "We are grateful to our partners for their continued support and look forward to welcoming you to Dubai.",
+   "We'd like to thank our event sponsors for their support of this industry-leading event. We look forward to hosting you at the conference!"],
+   signName:"Nawshad Noorkhan", signTitle:"Founder, Managing Director", signOrg:"CAPLINK GROUP"},
+  contactsSub:"We look forward to working with you. Please reach out to any member of the team to discuss how we can maximise your partnership.",
+  contacts:[
+   {name:"Nawshad Noorkhan",role:"Managing Director",email:"Nawshad.Noorkhan@caplink-group.com",t:"+44 (0) 208 064 3265",m:"+44 (0) 7415 880057"},
+   {name:"Plamena Zlateva",role:"Head of Operations",email:"Plamena.Zlateva@caplink-group.com",t:"",m:"+1 (332) 288-8893"},
+   {name:"Doina Roibu",role:"Head of Production",email:"Doina.Roibu@caplink-group.com",t:"",m:"+1 (646) 208-5365"},
+   {name:"Lara Mendoza",role:"Head of Marketing & Design",email:"Lara.Mendoza@caplink-group.com",t:"",m:"+1 (646) 208-6876"},
+   {name:"Ash Baker",role:"Relationship Manager",email:"Ash.Baker@caplink-group.com",t:"+44 (0) 208 064 3266",m:"+44 (0) 7473 456935"},
+   {name:"Shiela Smith",role:"Relationship Manager",email:"Shiela.Smith@caplink-group.com",t:"+44 (0) 208 064 4053",m:""},
+   {name:"Erica Jones",role:"Relationship Manager",email:"Erica.Jones@caplink-group.com",t:"+44 (0) 208 064 0846",m:""}]
+ },
+ sessions:[
+  {kind:"simple",time:"8:15–8:45",title:"Private Networking Breakfast - Partner EY",note:"",sponsorName:"EY",sponsorImg:""},
+  {kind:"simple",time:"9:00–9:10",title:"Opening Remarks - Partner, EY",note:"",sponsorName:"",sponsorImg:""},
+  {kind:"people",time:"9:10–9:30",title:"Opening Keynote Interview",note:"Main Conference Room",sponsorName:"",sponsorImg:"",roleLabel:"INTERVIEWER",lead:{img:"",name:"To be announced",title:"",firm:""},desc:"An industry leader sits down with a leading correspondent to share their outlook and investment thesis on global financial markets, exploring which regions and sectors are poised to offer the most compelling growth opportunities and where investors should look next.",people:[]},
+  {kind:"people",time:"9:30–10:00",title:"The Middle East Moment: Private Equity's Role in a Region Redefined",note:"",sponsorName:"White & Case",sponsorImg:"",roleLabel:"MODERATOR",lead:{img:"",name:"Steve Worthington",title:"Partner, Head of Corporate & Private Equity",firm:"White & Case"},desc:"The Middle East is no longer a frontier—it's a focal point for global capital. With national transformation agendas, a surge in AI and tech-driven sectors, and sovereign wealth funds deploying at record pace, the region is redefining its economic role. This session gathers leading voices from private equity, sovereign capital, family offices, and government to explore how reforms, IPO pipelines, and cross-border partnerships are unlocking new investment opportunities—and the role private equity will play in driving the next wave of sustainable growth.",people:[
+   {img:"",name:"Julian Barratt-Due",title:"Managing Director, Head of Middle East Investing",firm:"KKR"},
+   {img:"",name:"Viraj Sawhney",title:"Head of Middle East Private Equity",firm:"Warburg Pincus"},
+   {img:"",name:"Nader Salman",title:"Managing Director, Head of Middle East",firm:"Permira"},
+   {img:"",name:"Huda Al Lawati",title:"Founder & CEO",firm:"Aliph Capital"},
+   {img:"",name:"Speaker TBC",title:"Partner",firm:"Kearney"}]},
+  {kind:"people",time:"10:00–10:30",title:"Building the Middle East PE Fund of the Future",note:"",sponsorName:"Skadden",sponsorImg:"",roleLabel:"MODERATOR",lead:{img:"",name:"Skye Smith",title:"Partner",firm:"Skadden"},desc:"As regulatory scrutiny intensifies, private markets fund managers must navigate growing complexity in structuring and operating funds across multiple jurisdictions. This panel brings together legal, regulatory and investment experts to explore best practices in fund formation, governance, and compliance—highlighting global developments such as EU AIFMD II, ESG disclosure standards, and investor reporting expectations, alongside the rapidly evolving frameworks in the Middle East. Attendees will gain practical insights into building resilient, tech-enabled fund structures in an increasingly regulated and digitally connected environment.",people:[
+   {img:"",name:"Hadi N. El Kadi",title:"Group Chief Legal Officer",firm:"Habtoor Group"},
+   {img:"",name:"Rima Hadid",title:"General Counsel",firm:"Emirates Investment Authority"},
+   {img:"",name:"Mathias Iranzo Conde",title:"General Counsel, Chief Compliance Officer",firm:"Appian Capital Advisory"},
+   {img:"",name:"Yasmeen Ghali",title:"General Counsel",firm:"BlueFive Capital"},
+   {img:"",name:"Speaker TBA",title:"Legal Counsel",firm:"ADIA"}]},
+  {kind:"simple",time:"10:30–11:00",title:"Networking Break",note:"Event Lounge",sponsorName:"",sponsorImg:""},
+  {kind:"people",time:"11:00–11:30",title:"Mastering Private Equity: Strategies for Growth and Exit",note:"",sponsorName:"",sponsorImg:"",roleLabel:"MODERATOR",lead:{img:"",name:"Speaker TBA",title:"",firm:""},desc:"As private equity evolves, top GPs are rethinking how they source proprietary deals, scale portfolio companies, and execute standout exits. This panel explores the strategies and operational levers—digital transformation, cost optimisation, governance, and leadership—that drive measurable impact and deliver results in today's competitive market. Panellists will share real-world examples of successful deal origination, operational improvements, and exit strategies. Attendees will gain practical insights on differentiating themselves and creating sustainable growth in a fast-moving PE landscape.",people:[
+   {img:"",name:"Hazem Abu Khalaf",title:"Managing Director, Private Equity",firm:"Gulf Capital"},
+   {img:"",name:"Dr. Ghida Harfouche",title:"Partner",firm:"TVM Capital Healthcare"},
+   {img:"",name:"Özgür Önder",title:"Senior Managing Director and Head of Middle East",firm:"CVC"},
+   {img:"",name:"Sohail Lalani",title:"Managing Director",firm:"Blue Owl"},
+   {img:"",name:"Maciej Dyl",title:"Head of Private Equity, Partner",firm:"Sharooq Partners"}]},
+  {kind:"people",time:"11:30–12:00",title:"From Strategy to Execution: Value Creation in MENA",note:"",sponsorName:"Gibson Dunn",sponsorImg:"",roleLabel:"MODERATOR",lead:{img:"",name:"Marwan Elaraby",title:"Partner In Charge",firm:"Gibson Dunn"},desc:"Operating partners in the Middle East are deploying targeted strategies to drive value—from supply chain localisation and cost transformation to AI-enabled operations, ESG integration, human capital optimisation, and governance upgrades. This panel explores proven methods to accelerate growth, build and upgrade leadership teams, and prepare portfolio companies for successful exits, including navigating evolving IPO pipelines in the region. With Gulf markets transforming at speed, panellists will share practical insights on aligning talent strategy with value creation plans and building resilient, high-performing portfolio companies in sectors at the heart of national diversification and economic transformation agendas.",people:[
+   {img:"",name:"Asaad Salhab",title:"Senior Operating Partner",firm:"Gulf Capital"},
+   {img:"",name:"Jose de Ochoa",title:"Operating Partner",firm:"PIF"},
+   {img:"",name:"Ghada Abdelkader",title:"Senior Vice President",firm:"Crescent Enterprises"},
+   {img:"",name:"Emanuela Cisini",title:"Co-Head of Operational Improvement, Head of Middle East and Asia",firm:"Investindustrial"},
+   {img:"",name:"Taha Abdel Dayem",title:"Managing Director",firm:"CVC Capital Partners"}]},
+  {kind:"people",time:"12:00–12:30",title:"Navigating Fundraising in the Middle East",note:"",sponsorName:"Clifford Chance",sponsorImg:"",roleLabel:"MODERATOR",lead:{img:"",name:"Kai-Niklas Schneider",title:"Partner",firm:"Clifford Chance"},desc:"As competition for capital intensifies, how are leading private equity firms in the Middle East adapting their fundraising strategies to attract global and regional investors? Investor relations teams are at the forefront of shaping narratives, building trust, and differentiating their funds in a crowded market. This panel will explore how fund managers are navigating global uncertainty and regional transformation. What best practices are emerging in investor engagement, and how can GPs unlock new sources of liquidity and exits to deliver sustained value for their investors?",people:[
+   {img:"",name:"Dr. Amir Rezvani",title:"Head of Middle East Coverage",firm:"Investcorp Strategic Capital Group"},
+   {img:"",name:"Janish Patel",title:"Managing Director, Middle East IR Leader",firm:"BC Partners"},
+   {img:"",name:"Jean Odendall",title:"Head of Middle East",firm:"Tikehau Capital"},
+   {img:"",name:"Ani Khatri",title:"Managing Director, Partner",firm:"Carlyle"},
+   {img:"",name:"Juan Luis Rivera",title:"Managing Partner",firm:"Patria"}]},
+  {kind:"tables",time:"12:30–13:00",title:"Roundtables (30 MINUTES)",tables:[
+   {topic:"Tech Investing Opportunities",host:"A&O Shearman"},
+   {topic:"Exiting in the Middle East: Pathways to Liquidity in a Transforming Investment Landscape",host:"Cleary"},
+   {topic:"A Spotlight on ESG & Impact Investing",host:"EY"},
+   {topic:"Continuation Vehicles, Secondaries, GP Liquidity Solutions",host:"AKIN"},
+   {topic:"Due Diligence & Downside Risk Mitigation",host:"FAB BANK"},
+   {topic:"NAV Financing",host:""},
+   {topic:"Generative AI",host:""},
+   {topic:"Examining the ME Private Equity Landscape",host:""},
+   {topic:"ME Infrastructure Investing",host:""},
+   {topic:"ODD for Emerging Managers",host:""}]},
+  {kind:"simple",time:"13:00–14:00",title:"Networking Lunch",note:"Event Lounge",sponsorName:"",sponsorImg:""},
+  {kind:"people",time:"14:00–14:20",title:"Afternoon Keynote Conversation",note:"",sponsorName:"",sponsorImg:"",roleLabel:"INTERVIEWER",lead:{img:"",name:"Hazem Ben-Gacem",title:"Founder, CEO",firm:"BlueFive Capital"},desc:"Hazem Ben-Gacem sits down with a leading journalist to discuss his current outlook and investment theses on global financial markets. What regions and sectors will provide the best opportunities for growth and where should investors look next?",people:[]},
+  {kind:"people",time:"14:20–14:50",title:"Deploying AI for Portfolio Growth — From Hype to Measurable ROI",note:"",sponsorName:"Abacus",sponsorImg:"",roleLabel:"MODERATOR",lead:{img:"",name:"Speaker TBA",title:"",firm:""},desc:"Private equity firms are moving beyond buzzwords—AI is now a proven lever for portfolio growth, cost efficiency, and risk management. This panel explores how investors are using AI across the value chain: from predictive analytics in revenue forecasting and AI-driven supply chain optimisation to genAI in knowledge work, due diligence, and customer engagement. Panellists will share case studies of what's working, the governance and cybersecurity considerations to watch, and what it takes to scale AI tools across diverse assets to deliver measurable ROI.",people:[
+   {img:"",name:"Nawaz Alli",title:"Deputy Chief Technology Officer",firm:"Wafra"},
+   {img:"",name:"Sandip Bhatt",title:"Chief Investment Officer",firm:"DAMAC Capital"},
+   {img:"",name:"Talha Hashmi",title:"Chief Financial Officer",firm:"Miras Investments"},
+   {img:"",name:"Mick Grayson",title:"Director of Governance, Risk and Compliance",firm:"Abacus Group"},
+   {img:"",name:"Issam Hamid",title:"Partner, Head of Middle East",firm:"Partners Capital"}]},
+  {kind:"people",time:"14:50–15:20",title:"Unlocking Value in the Middle East's Expanding Secondary Private Equity Market",note:"",sponsorName:"Akin",sponsorImg:"",roleLabel:"MODERATOR",lead:{img:"",name:"Speaker TBA",title:"Partner",firm:"Akin"},desc:"The Middle East is rapidly emerging as a hub for secondary private equity transactions, driven by growing LP liquidity needs, GP-led continuation vehicles, and innovative financing structures. This session will explore how investors are capitalising on the region's expanding secondary market—navigating complex deal structures, utilising NAV financing, and adjusting to shifting global fundraising conditions. Panellists will share insights on strategic opportunities, emerging trends, and the evolving role of the Middle East as a central marketplace for secondary deals.",people:[
+   {img:"",name:"Hani El Khoury",title:"Partner, Investment",firm:"Coller Capital"},
+   {img:"",name:"Philippe Ferneini",title:"Partner, EMEA Head Secondaries",firm:"StepStone"},
+   {img:"",name:"Edward Holdsworth",title:"Co-Head of Secondaries",firm:"HarbourVest"},
+   {img:"",name:"Thomas Dunn",title:"Director",firm:"Lexington Partners"},
+   {img:"",name:"Meshal Jaber AlFaras",title:"Managing Director, Head of Middle East, Africa & Central Asia",firm:"Janus Henderson Investors"}]},
+  {kind:"simple",time:"15:20–15:50",title:"Networking Break",note:"Event Lounge",sponsorName:"",sponsorImg:""},
+  {kind:"people",time:"15:50–16:20",title:"Venture Capital in the Middle East: Scaling Innovation Across a Rapidly Evolving Region",note:"",sponsorName:"",sponsorImg:"",roleLabel:"MODERATOR",lead:{img:"",name:"Speaker TBA",title:"",firm:""},desc:"The Middle East has emerged as a fast-growing hub for venture capital, driven by strong government support, capital inflows, and maturing startup ecosystems. This panel will explore how venture investors are deploying capital across early and growth stages, with a focus on high-conviction sectors such as fintech, AI, digital infrastructure, and emerging technologies. Speakers will discuss how regional platforms are scaling beyond local markets, how VCs assess risk and exits in a still-developing ecosystem, and how global capital is engaging with Middle East innovation.",people:[
+   {img:"",name:"Noor Sweid",title:"Founder, Managing Partner",firm:"Global Ventures"},
+   {img:"",name:"Mohamed Amersi",title:"Founder and Chairman",firm:"Inclusive Ventures Group"},
+   {img:"",name:"Sonali Goila",title:"Head, Venture Capital",firm:"Aditum"},
+   {img:"",name:"Omer Zabit",title:"Partner, Head of VC",firm:"Shorooq Partners"},
+   {img:"",name:"Aaron Mankovski",title:"Managing Partner",firm:"Pitango (TBA)"}]},
+  {kind:"people",time:"16:20–16:50",title:"Navigating the Private Credit Landscape — Key Trends and Opportunities in the Middle East",note:"",sponsorName:"A&O Shearman",sponsorImg:"",roleLabel:"MODERATOR",lead:{img:"",name:"Haris Meyer-Hanif",title:"Partner, Co-Head Restructuring",firm:"A&O Shearman"},desc:"Private credit and direct lending are rapidly gaining prominence as essential financing solutions in the Middle East, as banks pull back and sponsors seek flexible alternatives. This panel will examine how non-bank lenders are supporting leveraged buyouts, growth capital, infrastructure, and restructuring deals, while also enabling Sharia-compliant and cross-border solutions. Panellists will explore current market trends, risk management practices in a higher-for-longer rate environment, and the opportunities emerging as regional institutions and sovereign investors expand their private credit strategies.",people:[
+   {img:"",name:"Ravi Singhvi",title:"Partner, Asia Credit",firm:"Ares Management"},
+   {img:"",name:"Chris Stainton",title:"Managing Director",firm:"HPS Investment Partners"},
+   {img:"",name:"Deb Dutt",title:"Managing Director",firm:"Goldman Sachs Asset Management"},
+   {img:"",name:"Omar Al Yawer",title:"Founding Partner",firm:"Ruya Partners"},
+   {img:"",name:"Bhupinder Singh",title:"Managing Director",firm:"FAB Bank"}]},
+  {kind:"people",time:"16:50–17:20",title:"Capital Allocation in the Middle East: How Regional Investors Are Partnering with Global Managers",note:"",sponsorName:"EY",sponsorImg:"",roleLabel:"MODERATOR",lead:{img:"",name:"Speaker TBA",title:"",firm:"EY"},desc:"As Middle Eastern investors continue to expand their presence across global private markets, their approach to capital deployment is becoming increasingly selective, strategic, and partnership-driven. With significant pools of capital seeking long-term value, LPs in the region are refining how they evaluate managers, structure relationships, and prioritise sectors and geographies. This discussion will explore how regional allocators are underwriting commitments today, what differentiates global managers in a competitive fundraising environment, and how institutions are balancing diversification, resilience, and strategic alignment—while considering the local context and evolving market conditions that shape investment pacing and partnerships.",people:[
+   {img:"",name:"H.E. Maher Al Kaabi",title:"Advisor to the Group Chairman and Independent Board Member",firm:"Alserkal Group"},
+   {img:"",name:"Rami Harajli",title:"Chief Investment Officer",firm:"IVI Holding"},
+   {img:"",name:"Amine Bentaleb",title:"Managing Partner",firm:"Patrinium MFO"},
+   {img:"",name:"Ahmad Saidali",title:"Founder & CEO",firm:"Redwood Heritage Multi-Family"},
+   {img:"",name:"Maryam AlAli",title:"Head of Fund Investments",firm:"Mubadala Capital"}]},
+  {kind:"simple",time:"17:50–18:00",title:"Closing Remarks",note:"",sponsorName:"",sponsorImg:""},
+  {kind:"reception",time:"18:00–19:30",title:"Networking Cocktail Reception",cols:[
+   {h:"Venue",body:"High Society\nAt the very top of The Lana, Dubai\nSpectacular Burj Khalifa views"},
+   {h:"Experience",body:"Premium open bar\nCurated hors d'oeuvres\nNetworking with speakers"},
+   {h:"Thank You",body:"We look forward to welcoming you to the Dubai Private Capital Summit and building meaningful connections as we shape the future of private markets together."}],
+   thanks:"Thank you for your interest in the Dubai Private Capital Summit. We're committed to creating an environment where meaningful conversations drive the future of private markets. Whether you're exploring sponsorship opportunities or planning to attend as a guest, we look forward to welcoming you on September 15, 2026."}
+ ],
+ sponsors:[
+  {tier:"Headline Partner",name:"EY",img:"",desc:"EY advises private equity firms across the full investment lifecycle, from deal sourcing and diligence to value creation and exit. The firm supports investors with strategy, transaction execution, and operational improvement initiatives. Its teams bring sector expertise and technical capabilities to help drive growth and maximize returns across portfolio companies."},
+  {tier:"Platinum Sponsor",name:"Clifford Chance",img:"",desc:"Clifford Chance is an international law firm with significant depth and range of resources across five continents, delivering high quality legal advice on complex transactions and challenging business matters."},
+  {tier:"Platinum Sponsor",name:"White & Case",img:"",desc:"With dedicated teams based in London, New York, Boston, Dubai, Luxembourg, Hong Kong, Singapore and Tokyo, our top-tier investment funds offering has the cross-practice and multi-jurisdictional expertise to guide clients on a range of funds-related matters."},
+  {tier:"Platinum Sponsor",name:"A&O Shearman",img:"",desc:"A&O Shearman is one of the leading international firms in the United Arab Emirates, with lawyers in the key hubs of Dubai and Abu Dhabi."},
+  {tier:"Platinum Sponsor",name:"Akin",img:"",desc:"Akin has more than 40 years of experience representing private equity funds and other equity investors. We have helped some of the industry's pioneers form funds and deploy capital around the world since the earliest days of the modern funds industry. Our clients include traditional buyout and growth capital funds, sovereign wealth funds, energy & infrastructure funds, family offices and portfolio companies and secondaries investors."},
+  {tier:"Platinum Sponsor",name:"Gibson Dunn",img:"",desc:"Gibson Dunn has represented government-affiliated entities, prominent companies, and financial institutions in the Middle East for more than 40 years. Today, our market-leading integrated practice serves both regional and international clients across a broad range of practice areas and industries, with 60+ lawyers across the region advising on English, New York, UAE, and Saudi law."},
+  {tier:"Platinum Sponsor",name:"Skadden",img:"",desc:"Skadden has a long and distinguished track record of advising on some of the most complex matters in the Middle East, representing both regional clients and international businesses operating from and within the area. Our work in the region encompasses cross-border M&A and joint ventures, financings, litigation and arbitration matters, and white collar defense and investigations."},
+  {tier:"Gold Sponsor",name:"Cleary Gottlieb",img:"",desc:"Cleary Gottlieb is a global law firm advising clients on complex legal and business matters across jurisdictions. The firm works with corporations, financial institutions, and governments on transactions, litigation, and regulatory issues. Its teams operate across key financial centers, supporting both domestic and international matters."},
+  {tier:"Gold Sponsor",name:"FAB",img:"",desc:"FAB, the UAE's largest bank, offers personalized banking services including credit cards, Islamic banking, loans, and mortgages. With a global network and customer-centric approach, FAB empowers clients to grow stronger through tailored financial solutions. FAB Capital combines local expertise with international reach, by offering award-winning deal origination, structuring and distribution that is regionally dominant and internationally."},
+  {tier:"Gold Sponsor",name:"Abacus",img:"",desc:"Abacus Group is a leading managed service provider to alternative investment management firms. We provide cloud-based IT solutions including infrastructure, cyber security, service desk support, and compliance technology to help alternative managers focus on what they do best."},
+  {tier:"Media Partner",name:"PE150",img:"",desc:"PE 150 delivers precision trends and insights to over 250,000 investors and executives who rely on our insights to drive high-stakes decision making. Originated by an operating executive turned private equity sponsor, our network spans five verticals and reaches principal decision makers across the globe. We craft campaigns that resonate with the most influential minds in finance. From premium content to precise targeting, we help brands connect with decision-makers who matter. Our north star is simple: create value for our readers, and results for our marketing partners."},
+  {tier:"Association Partner",name:"Emirates Family Office Association",img:"",desc:"The Emirates Family Office Association is an independent, not for profit association dedicated to supporting the Family Office community. The association strives to provide resources, education and support to local and international Family Offices, fostering collaboration and innovation through an exclusive global ecosystem."}
+ ]
+};}
 
-let state;
-function clone(o){return JSON.parse(JSON.stringify(o));}
-function load(){try{const s=JSON.parse(localStorage.getItem(SKEY));if(s&&s.items)return s;}catch(e){}return STARTER();}
-function save(){try{localStorage.setItem(SKEY,JSON.stringify(state));}catch(e){}}
-function esc(s){return(s||"").replace(/&(?!(amp|lt|gt|quot|#\d+|rsquo|ldquo|rdquo|middot|amp);)/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
-function escA(s){return(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;");}
+let state=null,pvCur=0,pvTotal=0,_rt=null;
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function get(p){return p.split(".").reduce((o,k)=>o?o[k]:undefined,state);}
+function set(p,v){const ks=p.split("."),last=ks.pop();ks.reduce((o,k)=>o[k],state)[last]=v;}
+function autosave(){try{localStorage.setItem(LKEY,JSON.stringify({slug:slugEl.value,data:state}));}catch(e){}}
 
-function generate(){
-  const t=THEMES[state.theme]||THEMES.dubai;
-  const rows=state.items.map(r=>{
-    const soft=SOFT[r.type]?" agx__row--soft":"";
-    const tag=TAGGED[r.type]?`<span class="agx__type">${esc(TAGGED[r.type])}</span>`:"";
-    const detail=r.detail?`<div class="agx__d">${esc(r.detail)}</div>`:"";
-    return `\n      <div class="agx__row${soft}">\n        <div class="agx__time">${esc(r.time)}</div>\n        <div class="agx__body">\n          <div class="agx__t">${esc(r.title)}${tag}</div>${detail}\n        </div>\n      </div>`;
-  }).join("");
-  return `
-<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-.agx,.agx *{box-sizing:border-box;margin:0;padding:0;font-family:'Raleway',sans-serif;}
-.agx{width:100%;padding:10px 0;-webkit-font-smoothing:antialiased;}
-.agx__in{max-width:920px;margin:0 auto;padding:0 16px;}
-.agx__band{background:${t.band};color:#fff;padding:40px 44px 34px;border-radius:5px 5px 0 0;}
-.agx__title{font-size:34px;font-weight:700;letter-spacing:-.01em;line-height:1.1;}
-.agx__sub{font-size:15px;font-weight:300;opacity:.84;margin-top:7px;}
-.agx__date{font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.72);margin-top:18px;}
-.agx__list{background:#fff;border:1px solid #ececec;border-top:none;border-radius:0 0 5px 5px;}
-.agx__row{display:flex;gap:24px;padding:18px 40px;border-top:1px solid #f1eff1;align-items:flex-start;}
-.agx__row:first-child{border-top:none;}
-.agx__row--soft{background:#faf8fa;}
-.agx__time{flex:0 0 92px;font-size:15px;font-weight:600;color:${t.time};padding-top:1px;font-variant-numeric:tabular-nums;}
-.agx__body{flex:1;min-width:0;}
-.agx__t{font-size:16px;font-weight:600;color:#1e1a1e;line-height:1.35;display:flex;flex-wrap:wrap;align-items:center;gap:10px;}
-.agx__d{font-size:13.5px;color:#7a7078;margin-top:5px;line-height:1.5;font-weight:300;}
-.agx__type{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:${t.chip};padding:3px 8px;border-radius:2px;white-space:nowrap;}
-@media(max-width:640px){
-  .agx__band{padding:28px 22px 24px;}.agx__title{font-size:25px;}
-  .agx__row{padding:15px 20px;gap:14px;}.agx__time{flex-basis:64px;font-size:13px;}
-  .agx__t{font-size:15px;}
+/* ---------- image helpers ---------- */
+function readImg(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=r.result;};r.onerror=rej;r.readAsDataURL(file);});}
+async function squarePhoto(file){const i=await readImg(file);const s=Math.min(i.width,i.height),c=document.createElement("canvas");c.width=c.height=256;c.getContext("2d").drawImage(i,(i.width-s)/2,(i.height-s)/2,s,s,0,0,256,256);return c.toDataURL("image/jpeg",.82);}
+async function logoImg(file){const i=await readImg(file);const m=360/Math.max(i.width,i.height),w=Math.max(1,Math.round(i.width*Math.min(1,m))),h=Math.max(1,Math.round(i.height*Math.min(1,m)));const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(i,0,0,w,h);return c.toDataURL("image/png");}
+
+function phInput(path,mode){
+  const v=get(path)||"";
+  return '<div class="ph"><img src="'+(v||AgendaRender.SIL)+'">'+
+    '<button class="mini up">Upload<input type="file" accept="image/*" data-ph="'+path+'" data-mode="'+(mode||"photo")+'"></button>'+
+    '<input class="url" type="text" placeholder="or paste image URL" value="'+esc(v&&v.startsWith("data:")?"":v)+'" data-phu="'+path+'">'+
+    (v?'<button class="mini del" data-phc="'+path+'">✕</button>':"")+'</div>';
 }
-@media print{.agx{padding:0;}.agx__in{max-width:none;padding:0;}}
-</style>
-<div class="agx">
-  <div class="agx__in">
-    <div class="agx__band">
-      <h2 class="agx__title">${esc(state.title)}</h2>
-      <p class="agx__sub">${esc(state.sub)}</p>
-      <p class="agx__date">${esc(state.date)}</p>
-    </div>
-    <div class="agx__list">${rows}
-    </div>
-  </div>
-</div>`;
-}
+function inp(path,ph){return '<input class="t" type="text" value="'+esc(get(path))+'" placeholder="'+(ph||"")+'" data-b="'+path+'">';}
+function ta(path,rows){return '<textarea class="t" rows="'+(rows||3)+'" data-b="'+path+'">'+esc(get(path))+'</textarea>';}
 
-function renderEditor(){
-  document.getElementById("themeSel").value=state.theme;
-  document.getElementById("titleIn").value=state.title;
-  document.getElementById("subIn").value=state.sub;
-  document.getElementById("dateIn").value=state.date;
-  const ed=document.getElementById("itemsEditor");ed.innerHTML="";
-  state.items.forEach((r,i)=>{
-    const box=document.createElement("div");box.className="item";
-    const opts=TYPES.map(([v,l])=>`<option value="${v}"${v===r.type?" selected":""}>${l}</option>`).join("");
-    box.innerHTML=
-      '<div class="r1">'+
-        '<input class="time" type="text" placeholder="09:30" value="'+escA(r.time)+'" data-act="time" data-i="'+i+'">'+
-        '<input class="title" type="text" placeholder="Session title" value="'+escA(r.title)+'" data-act="title" data-i="'+i+'">'+
-        '<select class="type" data-act="type" data-i="'+i+'">'+opts+'</select>'+
-        '<span class="tools">'+
-          '<button class="mini" data-act="up" data-i="'+i+'" title="Move up">↑</button>'+
-          '<button class="mini" data-act="down" data-i="'+i+'" title="Move down">↓</button>'+
-          '<button class="mini del" data-act="del" data-i="'+i+'" title="Remove">✕</button>'+
-        '</span>'+
-      '</div>'+
-      '<input class="detail" type="text" placeholder="Speaker / firm / detail (optional)" value="'+escA(r.detail)+'" data-act="detail" data-i="'+i+'">';
-    ed.appendChild(box);
+/* ---------- section renderers ---------- */
+function renderEvent(){
+  let h='<label class="f">Colour theme</label><select class="t" data-b="theme">'+["dubai","european","newyork","london"].map(t=>'<option value="'+t+'"'+(state.theme===t?" selected":"")+'>'+t+'</option>').join("")+'</select>';
+  h+='<div class="grid2"><div><label class="f">City</label>'+inp("meta.city")+'</div><div><label class="f">Year</label>'+inp("meta.year")+'</div></div>';
+  h+='<label class="f">Event name</label>'+inp("meta.event");
+  h+='<div class="grid2"><div><label class="f">Cover date</label>'+inp("meta.dateLine")+'</div><div><label class="f">Cover location</label>'+inp("meta.locLine")+'</div></div>';
+  h+='<label class="f">Date band (welcome page)</label>'+inp("meta.bandLine");
+  h+='<label class="f">Footer line</label>'+inp("meta.footerLeft");
+  h+='<label class="f">Preliminary note (blank to hide)</label>'+inp("meta.preliminary");
+  h+='<label class="f" style="margin-top:12px">Cover partners (right rail)</label>';
+  (state.meta.coverPartners||[]).forEach((p,i)=>{
+    h+='<div class="card"><div class="bar"><input class="t grow" type="text" value="'+esc(p.label)+'" data-b="meta.coverPartners.'+i+'.label"><input class="t grow" type="text" value="'+esc(p.name)+'" placeholder="Name (if no logo)" data-b="meta.coverPartners.'+i+'.name"><button class="mini del" data-del="meta.coverPartners.'+i+'">✕</button></div>'+phInput("meta.coverPartners."+i+".img","logo")+'</div>';
   });
+  h+='<div class="addrow"><button data-add="coverPartner">+ Add cover partner</button></div>';
+  document.getElementById("secEvent").innerHTML=h;
 }
-let _t=null;
-function renderPreview(){
-  const code=generate();
-  document.getElementById("outCode").value=code;
-  clearTimeout(_t);
-  _t=setTimeout(()=>{const f=document.getElementById("preview");f.srcdoc=code;},140);
+function renderWelcome(){
+  let h="";
+  (state.meta.welcome.paras||[]).forEach((p,i)=>{h+='<label class="f">Paragraph '+(i+1)+' <button class="mini del" data-del="meta.welcome.paras.'+i+'" style="float:right">✕</button></label>'+ta("meta.welcome.paras."+i,3);});
+  h+='<div class="addrow"><button data-add="para">+ Add paragraph</button></div>';
+  h+='<div class="grid2"><div><label class="f">Signature name</label>'+inp("meta.welcome.signName")+'</div><div><label class="f">Signature title</label>'+inp("meta.welcome.signTitle")+'</div></div>';
+  h+='<label class="f">Signature org</label>'+inp("meta.welcome.signOrg");
+  h+='<label class="f" style="margin-top:10px"><input type="checkbox" data-chk="meta.showSpeakers" '+(state.meta.showSpeakers!==false?"checked":"")+'> Include auto-generated “Confirmed speakers” page</label>';
+  document.getElementById("secWelcome").innerHTML=h;
 }
-function autoHeight(f){try{const h=f.contentWindow.document.documentElement.scrollHeight;if(h>40)f.style.height=(h+8)+"px";}catch(e){}}
-document.getElementById("preview").addEventListener("load",function(){autoHeight(this);});
-function renderAll(){const l=document.querySelector(".left");const st=l?l.scrollTop:0;renderEditor();renderPreview();if(l)l.scrollTop=st;save();}
+function personFields(base,withRole){
+  const p=get(base);if(!p)return"";
+  return '<div class="grid2"><div><label class="f">Name</label>'+inp(base+".name")+'</div><div><label class="f">Title</label>'+inp(base+".title")+'</div></div><label class="f">Firm</label>'+inp(base+".firm")+phInput(base+".img","photo");
+}
+function renderSessions(){
+  let h="";
+  state.sessions.forEach((s,i)=>{
+    const b="sessions."+i;
+    h+='<div class="card"><div class="bar"><span class="kind">'+s.kind+'</span><input class="t" style="width:100px" type="text" value="'+esc(s.time)+'" data-b="'+b+'.time"><input class="t grow" type="text" value="'+esc(s.title)+'" data-b="'+b+'.title">'+
+       '<button class="mini" data-up="'+i+'">↑</button><button class="mini" data-down="'+i+'">↓</button><button class="mini del" data-del="sessions.'+i+'">✕</button></div>';
+    if(s.kind==="simple"||s.kind==="people"){
+      h+='<div class="grid2"><div><label class="f">Room / note (right side)</label>'+inp(b+".note")+'</div><div><label class="f">Sponsor name</label>'+inp(b+".sponsorName")+'</div></div><label class="f">Sponsor logo</label>'+phInput(b+".sponsorImg","logo");
+    }
+    if(s.kind==="people"){
+      h+='<label class="f">Lead label (MODERATOR / INTERVIEWER — blank for none)</label>'+inp(b+".roleLabel");
+      h+='<details style="margin-top:8px"><summary style="font-size:12px">Lead person'+(s.lead&&s.lead.name?" — "+esc(s.lead.name):"")+'</summary><div class="sec">'+(s.lead?personFields(b+".lead"):'<button class="mini" data-addlead="'+i+'">+ Add lead</button>')+'</div></details>';
+      h+='<label class="f">Description</label>'+ta(b+".desc",4);
+      h+='<label class="f">Panelists</label>';
+      (s.people||[]).forEach((p,j)=>{h+='<details style="margin-top:6px"><summary style="font-size:12px">'+(esc(p.name)||"Panelist "+(j+1))+' <button class="mini del" data-del="'+b+'.people.'+j+'" style="float:right">✕</button></summary><div class="sec">'+personFields(b+".people."+j)+'</div></details>';});
+      h+='<div class="addrow"><button data-addperson="'+i+'">+ Add panelist</button></div>';
+    }
+    if(s.kind==="tables"){
+      (s.tables||[]).forEach((t,j)=>{h+='<div class="bar" style="margin-top:6px;display:flex;gap:6px"><input class="t grow" type="text" value="'+esc(t.topic)+'" placeholder="Topic" data-b="'+b+'.tables.'+j+'.topic"><input class="t" style="width:130px" type="text" value="'+esc(t.host)+'" placeholder="Hosted by" data-b="'+b+'.tables.'+j+'.host"><button class="mini del" data-del="'+b+'.tables.'+j+'">✕</button></div>';});
+      h+='<div class="addrow"><button data-addtable="'+i+'">+ Add table</button></div>';
+    }
+    if(s.kind==="reception"){
+      (s.cols||[]).forEach((c,j)=>{h+='<div class="grid2" style="margin-top:6px"><div><label class="f">Column '+(j+1)+' heading</label>'+inp(b+".cols."+j+".h")+'</div><div><label class="f">Text</label>'+ta(b+".cols."+j+".body",2)+'</div></div>';});
+      h+='<label class="f">Italic thank-you line</label>'+ta(b+".thanks",2);
+    }
+    h+='</div>';
+  });
+  h+='<div class="addrow"><select id="newKind"><option value="simple">Simple row (break / remarks)</option><option value="people">Panel / keynote (with photos)</option><option value="tables">Roundtables</option><option value="reception">Reception (3 columns)</option></select><button data-add="session">+ Add session</button></div>';
+  document.getElementById("secSessions").innerHTML=h;
+}
+function renderSponsors(){
+  let h="";
+  state.sponsors.forEach((s,i)=>{
+    const b="sponsors."+i;
+    h+='<div class="card"><div class="bar"><input class="t" style="width:150px" type="text" value="'+esc(s.tier)+'" data-b="'+b+'.tier"><input class="t grow" type="text" value="'+esc(s.name)+'" data-b="'+b+'.name"><button class="mini" data-up-sp="'+i+'">↑</button><button class="mini" data-down-sp="'+i+'">↓</button><button class="mini del" data-del="sponsors.'+i+'">✕</button></div>'+phInput(b+".img","logo")+'<label class="f">Description</label>'+ta(b+".desc",3)+'</div>';
+  });
+  h+='<div class="addrow"><button data-add="sponsor">+ Add sponsor</button></div>';
+  document.getElementById("secSponsors").innerHTML=h;
+}
+function renderContacts(){
+  let h='<label class="f">Subtitle</label>'+inp("meta.contactsSub");
+  state.meta.contacts.forEach((c,i)=>{
+    const b="meta.contacts."+i;
+    h+='<div class="card"><div class="bar"><input class="t grow" type="text" value="'+esc(c.name)+'" placeholder="Name" data-b="'+b+'.name"><input class="t grow" type="text" value="'+esc(c.role)+'" placeholder="Role" data-b="'+b+'.role"><button class="mini del" data-del="meta.contacts.'+i+'">✕</button></div><div class="grid2" style="margin-top:6px"><div>'+inp(b+".email","email")+'</div><div>'+inp(b+".t","T: phone")+'</div></div><div style="margin-top:6px">'+inp(b+".m","M: phone")+'</div></div>';
+  });
+  h+='<div class="addrow"><button data-add="contact">+ Add contact</button></div>';
+  document.getElementById("secContacts").innerHTML=h;
+}
+function renderForm(){renderEvent();renderWelcome();renderSessions();renderSponsors();renderContacts();}
 
-document.getElementById("themeSel").addEventListener("change",e=>{state.theme=e.target.value;renderPreview();save();});
-document.getElementById("titleIn").addEventListener("input",e=>{state.title=e.target.value;renderPreview();save();});
-document.getElementById("subIn").addEventListener("input",e=>{state.sub=e.target.value;renderPreview();save();});
-document.getElementById("dateIn").addEventListener("input",e=>{state.date=e.target.value;renderPreview();save();});
-document.getElementById("addItem").addEventListener("click",()=>{state.items.push(it("","New session","","session"));renderAll();});
-document.getElementById("starterBtn").addEventListener("click",()=>{if(!confirm("Reset the agenda to the starter example? Your current sessions will be replaced."))return;state=STARTER();renderAll();});
-document.getElementById("backupBtn").addEventListener("click",()=>{save();const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="caplink-agenda-backup.json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);});
-document.getElementById("restoreBtn").addEventListener("click",()=>document.getElementById("restoreFile").click());
-document.getElementById("restoreFile").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const s=JSON.parse(r.result);if(!s||!s.items)throw 0;state=s;renderAll();}catch(err){alert("That file doesn't look like an agenda backup.");}};r.readAsText(f);e.target.value="";});
-document.getElementById("copyBtn").addEventListener("click",()=>{const ta=document.getElementById("outCode");ta.select();navigator.clipboard.writeText(ta.value).then(()=>{const c=document.getElementById("copied");c.style.display="inline";setTimeout(()=>c.style.display="none",1500);});});
-document.getElementById("printBtn").addEventListener("click",()=>{const w=window.open("","_blank");if(!w){alert("Please allow pop-ups to print.");return;}w.document.open();w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>'+escA(state.title)+' — Agenda</title></head><body style="margin:0">'+generate()+'</body></html>');w.document.close();setTimeout(()=>{w.focus();w.print();},400);});
+/* ---------- preview ---------- */
+function fitPv(){const w=document.getElementById("pvwrap");const s=Math.min((w.clientWidth-30)/1280,(w.clientHeight-30)/720);document.getElementById("pv").style.transform="scale("+s+")";}
+function pvShow(i){const sl=document.querySelectorAll("#pv .sl");pvCur=Math.max(0,Math.min(sl.length-1,i));sl.forEach((el,j)=>el.classList.toggle("on",j===pvCur));document.getElementById("pvPg").textContent=(pvCur+1)+" / "+pvTotal;}
+function rebuild(){pvTotal=AgendaRender.buildDeck(document.getElementById("pv"),state);fitPv();pvShow(pvCur);autosave();}
+function queueRebuild(){clearTimeout(_rt);_rt=setTimeout(rebuild,350);}
 
-document.getElementById("itemsEditor").addEventListener("input",e=>{const el=e.target,a=el.dataset.act;if(!a)return;const i=+el.dataset.i;
-  if(a==="time")state.items[i].time=el.value;
-  else if(a==="title")state.items[i].title=el.value;
-  else if(a==="detail")state.items[i].detail=el.value;
-  else if(a==="type"){state.items[i].type=el.value;renderAll();return;}
-  renderPreview();save();
+/* ---------- events ---------- */
+const L=document.querySelector(".left");
+L.addEventListener("input",e=>{
+  const el=e.target;
+  if(el.dataset.b){let v=el.value;set(el.dataset.b,v);queueRebuild();}
+  else if(el.dataset.phu){set(el.dataset.phu,el.value.trim());queueRebuild();}
 });
-document.getElementById("itemsEditor").addEventListener("change",e=>{const el=e.target;if(el.dataset.act==="type"){state.items[+el.dataset.i].type=el.value;renderAll();}});
-document.getElementById("itemsEditor").addEventListener("click",e=>{const b=e.target.closest("[data-act]");if(!b)return;const a=b.dataset.act,i=+b.dataset.i;
-  if(a==="del"){state.items.splice(i,1);renderAll();}
-  else if(a==="up"&&i>0){const x=state.items.splice(i,1)[0];state.items.splice(i-1,0,x);renderAll();}
-  else if(a==="down"&&i<state.items.length-1){const x=state.items.splice(i,1)[0];state.items.splice(i+1,0,x);renderAll();}
+L.addEventListener("change",async e=>{
+  const el=e.target;
+  if(el.dataset.chk){set(el.dataset.chk,el.checked);queueRebuild();}
+  if(el.dataset.ph&&el.files&&el.files[0]){
+    try{const d=el.dataset.mode==="logo"?await logoImg(el.files[0]):await squarePhoto(el.files[0]);set(el.dataset.ph,d);renderForm();rebuild();}
+    catch(err){alert("Couldn't read that image.");}
+  }
+});
+L.addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;
+  const arr=(p)=>{const ks=p.split(".");const idx=+ks.pop();const a=ks.reduce((o,k)=>o[k],state);return{a,idx};};
+  if(b.dataset.del!=null){e.preventDefault();const{a,idx}=arr(b.dataset.del);a.splice(idx,1);renderForm();rebuild();return;}
+  if(b.dataset.phc){e.preventDefault();set(b.dataset.phc,"");renderForm();rebuild();return;}
+  if(b.dataset.up!=null){e.preventDefault();const i=+b.dataset.up;if(i>0){const x=state.sessions.splice(i,1)[0];state.sessions.splice(i-1,0,x);renderForm();rebuild();}return;}
+  if(b.dataset.down!=null){e.preventDefault();const i=+b.dataset.down;if(i<state.sessions.length-1){const x=state.sessions.splice(i,1)[0];state.sessions.splice(i+1,0,x);renderForm();rebuild();}return;}
+  if(b.dataset.upSp!=null){e.preventDefault();const i=+b.dataset.upSp;if(i>0){const x=state.sponsors.splice(i,1)[0];state.sponsors.splice(i-1,0,x);renderForm();rebuild();}return;}
+  if(b.dataset.downSp!=null){e.preventDefault();const i=+b.dataset.downSp;if(i<state.sponsors.length-1){const x=state.sponsors.splice(i,1)[0];state.sponsors.splice(i+1,0,x);renderForm();rebuild();}return;}
+  if(b.dataset.addperson!=null){e.preventDefault();state.sessions[+b.dataset.addperson].people.push({img:"",name:"",title:"",firm:""});renderForm();rebuild();return;}
+  if(b.dataset.addlead!=null){e.preventDefault();state.sessions[+b.dataset.addlead].lead={img:"",name:"",title:"",firm:""};renderForm();rebuild();return;}
+  if(b.dataset.addtable!=null){e.preventDefault();state.sessions[+b.dataset.addtable].tables.push({topic:"",host:""});renderForm();rebuild();return;}
+  if(b.dataset.add){
+    e.preventDefault();const t=b.dataset.add;
+    if(t==="coverPartner")state.meta.coverPartners.push({label:"",name:"",img:""});
+    if(t==="para")state.meta.welcome.paras.push("");
+    if(t==="contact")state.meta.contacts.push({name:"",role:"",email:"",t:"",m:""});
+    if(t==="sponsor")state.sponsors.push({tier:"Gold Sponsor",name:"",img:"",desc:""});
+    if(t==="session"){
+      const k=document.getElementById("newKind").value;
+      if(k==="simple")state.sessions.push({kind:"simple",time:"",title:"New session",note:"",sponsorName:"",sponsorImg:""});
+      if(k==="people")state.sessions.push({kind:"people",time:"",title:"New panel",note:"",sponsorName:"",sponsorImg:"",roleLabel:"MODERATOR",lead:{img:"",name:"",title:"",firm:""},desc:"",people:[]});
+      if(k==="tables")state.sessions.push({kind:"tables",time:"",title:"Roundtables (30 MINUTES)",tables:[{topic:"",host:""}]});
+      if(k==="reception")state.sessions.push({kind:"reception",time:"",title:"Networking Cocktail Reception",cols:[{h:"Venue",body:""},{h:"Experience",body:""},{h:"Thank You",body:""}],thanks:""});
+    }
+    renderForm();rebuild();
+  }
 });
 
-state=load();renderAll();
+/* ---------- cloud ---------- */
+const slugEl=document.getElementById("slug"),statusEl=document.getElementById("cloudStatus");
+function viewerURL(){const u=new URL("../agenda/",location.href);u.searchParams.set("e",slugEl.value.trim());return u.href;}
+function setStatus(html){statusEl.innerHTML=html;}
+async function loadCloud(){
+  const s=slugEl.value.trim();if(!s)return;
+  setStatus("Loading latest from cloud…");
+  try{
+    const r=await fetch(SUPA_URL+"/rest/v1/agendas?slug=eq."+encodeURIComponent(s)+"&select=data,updated_at",{headers:{apikey:SUPA_KEY}});
+    if(!r.ok)throw new Error("service error "+r.status);
+    const rows=await r.json();
+    if(!rows.length){setStatus('No published agenda called “'+esc(s)+'” yet — you are creating it. Hit <b>Publish</b> when ready.');return;}
+    state=rows[0].data;renderForm();rebuild();
+    setStatus("Loaded latest (updated "+new Date(rows[0].updated_at).toLocaleString()+"). Share link: <a href='"+viewerURL()+"' target='_blank'>"+viewerURL()+"</a>");
+  }catch(e){setStatus("⚠ Could not load: "+esc(e.message||e));}
+}
+async function publish(){
+  const s=slugEl.value.trim();if(!s){alert("Give the event an ID first, e.g. dubai-2026");return;}
+  let key=localStorage.getItem(EKEY);
+  if(!key){key=prompt("Team publish password:");if(!key)return;localStorage.setItem(EKEY,key);}
+  setStatus("Publishing…");
+  try{
+    const r=await fetch(SUPA_URL+"/rest/v1/rpc/publish_agenda",{method:"POST",headers:{apikey:SUPA_KEY,"Content-Type":"application/json"},body:JSON.stringify({p_slug:s,p_data:state,p_key:key})});
+    if(!r.ok){const tx=await r.text();if(/wrong edit key/i.test(tx)){localStorage.removeItem(EKEY);throw new Error("Wrong team password — try Publish again.");}throw new Error("service error "+r.status);}
+    setStatus("✅ Published! Everyone now sees this version. Share link: <a href='"+viewerURL()+"' target='_blank'>"+viewerURL()+"</a>");
+  }catch(e){setStatus("⚠ Publish failed: "+esc(e.message||e));}
+}
+document.getElementById("loadBtn").onclick=loadCloud;
+document.getElementById("publishBtn").onclick=publish;
+document.getElementById("pvPrev").onclick=()=>pvShow(pvCur-1);
+document.getElementById("pvNext").onclick=()=>pvShow(pvCur+1);
+document.getElementById("pvOpen").onclick=()=>window.open(viewerURL(),"_blank");
+document.getElementById("pvCopy").onclick=()=>{navigator.clipboard.writeText(viewerURL());setStatus("Share link copied: "+viewerURL());};
+document.getElementById("backupBtn").onclick=()=>{const blob=new Blob([JSON.stringify(state,null,1)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="caplink-agenda-"+slugEl.value.trim()+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);};
+document.getElementById("restoreBtn").onclick=()=>document.getElementById("restoreFile").click();
+document.getElementById("restoreFile").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const s=JSON.parse(r.result);if(!s||!s.sessions)throw 0;state=s;renderForm();rebuild();setStatus("Backup loaded (not yet published).");}catch(err){alert("That file doesn't look like an agenda backup.");}};r.readAsText(f);e.target.value="";});
+document.getElementById("starterBtn").onclick=()=>{if(!confirm("Replace the current agenda with the Dubai 2026 starter?"))return;state=starter();renderForm();rebuild();};
+window.addEventListener("resize",fitPv);
+
+/* ---------- boot ---------- */
+(function(){
+  try{const s=JSON.parse(localStorage.getItem(LKEY));if(s&&s.data&&s.data.sessions){state=s.data;if(s.slug)slugEl.value=s.slug;}}catch(e){}
+  if(!state)state=starter();
+  renderForm();rebuild();
+  loadCloud();
+})();
 </script>
 </body>
 </html>
