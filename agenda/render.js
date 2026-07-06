@@ -116,11 +116,16 @@ var CSS=
 ".agdk .tbl .tp{color:#38323c}.agdk .tbl .tp b{font-weight:700}.agdk .tbl .tp i{font-weight:400}"+
 ".agdk .tbl .hb{font-size:9.8px;font-weight:700;color:#241f26;margin-top:2px}"+
 /* reception */
-".agdk .rec{display:flex;gap:28px;padding:14px 20px 20px;text-align:center}"+
-".agdk .rec .c{flex:1}"+
-".agdk .rec h4{font-size:10.5px;letter-spacing:.26em;font-weight:700;color:var(--accent);margin-bottom:10px;text-transform:uppercase}"+
-".agdk .rec p{font-size:11.4px;line-height:1.68;color:#6e6873}"+
-".agdk .thanks{font-size:10.2px;font-style:italic;color:#b9a9c0;text-align:center;line-height:1.65;margin-top:2px;padding:0 40px 6px}"+
+".agdk .rec2{display:flex;gap:30px;padding:8px 4px 24px;align-items:stretch}"+
+".agdk .rec2-cols{flex:1;display:flex;flex-direction:column;justify-content:center;gap:24px;min-width:0}"+
+".agdk .rec2 h4{font-size:10.5px;letter-spacing:.26em;font-weight:700;color:var(--accent);margin-bottom:8px;text-transform:uppercase}"+
+".agdk .rec2 p{font-size:12.2px;line-height:1.7;color:#6e6873}"+
+".agdk .rec2-photo{flex:0 0 360px;overflow:hidden;min-height:210px;border-radius:4px}"+
+".agdk .rec2-photo img{width:100%;height:100%;object-fit:cover;display:block}"+
+".agdk .thanksnote{background:#faf7f3;border:1px solid #ece3d8;border-radius:10px;padding:36px 52px;text-align:center;margin-top:2px}"+
+".agdk .thanksnote .tn-label{font-size:9.5px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:13px}"+
+".agdk .thanksnote .tn-body{font-size:14.5px;line-height:1.85;color:#5c5257;font-style:italic;font-weight:400;max-width:740px;margin:0 auto}"+
+".agdk .rows.recpg .thanksnote{flex:1;display:flex;flex-direction:column;justify-content:center}"+
 /* sponsors */
 ".agdk .sp-grid{position:absolute;top:156px;left:64px;right:64px;bottom:72px;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:26px}"+
 ".agdk .sp-col{min-width:0;display:flex;flex-direction:column}"+
@@ -209,10 +214,20 @@ function sessionHtml(s,i){
     if(EDIT)c2+='<div class="ghost gt" data-op="addtable" data-i="'+i+'">+ Add table</div>';
     body='<div class="tbl-wrap"><div class="tbl-col">'+c1+'</div><div class="tbl-col">'+c2+'</div></div>';
   }else if(s.kind==="reception"){
-    body='<div class="rec">'+(s.cols||[]).map(function(c,j){return '<div class="c"><h4'+de(b+".cols."+j+".h")+'>'+esc(c.h)+'</h4><p'+de(b+".cols."+j+".body",1)+'>'+esc(c.body).replace(/\n/g,"<br>")+'</p></div>';}).join("")+'</div>';
+    var colHtml=(s.cols||[]).map(function(c,j){
+      if(/thank/i.test(c.h||""))return "";
+      return '<div><h4'+de(b+".cols."+j+".h")+'>'+esc(c.h)+'</h4><p'+de(b+".cols."+j+".body",1)+'>'+esc(c.body).replace(/\n/g,"<br>")+'</p></div>';
+    }).join("");
+    var photo=s.img?'<div class="rec2-photo"><img src="'+esc(s.img)+'"'+dp(b+".img","bg")+'></div>'
+      :(EDIT?'<div class="rec2-photo ghost" data-op="recimg" data-i="'+i+'">+ Venue photo</div>':"");
+    body='<div class="rec2"><div class="rec2-cols">'+colHtml+'</div>'+photo+'</div>';
   }
   var html='<div class="row" data-sess="'+i+'">'+rowbar(i)+head+body+meta+'</div>';
-  if(s.kind==="reception"&&s.thanks!=null)html+='<div class="thanks"'+de(b+".thanks",1)+'>'+esc(s.thanks)+'</div>';
+  if(s.kind==="reception"){
+    var tcol=(s.cols||[]).filter(function(c){return /thank/i.test(c.h||"");})[0];
+    var noteTxt=s.thanks||(tcol?tcol.body:"");
+    if(noteTxt||EDIT)html+='<div class="thanksnote"><div class="tn-label">A Note of Thanks</div><div class="tn-body"'+de(b+".thanks",1)+'>'+esc(noteTxt)+'</div></div>';
+  }
   return html;
 }
 
@@ -352,11 +367,12 @@ function paginateSessions(root,d,startN){
   return cuts.map(function(cut,pi){
     var pg=htmls.slice(cut[0],cut[1]);
     var tot=0;for(var q=cut[0];q<cut[1];q++)tot+=hs[q];
+    var hasRec=d.sessions.slice(cut[0],cut[1]).some(function(x){return x.kind==="reception";});
     /* session spacing is FIXED (the .row margin) on every page; every page
-       ends with the reserved Notes lines (skip only the rare page filled by
-       one oversized block) */
-    var notes=(notesOn&&(PAGE_H-tot)>=54)?'<div class="notesblk"><div class="nlab">Notes</div><div class="nlines"></div></div>':"";
-    return slide("",'<div class="rows">'+pg.join("")+notes+'</div>'+foot(d.meta,startN+pi));
+       ends with the reserved Notes lines — except reception pages, where the
+       thank-you note card stretches to absorb the remaining space instead */
+    var notes=(notesOn&&!hasRec&&(PAGE_H-tot)>=54)?'<div class="notesblk"><div class="nlab">Notes</div><div class="nlines"></div></div>':"";
+    return slide("",'<div class="rows'+(hasRec?' recpg':'')+'">'+pg.join("")+notes+'</div>'+foot(d.meta,startN+pi));
   });
 }
 function speakersGridSlides(root,d,startN){

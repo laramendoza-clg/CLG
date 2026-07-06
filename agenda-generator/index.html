@@ -73,7 +73,7 @@
 <body>
 <div class="app">
   <div class="left">
-    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v25</span></h1>
+    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v26</span></h1>
     <div class="tip">✏️ <b>Edit like Slides:</b> click any text on the page to type. Click a photo or logo to change it. Hover a session for <b>move / add / delete</b>.</div>
 
     <div class="stepbox">
@@ -117,7 +117,7 @@
 
 <div id="pop"></div>
 
-<script src="../agenda/render.js?v=25"></script>
+<script src="../agenda/render.js?v=26"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -392,6 +392,7 @@ function handleOp(btn){
   else if(op==="sponlogo"){const r=btn.getBoundingClientRect();openPopForPath("sessions."+i+".sponsorImg","logo",r.left,r.bottom);return;}
   else if(op==="signimg"){const r=btn.getBoundingClientRect();openPopForPath("meta.welcome.signImg","logo",r.left,r.bottom);return;}
   else if(op==="lockimg"){const r=btn.getBoundingClientRect();openPopForPath("meta.lockImg","logo",r.left,r.bottom);return;}
+  else if(op==="recimg"){const r=btn.getBoundingClientRect();openPopForPath("sessions."+i+".img","bg",r.left,r.bottom);return;}
   renderForm();rebuild();
 }
 
@@ -416,7 +417,7 @@ function openPopForPath(path,mode,px,py){
   pop.innerHTML=h;placePop(px,py);
   pop.querySelector("[data-popfile]").addEventListener("change",async ev=>{
     const f=ev.target.files[0];if(!f)return;
-    try{const d=mode==="logo"?await logoImg(f):await squarePhoto(f);set(path,d);closePop();renderForm();rebuild();}catch(_){alert("Couldn't read that image.");}
+    try{const d=mode==="logo"?await logoImg(f):(mode==="bg"?await bgFile(f):await squarePhoto(f));set(path,d);closePop();renderForm();rebuild();}catch(_){alert("Couldn't read that image.");}
   });
   pop.querySelector("[data-popurl]").addEventListener("keydown",ev=>{if(ev.key==="Enter"){set(path,ev.target.value.trim());closePop();renderForm();rebuild();}});
   const sz=pop.querySelector("[data-popsize]");
@@ -441,7 +442,7 @@ function openAddPop(btn,i){
 function newSession(k){
   if(k==="simple")return{kind:"simple",time:"0:00–0:00",title:"New session",note:"",sponsorName:"",sponsorImg:"",sponsorH:30};
   if(k==="tables")return{kind:"tables",time:"0:00–0:00",title:"Roundtables (30 MINUTES)",tables:[{topic:"New topic",host:""}]};
-  if(k==="reception")return{kind:"reception",time:"0:00–0:00",title:"Networking Reception",cols:[{h:"Venue",body:"…"},{h:"Experience",body:"…"},{h:"Thank You",body:"…"}],thanks:""};
+  if(k==="reception")return{kind:"reception",time:"0:00–0:00",title:"Networking Reception",img:"",cols:[{h:"Venue",body:"…"},{h:"Experience",body:"…"}],thanks:"Thank you — click to write a closing note."};
   return{kind:"people",time:"0:00–0:00",title:"New panel",note:"",sponsorName:"",sponsorImg:"",sponsorH:30,roleLabel:"MODERATOR",lead:{img:"",name:"Name",title:"Title",firm:"Firm"},desc:"Panel description…",people:[]};
 }
 
