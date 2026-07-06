@@ -47,3 +47,5 @@ with a branded dashboard. Live at `https://laramendoza-clg.github.io/CLG/`.
   10 minutes); bump it in both `agenda/index.html` and
   `agenda-generator/index.html` whenever the renderer changes, and keep the
   small version badge in the builder header in sync.
+
+<!-- pages-build-kick: 2026-07-06 v32 -->
