@@ -1,0 +1,341 @@
+{
+ "v": 2,
+ "theme": "london",
+ "meta": {
+  "city": "AI / Data & Insight",
+  "lockCity": "AI / DATA\n& INSIGHT",
+  "event": "Private Capital Breakfast",
+  "year": "2026",
+  "dateLine": "NOVEMBER 18, 2026",
+  "locLine": "LONDON",
+  "bandLine": "NOVEMBER 18, 2026  ·  THE MAY FAIR HOTEL  ·  LONDON",
+  "headKicker": "Preliminary Agenda",
+  "preliminary": "This is a preliminary agenda. Subject to change",
+  "footerLeft": "AI / DATA & INSIGHT PRIVATE CAPITAL BREAKFAST 2026  ·  PRELIMINARY AGENDA  ·  18 NOV 2026",
+  "showSpeakers": true,
+  "speakersTitle": "Past Speakers Include",
+  "speakersSub": "Senior voices from past CapLink × PE150 events  ·  AI panels and Operating Partner panels  ·  London 2025 / 2026  ·  New York 2025 / 2026",
+  "notesFill": true,
+  "backCover": true,
+  "bgImg": "../assets/sky-london.jpg",
+  "lockImg": "",
+  "coverPartners": [
+   {
+    "label": "Co-hosted with",
+    "name": "PE150",
+    "img": "",
+    "h": 56
+   },
+   {
+    "label": "Official Conference Venue",
+    "name": "THE MAY FAIR HOTEL",
+    "img": "",
+    "h": 56
+   }
+  ],
+  "welcome": {
+   "paras": [
+    "The AI / Data & Insight Private Capital Breakfast is a senior-level, half-day forum designed for portfolio company executives, Data and AI leaders, operating partners, and PE deal teams. Built around the \"Humans and AI\" operating model, the event explores how AI is materially reshaping the private equity lifecycle, from sourcing and diligence through to portfolio value creation.",
+    "Bringing together 150 senior decision-makers in London, the breakfast provides a focused environment for practitioner-led insights on what is actually working inside operating businesses, and how PE partners can accelerate that work.",
+    "The programme features three panels covering the full PE-AI lifecycle: building the AI operating system inside portfolio companies, AI in diligence and Day-100 handoffs, and scaling AI-driven value creation across the portfolio.",
+    "We are grateful to our partners for their support and look forward to welcoming you to London."
+   ],
+   "signName": "Nawshad Noorkhan",
+   "signTitle": "Founder, Managing Director",
+   "signOrg": "CAPLINK GROUP",
+   "signImg": "https://images.squarespace-cdn.com/content/5dc9f095a5705651ea40e08b/27a2c53f-2076-45cf-a764-ee37a8768ad4/Screenshot+2026-06-08+at+5.55.15%E2%80%AFPM.png?content-type=image%2Fpng",
+   "sign2": {
+    "img": "",
+    "name": "Aram Taghavi",
+    "title": "Founder, Managing Partner",
+    "org": "PE 150"
+   }
+  },
+  "contacts": [
+   {
+    "name": "Nawshad Noorkhan",
+    "role": "Managing Director, CapLink Group",
+    "email": "Nawshad.Noorkhan@caplink-group.com",
+    "t": "+44 (0) 208 064 3265",
+    "m": "+44 (0) 7415 880057"
+   },
+   {
+    "name": "Aram Taghavi",
+    "role": "Managing Partner, 150 Media",
+    "email": "Aram@media150.com",
+    "t": "+1 202-731-5217",
+    "m": ""
+   },
+   {
+    "name": "Plamena Zlateva",
+    "role": "Head of Operations & Client Management",
+    "email": "plamena.zlateva@caplink-group.com",
+    "t": "",
+    "m": "+1 (332) 288-8893"
+   },
+   {
+    "name": "Isabel Ortelli",
+    "role": "Director of Marketing and Operations",
+    "email": "Isabel@pe150.com",
+    "t": "",
+    "m": ""
+   },
+   {
+    "name": "Doina Roibu",
+    "role": "Head of Production",
+    "email": "Doina.Roibu@caplink-group.com",
+    "t": "",
+    "m": "+1 (646) 208-5365"
+   },
+   {
+    "name": "Gaston Brizuela",
+    "role": "Director of Research and Insights",
+    "email": "Gaston@Media150.com",
+    "t": "",
+    "m": ""
+   },
+   {
+    "name": "Lara Mendoza",
+    "role": "Head of Marketing & Design",
+    "email": "Lara.Mendoza@caplink-group.com",
+    "t": "",
+    "m": "+1 (646) 208-6876"
+   }
+  ]
+ },
+ "speakersList": [
+  {"img": "", "name": "Adam Nahari", "title": "Head of Data, Digital & AI", "firm": "Apollo Global Management"},
+  {"img": "", "name": "John Kelleher", "title": "Managing Partner, Global Head of Operations", "firm": "CVC"},
+  {"img": "", "name": "Jaimee Michaud", "title": "Head of Digital and AI", "firm": "SPV Global"},
+  {"img": "", "name": "Adrian Mitri", "title": "Operating Partner", "firm": "Vitruvian Partners"},
+  {"img": "", "name": "Keith Beattie", "title": "Partner, Head of Operations", "firm": "Astorg"},
+  {"img": "", "name": "Dominic Gallello", "title": "Managing Director, Head of Digital", "firm": "Bridgepoint"},
+  {"img": "", "name": "Luis Suarez", "title": "CTO & AI Leader", "firm": "H.I.G. Capital"},
+  {"img": "", "name": "Preston McKenzie", "title": "Operating Partner", "firm": "General Atlantic"},
+  {"img": "", "name": "Ryan Beauchamp", "title": "Head of Product & AI", "firm": "GTCR"},
+  {"img": "", "name": "Esther Naayar", "title": "Managing Director, Value Creation", "firm": "ICG"},
+  {"img": "", "name": "Mittu Sridhara", "title": "Managing Director, Digital & Technology Europe", "firm": "CD&R"},
+  {"img": "", "name": "Fang Fang", "title": "Head of Data Science", "firm": "Apax"},
+  {"img": "", "name": "Stuart Sim", "title": "Managing Director & Head of AI", "firm": "Silver Lake"},
+  {"img": "", "name": "Derek Mills", "title": "Managing Director, Value Creation", "firm": "Permira"},
+  {"img": "", "name": "Ishan Gammampila", "title": "Chief Data & Analytics Officer", "firm": "Apax"},
+  {"img": "", "name": "Alisha Peterle", "title": "PE Operating Partner", "firm": "KKR"},
+  {"img": "", "name": "Cameron Hulett", "title": "Managing Director, Head of AI & Digital", "firm": "BC Partners"},
+  {"img": "", "name": "Riccardo Basile", "title": "Operating Partner", "firm": "Permira"},
+  {"img": "", "name": "Marco Mendes", "title": "Partner, Portfolio Operations", "firm": "Advent International"},
+  {"img": "", "name": "Albert Notini", "title": "Managing Director, Lead Operating Partner", "firm": "New Mountain Capital"},
+  {"img": "", "name": "Selim Loukil", "title": "Managing Director, Portfolio Support Group", "firm": "Advent"},
+  {"img": "", "name": "Robert Mangan", "title": "Operating Partner", "firm": "Bain Capital"},
+  {"img": "", "name": "Jesse Thomas", "title": "Senior Director, Head of Data Science", "firm": "Advent"},
+  {"img": "", "name": "Peter Colman", "title": "Senior Operating Partner", "firm": "H.I.G. European Capital"},
+  {"img": "", "name": "Paul Zuber", "title": "Operating Partner, NA Lead", "firm": "HG Capital"},
+  {"img": "", "name": "Dr. Katia Walsh", "title": "AI Lead, Portfolio Performance", "firm": "Apollo"},
+  {"img": "", "name": "Bjørn Ruwald", "title": "Partner, Operational Support", "firm": "Bridgepoint"},
+  {"img": "", "name": "Thomas Dixon", "title": "Managing Director, Operating Partner", "firm": "Blackstone"},
+  {"img": "", "name": "Valérie Legat", "title": "Managing Director, Head of Digital", "firm": "Astorg"},
+  {"img": "", "name": "Mathieu Frison", "title": "Partner", "firm": "Charterhouse Capital Partners"}
+ ],
+ "sessions": [
+  {
+   "kind": "people",
+   "time": "9:10–9:55 AM",
+   "title": "AI Into Value Creation: From Analytics to Portfolio EBITDA",
+   "note": "",
+   "sponsorName": "Exact Insight",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "Justin Severidt",
+    "title": "Founder, CEO",
+    "firm": "Exact Insight"
+   },
+   "desc": "A panel combining AI-powered analytics and post-deal portfolio value creation: how funds move from dashboards and experimentation to repeatable AI playbooks that improve revenue, margin, productivity, and management decision quality across portfolio companies. Discussion themes: The Capability Stack — from descriptive dashboards to predictive models, prescriptive recommendations, and embedded AI workflows; Picking Battles — building scalable playbooks across portfolio companies while adapting to sector-specific context; and Humans AND AI — what the operating model actually looks like when both are pulling weight, not when one replaces the other.",
+   "people": [
+    {
+     "img": "",
+     "name": "Jesse Thomas",
+     "title": "Head of Data Science",
+     "firm": "Advent"
+    },
+    {
+     "img": "",
+     "name": "Cameron Hulett",
+     "title": "Head of AI & Digital",
+     "firm": "BC Partners"
+    },
+    {
+     "img": "",
+     "name": "Aris Valtazanos",
+     "title": "Head of Data & Analytics",
+     "firm": "Oakley Capital"
+    },
+    {
+     "img": "",
+     "name": "Tori Pereira",
+     "title": "Head of AI",
+     "firm": "Goldman Sachs Asset Management"
+    }
+   ]
+  },
+  {
+   "kind": "people",
+   "time": "9:55–10:30 AM",
+   "title": "Smarter Deals, Better Handoffs: AI in Diligence and Day-100",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "Moderator TBC",
+    "title": "",
+    "firm": ""
+   },
+   "desc": "How AI is reshaping pre-deal diligence, and how those insights carry into the first hundred days. Deal teams and operators on what survives the handoff, what gets lost, and how to make value creation planning start before signing, not after. Discussion themes: Diligence Beyond the Data Room — how AI is changing what deal teams actually look at, and where human judgement still moves the needle; Surviving the Handoff — what gets lost between IC approval and Day One, and how operators are pulling diligence work forward into value creation; and A Day-100 Plan with Teeth — from thesis to operating cadence in under fourteen weeks, with AI doing the heavy lifting on diagnostics.",
+   "people": [
+    {
+     "img": "",
+     "name": "Dominic Gallello",
+     "title": "Head of Digital and AI",
+     "firm": "Bridgepoint"
+    },
+    {
+     "img": "",
+     "name": "Speaker TBC",
+     "title": "",
+     "firm": ""
+    },
+    {
+     "img": "",
+     "name": "Speaker TBC",
+     "title": "",
+     "firm": ""
+    },
+    {
+     "img": "",
+     "name": "Sponsor speaker TBC",
+     "title": "",
+     "firm": ""
+    }
+   ]
+  },
+  {
+   "kind": "tables",
+   "time": "10:35–11:05 AM",
+   "title": "Roundtables (30 MINUTES)",
+   "desc": "",
+   "tables": [
+    {
+     "topic": "Where Does AI Actually Create Enterprise Value?",
+     "host": ""
+    },
+    {
+     "topic": "What LPs Want to Hear About AI (and What They Don't)",
+     "host": ""
+    },
+    {
+     "topic": "AI in the Investment Lifecycle",
+     "host": ""
+    },
+    {
+     "topic": "AI Governance, Risk & Regulation",
+     "host": ""
+    },
+    {
+     "topic": "Due Diligence & Downside Risk Mitigation",
+     "host": ""
+    }
+   ]
+  },
+  {
+   "kind": "people",
+   "time": "11:10–11:45 AM",
+   "title": "OpenAI Deployment Company: Enterprise AI Deployment, Barriers to Entry & Market Structure",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "Moderator TBC",
+    "title": "",
+    "firm": ""
+   },
+   "desc": "A timely debate on OpenAI's new deployment-company model and what it signals for PE-backed enterprise AI adoption: whether the emerging advantage is in models, data, compute, distribution, implementation talent, or the ability to integrate AI deeply into operating workflows. Discussion themes: What DeployCo Changes — from selling models and software to deploying AI as an embedded transformation capability; Barriers to Entry — proprietary model access, compute scale, enterprise distribution, implementation talent, workflow data, and integration know-how; and The Competition Debate — could vertically integrated model-plus-deployment platforms create lock-in, privileged access, or distribution advantages, or will open-source models, multi-model architectures, and systems integrators keep the market competitive?",
+   "people": [
+    {
+     "img": "",
+     "name": "Speaker TBC",
+     "title": "",
+     "firm": ""
+    },
+    {
+     "img": "",
+     "name": "Speaker TBC",
+     "title": "",
+     "firm": ""
+    },
+    {
+     "img": "",
+     "name": "Speaker TBC",
+     "title": "",
+     "firm": ""
+    },
+    {
+     "img": "",
+     "name": "Sponsor speaker TBC",
+     "title": "",
+     "firm": ""
+    }
+   ]
+  }
+ ],
+ "sponsors": [
+  {
+   "tier": "Past Sponsor",
+   "name": "EY",
+   "img": "",
+   "h": 86,
+   "desc": "Global professional services firm advising private equity firms across the full investment lifecycle, from diligence to value creation and exit."
+  },
+  {
+   "tier": "Past Sponsor",
+   "name": "PwC",
+   "img": "",
+   "h": 86,
+   "desc": "Global professional services firm providing audit, tax, and advisory services to private capital funds, institutional investors, and portfolio companies."
+  },
+  {
+   "tier": "Past Sponsor",
+   "name": "Accordion",
+   "img": "",
+   "h": 86,
+   "desc": "Financial consulting firm supporting private equity sponsors and CFOs across the investment lifecycle, with capabilities spanning finance, technology, business transformation, and transaction support."
+  },
+  {
+   "tier": "Past Sponsor",
+   "name": "BlueFlame AI",
+   "img": "",
+   "h": 86,
+   "desc": "Purpose-built agentic AI platform for alternative investment managers, providing enterprise search, document processing, and workflow automation tools."
+  },
+  {
+   "tier": "Past Sponsor",
+   "name": "ECI",
+   "img": "",
+   "h": 86,
+   "desc": "UK growth-focused private equity firm investing in technology and tech-enabled service businesses across the mid-market."
+  },
+  {
+   "tier": "Past Sponsor",
+   "name": "Auquan",
+   "img": "",
+   "h": 86,
+   "desc": "AI-driven platform that automates manual, time-intensive research and analysis tasks for financial services professionals."
+  }
+ ]
+}

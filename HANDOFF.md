@@ -40,9 +40,12 @@ ongoing project (see §3).
    be fully visible; leftover session-page space becomes ruled "Notes" lines
    (reserved on every page so page endings are identical); session spacing
    is fixed, page breaks are balanced (typesetter DP in `paginateSessions`).
-9. **The document closes with ONE page** — stacked CapLink logo, website,
-   then a compact "Get in Touch" contact directory at the bottom (contact
-   info deliberately low-key; the old standalone contact page is gone).
+9. **The document closes with ONE page** (v32 design): light editorial
+   contact page — accent bar + "For further information, / please contact:"
+   headline (editable: `meta.closingHead1/2`), airy two-column directory,
+   and a full-height skyline photo rail on the right carrying the stacked
+   CapLink logo + website. Optional `meta.backCover: true` adds a full-photo
+   back cover after it (builder checkbox; absent → none).
 10. **Reception (cocktail) pages are special:** no Notes lines; the card shows
    Venue/Experience left + a venue photo right (`sessions[i].img`); the
    thank-you renders as a separate ivory "A Note of Thanks" card that
@@ -80,6 +83,15 @@ ongoing project (see §3).
   Dubai / New York / London in `assets/`; cover lockup: `meta.lockImg`
   (image) or empty string → brand-style text lockup from city + event name;
   ABSENT field → legacy PCS image (rule #1).
+- Back-compat optional fields (all default to legacy behaviour when absent):
+  `meta.lockCity` (lockup left part, supports `\n` line breaks — e.g.
+  "AI / DATA\n& INSIGHT"), `meta.speakersTitle` + `meta.speakersSub`
+  (speakers-page badge/subtitle — used for "Past Speakers" pages),
+  top-level `speakersList` (curated list replaces the session-derived one),
+  `meta.welcome.sign2` ({img,name,title,org} — second signatory for
+  co-hosted events, builder has add/remove), `meta.backCover`,
+  `meta.closingHead1/2`. Mixed-case `meta.city` is respected in headers
+  (all-caps still gets the classic Title-case treatment).
 
 ## 4. Event status (as of last session)
 
@@ -89,11 +101,13 @@ ongoing project (see §3).
 | newyork-2026 | NY PCS, Oct 14 2026, WELL& by Durst + Nasdaq | Seeded — needs review+publish |
 | europe-2027 | European PCS, Feb 2027, London | Seeded — venue conflict in source (The Londoner vs Rosewood), date has no day yet, past-speakers page intentionally omitted |
 | mit-2027 | Private Capital Talent Leadership Summit, Feb 24 2027, MIT Cambridge | Seeded — welcome letter is Claude-drafted (needs Nawshad review); venue building TBC; no sponsors yet; speakers indicative only (NOT placed in sessions on purpose); needs a Boston/Cambridge background photo |
-| ai-data-breakfast-2026 | AI/Data Insights Breakfast | **No content yet — Lara owes the brief** |
+| ai-data-breakfast-2026 | AI / Data & Insight Private Capital Breakfast, Nov 18 2026, The May Fair Hotel, London (co-hosted with PE150) | Seeded from Lara's PDF — needs review+publish. Not represented: the "Two platforms, one room" partnership page (no template page type); PE150 logo, Exact Insight logo, Aram Taghavi signature image not hosted yet |
 
 ## 5. Open items
 
-- AI/Data Insights Breakfast content (Lara to supply).
+- AI/Data Breakfast: Lara to review + publish; still missing PE150 /
+  Exact Insight / past-sponsor logos, Aram Taghavi signature image, and a
+  decision on the partnership ("Two platforms, one room") page.
 - Confirm the `presence` SQL was run; Lara to send **team names + photos**
   to pre-seed the presence picker (currently self-serve name/photo).
 - Speaker headshot URLs → panels (Lara has them all); once photos are in,

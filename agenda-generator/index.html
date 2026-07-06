@@ -73,7 +73,7 @@
 <body>
 <div class="app">
   <div class="left">
-    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v31</span></h1>
+    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v32</span></h1>
     <div class="tip">✏️ <b>Edit like Slides:</b> click any text on the page to type. Click a photo or logo to change it. Hover a session for <b>move / add / delete</b>.</div>
 
     <div class="stepbox">
@@ -118,7 +118,7 @@
 
 <div id="pop"></div>
 
-<script src="../agenda/render.js?v=31"></script>
+<script src="../agenda/render.js?v=32"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -298,6 +298,7 @@ function renderEvent(){
   h+='<label class="f">Show the auto “Confirmed speakers” page?</label><label style="font-size:12px;color:#555"><input type="checkbox" data-chk="meta.showSpeakers" '+(state.meta.showSpeakers!==false?"checked":"")+'> Yes, include it</label>';
   h+='<label class="f">Speakers page style</label><select class="t" data-b="meta.speakersStyle"><option value="list"'+(state.meta.speakersStyle!=="grid"?" selected":"")+'>Text list — 3 lines per speaker</option><option value="grid"'+(state.meta.speakersStyle==="grid"?" selected":"")+'>Photo grid — best once headshots are added</option></select>';
   h+='<label class="f">Fill leftover space with ruled “Notes” lines?</label><label style="font-size:12px;color:#555"><input type="checkbox" data-chk="meta.notesFill" '+(state.meta.notesFill!==false?"checked":"")+'> Yes (like a printed planner)</label>';
+  h+='<label class="f">End with a full-photo back cover?</label><label style="font-size:12px;color:#555"><input type="checkbox" data-chk="meta.backCover" '+(state.meta.backCover?"checked":"")+'> Yes, add a photo back page</label>';
   h+='<label class="f" style="margin-top:12px">Skyline background (cover &amp; dark pages)</label>';
   h+='<div class="card"><div class="bar">'+
     '<button class="mini" data-setbg="../assets/sky.jpg">Dubai</button>'+
@@ -317,6 +318,12 @@ function renderWelcome(){
   let h='<p style="font-size:11.5px;color:#8a8088;margin:8px 0">The letter text is edited by clicking it on the page. Here you can add/remove paragraphs.</p>';
   (state.meta.welcome.paras||[]).forEach((p,i)=>{h+='<div class="bar" style="margin-top:5px"><span style="font-size:11.5px;color:#555;flex:1">Paragraph '+(i+1)+'</span><button class="mini del" data-del="meta.welcome.paras.'+i+'">✕</button></div>';});
   h+='<div class="addrow"><button data-add="para">+ Add paragraph</button></div>';
+  h+='<label class="f" style="margin-top:12px">Second signatory (for co-hosted events)</label>';
+  if(state.meta.welcome.sign2){
+    h+='<div class="bar"><span style="font-size:11.5px;color:#555;flex:1">'+esc(state.meta.welcome.sign2.name||"Second signature")+' — edit it on the page</span><button class="mini del" data-unset="meta.welcome.sign2">✕</button></div>';
+  }else{
+    h+='<div class="addrow"><button data-add="sign2">+ Add second signature</button></div>';
+  }
   document.getElementById("secWelcome").innerHTML=h;
 }
 function renderSessions(){
@@ -411,6 +418,7 @@ function handleOp(btn){
   else if(op==="add"){openAddPop(btn,i);return;}
   else if(op==="sponlogo"){const r=btn.getBoundingClientRect();openPopForPath("sessions."+i+".sponsorImg","logo",r.left,r.bottom);return;}
   else if(op==="signimg"){const r=btn.getBoundingClientRect();openPopForPath("meta.welcome.signImg","logo",r.left,r.bottom);return;}
+  else if(op==="sign2img"){const r=btn.getBoundingClientRect();openPopForPath("meta.welcome.sign2.img","logo",r.left,r.bottom);return;}
   else if(op==="lockimg"){const r=btn.getBoundingClientRect();openPopForPath("meta.lockImg","logo",r.left,r.bottom);return;}
   else if(op==="recimg"){const r=btn.getBoundingClientRect();openPopForPath("sessions."+i+".img","bg",r.left,r.bottom);return;}
   else if(op==="spadd"){
@@ -501,6 +509,7 @@ L.addEventListener("change",async e=>{
 L.addEventListener("click",e=>{
   const b=e.target.closest("button");if(!b)return;
   const arr=p=>{const ks=p.split(".");const idx=+ks.pop();return{a:ks.reduce((o,k)=>o[k],state),idx};};
+  if(b.dataset.unset!=null){e.preventDefault();snapshot();const parts=b.dataset.unset.split(".");let o=state;for(let i=0;i<parts.length-1&&o;i++)o=o[parts[i]];if(o)delete o[parts[parts.length-1]];renderForm();rebuild();return;}
   if(b.dataset.del!=null){e.preventDefault();snapshot();const{a,idx}=arr(b.dataset.del);a.splice(idx,1);renderForm();rebuild();return;}
   if(b.dataset.phc){e.preventDefault();snapshot();set(b.dataset.phc,"");renderForm();rebuild();return;}
   if(b.dataset.up!=null){e.preventDefault();const i=+b.dataset.up;if(i>0){snapshot();const x=state.sessions.splice(i,1)[0];state.sessions.splice(i-1,0,x);renderForm();rebuild();}return;}
@@ -512,6 +521,7 @@ L.addEventListener("click",e=>{
     e.preventDefault();snapshot();const t=b.dataset.add;
     if(t==="coverPartner")state.meta.coverPartners.push({label:"Official Partner",name:"NAME",img:"",h:56});
     if(t==="para")state.meta.welcome.paras.push("New paragraph — click it on the page to write.");
+    if(t==="sign2")state.meta.welcome.sign2={img:"",name:"Full Name",title:"Title",org:"ORGANISATION"};
     if(t==="contact")state.meta.contacts.push({name:"New Person",role:"Role",email:"",t:"",m:""});
     if(t==="sponsor")state.sponsors.push({tier:"Gold Sponsor",name:"New Sponsor",img:"",h:86,desc:"Description — click on the page to edit."});
     if(t==="session")state.sessions.push(newSession(document.getElementById("newKind").value));
