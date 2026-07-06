@@ -37,7 +37,7 @@ var CSS=
 ".agdk .ct-web{position:absolute;left:0;right:0;bottom:44px;text-align:center;font-size:12px;letter-spacing:.32em;font-weight:600;color:rgba(255,255,255,.75);text-transform:uppercase}"+
 ".agdk .back-web{position:absolute;left:0;right:0;bottom:130px;text-align:center;font-size:13px;letter-spacing:.34em;font-weight:600;color:rgba(255,255,255,.85);text-transform:uppercase}"+
 ".agdk-edit [data-edit]:empty{display:inline-block;min-width:34px;min-height:1em}"+
-".agdk-edit [data-edit]:empty::after{content:'· · ·';opacity:.4}"+
+".agdk-edit [data-edit]:empty::after{content:'· · ·';opacity:.18}"+
 ".agdk .cov-cap{position:absolute;top:64px;left:64px;height:42px}"+
 ".agdk .cov-lock{position:absolute;top:372px;left:50%;transform:translateX(-50%);width:560px}"+
 ".agdk .cov-date{position:absolute;top:696px;left:0;right:0;text-align:center;font-size:19px;font-weight:700;letter-spacing:.26em}"+
@@ -124,20 +124,19 @@ var CSS=
 ".agdk .sp-logo .snm{font-size:22px;font-weight:700;color:#28222c;text-align:center}"+
 ".agdk .sp-desc{background:#f4f2f4;flex:1;padding:20px 19px;font-size:12.2px;line-height:1.7;color:#524c57;overflow:hidden}"+
 /* contact */
-".agdk .ct-cap{position:absolute;top:82px;left:64px;font-size:11px;letter-spacing:.3em;font-weight:600;text-transform:uppercase;opacity:.85}"+
-".agdk .ct-title{position:absolute;top:110px;left:64px;font-size:44px;font-weight:700;letter-spacing:.02em}"+
+".agdk .ct-cap{position:absolute;top:80px;left:64px;font-size:10px;letter-spacing:.34em;font-weight:600;text-transform:uppercase;color:rgba(255,255,255,.55)}"+
+".agdk .ct-title{position:absolute;top:106px;left:64px;font-size:40px;font-weight:300;letter-spacing:.14em}"+
 ".agdk .ct-sub{position:absolute;top:180px;left:64px;right:64px;font-size:12px;font-weight:300;opacity:.88;line-height:1.6}"+
-".agdk .ct-line{position:absolute;top:236px;left:64px;right:64px;height:2px;background:linear-gradient(90deg,var(--accent),rgba(255,255,255,.12))}"+
-".agdk .ct-grid{position:absolute;top:268px;left:64px;right:64px;bottom:104px;display:grid;grid-template-columns:1fr 1fr;gap:16px;grid-auto-rows:1fr}"+
-".agdk .ct-card{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:20px 24px;display:flex;flex-direction:column;justify-content:center;min-width:0}"+
-".agdk .ct-card.feat{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:space-between;gap:30px;background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.22)}"+
-".agdk .ct .nm{font-size:17px;font-weight:700;line-height:1.25}"+
-".agdk .ct-card.feat .nm{font-size:21px}"+
-".agdk .ct .rl2{font-size:9px;letter-spacing:.22em;font-weight:600;color:rgba(255,255,255,.62);margin:4px 0 0;text-transform:uppercase}"+
-".agdk .ct-lines{margin-top:12px}"+
-".agdk .ct-card.feat .ct-lines{margin-top:0;text-align:right}"+
-".agdk .ct .ln{font-size:11.5px;font-weight:400;color:rgba(255,255,255,.92);margin-bottom:4px}"+
-".agdk .ln .lk{display:inline-block;width:16px;font-size:8.5px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.45)}"+
+".agdk .ct-line{position:absolute;top:234px;left:64px;right:64px;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.4),rgba(255,255,255,.08))}"+
+".agdk .ct-list{position:absolute;top:266px;left:64px;right:64px;bottom:104px;display:flex;flex-direction:column}"+
+".agdk .ct-row{flex:1;display:flex;align-items:center;justify-content:space-between;gap:40px;border-bottom:1px solid rgba(255,255,255,.13);min-height:0}"+
+".agdk .ct-row:last-child{border-bottom:none}"+
+".agdk .ct .nm{font-size:16.5px;font-weight:600;letter-spacing:.02em;line-height:1.3}"+
+".agdk .ct .rl2{font-size:8.5px;letter-spacing:.26em;font-weight:500;color:rgba(255,255,255,.5);margin-top:5px;text-transform:uppercase}"+
+".agdk .ct-lines{text-align:right;flex:0 0 auto}"+
+".agdk .ct .ln{font-size:11.8px;font-weight:300;color:rgba(255,255,255,.88);margin-top:3px;letter-spacing:.02em;font-variant-numeric:tabular-nums}"+
+".agdk .ct .ln:first-child{margin-top:0;font-weight:400;color:#fff}"+
+".agdk .ln .lk{display:inline-block;width:17px;font-size:8px;font-weight:600;letter-spacing:.1em;color:rgba(255,255,255,.35);text-align:left}"+
 ".agdk .back-logo{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);width:330px}"+
 /* editor affordances (active only under .agdk-edit) */
 ".agdk-edit [data-edit]{cursor:text;border-radius:3px;outline:1px dashed transparent;transition:outline-color .12s,background .12s}"+
@@ -275,12 +274,12 @@ function contactSlide(d,n){
   var m=d.meta;if(!m.contacts||!m.contacts.length)return null;
   var cells=m.contacts.map(function(c,i){
     var b="meta.contacts."+i;
-    var lines='<div class="ct-lines"><div class="ln"><span class="lk">E</span><span'+de(b+".email")+'>'+esc(c.email)+'</span></div>'+
+    var lines='<div class="ct-lines"><div class="ln"><span'+de(b+".email")+'>'+esc(c.email)+'</span></div>'+
       (c.t||EDIT?'<div class="ln"><span class="lk">T</span><span'+de(b+".t")+'>'+esc(c.t)+'</span></div>':"")+
       (c.m||EDIT?'<div class="ln"><span class="lk">M</span><span'+de(b+".m")+'>'+esc(c.m)+'</span></div>':"")+'</div>';
-    return '<div class="ct ct-card'+(i===0?' feat':'')+'"><div><div class="nm"'+de(b+".name")+'>'+esc(c.name)+'</div><div class="rl2"'+de(b+".role")+'>'+esc(c.role)+'</div></div>'+lines+'</div>';
+    return '<div class="ct ct-row"><div><div class="nm"'+de(b+".name")+'>'+esc(c.name)+'</div><div class="rl2"'+de(b+".role")+'>'+esc(c.role)+'</div></div>'+lines+'</div>';
   }).join("");
-  return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><div class="ct-tint"></div><div class="ct-cap">Get In Touch</div><div class="ct-title">CONTACT US</div><div class="ct-sub"'+de("meta.contactsSub",1)+'>'+esc(m.contactsSub||"")+'</div><div class="ct-line"></div><div class="ct-grid">'+cells+'</div>');
+  return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><div class="ct-tint"></div><div class="ct-cap">Get In Touch</div><div class="ct-title">CONTACT US</div><div class="ct-sub"'+de("meta.contactsSub",1)+'>'+esc(m.contactsSub||"")+'</div><div class="ct-line"></div><div class="ct-list">'+cells+'</div>');
 }
 function bgSrc(m){return (m&&m.bgImg&&String(m.bgImg).trim())?m.bgImg:SKY;}
 function backSlide(m){return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><img class="back-logo" src="'+CAPSTACK+'"><div class="back-web"'+de("meta.website")+'>'+esc(m.website||"www.caplink-group.com")+'</div>');}
