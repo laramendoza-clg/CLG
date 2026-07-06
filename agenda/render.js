@@ -35,8 +35,9 @@ var CSS=
 ".agdk .cov-date{position:absolute;top:696px;left:0;right:0;text-align:center;font-size:19px;font-weight:700;letter-spacing:.26em}"+
 ".agdk .cov-date span{font-weight:300;letter-spacing:.2em;opacity:.85}"+
 ".agdk .cov-rail{position:absolute;left:64px;right:64px;bottom:108px;display:flex;justify-content:center;gap:80px;text-align:center}"+
-".agdk .cov-rail .cp{display:flex;flex-direction:column;align-items:center;gap:10px}"+
+".agdk .cov-rail .cp{display:flex;flex-direction:column;align-items:center;gap:6px}"+
 ".agdk .cov-rail .lbl{font-size:9.5px;letter-spacing:.3em;font-weight:600;color:rgba(255,255,255,.85);text-transform:uppercase}"+
+".agdk .cov-rail .slot{height:96px;display:flex;align-items:center;justify-content:center}"+
 ".agdk .cov-rail img{max-width:190px;object-fit:contain}"+
 ".agdk .cov-rail .txt{font-size:19px;font-weight:600;letter-spacing:.12em}"+
 ".agdk .cov-note{position:absolute;left:0;right:0;bottom:42px;text-align:center;font-size:10px;opacity:.55;font-weight:300;letter-spacing:.08em}"+
@@ -199,8 +200,8 @@ function coverSlide(d){
   var m=d.meta;
   var rail=(m.coverPartners||[]).map(function(p,i){
     var base="meta.coverPartners."+i;
-    return '<div class="cp"><div class="lbl"'+de(base+".label")+'>'+esc(p.label)+'</div>'+
-      (p.img?'<img src="'+esc(p.img)+'" style="height:'+(p.h||56)+'px"'+dp(base+".img","logo")+'>':'<div class="txt"'+de(base+".name")+'>'+esc(p.name)+'</div>')+'</div>';
+    return '<div class="cp"><div class="lbl"'+de(base+".label")+'>'+esc(p.label)+'</div><div class="slot">'+
+      (p.img?'<img src="'+esc(p.img)+'" style="height:'+(p.h||56)+'px"'+dp(base+".img","logo")+'>':'<div class="txt"'+de(base+".name")+'>'+esc(p.name)+'</div>')+'</div></div>';
   }).join("");
   return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div>'+
     '<img class="cov-cap" src="'+CAP+'">'+
