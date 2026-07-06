@@ -73,7 +73,7 @@
 <body>
 <div class="app">
   <div class="left">
-    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v18</span></h1>
+    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v19</span></h1>
     <div class="tip">✏️ <b>Edit like Slides:</b> click any text on the page to type. Click a photo or logo to change it. Hover a session for <b>move / add / delete</b>.</div>
 
     <div class="stepbox">
@@ -117,7 +117,7 @@
 
 <div id="pop"></div>
 
-<script src="../agenda/render.js?v=18"></script>
+<script src="../agenda/render.js?v=19"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -332,9 +332,12 @@ function renderSponsors(){
   document.getElementById("secSponsors").innerHTML=h;
 }
 function renderContacts(){
-  let h='<p style="font-size:11.5px;color:#8a8088;margin:8px 0">Details are edited by clicking the page. Add or remove people here.</p>';
+  let h='<p style="font-size:11.5px;color:#8a8088;margin:8px 0">Edit here or click the page. Leave phone fields blank to hide them.</p>';
   state.meta.contacts.forEach((c,i)=>{
-    h+='<div class="bar" style="margin-top:5px"><span style="font-size:12px;color:#444;flex:1">'+esc(c.name||("Person "+(i+1)))+'</span><button class="mini del" data-del="meta.contacts.'+i+'">✕</button></div>';
+    const b="meta.contacts."+i;
+    h+='<div class="card"><div class="bar"><input class="t grow" type="text" placeholder="Name" value="'+esc(c.name)+'" data-b="'+b+'.name"><input class="t grow" type="text" placeholder="Role" value="'+esc(c.role)+'" data-b="'+b+'.role"><button class="mini del" data-del="'+b+'">✕</button></div>'+
+      '<input class="t" style="margin-top:5px" type="text" placeholder="Email" value="'+esc(c.email)+'" data-b="'+b+'.email">'+
+      '<div class="grid2" style="margin-top:5px"><input class="t" type="text" placeholder="T: office phone (optional)" value="'+esc(c.t)+'" data-b="'+b+'.t"><input class="t" type="text" placeholder="M: mobile (optional)" value="'+esc(c.m)+'" data-b="'+b+'.m"></div></div>';
   });
   h+='<div class="addrow"><button data-add="contact">+ Add person</button></div>';
   document.getElementById("secContacts").innerHTML=h;

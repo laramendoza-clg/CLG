@@ -30,6 +30,9 @@ var CSS=
 ".agdk .dark{color:#fff}"+
 ".agdk .dark .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}"+
 ".agdk .dark .tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,14,.45),rgba(10,10,14,.25) 45%,rgba(10,10,14,.62))}"+
+".agdk .ct-tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,9,15,.86),rgba(12,9,15,.78) 45%,rgba(12,9,15,.9))}"+
+".agdk-edit [data-edit]:empty{display:inline-block;min-width:34px;min-height:1em}"+
+".agdk-edit [data-edit]:empty::after{content:'· · ·';opacity:.4}"+
 ".agdk .cov-cap{position:absolute;top:64px;left:64px;height:42px}"+
 ".agdk .cov-lock{position:absolute;top:372px;left:50%;transform:translateX(-50%);width:560px}"+
 ".agdk .cov-date{position:absolute;top:696px;left:0;right:0;text-align:center;font-size:19px;font-weight:700;letter-spacing:.26em}"+
@@ -66,7 +69,7 @@ var CSS=
 ".agdk .spk-gridwrap{position:absolute;top:206px;left:64px;right:64px;bottom:72px;display:flex;flex-direction:column;gap:20px}"+
 ".agdk .spk-row{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 22px}"+
 ".agdk .spk-cell{display:flex;gap:11px;align-items:flex-start;min-width:0}"+
-".agdk .spk-cell img{width:56px;height:56px;object-fit:cover;border-radius:5px;flex:0 0 auto}"+
+".agdk .spk-cell img{width:56px;height:56px;object-fit:cover;border-radius:0;flex:0 0 auto}"+
 ".agdk .spk-cell .nm{font-size:12px;font-weight:700;color:#241020;line-height:1.25}"+
 ".agdk .spk-cell .tt{font-size:9.8px;color:#7f7984;font-style:italic;line-height:1.3;margin-top:1px}"+
 ".agdk .spk-cell .fm{font-size:10.4px;font-weight:700;color:#38323c;margin-top:2px;line-height:1.25}"+
@@ -90,7 +93,7 @@ var CSS=
 ".agdk .rdesc{font-size:12.4px;line-height:1.62;color:#6e6873;padding:2px 4px 14px}"+
 ".agdk .prow{display:grid;grid-template-columns:repeat(3,1fr);gap:20px 24px;padding:6px 4px 24px}"+
 ".agdk .pcell{display:flex;gap:13px;align-items:flex-start;min-width:0}"+
-".agdk .pcell img{width:68px;height:68px;object-fit:cover;border-radius:6px;flex:0 0 auto}"+
+".agdk .pcell img{width:68px;height:68px;object-fit:cover;border-radius:0;flex:0 0 auto}"+
 ".agdk .pcell .mtag{font-size:9px;letter-spacing:.2em;color:var(--accent);font-weight:700;text-transform:uppercase;margin-bottom:3px}"+
 ".agdk .pcell .nm{font-size:12.8px;font-weight:700;color:#241f26;line-height:1.28}"+
 ".agdk .pcell .tt{font-size:11px;color:#7f7984;line-height:1.38;margin-top:2px}"+
@@ -114,7 +117,7 @@ var CSS=
 ".agdk .sp-logo{height:130px;display:flex;align-items:center;justify-content:center;padding:16px 12px}"+
 ".agdk .sp-logo img{max-width:75%;object-fit:contain}"+
 ".agdk .sp-logo .snm{font-size:22px;font-weight:700;color:#28222c;text-align:center}"+
-".agdk .sp-desc{background:#f4f2f4;flex:1;padding:16px 16px;font-size:10.2px;line-height:1.6;color:#5c5661;overflow:hidden}"+
+".agdk .sp-desc{background:#f4f2f4;flex:1;padding:20px 19px;font-size:12.2px;line-height:1.7;color:#524c57;overflow:hidden}"+
 /* contact */
 ".agdk .ct-cap{position:absolute;top:82px;left:64px;font-size:11px;letter-spacing:.3em;font-weight:600;text-transform:uppercase;opacity:.85}"+
 ".agdk .ct-title{position:absolute;top:110px;left:64px;font-size:44px;font-weight:700;letter-spacing:.02em}"+
@@ -264,7 +267,7 @@ function contactSlide(d,n){
     return '<div class="ct"><div class="nm"'+de(b+".name")+'>'+esc(c.name)+'</div><div class="rl2"'+de(b+".role")+'>'+esc(c.role)+'</div>'+
       '<div class="ln"'+de(b+".email")+'>'+esc(c.email)+'</div>'+(c.t||EDIT?'<div class="ln">T: <span'+de(b+".t")+'>'+esc(c.t)+'</span></div>':"")+(c.m||EDIT?'<div class="ln">M: <span'+de(b+".m")+'>'+esc(c.m)+'</span></div>':"")+'</div>';
   }).join("");
-  return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><div class="ct-cap">Get In Touch</div><div class="ct-title">CONTACT US</div><div class="ct-sub"'+de("meta.contactsSub",1)+'>'+esc(m.contactsSub||"")+'</div><div class="ct-line"></div><div class="ct-grid">'+cells+'</div>');
+  return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><div class="ct-tint"></div><div class="ct-cap">Get In Touch</div><div class="ct-title">CONTACT US</div><div class="ct-sub"'+de("meta.contactsSub",1)+'>'+esc(m.contactsSub||"")+'</div><div class="ct-line"></div><div class="ct-grid">'+cells+'</div>');
 }
 function bgSrc(m){return (m&&m.bgImg&&String(m.bgImg).trim())?m.bgImg:SKY;}
 function backSlide(m){return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><img class="back-logo" src="'+CAP+'">');}
