@@ -14,6 +14,8 @@ var THEMES={
 };
 var SIL='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88"><rect width="88" height="88" fill="#d3d3d6"/><circle cx="44" cy="34" r="15" fill="#b6b6bb"/><path d="M14 88c3-20 16-28 30-28s27 8 30 28z" fill="#b6b6bb"/></svg>');
 var SKY="../assets/sky.jpg", CAP="../assets/caplink-group.png", LOCK="../assets/pcs-lockup.png";
+var CAPW="https://images.squarespace-cdn.com/content/5dc9f095a5705651ea40e08b/008f2ad1-32fb-48f6-b1ba-0392c1d2b27b/CapLink-Logo-White.png?content-type=image%2Fpng";
+var CAPSTACK="https://images.squarespace-cdn.com/content/5dc9f095a5705651ea40e08b/d3350fd1-e6ea-45ee-8a37-245875e886e2/CapLink-Colour-Stacked-White.png?content-type=image%2Fpng";
 var EDIT=false;
 
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
@@ -30,7 +32,10 @@ var CSS=
 ".agdk .dark{color:#fff}"+
 ".agdk .dark .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}"+
 ".agdk .dark .tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,14,.45),rgba(10,10,14,.25) 45%,rgba(10,10,14,.62))}"+
-".agdk .ct-tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,9,15,.86),rgba(12,9,15,.78) 45%,rgba(12,9,15,.9))}"+
+".agdk .ct-tint{position:absolute;inset:0;background:linear-gradient(160deg,rgba(30,11,27,.96) 0%,rgba(42,18,40,.9) 48%,rgba(22,8,20,.96) 100%)}"+
+".agdk .ct-logo{position:absolute;top:58px;right:64px;height:34px}"+
+".agdk .ct-web{position:absolute;left:0;right:0;bottom:44px;text-align:center;font-size:12px;letter-spacing:.32em;font-weight:600;color:rgba(255,255,255,.75);text-transform:uppercase}"+
+".agdk .back-web{position:absolute;left:0;right:0;bottom:130px;text-align:center;font-size:13px;letter-spacing:.34em;font-weight:600;color:rgba(255,255,255,.85);text-transform:uppercase}"+
 ".agdk-edit [data-edit]:empty{display:inline-block;min-width:34px;min-height:1em}"+
 ".agdk-edit [data-edit]:empty::after{content:'· · ·';opacity:.4}"+
 ".agdk .cov-cap{position:absolute;top:64px;left:64px;height:42px}"+
@@ -122,12 +127,12 @@ var CSS=
 ".agdk .ct-cap{position:absolute;top:82px;left:64px;font-size:11px;letter-spacing:.3em;font-weight:600;text-transform:uppercase;opacity:.85}"+
 ".agdk .ct-title{position:absolute;top:110px;left:64px;font-size:44px;font-weight:700;letter-spacing:.02em}"+
 ".agdk .ct-sub{position:absolute;top:180px;left:64px;right:64px;font-size:12px;font-weight:300;opacity:.88;line-height:1.6}"+
-".agdk .ct-line{position:absolute;top:236px;left:64px;right:64px;height:1px;background:rgba(255,255,255,.35)}"+
+".agdk .ct-line{position:absolute;top:236px;left:64px;right:64px;height:2px;background:linear-gradient(90deg,var(--accent),rgba(255,255,255,.12))}"+
 ".agdk .ct-grid{position:absolute;top:272px;left:64px;right:64px;display:grid;grid-template-columns:1fr 1fr;gap:42px 38px}"+
 ".agdk .ct .nm{font-size:18px;font-weight:700}"+
 ".agdk .ct .rl2{font-size:9.5px;letter-spacing:.22em;font-weight:500;opacity:.75;margin:4px 0 12px;text-transform:uppercase}"+
 ".agdk .ct .ln{font-size:11.5px;font-weight:300;opacity:.95;margin-bottom:5px}"+
-".agdk .back-logo{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:430px}"+
+".agdk .back-logo{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);width:330px}"+
 /* editor affordances (active only under .agdk-edit) */
 ".agdk-edit [data-edit]{cursor:text;border-radius:3px;outline:1px dashed transparent;transition:outline-color .12s,background .12s}"+
 ".agdk-edit [data-edit]:hover{outline-color:#c9a0bd;background:rgba(107,37,84,.07)}"+
@@ -208,7 +213,7 @@ function coverSlide(d){
       (p.img?'<img src="'+esc(p.img)+'" style="height:'+(p.h||56)+'px"'+dp(base+".img","logo")+'>':'<div class="txt"'+de(base+".name")+'>'+esc(p.name)+'</div>')+'</div></div>';
   }).join("");
   return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div>'+
-    '<img class="cov-cap" src="'+CAP+'">'+
+    '<img class="cov-cap" src="'+CAPW+'">'+
     '<img class="cov-lock" src="'+LOCK+'">'+
     '<div class="cov-date"><span'+de("meta.dateLine")+' style="font-weight:700">'+esc(m.dateLine)+'</span>  <span>|</span>  <span'+de("meta.locLine")+'>'+esc(m.locLine)+'</span></div>'+
     '<div class="cov-rail">'+rail+'</div>'+
@@ -270,7 +275,7 @@ function contactSlide(d,n){
   return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><div class="ct-tint"></div><div class="ct-cap">Get In Touch</div><div class="ct-title">CONTACT US</div><div class="ct-sub"'+de("meta.contactsSub",1)+'>'+esc(m.contactsSub||"")+'</div><div class="ct-line"></div><div class="ct-grid">'+cells+'</div>');
 }
 function bgSrc(m){return (m&&m.bgImg&&String(m.bgImg).trim())?m.bgImg:SKY;}
-function backSlide(m){return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><img class="back-logo" src="'+CAP+'">');}
+function backSlide(m){return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><img class="back-logo" src="'+CAPSTACK+'"><div class="back-web"'+de("meta.website")+'>'+esc(m.website||"www.caplink-group.com")+'</div>');}
 
 /* --- measurement helpers: run inside a live offscreen slide --- */
 function measureBlocks(root,htmlList,wrapClass,width){
