@@ -50,7 +50,8 @@ var CSS=
 ".agdk .wel-band{position:absolute;top:150px;left:64px;right:64px;background:var(--pill);color:#fff;border-radius:22px;text-align:center;font-size:11.5px;letter-spacing:.28em;font-weight:600;padding:10px 0;text-transform:uppercase}"+
 ".agdk .wel-body{position:absolute;top:206px;left:64px;right:64px;bottom:70px;font-size:14px;line-height:1.74;color:#4c4650;font-weight:400;overflow:hidden}"+
 ".agdk .wel-body p{margin-bottom:17px}"+
-".agdk .wel-sig{margin-top:38px}"+
+".agdk .wel-sig{margin-top:34px}"+
+".agdk .wel-sig .sig{height:58px;display:block;margin-bottom:9px;max-width:280px;object-fit:contain;object-position:left}"+
 ".agdk .wel-sig .nm{font-size:15.5px;color:#241020}.agdk .wel-sig .nm b{font-weight:700}"+
 ".agdk .wel-sig .org{font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--accent);margin-top:5px;text-transform:uppercase}"+
 /* speakers */
@@ -152,9 +153,11 @@ function pcell(p,path,tagPath,tagVal){
     '<div class="fm"'+de(path+".firm")+'>'+esc(p.firm)+'</div></div></div>';
 }
 function sponHtml(s,b){
-  if(!s.sponsorImg&&!s.sponsorName)return EDIT?'<div class="rspon"><span class="sb">SPONSORED BY:</span><span class="snm" '+de(b+".sponsorName").slice(1)+' style="color:#c9bfc7">— add —</span></div>':"";
+  var i=b.split(".")[1];
+  var logoBtn=(EDIT&&!s.sponsorImg)?'<span class="ghost gt" data-op="sponlogo" data-i="'+i+'" style="min-height:22px;padding:3px 9px;font-size:9px" title="Add the sponsor\'s logo">+ logo</span>':"";
+  if(!s.sponsorImg&&!s.sponsorName)return EDIT?'<div class="rspon"><span class="sb">SPONSORED BY:</span><span class="snm" '+de(b+".sponsorName").slice(1)+' style="color:#c9bfc7">— add —</span>'+logoBtn+'</div>':"";
   var h=s.sponsorH||30;
-  return '<div class="rspon"><span class="sb">SPONSORED BY:</span>'+(s.sponsorImg?'<img src="'+esc(s.sponsorImg)+'" style="height:'+h+'px"'+dp(b+".sponsorImg","logo")+'>':'<span class="snm"'+de(b+".sponsorName")+'>'+esc(s.sponsorName)+'</span>')+'</div>';
+  return '<div class="rspon"><span class="sb">SPONSORED BY:</span>'+(s.sponsorImg?'<img src="'+esc(s.sponsorImg)+'" style="height:'+h+'px"'+dp(b+".sponsorImg","logo")+'>':'<span class="snm"'+de(b+".sponsorName")+'>'+esc(s.sponsorName)+'</span>'+logoBtn)+'</div>';
 }
 function rowbar(i){
   if(!EDIT)return"";
@@ -211,7 +214,9 @@ function welcomeSlide(d,n){
   return slide("",header(m)+
     '<div class="wel-band"'+de("meta.bandLine")+'>'+esc(m.bandLine)+'</div>'+
     '<div class="wel-body">'+(w.paras||[]).map(function(p,i){return '<p'+de("meta.welcome.paras."+i,1)+'>'+esc(p)+"</p>";}).join("")+
-    '<div class="wel-sig"><div class="nm"><b'+de("meta.welcome.signName")+'>'+esc(w.signName)+'</b>, <span'+de("meta.welcome.signTitle")+'>'+esc(w.signTitle)+'</span></div><div class="org"'+de("meta.welcome.signOrg")+'>'+esc(w.signOrg)+'</div></div>'+
+    '<div class="wel-sig">'+
+    (w.signImg?'<img class="sig" src="'+esc(w.signImg)+'"'+dp("meta.welcome.signImg","logo")+'>':(EDIT?'<div class="ghost gt" data-op="signimg" style="width:210px;margin-bottom:9px">+ Signature image</div>':""))+
+    '<div class="nm"><b'+de("meta.welcome.signName")+'>'+esc(w.signName)+'</b>, <span'+de("meta.welcome.signTitle")+'>'+esc(w.signTitle)+'</span></div><div class="org"'+de("meta.welcome.signOrg")+'>'+esc(w.signOrg)+'</div></div>'+
     '</div>'+foot(m,n));
 }
 function speakerList(d){

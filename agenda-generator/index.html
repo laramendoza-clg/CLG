@@ -73,7 +73,7 @@
 <body>
 <div class="app">
   <div class="left">
-    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v14</span></h1>
+    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v15</span></h1>
     <div class="tip">✏️ <b>Edit like Slides:</b> click any text on the page to type. Click a photo or logo to change it. Hover a session for <b>move / add / delete</b>.</div>
 
     <div class="stepbox">
@@ -117,7 +117,7 @@
 
 <div id="pop"></div>
 
-<script src="../agenda/render.js?v=14"></script>
+<script src="../agenda/render.js?v=15"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -143,7 +143,8 @@ function starter(){return {
    "The programme offers a comprehensive macro and thematic outlook across private markets, featuring leading voices from top-tier firms. Discussions will cover key areas including value creation, AI and digital transformation, fund structuring and regulation, tax and compliance, operational due diligence, secondaries, and private credit—equipping attendees with practical insights to navigate an increasingly complex market.",
    "We are grateful to our partners for their continued support and look forward to welcoming you to Dubai.",
    "We'd like to thank our event sponsors for their support of this industry-leading event. We look forward to hosting you at the conference!"],
-   signName:"Nawshad Noorkhan", signTitle:"Founder, Managing Director", signOrg:"CAPLINK GROUP"},
+   signName:"Nawshad Noorkhan", signTitle:"Founder, Managing Director", signOrg:"CAPLINK GROUP",
+   signImg:"https://images.squarespace-cdn.com/content/5dc9f095a5705651ea40e08b/27a2c53f-2076-45cf-a764-ee37a8768ad4/Screenshot+2026-06-08+at+5.55.15%E2%80%AFPM.png?content-type=image%2Fpng"},
   contactsSub:"We look forward to working with you. Please reach out to any member of the team to discuss how we can maximise your partnership.",
   contacts:[
    {name:"Nawshad Noorkhan",role:"Managing Director",email:"Nawshad.Noorkhan@caplink-group.com",t:"+44 (0) 208 064 3265",m:"+44 (0) 7415 880057"},
@@ -376,6 +377,8 @@ function handleOp(btn){
   else if(op==="addlead"){state.sessions[i].lead={img:"",name:"Name",title:"Title",firm:"Firm"};if(!state.sessions[i].roleLabel)state.sessions[i].roleLabel="MODERATOR";}
   else if(op==="addtable"){state.sessions[i].tables.push({topic:"New topic",host:""});}
   else if(op==="add"){openAddPop(btn,i);return;}
+  else if(op==="sponlogo"){const r=btn.getBoundingClientRect();openPopForPath("sessions."+i+".sponsorImg","logo",r.left,r.bottom);return;}
+  else if(op==="signimg"){const r=btn.getBoundingClientRect();openPopForPath("meta.welcome.signImg","logo",r.left,r.bottom);return;}
   renderForm();rebuild();
 }
 
@@ -384,8 +387,9 @@ const pop=document.getElementById("pop");
 function placePop(x,y){pop.style.display="block";const r=pop.getBoundingClientRect();pop.style.left=Math.min(Math.max(8,x-135),innerWidth-r.width-8)+"px";pop.style.top=Math.min(Math.max(8,y+12),innerHeight-r.height-8)+"px";}
 function closePop(){pop.style.display="none";pop.innerHTML="";}
 document.addEventListener("mousedown",e=>{if(pop.style.display==="block"&&!pop.contains(e.target))closePop();});
-function openPop(img,e){
-  const path=img.dataset.photo,mode=img.dataset.mode,sp=sizePathFor(path);
+function openPop(img,e){openPopForPath(img.dataset.photo,img.dataset.mode,e.clientX,e.clientY);}
+function openPopForPath(path,mode,px,py){
+  const sp=sizePathFor(path);
   const isPerson=/\.people\.\d+\.img$/.test(path),isLead=/\.lead\.img$/.test(path);
   let h='<h5>'+(mode==="logo"?"Logo":"Photo")+'</h5>';
   h+='<button class="b up" style="width:100%">📁 Upload from computer<input type="file" accept="image/*" data-popfile="1"></button>';
@@ -396,7 +400,7 @@ function openPop(img,e){
   if(isPerson)h+='<button class="b" style="color:#a33" data-poprm="1">Remove person</button>';
   if(isLead)h+='<button class="b" style="color:#a33" data-poprm="1">Remove moderator</button>';
   h+='</div>';
-  pop.innerHTML=h;placePop(e.clientX,e.clientY);
+  pop.innerHTML=h;placePop(px,py);
   pop.querySelector("[data-popfile]").addEventListener("change",async ev=>{
     const f=ev.target.files[0];if(!f)return;
     try{const d=mode==="logo"?await logoImg(f):await squarePhoto(f);set(path,d);closePop();renderForm();rebuild();}catch(_){alert("Couldn't read that image.");}
