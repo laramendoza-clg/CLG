@@ -170,7 +170,12 @@ var CSS=
 ".agdk-edit .rowbar button:hover{background:#f7eef4}"+
 ".agdk-edit .ghost{border:1.5px dashed #d0b3c6;color:#8a3d6f;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border-radius:6px;min-height:52px;background:rgba(255,255,255,.6)}"+
 ".agdk-edit .ghost:hover{background:#f7eef4}"+
-".agdk-edit .ghost.gt{min-height:30px;margin-top:4px}";
+".agdk-edit .ghost.gt{min-height:30px;margin-top:4px}"+
+".agdk-edit .pcell{position:relative}"+
+".agdk-edit .pmv{position:absolute;top:-14px;left:0;display:none;gap:3px;z-index:4}"+
+".agdk-edit .pcell:hover .pmv{display:flex}"+
+".agdk-edit .pmv button{font-family:inherit;font-size:10px;line-height:1;padding:4px 7px;border:1px solid #d0b3c6;border-radius:4px;background:#fff;color:#6b2554;cursor:pointer;box-shadow:0 2px 6px rgba(40,20,40,.15);font-weight:700}"+
+".agdk-edit .pmv button:hover{background:#f7eef4}";
 
 function slide(cls,inner){return '<div class="sl '+(cls||"")+'">'+inner+"</div>";}
 function foot(meta,n){return '<div class="foot"><span'+de("meta.footerLeft")+'>'+esc(meta.footerLeft)+'</span><span>PAGE '+n+'</span></div>';}
@@ -178,9 +183,9 @@ function header(meta){
   var city=meta.city?meta.city.charAt(0)+meta.city.slice(1).toLowerCase():"";
   return '<div class="hd"><div><div class="t1"><span'+de("meta.city")+' style="font-weight:700">'+esc(city)+'</span> <span'+de("meta.event")+' style="font-weight:700">'+esc(meta.event)+'</span> <span'+de("meta.year")+'>'+esc(meta.year)+'</span></div><div class="t2"'+de("meta.headKicker")+'>'+esc(meta.headKicker||"Preliminary Agenda")+'</div></div><img src="'+CAP+'" alt=""></div><div class="hrule"></div>';
 }
-function pcell(p,path,tagPath,tagVal){
+function pcell(p,path,tagPath,tagVal,mv){
   if(!p)return"";
-  return '<div class="pcell"><img src="'+pic(p.img)+'"'+dp(path+".img","photo")+'><div style="min-width:0">'+
+  return '<div class="pcell">'+(mv||"")+'<img src="'+pic(p.img)+'"'+dp(path+".img","photo")+'><div style="min-width:0">'+
     (tagPath?'<div class="mtag"'+de(tagPath)+'>'+esc(tagVal||"")+'</div>':"")+
     '<div class="nm"'+de(path+".name")+'>'+esc(p.name)+'</div>'+
     '<div class="tt"'+de(path+".title")+'>'+esc(p.title)+'</div>'+
@@ -210,7 +215,13 @@ function sessionHtml(s,i){
     var cells="";
     if(s.lead)cells+=pcell(s.lead,b+".lead",b+".roleLabel",s.roleLabel||"MODERATOR");
     else if(EDIT)cells+='<div class="ghost" data-op="addlead" data-i="'+i+'">+ Moderator</div>';
-    cells+=(s.people||[]).map(function(p,j){return pcell(p,b+".people."+j);}).join("");
+    cells+=(s.people||[]).map(function(p,j){
+      var mv="";
+      if(EDIT&&s.people.length>1){
+        mv='<span class="pmv">'+(j>0?'<button data-op="pleft" data-i="'+i+'" data-j="'+j+'" title="Move earlier">◂</button>':"")+(j<s.people.length-1?'<button data-op="pright" data-i="'+i+'" data-j="'+j+'" title="Move later">▸</button>':"")+'</span>';
+      }
+      return pcell(p,b+".people."+j,null,null,mv);
+    }).join("");
     if(EDIT)cells+='<div class="ghost" data-op="addp" data-i="'+i+'">+ Add panelist</div>';
     if(cells)body+='<div class="prow">'+cells+'</div>';
   }else if(s.kind==="tables"){

@@ -60,7 +60,9 @@ ongoing project (see §3).
 - **Builder** `/agenda-generator/?e=<slug>`: loads newest published version;
   Google-Slides-style editing (click text on the page to type; click
   photos/logos for upload/URL/size popover; hover a session for
-  move/add/delete). Autosaves locally; **Publish** makes it live.
+  move/add/delete; hover a panelist for ◂ ▸ reorder arrows). Undo/redo
+  buttons + Ctrl/Cmd+Z / Shift+Z cover every mutation. Autosaves locally;
+  **Publish** makes it live.
 - **Viewer** `/agenda/?e=<slug>`: always fetches latest published version;
   flip with arrows/swipe; Download PDF prints true 8.5×11.
 - **Documents index** `/agendas/`: lists known events (KNOWN array) plus any
