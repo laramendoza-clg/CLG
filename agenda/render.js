@@ -304,7 +304,7 @@ function speakersSlides(root,d,startN){
   var hs=measureBlocks(root,entries,"spk-col",416),COL_H=950;
   var cols=[],cur=[],curH=0;
   entries.forEach(function(h,i){
-    var hh=hs[i]+8;
+    var hh=hs[i]+14;
     if(curH+hh>COL_H&&cur.length){cols.push(cur);cur=[];curH=0;}
     cur.push(h);curH+=hh;
   });
