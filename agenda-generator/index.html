@@ -73,7 +73,7 @@
 <body>
 <div class="app">
   <div class="left">
-    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v32</span></h1>
+    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v33</span></h1>
     <div class="tip">✏️ <b>Edit like Slides:</b> click any text on the page to type. Click a photo or logo to change it. Hover a session for <b>move / add / delete</b>.</div>
 
     <div class="stepbox">
@@ -118,7 +118,7 @@
 
 <div id="pop"></div>
 
-<script src="../agenda/render.js?v=32"></script>
+<script src="../agenda/render.js?v=33"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -263,7 +263,10 @@ let state=null,pvCur=0,pvTotal=0,_rt=null,editing=null;
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function get(p){return p.split(".").reduce((o,k)=>o?o[k]:undefined,state);}
 function set(p,v){const ks=p.split("."),last=ks.pop();const o=ks.reduce((o,k)=>o[k],state);if(o)o[last]=v;}
-function autosave(){try{localStorage.setItem(LKEY,JSON.stringify({slug:slugEl.value,data:state}));}catch(e){}}
+/* Local drafts are stored per event — one document must never bleed into
+   another when switching between agendas. */
+function lkeyFor(s){return LKEY+":"+String(s||"").trim();}
+function autosave(){try{localStorage.setItem(lkeyFor(slugEl.value),JSON.stringify({slug:slugEl.value,data:state}));}catch(e){}}
 
 /* ---------- undo / redo ---------- */
 let undoStack=[],redoStack=[],pendingSnap=null;
@@ -643,9 +646,14 @@ setInterval(beat,20000);setInterval(pollWho,12000);
 
 /* ---------- boot ---------- */
 (async function(){
-  try{const s=JSON.parse(localStorage.getItem(LKEY));if(s&&s.data&&s.data.sessions){state=s.data;if(s.slug)slugEl.value=s.slug;}}catch(e){}
   const urlSlug=new URLSearchParams(location.search).get("e");
   if(urlSlug)slugEl.value=urlSlug;
+  /* Restore only a draft saved for THIS event (legacy single-slot drafts
+     migrate if their slug matches). */
+  let saved=null;
+  try{saved=JSON.parse(localStorage.getItem(lkeyFor(slugEl.value)));}catch(e){}
+  if(!saved){try{const g=JSON.parse(localStorage.getItem(LKEY));if(g&&g.slug===slugEl.value.trim())saved=g;}catch(e){}}
+  if(saved&&saved.data&&saved.data.sessions)state=saved.data;
   if(!state)state=starter();
   try{await document.fonts.ready;}catch(_){}
   renderForm();rebuild();
