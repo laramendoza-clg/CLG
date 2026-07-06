@@ -186,7 +186,7 @@
    "time": "9:40–10:10 AM",
    "title": "Navigating Fund Operations & Formation - Regulatory and Structural Considerations",
    "note": "",
-   "sponsorName": "Kirkland & Ellis  ·  Maples Group",
+   "sponsorName": "",
    "sponsorImg": "",
    "sponsorH": 30,
    "roleLabel": "MODERATOR",
@@ -228,6 +228,18 @@
      "title": "Partner",
      "firm": "Maples Group"
     }
+   ],
+   "sponsors": [
+    {
+     "name": "Kirkland & Ellis",
+     "img": "",
+     "h": 30
+    },
+    {
+     "name": "Maples Group",
+     "img": "",
+     "h": 30
+    }
    ]
   },
   {
@@ -244,7 +256,7 @@
    "time": "10:40–11:10 AM",
    "title": "AI in Private Capital: From Portfolio Insights to Due Diligence",
    "note": "",
-   "sponsorName": "Blueflame AI  ·  Auquan",
+   "sponsorName": "",
    "sponsorImg": "",
    "sponsorH": 30,
    "roleLabel": "MODERATOR",
@@ -285,6 +297,18 @@
      "name": "Chandini Jain",
      "title": "Founder, Chief Executive Officer",
      "firm": "Auquan"
+    }
+   ],
+   "sponsors": [
+    {
+     "name": "Blueflame AI",
+     "img": "",
+     "h": 30
+    },
+    {
+     "name": "Auquan",
+     "img": "",
+     "h": 30
     }
    ]
   },
@@ -342,7 +366,7 @@
    "time": "11:45 AM–12:15 PM",
    "title": "Private Equity Tax Planning and Optimization",
    "note": "",
-   "sponsorName": "KPMG  ·  Cleary Gottlieb",
+   "sponsorName": "",
    "sponsorImg": "",
    "sponsorH": 30,
    "roleLabel": "MODERATOR",
@@ -377,6 +401,18 @@
      "name": "Adam Smith",
      "title": "M&A Tax Partner",
      "firm": "KPMG"
+    }
+   ],
+   "sponsors": [
+    {
+     "name": "KPMG",
+     "img": "",
+     "h": 30
+    },
+    {
+     "name": "Cleary Gottlieb",
+     "img": "",
+     "h": 30
     }
    ]
   },
@@ -499,7 +535,7 @@
    "time": "2:50–3:20 PM",
    "title": "The Evolving CFO: Leading Through Operational Complexity",
    "note": "",
-   "sponsorName": "Lincoln International  ·  RSM",
+   "sponsorName": "",
    "sponsorImg": "",
    "sponsorH": 30,
    "roleLabel": "MODERATOR",
@@ -541,6 +577,18 @@
      "title": "Managing Director & Head of U.S. Portfolio Valuations",
      "firm": "Lincoln"
     }
+   ],
+   "sponsors": [
+    {
+     "name": "Lincoln International",
+     "img": "",
+     "h": 30
+    },
+    {
+     "name": "RSM",
+     "img": "",
+     "h": 30
+    }
    ]
   },
   {
@@ -557,7 +605,7 @@
    "time": "3:50–4:20 PM",
    "title": "Operating Partners Maximizing Portfolio Performance",
    "note": "",
-   "sponsorName": "Accordion  ·  Lancor",
+   "sponsorName": "",
    "sponsorImg": "",
    "sponsorH": 30,
    "roleLabel": "MODERATOR",
@@ -598,6 +646,18 @@
      "name": "Chris Conti",
      "title": "Managing Partner",
      "firm": "Lancor"
+    }
+   ],
+   "sponsors": [
+    {
+     "name": "Accordion",
+     "img": "",
+     "h": 30
+    },
+    {
+     "name": "Lancor",
+     "img": "",
+     "h": 30
     }
    ]
   },
@@ -649,7 +709,7 @@
    "time": "4:50–5:20 PM",
    "title": "Private Credit and Direct Lending in Today's Market",
    "note": "",
-   "sponsorName": "Davis Polk  ·  Egan-Jones Ratings",
+   "sponsorName": "",
    "sponsorImg": "",
    "sponsorH": 30,
    "roleLabel": "MODERATOR",
@@ -690,6 +750,18 @@
      "name": "Sean Egan",
      "title": "Founding Partner and President",
      "firm": "Egan-Jones Ratings"
+    }
+   ],
+   "sponsors": [
+    {
+     "name": "Davis Polk",
+     "img": "",
+     "h": 30
+    },
+    {
+     "name": "Egan-Jones Ratings",
+     "img": "",
+     "h": 30
     }
    ]
   },

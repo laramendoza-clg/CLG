@@ -73,7 +73,7 @@
 <body>
 <div class="app">
   <div class="left">
-    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v28</span></h1>
+    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v29</span></h1>
     <div class="tip">✏️ <b>Edit like Slides:</b> click any text on the page to type. Click a photo or logo to change it. Hover a session for <b>move / add / delete</b>.</div>
 
     <div class="stepbox">
@@ -118,7 +118,7 @@
 
 <div id="pop"></div>
 
-<script src="../agenda/render.js?v=28"></script>
+<script src="../agenda/render.js?v=29"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -279,6 +279,7 @@ async function squarePhoto(file){const i=await readImg(file);const s=Math.min(i.
 async function logoImg(file){const i=await readImg(file);const m=Math.min(1,420/Math.max(i.width,i.height)),w=Math.max(1,Math.round(i.width*m)),h=Math.max(1,Math.round(i.height*m));const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(i,0,0,w,h);return c.toDataURL("image/png");}
 async function bgFile(file){const i=await readImg(file);const m=Math.min(1,1400/i.width),w=Math.max(1,Math.round(i.width*m)),h=Math.max(1,Math.round(i.height*m));const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(i,0,0,w,h);return c.toDataURL("image/jpeg",.8);}
 function sizePathFor(photoPath){
+  if(/\.sponsors\.\d+\.img$/.test(photoPath))return photoPath.replace(/\.img$/,".h");
   if(/\.sponsorImg$/.test(photoPath))return photoPath.replace(/\.sponsorImg$/,".sponsorH");
   if(/^meta\.coverPartners\.\d+\.img$/.test(photoPath)||/^sponsors\.\d+\.img$/.test(photoPath))return photoPath.replace(/\.img$/,".h");
   return null;
@@ -329,6 +330,7 @@ function renderSessions(){
 }
 function logoRow2(i){
   const s=state.sessions[i],b="sessions."+i;
+  if(Array.isArray(s.sponsors))return '<div style="font-size:10.5px;color:#9a8f96">Sponsor logos: click them on the page (or “+ sponsor” to add another)</div>';
   let h='<div class="bar"><span style="font-size:10.5px;color:#9a8f96">Sponsor logo:</span><button class="mini up" style="position:relative;overflow:hidden">Upload<input type="file" accept="image/*" data-ph="'+b+'.sponsorImg" data-mode="logo" style="position:absolute;inset:0;opacity:0;cursor:pointer"></button>'+(s.sponsorImg?'<button class="mini del" data-phc="'+b+'.sponsorImg">remove</button>':"")+'</div>';
   if(s.sponsorImg)h+='<div class="rng">size <input type="range" min="14" max="56" value="'+(s.sponsorH||30)+'" data-b="'+b+'.sponsorH" data-num="1"><span class="v">'+(s.sponsorH||30)+'</span></div>';
   return h;
@@ -394,7 +396,7 @@ pv.addEventListener("keydown",e=>{
 });
 function handleOp(btn){
   const i=+btn.dataset.i,op=btn.dataset.op;
-  if(["up","down","del","addp","addlead","addtable","pleft","pright"].indexOf(op)>=0)snapshot();
+  if(["up","down","del","addp","addlead","addtable","pleft","pright","spdel"].indexOf(op)>=0)snapshot();
   if(op==="pleft"||op==="pright"){
     const j=+btn.dataset.j,arr=state.sessions[i].people,k=op==="pleft"?j-1:j+1;
     if(k>=0&&k<arr.length){const x=arr[j];arr[j]=arr[k];arr[k]=x;renderForm();rebuild();}
@@ -411,6 +413,21 @@ function handleOp(btn){
   else if(op==="signimg"){const r=btn.getBoundingClientRect();openPopForPath("meta.welcome.signImg","logo",r.left,r.bottom);return;}
   else if(op==="lockimg"){const r=btn.getBoundingClientRect();openPopForPath("meta.lockImg","logo",r.left,r.bottom);return;}
   else if(op==="recimg"){const r=btn.getBoundingClientRect();openPopForPath("sessions."+i+".img","bg",r.left,r.bottom);return;}
+  else if(op==="spadd"){
+    snapshot();
+    const s0=state.sessions[i];
+    if(!Array.isArray(s0.sponsors)){
+      s0.sponsors=(s0.sponsorImg||s0.sponsorName)?[{name:s0.sponsorName||"",img:s0.sponsorImg||"",h:s0.sponsorH||30}]:[];
+      s0.sponsorName="";s0.sponsorImg="";
+    }
+    s0.sponsors.push({name:"Sponsor",img:"",h:30});
+    renderForm();rebuild();
+    const r=btn.getBoundingClientRect();openPopForPath("sessions."+i+".sponsors."+(s0.sponsors.length-1)+".img","logo",r.left,r.bottom);
+    return;
+  }
+  else if(op==="spdel"){
+    const j=+btn.dataset.j;state.sessions[i].sponsors.splice(j,1);renderForm();rebuild();return;
+  }
   renderForm();rebuild();
 }
 

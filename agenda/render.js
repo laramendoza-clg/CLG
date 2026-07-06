@@ -96,7 +96,10 @@ var CSS=
 ".agdk .notesblk{flex:1;display:flex;flex-direction:column;min-height:0;margin-top:6px}"+
 ".agdk .notesblk .nlab{font-size:9px;font-weight:700;letter-spacing:.28em;color:#b3a8b0;text-transform:uppercase;margin:0 4px 2px}"+
 ".agdk .notesblk .nlines{flex:1;margin:0 4px;background:repeating-linear-gradient(to bottom,transparent 0,transparent 33px,#e6e0e4 33px,#e6e0e4 34px)}"+
-".agdk .rspon{display:flex;align-items:center;gap:10px;white-space:nowrap}"+
+".agdk .rspon{display:flex;align-items:center;gap:10px;white-space:nowrap;flex-wrap:wrap;justify-content:flex-end}"+
+".agdk .spitem{display:inline-flex;align-items:center;gap:6px}"+
+".agdk .spdiv{width:1px;height:20px;background:#ddd5da;margin:0 10px}"+
+".agdk-edit .spx{font-family:inherit;font-size:9px;border:1px solid #dfb6b6;color:#a33;background:#fff;border-radius:3px;padding:2px 5px;cursor:pointer;line-height:1}"+
 ".agdk .rspon .sb{font-size:8px;letter-spacing:.24em;color:#9b95a0;font-weight:600}"+
 ".agdk .rspon img{max-width:150px;object-fit:contain}"+
 ".agdk .rspon .snm{font-size:13px;font-weight:700;color:#38323c}"+
@@ -193,10 +196,20 @@ function pcell(p,path,tagPath,tagVal,mv){
 }
 function sponHtml(s,b){
   var i=b.split(".")[1];
-  var logoBtn=(EDIT&&!s.sponsorImg)?'<span class="ghost gt" data-op="sponlogo" data-i="'+i+'" style="min-height:22px;padding:3px 9px;font-size:9px" title="Add the sponsor\'s logo">+ logo</span>':"";
-  if(!s.sponsorImg&&!s.sponsorName)return EDIT?'<div class="rspon"><span class="sb">SPONSORED BY:</span><span class="snm" '+de(b+".sponsorName").slice(1)+' style="color:#c9bfc7">— add —</span>'+logoBtn+'</div>':"";
-  var h=s.sponsorH||30;
-  return '<div class="rspon"><span class="sb">SPONSORED BY:</span>'+(s.sponsorImg?'<img src="'+esc(s.sponsorImg)+'" style="height:'+h+'px"'+dp(b+".sponsorImg","logo")+'>':'<span class="snm"'+de(b+".sponsorName")+'>'+esc(s.sponsorName)+'</span>'+logoBtn)+'</div>';
+  var hasArr=Array.isArray(s.sponsors);
+  /* back-compat: docs without the sponsors array render their legacy single
+     sponsor exactly as before */
+  var list=hasArr?s.sponsors:((s.sponsorImg||s.sponsorName)?[{name:s.sponsorName,img:s.sponsorImg,h:s.sponsorH||30}]:[]);
+  var addBtn=EDIT?'<span class="ghost gt" data-op="spadd" data-i="'+i+'" style="min-height:22px;padding:3px 9px;font-size:9px" title="Add a sponsor logo">+ sponsor</span>':"";
+  if(!list.length)return EDIT?'<div class="rspon"><span class="sb">SPONSORED BY:</span><span class="snm" '+de(b+".sponsorName").slice(1)+' style="color:#c9bfc7">— add —</span>'+addBtn+'</div>':"";
+  var parts=list.map(function(sp,j){
+    var namePath=hasArr?b+".sponsors."+j+".name":b+".sponsorName";
+    var imgPath=hasArr?b+".sponsors."+j+".img":b+".sponsorImg";
+    var h=sp.h||30;
+    var rm=(EDIT&&hasArr)?'<button class="spx" data-op="spdel" data-i="'+i+'" data-j="'+j+'" title="Remove this sponsor">✕</button>':"";
+    return '<span class="spitem">'+(sp.img?'<img src="'+esc(sp.img)+'" style="height:'+h+'px"'+dp(imgPath,"logo")+'>':'<span class="snm"'+de(namePath)+'>'+esc(sp.name||"")+'</span>')+rm+'</span>';
+  }).join('<span class="spdiv"></span>');
+  return '<div class="rspon"><span class="sb">SPONSORED BY:</span>'+parts+addBtn+'</div>';
 }
 function rowbar(i){
   if(!EDIT)return"";
