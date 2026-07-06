@@ -10,6 +10,7 @@ var THEMES={
   dubai:{pill:"#102b35",ribbon:"#12303c",accent:"#2f5d63"},
   european:{pill:"#2A1228",ribbon:"#2A1228",accent:"#6b2554"},
   newyork:{pill:"#2b161c",ribbon:"#472E40",accent:"#A15D50"},
+  boston:{pill:"#451523",ribbon:"#5E1A2E",accent:"#5E1A2E"},
   london:{pill:"#0D1426",ribbon:"#0D1426",accent:"#8A7547"}
 };
 var SIL='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88"><rect width="88" height="88" fill="#d3d3d6"/><circle cx="44" cy="34" r="15" fill="#b6b6bb"/><path d="M14 88c3-20 16-28 30-28s27 8 30 28z" fill="#b6b6bb"/></svg>');
@@ -40,6 +41,11 @@ var CSS=
 ".agdk-edit [data-edit]:empty::after{content:'· · ·';opacity:.18}"+
 ".agdk .cov-cap{position:absolute;top:64px;left:64px;height:42px}"+
 ".agdk .cov-lock{position:absolute;top:372px;left:50%;transform:translateX(-50%);width:560px}"+
+".agdk .cov-lockt{position:absolute;top:396px;left:64px;right:64px;display:flex;align-items:center;justify-content:center;gap:30px;color:#fff}"+
+".agdk .cov-lockt .c1{font-size:46px;font-weight:600;letter-spacing:.05em;white-space:nowrap}"+
+".agdk .cov-lockt .vb{width:3px;align-self:stretch;background:rgba(255,255,255,.92)}"+
+".agdk .cov-lockt .c2{display:flex;flex-direction:column;font-size:41px;font-weight:700;line-height:1.16;letter-spacing:.03em;text-align:left}"+
+".agdk-edit .cov-lockt{cursor:pointer}"+
 ".agdk .cov-date{position:absolute;top:696px;left:0;right:0;text-align:center;font-size:19px;font-weight:700;letter-spacing:.26em}"+
 ".agdk .cov-date span{font-weight:300;letter-spacing:.2em;opacity:.85}"+
 ".agdk .cov-rail{position:absolute;left:64px;right:64px;bottom:108px;display:flex;justify-content:center;gap:80px;text-align:center}"+
@@ -210,6 +216,14 @@ function sessionHtml(s,i){
   return html;
 }
 
+function lockupHtml(m){
+  if(m.lockImg)return '<img class="cov-lock" src="'+esc(m.lockImg)+'"'+dp("meta.lockImg","logo")+'>';
+  var city=esc(String(m.city||"").toUpperCase());
+  var words=String(m.event||"").toUpperCase().split(/\s+/).filter(Boolean);
+  while(words.length>4){var bi=0,bl=1e9;for(var i=0;i<words.length-1;i++){var l=words[i].length+words[i+1].length;if(l<bl){bl=l;bi=i;}}words.splice(bi,2,words[bi]+" "+words[bi+1]);}
+  var lines=words.map(function(w){return "<div>"+esc(w)+"</div>";}).join("");
+  return '<div class="cov-lockt"'+(EDIT?' data-op="lockimg" title="Click to use a logo image instead"':"")+'><div class="c1">'+city+'</div><div class="vb"></div><div class="c2">'+lines+'</div></div>';
+}
 function coverSlide(d){
   var m=d.meta;
   var rail=(m.coverPartners||[]).map(function(p,i){
@@ -219,7 +233,7 @@ function coverSlide(d){
   }).join("");
   return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div>'+
     '<img class="cov-cap" src="'+CAPW+'">'+
-    '<img class="cov-lock" src="'+LOCK+'">'+
+    lockupHtml(m)+
     '<div class="cov-date"><span'+de("meta.dateLine")+' style="font-weight:700">'+esc(m.dateLine)+'</span>  <span>|</span>  <span'+de("meta.locLine")+'>'+esc(m.locLine)+'</span></div>'+
     '<div class="cov-rail">'+rail+'</div>'+
     (m.preliminary||EDIT?'<div class="cov-note"'+de("meta.preliminary")+'>'+esc(m.preliminary)+'</div>':""));

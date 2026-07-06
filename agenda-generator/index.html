@@ -73,7 +73,7 @@
 <body>
 <div class="app">
   <div class="left">
-    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v22</span></h1>
+    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v23</span></h1>
     <div class="tip">✏️ <b>Edit like Slides:</b> click any text on the page to type. Click a photo or logo to change it. Hover a session for <b>move / add / delete</b>.</div>
 
     <div class="stepbox">
@@ -117,7 +117,7 @@
 
 <div id="pop"></div>
 
-<script src="../agenda/render.js?v=22"></script>
+<script src="../agenda/render.js?v=23"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -126,7 +126,8 @@ const LKEY="caplink-agenda-builder-v3", EKEY="caplink-edit-key";
 function starter(){return {
  v:2, theme:"dubai",
  meta:{
-  city:"DUBAI", event:"Private Capital Summit", year:"2026",
+  city:"DUBAI", event:"Private Capital Summit", year:"2026", 
+  lockImg:"../assets/pcs-lockup.png",
   dateLine:"SEPTEMBER 15, 2026", locLine:"DUBAI",
   bandLine:"SEPTEMBER 15, 2026  ·  THE LANA  ·  DUBAI",
   headKicker:"Preliminary Agenda",
@@ -283,7 +284,7 @@ function logoRow(base,defH){
   return s;
 }
 function renderEvent(){
-  let h='<label class="f">Colour theme</label><select class="t" data-b="theme">'+[["dubai","Dubai — petrol teal"],["european","European — deep plum"],["newyork","New York — terracotta"],["london","London — navy & gold"]].map(o=>'<option value="'+o[0]+'"'+(state.theme===o[0]?" selected":"")+'>'+o[1]+'</option>').join("")+'</select>';
+  let h='<label class="f">Colour theme</label><select class="t" data-b="theme">'+[["dubai","Dubai — petrol teal"],["european","European — deep plum"],["newyork","New York — terracotta"],["london","London — navy & gold"],["boston","Boston / MIT — garnet"]].map(o=>'<option value="'+o[0]+'"'+(state.theme===o[0]?" selected":"")+'>'+o[1]+'</option>').join("")+'</select>';
   h+='<label class="f">Show the auto “Confirmed speakers” page?</label><label style="font-size:12px;color:#555"><input type="checkbox" data-chk="meta.showSpeakers" '+(state.meta.showSpeakers!==false?"checked":"")+'> Yes, include it</label>';
   h+='<label class="f">Speakers page style</label><select class="t" data-b="meta.speakersStyle"><option value="list"'+(state.meta.speakersStyle!=="grid"?" selected":"")+'>Text list — 3 lines per speaker</option><option value="grid"'+(state.meta.speakersStyle==="grid"?" selected":"")+'>Photo grid — best once headshots are added</option></select>';
   h+='<label class="f">Fill leftover space with ruled “Notes” lines?</label><label style="font-size:12px;color:#555"><input type="checkbox" data-chk="meta.notesFill" '+(state.meta.notesFill!==false?"checked":"")+'> Yes (like a printed planner)</label>';
@@ -390,6 +391,7 @@ function handleOp(btn){
   else if(op==="add"){openAddPop(btn,i);return;}
   else if(op==="sponlogo"){const r=btn.getBoundingClientRect();openPopForPath("sessions."+i+".sponsorImg","logo",r.left,r.bottom);return;}
   else if(op==="signimg"){const r=btn.getBoundingClientRect();openPopForPath("meta.welcome.signImg","logo",r.left,r.bottom);return;}
+  else if(op==="lockimg"){const r=btn.getBoundingClientRect();openPopForPath("meta.lockImg","logo",r.left,r.bottom);return;}
   renderForm();rebuild();
 }
 
