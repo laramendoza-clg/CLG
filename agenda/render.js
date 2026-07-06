@@ -427,37 +427,31 @@ function speakersGridSlides(root,d,startN){
   if(!cells.length)return[];
   var rows=[];
   for(var i=0;i<cells.length;i+=3)rows.push('<div class="spk-row">'+cells.slice(i,i+3).join("")+'</div>');
-  var hs=measureBlocks(root,rows,"spk-gridwrap",872),PAGE=985;
-  var pages=[],cur=[],curH=0;
-  rows.forEach(function(r,i){
-    var hh=hs[i]+20;
-    if(curH+hh>PAGE&&cur.length){pages.push(cur);cur=[];curH=0;}
-    cur.push(r);curH+=hh;
-  });
-  if(cur.length)pages.push(cur);
-  return pages.map(function(pg,i){
-    return slide("",header(d.meta)+'<div class="spk-badge">Confirmed Speakers Include</div><div class="spk-gridwrap">'+pg.join("")+'</div>'+foot(d.meta,startN+i));
-  });
+  var hs=measureBlocks(root,rows,"spk-gridwrap",872),PAGE=1004;
+  var total=0;for(var q=0;q<hs.length;q++)total+=hs[q]+20;
+  var scale=total>PAGE?Math.max(0.6,PAGE/total*0.97):1;
+  return [slide("",header(d.meta)+'<div class="spk-badge">Confirmed Speakers Include</div><div class="spk-gridwrap" style="zoom:'+scale.toFixed(3)+'">'+rows.join("")+'</div>'+foot(d.meta,startN))];
 }
 function speakersSlides(root,d,startN){
   if(d.meta.showSpeakers===false)return[];
   if(d.meta.speakersStyle==="grid")return speakersGridSlides(root,d,startN);
   var entries=speakerEntries(d);
   if(!entries.length)return[];
-  var hs=measureBlocks(root,entries,"spk-col",416),COL_H=950;
-  var cols=[],cur=[],curH=0;
-  entries.forEach(function(h,i){
-    var hh=hs[i]+14;
-    if(curH+hh>COL_H&&cur.length){cols.push(cur);cur=[];curH=0;}
-    cur.push(h);curH+=hh;
+  var hs=measureBlocks(root,entries,"spk-col",416),COL_H=1000;
+  var total=0;for(var q=0;q<hs.length;q++)total+=hs[q]+15;
+  /* the speakers list is ALWAYS one page: 2 columns, then 3, then scale */
+  var cols=total<=2*COL_H?2:3;
+  var scale=1;
+  if(total>cols*COL_H){scale=Math.max(0.66,(cols*COL_H)/total*0.97);}
+  var budget=total/cols+40,colArr=[],curCol=[],curH=0;
+  entries.forEach(function(h,idx){
+    var hh=hs[idx]+15;
+    if(curH+hh>budget&&curCol.length&&colArr.length<cols-1){colArr.push(curCol);curCol=[];curH=0;}
+    curCol.push(h);curH+=hh;
   });
-  if(cur.length)cols.push(cur);
-  var out=[];
-  for(var i=0;i<cols.length;i+=2){
-    var inner='<div class="spk-wrap"><div class="spk-col">'+cols[i].join("")+'</div><div class="spk-col">'+(cols[i+1]?cols[i+1].join(""):"")+'</div></div>';
-    out.push(slide("",header(d.meta)+'<div class="spk-badge">Confirmed Speakers Include</div>'+inner+foot(d.meta,startN+out.length)));
-  }
-  return out;
+  if(curCol.length)colArr.push(curCol);
+  var inner='<div class="spk-wrap" style="zoom:'+scale.toFixed(3)+';gap:'+(cols===3?28:40)+'px">'+colArr.map(function(c){return '<div class="spk-col">'+c.join("")+'</div>';}).join("")+'</div>';
+  return [slide("",header(d.meta)+'<div class="spk-badge">Confirmed Speakers Include</div>'+inner+foot(d.meta,startN))];
 }
 
 function buildDeck(root,data,opts){

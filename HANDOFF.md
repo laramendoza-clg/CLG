@@ -64,7 +64,10 @@ ongoing project (see §3).
   buttons + Ctrl/Cmd+Z / Shift+Z cover every mutation. Autosaves locally;
   **Publish** makes it live.
 - **Viewer** `/agenda/?e=<slug>`: always fetches latest published version;
-  flip with arrows/swipe; Download PDF prints true 8.5×11.
+  flip with arrows/swipe; desktop defaults to a BOOK SPREAD (cover alone,
+  then facing pairs; toggle in the bar, remembered per device); Download PDF
+  prints true 8.5×11. The Confirmed Speakers page is ALWAYS exactly one page
+  (2→3 columns, then gentle scaling).
 - **Documents index** `/agendas/`: lists known events (KNOWN array) plus any
   published slug; Edit / View / Copy share link.
 - **Seeds** `agenda/seeds/<slug>.json`: prepared content committed to the

@@ -39,26 +39,55 @@
   <button id="prev">←&ensp;Back</button>
   <span id="pg"></span>
   <button id="next">Next&ensp;→</button>
+  <button id="mode"></button>
   <button id="pdf" title="Print or save as PDF">Download PDF</button>
 </div>
-<script src="./render.js?v=29"></script>
+<script src="./render.js?v=30"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
 const slug=new URLSearchParams(location.search).get("e")||"dubai-2026";
-let cur=0,total=0;
+let cur=0,total=0,book=false;const GAPB=16;
 
+function spreads(){return total<=1?total:1+Math.ceil((total-1)/2);}
+function autoBook(){const st=document.getElementById("stage");return st.clientWidth>st.clientHeight*1.12;}
+function deckW(){return book?2*AgendaRender.W+GAPB:AgendaRender.W;}
 function fit(){
   const st=document.getElementById("stage"),deck=document.getElementById("deck");
-  deck.style.width=AgendaRender.W+"px";deck.style.height=AgendaRender.H+"px";
-  const s=Math.min(st.clientWidth/(AgendaRender.W+28),st.clientHeight/(AgendaRender.H+24));
+  deck.style.width=deckW()+"px";deck.style.height=AgendaRender.H+"px";
+  const s=Math.min(st.clientWidth/(deckW()+28),st.clientHeight/(AgendaRender.H+24));
   deck.style.transform="translate(-50%,-50%) scale("+s+")";
 }
+function updateModeBtn(){const b=document.getElementById("mode");if(b)b.textContent=book?"▤ Single page":"📖 Book view";}
 function show(i){
-  const sl=document.querySelectorAll("#deck .sl");
-  cur=Math.max(0,Math.min(sl.length-1,i));
-  sl.forEach((el,j)=>el.classList.toggle("on",j===cur));
-  document.getElementById("pg").textContent=(cur+1)+" / "+total;
+  const sl=Array.prototype.slice.call(document.querySelectorAll("#deck .sl"));
+  let label="";
+  if(!book){
+    cur=Math.max(0,Math.min(total-1,i));
+    sl.forEach((el,j)=>{el.classList.toggle("on",j===cur);el.style.left="0px";});
+    label=(cur+1)+" / "+total;
+  }else{
+    cur=Math.max(0,Math.min(spreads()-1,i));
+    sl.forEach(el=>el.classList.remove("on"));
+    if(cur===0){
+      sl[0].classList.add("on");sl[0].style.left=((deckW()-AgendaRender.W)/2)+"px";
+      label="1 / "+total;
+    }else{
+      const a=2*cur-1,b=a+1;
+      sl[a].classList.add("on");sl[a].style.left="0px";
+      label=String(a+1);
+      if(b<total){sl[b].classList.add("on");sl[b].style.left=(AgendaRender.W+GAPB)+"px";label+="–"+(b+1);}
+      label+=" / "+total;
+    }
+  }
+  document.getElementById("pg").textContent=label;
+}
+function setBook(v){
+  const firstVisible=book?(cur===0?0:2*cur-1):cur;
+  book=v;try{localStorage.setItem("agdk-book",v?"1":"0");}catch(_){}
+  fit();
+  cur=book?(firstVisible===0?0:Math.ceil(firstVisible/2)):firstVisible;
+  show(cur);updateModeBtn();
 }
 async function boot(){
   try{
@@ -74,7 +103,9 @@ async function boot(){
     document.getElementById("upd").textContent="Updated "+d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"});
     document.getElementById("msg").style.display="none";
     document.getElementById("bar").style.display="flex";
-    fit();show(0);
+    let pref=null;try{pref=localStorage.getItem("agdk-book");}catch(_){}
+    book=pref===null?autoBook():pref==="1";
+    fit();show(0);updateModeBtn();
   }catch(e){
     document.getElementById("msg").textContent=(e&&e.message)||"Could not load the agenda. Please try again.";
   }
@@ -82,6 +113,7 @@ async function boot(){
 document.getElementById("prev").onclick=()=>show(cur-1);
 document.getElementById("next").onclick=()=>show(cur+1);
 document.getElementById("pdf").onclick=()=>window.print();
+document.getElementById("mode").onclick=()=>setBook(!book);
 document.addEventListener("keydown",e=>{if(e.key==="ArrowRight"||e.key===" ")show(cur+1);if(e.key==="ArrowLeft")show(cur-1);});
 let tx=null;
 document.addEventListener("touchstart",e=>{tx=e.touches[0].clientX;},{passive:true});
