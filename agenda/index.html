@@ -11,23 +11,23 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
   body{background:#141016;font-family:'Raleway',system-ui,sans-serif;overflow:hidden}
-  #stage{position:fixed;inset:0 0 64px 0;display:flex;align-items:center;justify-content:center}
-  #deck{position:relative;transform-origin:center center}
-  #deck .sl{position:absolute;top:0;left:0;opacity:0;pointer-events:none;transition:opacity .28s ease;box-shadow:0 30px 90px rgba(0,0,0,.55)}
+  #stage{position:fixed;inset:0 0 62px 0;overflow:hidden}
+  #deck{position:absolute;left:50%;top:50%;width:1000px;height:1414px}
+  #deck .sl{position:absolute;top:0;left:0;opacity:0;pointer-events:none;transition:opacity .25s ease;box-shadow:0 26px 80px rgba(0,0,0,.55)}
   #deck .sl.on{opacity:1;pointer-events:auto}
-  #bar{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;align-items:center;justify-content:center;gap:18px;background:rgba(16,12,18,.92);border-top:1px solid rgba(255,255,255,.08)}
-  #bar button{font-family:inherit;background:rgba(255,255,255,.08);color:#eee;border:1px solid rgba(255,255,255,.16);border-radius:6px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.04em}
+  #bar{position:fixed;left:0;right:0;bottom:0;height:62px;display:flex;align-items:center;justify-content:center;gap:14px;background:rgba(16,12,18,.94);border-top:1px solid rgba(255,255,255,.08)}
+  #bar button{font-family:inherit;background:rgba(255,255,255,.08);color:#eee;border:1px solid rgba(255,255,255,.16);border-radius:6px;padding:9px 15px;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.03em}
   #bar button:hover{background:rgba(255,255,255,.16)}
-  #pg{color:#cfc8d2;font-size:13px;font-weight:600;min-width:74px;text-align:center;font-variant-numeric:tabular-nums}
+  #pg{color:#cfc8d2;font-size:13px;font-weight:600;min-width:70px;text-align:center;font-variant-numeric:tabular-nums}
   #upd{position:fixed;top:12px;right:16px;color:rgba(255,255,255,.45);font-size:11px;letter-spacing:.06em}
   #msg{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;color:#cfc8d2;font-size:15px;text-align:center;padding:30px;line-height:1.7}
   @media print{
     body{background:#fff;overflow:visible}
     #bar,#upd,#msg{display:none!important}
-    #stage{position:static;display:block}
-    #deck{transform:none!important;width:auto!important;height:auto!important}
+    #stage{position:static;overflow:visible}
+    #deck{position:static;transform:none!important;width:auto;height:auto}
     #deck .sl{position:static!important;opacity:1!important;box-shadow:none;page-break-after:always;break-after:page}
-    @page{size:1280px 720px;margin:0}
+    @page{size:1000px 1414px;margin:0}
   }
 </style>
 </head>
@@ -49,9 +49,9 @@ const slug=new URLSearchParams(location.search).get("e")||"dubai-2026";
 let cur=0,total=0;
 
 function fit(){
-  const stage=document.getElementById("stage"),deck=document.getElementById("deck");
-  const s=Math.min(stage.clientWidth/1300,stage.clientHeight/740,1.15);
-  deck.style.width="1280px";deck.style.height="720px";deck.style.transform="scale("+s+")";
+  const st=document.getElementById("stage"),deck=document.getElementById("deck");
+  const s=Math.min(st.clientWidth/(AgendaRender.W+28),st.clientHeight/(AgendaRender.H+24));
+  deck.style.transform="translate(-50%,-50%) scale("+s+")";
 }
 function show(i){
   const sl=document.querySelectorAll("#deck .sl");
@@ -66,6 +66,7 @@ async function boot(){
     const rows=await r.json();
     if(!rows.length)throw new Error('No published agenda called "'+slug+'" yet. Ask the CapLink team to publish it.');
     const data=rows[0].data;
+    try{await document.fonts.ready;}catch(_){}
     total=AgendaRender.buildDeck(document.getElementById("deck"),data);
     document.title=((data.meta&&data.meta.city)||"")+" Agenda · CapLink";
     const d=new Date(rows[0].updated_at);
