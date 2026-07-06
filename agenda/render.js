@@ -128,10 +128,16 @@ var CSS=
 ".agdk .ct-title{position:absolute;top:110px;left:64px;font-size:44px;font-weight:700;letter-spacing:.02em}"+
 ".agdk .ct-sub{position:absolute;top:180px;left:64px;right:64px;font-size:12px;font-weight:300;opacity:.88;line-height:1.6}"+
 ".agdk .ct-line{position:absolute;top:236px;left:64px;right:64px;height:2px;background:linear-gradient(90deg,var(--accent),rgba(255,255,255,.12))}"+
-".agdk .ct-grid{position:absolute;top:272px;left:64px;right:64px;display:grid;grid-template-columns:1fr 1fr;gap:42px 38px}"+
-".agdk .ct .nm{font-size:18px;font-weight:700}"+
-".agdk .ct .rl2{font-size:9.5px;letter-spacing:.22em;font-weight:500;opacity:.75;margin:4px 0 12px;text-transform:uppercase}"+
-".agdk .ct .ln{font-size:11.5px;font-weight:300;opacity:.95;margin-bottom:5px}"+
+".agdk .ct-grid{position:absolute;top:268px;left:64px;right:64px;bottom:104px;display:grid;grid-template-columns:1fr 1fr;gap:16px;grid-auto-rows:1fr}"+
+".agdk .ct-card{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:20px 24px;display:flex;flex-direction:column;justify-content:center;min-width:0}"+
+".agdk .ct-card.feat{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:space-between;gap:30px;background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.22)}"+
+".agdk .ct .nm{font-size:17px;font-weight:700;line-height:1.25}"+
+".agdk .ct-card.feat .nm{font-size:21px}"+
+".agdk .ct .rl2{font-size:9px;letter-spacing:.22em;font-weight:600;color:rgba(255,255,255,.62);margin:4px 0 0;text-transform:uppercase}"+
+".agdk .ct-lines{margin-top:12px}"+
+".agdk .ct-card.feat .ct-lines{margin-top:0;text-align:right}"+
+".agdk .ct .ln{font-size:11.5px;font-weight:400;color:rgba(255,255,255,.92);margin-bottom:4px}"+
+".agdk .ln .lk{display:inline-block;width:16px;font-size:8.5px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.45)}"+
 ".agdk .back-logo{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);width:330px}"+
 /* editor affordances (active only under .agdk-edit) */
 ".agdk-edit [data-edit]{cursor:text;border-radius:3px;outline:1px dashed transparent;transition:outline-color .12s,background .12s}"+
@@ -269,8 +275,10 @@ function contactSlide(d,n){
   var m=d.meta;if(!m.contacts||!m.contacts.length)return null;
   var cells=m.contacts.map(function(c,i){
     var b="meta.contacts."+i;
-    return '<div class="ct"><div class="nm"'+de(b+".name")+'>'+esc(c.name)+'</div><div class="rl2"'+de(b+".role")+'>'+esc(c.role)+'</div>'+
-      '<div class="ln"'+de(b+".email")+'>'+esc(c.email)+'</div>'+(c.t||EDIT?'<div class="ln">T: <span'+de(b+".t")+'>'+esc(c.t)+'</span></div>':"")+(c.m||EDIT?'<div class="ln">M: <span'+de(b+".m")+'>'+esc(c.m)+'</span></div>':"")+'</div>';
+    var lines='<div class="ct-lines"><div class="ln"><span class="lk">E</span><span'+de(b+".email")+'>'+esc(c.email)+'</span></div>'+
+      (c.t||EDIT?'<div class="ln"><span class="lk">T</span><span'+de(b+".t")+'>'+esc(c.t)+'</span></div>':"")+
+      (c.m||EDIT?'<div class="ln"><span class="lk">M</span><span'+de(b+".m")+'>'+esc(c.m)+'</span></div>':"")+'</div>';
+    return '<div class="ct ct-card'+(i===0?' feat':'')+'"><div><div class="nm"'+de(b+".name")+'>'+esc(c.name)+'</div><div class="rl2"'+de(b+".role")+'>'+esc(c.role)+'</div></div>'+lines+'</div>';
   }).join("");
   return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><div class="ct-tint"></div><div class="ct-cap">Get In Touch</div><div class="ct-title">CONTACT US</div><div class="ct-sub"'+de("meta.contactsSub",1)+'>'+esc(m.contactsSub||"")+'</div><div class="ct-line"></div><div class="ct-grid">'+cells+'</div>');
 }
