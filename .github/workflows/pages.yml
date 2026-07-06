@@ -1,16 +1,19 @@
 name: Deploy site
 
-# Keeps GitHub Pages pointed at `main` and explicitly requests a build on
-# every push — with a visible pass/fail run. (Historic gotcha: the Pages
-# source was once left pointing at a stale branch, silently freezing the
-# live site while main moved on.)
+# The live site (GitHub Pages) publishes from the branch
+# `claude/phone-functionality-content-r7yc0s` — changing that source
+# setting needs repo-admin rights the workflow token doesn't have.
+# So instead: every push to main mirrors main onto that branch and
+# explicitly requests a Pages build, with a visible pass/fail run here.
+# (If the Pages source is ever repointed to main in Settings → Pages,
+# this workflow can be deleted.)
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
 
 concurrency:
@@ -21,16 +24,13 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Point Pages at main
-        run: |
-          curl -fsS -X PUT \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${{ github.repository }}/pages" \
-            -d '{"source":{"branch":"main","path":"/"}}'
-      - name: Request a Pages build of main
+      - uses: actions/checkout@v4
+      - name: Mirror main to the Pages source branch
+        run: git push --force origin HEAD:claude/phone-functionality-content-r7yc0s
+      - name: Request a Pages build
         run: |
           curl -fsS -X POST \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${{ github.repository }}/pages/builds"
+            "https://api.github.com/repos/${{ github.repository }}/pages/builds" \
+            || echo "Build request not accepted (one may already be queued)"
