@@ -73,10 +73,10 @@ var CSS=
 ".agdk .spk-badge{position:absolute;top:150px;left:64px;background:var(--pill);color:#fff;font-size:10px;font-weight:700;letter-spacing:.24em;padding:8px 20px;border-radius:16px;text-transform:uppercase}"+
 ".agdk .spk-wrap{position:absolute;top:206px;left:64px;right:64px;bottom:72px;display:flex;gap:40px}"+
 ".agdk .spk-col{flex:1;min-width:0}"+
-".agdk .spke{margin-bottom:15px}"+
-".agdk .spkn{font-size:12.8px;font-weight:700;color:#241020;line-height:1.3}"+
-".agdk .spkt{font-size:10.8px;color:#6b6470;font-style:italic;line-height:1.4;margin-top:2px}"+
-".agdk .spkf{font-size:11.2px;font-weight:700;color:#38323c;line-height:1.35;margin-top:1px}"+
+".agdk .spke1{font-size:11.6px;line-height:1.5;margin-bottom:10px;color:#5a5460}"+
+".agdk .spke1 b{color:#241020;font-weight:700}"+
+".agdk .spke1 i{font-weight:400}"+
+".agdk .spke1 .f{font-weight:700;color:#38323c}"+
 ".agdk .spk-gridwrap{position:absolute;top:206px;left:64px;right:64px;bottom:72px;display:flex;flex-direction:column;gap:20px}"+
 ".agdk .spk-row{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 22px}"+
 ".agdk .spk-cell{display:flex;gap:11px;align-items:flex-start;min-width:0}"+
@@ -309,11 +309,12 @@ function speakerList(d){
   return list;
 }
 function speakerEntries(d){
-  /* 3-line entries: name / italic title / bold firm */
+  /* compact one-line entries: Name, Title, Firm — wraps within the entry */
   return speakerList(d).map(function(p){
-    return '<div class="spke"><div class="spkn">'+esc(p.name)+'</div>'+
-      (p.title?'<div class="spkt">'+esc(p.title)+'</div>':"")+
-      (p.firm?'<div class="spkf">'+esc(p.firm)+'</div>':"")+'</div>';
+    var bits="<b>"+esc(p.name)+"</b>";
+    if(p.title)bits+=", <i>"+esc(p.title)+"</i>";
+    if(p.firm)bits+=', <span class="f">'+esc(p.firm)+"</span>";
+    return '<div class="spke1">'+bits+"</div>";
   });
 }
 function speakerCells(d){
@@ -437,20 +438,23 @@ function speakersSlides(root,d,startN){
   if(d.meta.speakersStyle==="grid")return speakersGridSlides(root,d,startN);
   var entries=speakerEntries(d);
   if(!entries.length)return[];
-  var hs=measureBlocks(root,entries,"spk-col",416),COL_H=1000;
-  var total=0;for(var q=0;q<hs.length;q++)total+=hs[q]+15;
-  /* the speakers list is ALWAYS one page: 2 columns, then 3, then scale */
-  var cols=total<=2*COL_H?2:3;
-  var scale=1;
-  if(total>cols*COL_H){scale=Math.max(0.66,(cols*COL_H)/total*0.97);}
-  var budget=total/cols+40,colArr=[],curCol=[],curH=0;
+  var COL_H=1000,GAP=10;
+  function tot(hs){var t=0;for(var q=0;q<hs.length;q++)t+=hs[q]+GAP;return t;}
+  /* ALWAYS one page: 2 columns, then 3 (measured at true column width),
+     then scale down until it fits */
+  var cols=2,hs=measureBlocks(root,entries,"spk-col",416),total=tot(hs),scale=1;
+  if(total>2*COL_H){
+    cols=3;hs=measureBlocks(root,entries,"spk-col",272);total=tot(hs);
+    if(total>3*COL_H)scale=Math.max(0.6,(3*COL_H)/total*0.96);
+  }
+  var budget=total/cols+30,colArr=[],curCol=[],curH=0;
   entries.forEach(function(h,idx){
-    var hh=hs[idx]+15;
+    var hh=hs[idx]+GAP;
     if(curH+hh>budget&&curCol.length&&colArr.length<cols-1){colArr.push(curCol);curCol=[];curH=0;}
     curCol.push(h);curH+=hh;
   });
   if(curCol.length)colArr.push(curCol);
-  var inner='<div class="spk-wrap" style="zoom:'+scale.toFixed(3)+';gap:'+(cols===3?28:40)+'px">'+colArr.map(function(c){return '<div class="spk-col">'+c.join("")+'</div>';}).join("")+'</div>';
+  var inner='<div class="spk-wrap" style="zoom:'+scale.toFixed(3)+';gap:'+(cols===3?26:40)+'px">'+colArr.map(function(c){return '<div class="spk-col">'+c.join("")+'</div>';}).join("")+'</div>';
   return [slide("",header(d.meta)+'<div class="spk-badge">Confirmed Speakers Include</div>'+inner+foot(d.meta,startN))];
 }
 
