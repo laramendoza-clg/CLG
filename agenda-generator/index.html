@@ -73,7 +73,7 @@
 <body>
 <div class="app">
   <div class="left">
-    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v24</span></h1>
+    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v25</span></h1>
     <div class="tip">✏️ <b>Edit like Slides:</b> click any text on the page to type. Click a photo or logo to change it. Hover a session for <b>move / add / delete</b>.</div>
 
     <div class="stepbox">
@@ -117,7 +117,7 @@
 
 <div id="pop"></div>
 
-<script src="../agenda/render.js?v=24"></script>
+<script src="../agenda/render.js?v=25"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -491,7 +491,15 @@ async function loadCloud(){
     const r=await fetch(SUPA_URL+"/rest/v1/agendas?slug=eq."+encodeURIComponent(s)+"&select=data,updated_at",{headers:{apikey:SUPA_KEY}});
     if(!r.ok)throw new Error("service error "+r.status);
     const rows=await r.json();
-    if(!rows.length){setStatus("This will be a new agenda called “"+esc(s)+"”. Hit <b>Publish now</b> when it looks right.");return;}
+    if(!rows.length){
+      /* Nothing published yet for this event — auto-load a prepared seed
+         from the repo if one exists, so nobody has to juggle files. */
+      try{
+        const sr=await fetch("../agenda/seeds/"+encodeURIComponent(s)+".json?v="+Date.now());
+        if(sr.ok){const seed=await sr.json();if(seed&&seed.sessions){state=seed;renderForm();rebuild();setStatus("📦 Loaded the prepared draft for “"+esc(s)+"” — review it, then hit <b>Publish now</b> to make it live.");return;}}
+      }catch(_){}
+      setStatus("This will be a new agenda called “"+esc(s)+"”. Hit <b>Publish now</b> when it looks right.");return;
+    }
     state=rows[0].data;renderForm();rebuild();
     setStatus("✅ You're editing the newest version (published "+new Date(rows[0].updated_at).toLocaleString()+").");
   }catch(e){setStatus("⚠ Couldn't check for the newest version — working from this device's copy. ("+esc(e.message||e)+")");}

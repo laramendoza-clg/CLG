@@ -1,0 +1,911 @@
+{
+ "v": 2,
+ "theme": "newyork",
+ "meta": {
+  "city": "NEW YORK",
+  "event": "Private Capital Summit",
+  "year": "2026",
+  "dateLine": "OCTOBER 14, 2026",
+  "locLine": "NEW YORK CITY",
+  "bandLine": "OCTOBER 14, 2026  ·  WELL& BY DURST & NASDAQ MARKETSITE  ·  NEW YORK CITY",
+  "headKicker": "Preliminary Agenda",
+  "preliminary": "This is a preliminary agenda. Subject to change",
+  "footerLeft": "NEW YORK PRIVATE CAPITAL SUMMIT 2026  ·  PRELIMINARY AGENDA  ·  OCT 14, 2026",
+  "showSpeakers": true,
+  "notesFill": true,
+  "bgImg": "../assets/sky-newyork.jpg",
+  "coverPartners": [
+   {
+    "label": "Official Conference Venue",
+    "name": "WELL& BY DURST",
+    "img": "",
+    "h": 56
+   },
+   {
+    "label": "Official Drinks Reception Venue",
+    "name": "NASDAQ",
+    "img": "",
+    "h": 56
+   },
+   {
+    "label": "Official Data Partner",
+    "name": "PREQIN",
+    "img": "",
+    "h": 56
+   },
+   {
+    "label": "Official Media Partner",
+    "name": "PE150",
+    "img": "",
+    "h": 56
+   }
+  ],
+  "welcome": {
+   "paras": [
+    "The New York Private Capital Summit is a senior-level, one-day forum designed for private capital funds, institutional investors, dealmakers, and industry service providers. The event is built to deliver actionable insights and foster meaningful dialogue that supports capital deployment, fundraising, and long-term value creation across US private markets. The agenda is carefully curated to ensure highly relevant, market-led content for those managing, advising, allocating to, or overseeing private capital investments.",
+    "Bringing together over 300 senior decision-makers across investment, operational, and regulatory functions, the summit provides a focused environment to explore institutional capital flows and the strategies shaping today's investment landscape.",
+    "The programme offers a comprehensive macro and thematic outlook across private markets, featuring leading voices from top-tier firms. Discussions will cover key areas including value creation, AI and digital transformation, ESG integration, fund structuring and regulation, tax and compliance, operational due diligence, secondaries, and private credit—equipping attendees with practical insights to navigate an increasingly complex market.",
+    "We are grateful to our partners for their continued support and look forward to welcoming you to New York."
+   ],
+   "signName": "Nawshad Noorkhan",
+   "signTitle": "Founder, Managing Director",
+   "signOrg": "CAPLINK GROUP",
+   "signImg": "https://images.squarespace-cdn.com/content/5dc9f095a5705651ea40e08b/27a2c53f-2076-45cf-a764-ee37a8768ad4/Screenshot+2026-06-08+at+5.55.15%E2%80%AFPM.png?content-type=image%2Fpng"
+  },
+  "contactsSub": "We look forward to working with you. Please reach out to any member of the team to discuss how we can maximise your partnership.",
+  "contacts": [
+   {
+    "name": "Nawshad Noorkhan",
+    "role": "Managing Director",
+    "email": "Nawshad.Noorkhan@caplink-group.com",
+    "t": "+44 (0) 208 064 3265",
+    "m": "+44 (0) 7415 880057"
+   },
+   {
+    "name": "Plamena Zlateva",
+    "role": "Head of Operations",
+    "email": "Plamena.Zlateva@caplink-group.com",
+    "t": "",
+    "m": "+1 (332) 288-8893"
+   },
+   {
+    "name": "Doina Roibu",
+    "role": "Head of Production",
+    "email": "Doina.Roibu@caplink-group.com",
+    "t": "",
+    "m": "+1 (646) 208-5365"
+   },
+   {
+    "name": "Lara Mendoza",
+    "role": "Head of Marketing & Design",
+    "email": "Lara.Mendoza@caplink-group.com",
+    "t": "",
+    "m": "+1 (646) 208-6876"
+   },
+   {
+    "name": "Ash Baker",
+    "role": "Relationship Manager",
+    "email": "Ash.Baker@caplink-group.com",
+    "t": "+44 (0) 208 064 3266",
+    "m": "+44 (0) 7473 456935"
+   },
+   {
+    "name": "Shiela Smith",
+    "role": "Relationship Manager",
+    "email": "Shiela.Smith@caplink-group.com",
+    "t": "+44 (0) 208 064 4053",
+    "m": ""
+   },
+   {
+    "name": "Erica Jones",
+    "role": "Relationship Manager",
+    "email": "Erica.Jones@caplink-group.com",
+    "t": "+44 (0) 208 064 0846",
+    "m": ""
+   }
+  ],
+  "lockImg": ""
+ },
+ "sessions": [
+  {
+   "kind": "simple",
+   "time": "8:00–8:45 AM",
+   "title": "Private Networking Breakfast - EY",
+   "note": "",
+   "sponsorName": "EY",
+   "sponsorImg": "",
+   "sponsorH": 30
+  },
+  {
+   "kind": "simple",
+   "time": "8:45–8:50 AM",
+   "title": "Opening Remarks - Partner, EY",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30
+  },
+  {
+   "kind": "people",
+   "time": "8:50–9:10 AM",
+   "title": "Opening Keynote Interview",
+   "note": "Main Conference Room",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "",
+   "lead": null,
+   "desc": "An industry leader sits down with the Wall Street Journal's Miriam Gottfried to open the summit, discussing their current outlook and investment theses on global financial markets. What regions and sectors will provide the best opportunities for growth? Where should investors look next as market conditions continue to evolve and capital deployment strategies shift?",
+   "people": []
+  },
+  {
+   "kind": "people",
+   "time": "9:10–9:40 AM",
+   "title": "Investing in US Private Equity",
+   "note": "",
+   "sponsorName": "Latham & Watkins",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "David Beller",
+    "title": "Partner",
+    "firm": "Latham & Watkins"
+   },
+   "desc": "As private equity firms navigate a higher-for-longer rate environment, capital deployment in the US is becoming increasingly disciplined and selective. With significant dry powder and evolving market conditions, investors are balancing pricing sensitivity with the pursuit of resilient, long-term growth. This discussion will explore how firms are responding to inflationary pressures, tighter financing markets, and heightened geopolitical tensions, while leveraging operational value creation, digital transformation, and AI-driven efficiencies to drive performance across US portfolios.",
+   "people": [
+    {
+     "img": "",
+     "name": "Ruulke Bagijn",
+     "title": "Partner, Global Head, Chair of the Board",
+     "firm": "Carlyle"
+    },
+    {
+     "img": "",
+     "name": "Deven Parekh",
+     "title": "Group Managing Director",
+     "firm": "Insight Partners"
+    },
+    {
+     "img": "",
+     "name": "Lynn Baranski",
+     "title": "Global Co-Head of Private Equity",
+     "firm": "BlackRock"
+    },
+    {
+     "img": "",
+     "name": "Scott Wolff",
+     "title": "President and Partner",
+     "firm": "American Securities"
+    }
+   ]
+  },
+  {
+   "kind": "people",
+   "time": "9:40–10:10 AM",
+   "title": "Navigating Fund Operations & Formation - Regulatory and Structural Considerations",
+   "note": "",
+   "sponsorName": "Kirkland & Ellis  ·  Maples Group",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "Katie A. St. Peters",
+    "title": "Partner",
+    "firm": "Kirkland & Ellis"
+   },
+   "desc": "This panel will examine the legal and structural complexities of forming, launching, and operating private markets funds. Against a backdrop of regulatory uncertainty following the vacating of key SEC private fund rules and new reporting requirements aimed at improving transparency and systemic-risk monitoring, speakers will discuss how fund managers and investors are adapting. The conversation will focus on fund structuring, disclosure obligations, fee transparency, and best practices for navigating an evolving regulatory environment.",
+   "people": [
+    {
+     "img": "",
+     "name": "Karen G. Sodke",
+     "title": "General Counsel",
+     "firm": "A&M Capital"
+    },
+    {
+     "img": "",
+     "name": "Matthew Jill",
+     "title": "Partner, General Counsel",
+     "firm": "Ares Management"
+    },
+    {
+     "img": "",
+     "name": "Sarah Conde",
+     "title": "General Counsel, Chief Compliance Officer",
+     "firm": "Providence Equity"
+    },
+    {
+     "img": "",
+     "name": "Tamar Goldstein",
+     "title": "General Counsel, Chief Compliance Officer",
+     "firm": "Kimmeridge"
+    },
+    {
+     "img": "",
+     "name": "Speaker TBA",
+     "title": "Partner",
+     "firm": "Maples Group"
+    }
+   ]
+  },
+  {
+   "kind": "simple",
+   "time": "10:10–10:40 AM",
+   "title": "Networking Break",
+   "note": "Event Lounge",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30
+  },
+  {
+   "kind": "people",
+   "time": "10:40–11:10 AM",
+   "title": "AI in Private Capital: From Portfolio Insights to Due Diligence",
+   "note": "",
+   "sponsorName": "Blueflame AI  ·  Auquan",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "Raj Bakhru",
+    "title": "General Manager & Co-Founder",
+    "firm": "Blueflame AI"
+   },
+   "desc": "Generative AI is asserting itself as a game-changing technology across the global economy. Within the portfolio, AI can rapidly provide insights into potential impacts and opportunities across companies and industries. Will these technologies disrupt a portfolio company's value chain or economic model? At the firm level, generative AI offers ways to streamline or automate back-office functions and make institutional knowledge instantly available. How are private capital firms using AI during due diligence to assess threats and opportunities?",
+   "people": [
+    {
+     "img": "",
+     "name": "Adam Nahari",
+     "title": "Head of Data, Digital & AI",
+     "firm": "Apollo Global Management"
+    },
+    {
+     "img": "",
+     "name": "Gaurav Hind",
+     "title": "Global Head of AI, Data",
+     "firm": "KKR"
+    },
+    {
+     "img": "",
+     "name": "Stuart Sim",
+     "title": "Managing Director, Head of AI",
+     "firm": "Silver Lake"
+    },
+    {
+     "img": "",
+     "name": "Ashwin Subramani",
+     "title": "Head of AI",
+     "firm": "Summit Partners"
+    },
+    {
+     "img": "",
+     "name": "Chandini Jain",
+     "title": "Founder, Chief Executive Officer",
+     "firm": "Auquan"
+    }
+   ]
+  },
+  {
+   "kind": "people",
+   "time": "11:10–11:45 AM",
+   "title": "Secondaries: Scaling in a New Liquidity Era",
+   "note": "",
+   "sponsorName": "Davis Polk",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "Leor Landa",
+    "title": "Partner, Head Investment Management",
+    "firm": "Davis Polk"
+   },
+   "desc": "The secondaries market continues to evolve as a core component of private markets, maintaining strong momentum following elevated transaction volumes. Institutional investors remain active, driven by liquidity management, portfolio rebalancing, and longer holding periods. GPs are increasingly utilizing continuation vehicles and structured solutions to optimize asset value and extend ownership of high-performing companies. Greater market sophistication is supporting complex transactions. The panel covers pricing dynamics, GP-led innovation, capital solutions, and emerging opportunities.",
+   "people": [
+    {
+     "img": "",
+     "name": "Holcombe Green",
+     "title": "Global Head of the Private Capital Advisory",
+     "firm": "Lazard"
+    },
+    {
+     "img": "",
+     "name": "Amyn Hassanally",
+     "title": "Global Head of Private Equity Secondaries",
+     "firm": "Pantheon Ventures"
+    },
+    {
+     "img": "",
+     "name": "Chris Perriello",
+     "title": "Partner, Global Head of Secondaries",
+     "firm": "Carlyle AlpInvest"
+    },
+    {
+     "img": "",
+     "name": "Daryl Li",
+     "title": "Co-Head of U.S. Secondaries, Senior Managing Director",
+     "firm": "Ardian"
+    },
+    {
+     "img": "",
+     "name": "Lisa Sun",
+     "title": "Managing Director, Co-Head of SLS",
+     "firm": "BlackRock Secondaries"
+    }
+   ]
+  },
+  {
+   "kind": "people",
+   "time": "11:45 AM–12:15 PM",
+   "title": "Private Equity Tax Planning and Optimization",
+   "note": "",
+   "sponsorName": "KPMG  ·  Cleary Gottlieb",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "Susanna Parker",
+    "title": "Partner",
+    "firm": "Cleary Gottlieb"
+   },
+   "desc": "Discussion will focus on key tax considerations for private equity firms, focusing on the impact of state taxes, interest deductibility on leveraged buyouts, and strategies to optimize capital gains treatment. Panelists will address international tax compliance and tax planning for exits, offering insights on how to maximize returns and minimize liabilities in a changing tax environment.",
+   "people": [
+    {
+     "img": "",
+     "name": "Denise Romano",
+     "title": "Head of Fund Tax, Private Markets",
+     "firm": "Bain Capital"
+    },
+    {
+     "img": "",
+     "name": "Raj Rupani",
+     "title": "Head of US Tax",
+     "firm": "Cinven"
+    },
+    {
+     "img": "",
+     "name": "Jordan Tamchin",
+     "title": "EVP, Tax Insurance Practice Leader",
+     "firm": "CAC Specialty"
+    },
+    {
+     "img": "",
+     "name": "Adam Smith",
+     "title": "M&A Tax Partner",
+     "firm": "KPMG"
+    }
+   ]
+  },
+  {
+   "kind": "people",
+   "time": "12:15–12:45 PM",
+   "title": "ESG in US Private Markets: From Policy to Practice",
+   "note": "",
+   "sponsorName": "Morrison Foerster",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "Susan H. Mac Cormac",
+    "title": "Partner",
+    "firm": "Morrison Foerster"
+   },
+   "desc": "As ESG considerations become embedded in private market investing, firms are moving from policy to measurable execution. The U.S. focus is on value creation, risk management, and operational performance rather than regulatory alignment. This panel explores how LP expectations are reshaping ESG integration. Speakers discuss materiality, data quality, governance, and challenges of embedding sustainability into underwriting, portfolio management, and exits. The session examines what information is decision-useful and how firms integrate sustainability without compromising returns.",
+   "people": [
+    {
+     "img": "",
+     "name": "Leela Ramnath",
+     "title": "Global Head of Sustainability",
+     "firm": "Warburg Pincus"
+    },
+    {
+     "img": "",
+     "name": "Dalia Rahman",
+     "title": "Head of Sustainability",
+     "firm": "Apax"
+    },
+    {
+     "img": "",
+     "name": "Colin Etnire",
+     "title": "Head of Sustainability",
+     "firm": "BC Partners"
+    },
+    {
+     "img": "",
+     "name": "Christina Bortz",
+     "title": "ESG Lead, Deputy General Counsel",
+     "firm": "TPG"
+    },
+    {
+     "img": "",
+     "name": "Jaycee Pribulsky",
+     "title": "Partner and Chief Sustainability Officer (CSO)",
+     "firm": "Apollo"
+    }
+   ]
+  },
+  {
+   "kind": "simple",
+   "time": "12:45–2:00 PM",
+   "title": "Networking Lunch",
+   "note": "Event Lounge",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30
+  },
+  {
+   "kind": "people",
+   "time": "2:00–2:20 PM",
+   "title": "Afternoon Keynote Conversation",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "",
+   "lead": null,
+   "desc": "An in-depth discussion with a prominent investor and the Wall Street Journal's Miriam Gottfried, examining portfolio strategy, value creation approaches, and how leading firms are navigating today's complex operating environment. The conversation explores portfolio management strategies, operational improvements and transformation initiatives, and positioning for growth amid market volatility.",
+   "people": []
+  },
+  {
+   "kind": "people",
+   "time": "2:20–2:50 PM",
+   "title": "Human Capital: Attracting and Retaining Top Talent",
+   "note": "",
+   "sponsorName": "Russell Reynolds Associates",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "Heather Hammond",
+    "title": "Co-Leader, Global Private Equity Practice",
+    "firm": "Russell Reynolds Associates"
+   },
+   "desc": "Successful investments rely heavily on skilled professionals who can identify opportunities, perform due diligence, and execute strategic growth plans. Attracting and retaining talented management teams within portfolio companies is essential for maximizing returns and achieving long-term success, making human capital one of private equity's most valuable assets. The panel will discuss real life case studies for identifying, onboarding and retaining talented individuals, who have directly impacted a positive return on investment for their portfolio companies.",
+   "people": [
+    {
+     "img": "",
+     "name": "Tracey Byrne",
+     "title": "Operating Partner, Talent",
+     "firm": "Apollo Global Management"
+    },
+    {
+     "img": "",
+     "name": "Asel Ashergold",
+     "title": "Director, Portfolio Talent",
+     "firm": "EQT"
+    },
+    {
+     "img": "",
+     "name": "Hilda Lui",
+     "title": "Head of Talent, North America",
+     "firm": "Advent"
+    },
+    {
+     "img": "",
+     "name": "Heather L. Wyatt",
+     "title": "Global Head of Talent Management",
+     "firm": "Carlyle"
+    }
+   ]
+  },
+  {
+   "kind": "people",
+   "time": "2:50–3:20 PM",
+   "title": "The Evolving CFO: Leading Through Operational Complexity",
+   "note": "",
+   "sponsorName": "Lincoln International  ·  RSM",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "William Andreoni",
+    "title": "National Asset Management Consulting Leader",
+    "firm": "RSM"
+   },
+   "desc": "As U.S. private equity firms grow, CFOs face mounting challenges—from evolving regulations and increasing LP demands to modernizing legacy systems. Operations teams are grappling with complex fund structures, data silos, and resource constraints. This panel explores key operational pressures, priorities around automation, co-investment oversight, and the future of finance leadership in a rapidly shifting private equity environment.",
+   "people": [
+    {
+     "img": "",
+     "name": "Michael Kurlander",
+     "title": "Partner, Chief Financial Officer & COO",
+     "firm": "Adams Street Partners"
+    },
+    {
+     "img": "",
+     "name": "Rohan Ranadive",
+     "title": "Managing Director, Chief Financial Officer",
+     "firm": "GTCR"
+    },
+    {
+     "img": "",
+     "name": "Barry Giarraputo",
+     "title": "Managing Director, Chief Financial Officer",
+     "firm": "Neuberger Berman Alternatives"
+    },
+    {
+     "img": "",
+     "name": "Elisabetta Zhang",
+     "title": "Chief Financial Officer",
+     "firm": "Arsenal Capital"
+    },
+    {
+     "img": "",
+     "name": "Brian Garfield",
+     "title": "Managing Director & Head of U.S. Portfolio Valuations",
+     "firm": "Lincoln"
+    }
+   ]
+  },
+  {
+   "kind": "simple",
+   "time": "3:20–3:50 PM",
+   "title": "Networking Break",
+   "note": "Event Lounge",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30
+  },
+  {
+   "kind": "people",
+   "time": "3:50–4:20 PM",
+   "title": "Operating Partners Maximizing Portfolio Performance",
+   "note": "",
+   "sponsorName": "Accordion  ·  Lancor",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "Mitchel Nakken",
+    "title": "Head of Strategic Finance",
+    "firm": "Accordion"
+   },
+   "desc": "In an environment defined by margin pressure, higher rates, and shifting exit timelines, operating partners are under renewed pressure to deliver measurable value. This session explores how firms are preserving liquidity, managing costs, and driving EBITDA through hands-on operational change. From leveraging AI in procurement, pricing, and customer targeting to refining deal team collaboration models, operating partners are deploying increasingly sophisticated playbooks. Panellists will also share how they're pushing advanced revenue growth strategies, beyond traditional levers, to accelerate performance and build resilience across the portfolio.",
+   "people": [
+    {
+     "img": "",
+     "name": "Marco Mendes",
+     "title": "Partner, Head of Portfolio Operations Team",
+     "firm": "Advent International"
+    },
+    {
+     "img": "",
+     "name": "Paul Zuber",
+     "title": "Operating Partner, North American Lead",
+     "firm": "Hg"
+    },
+    {
+     "img": "",
+     "name": "John Kelleher",
+     "title": "Managing Partner, Global Head of Portfolio Operations",
+     "firm": "CVC"
+    },
+    {
+     "img": "",
+     "name": "Preston McKenzie",
+     "title": "Operating Partner",
+     "firm": "General Atlantic"
+    },
+    {
+     "img": "",
+     "name": "Chris Conti",
+     "title": "Managing Partner",
+     "firm": "Lancor"
+    }
+   ]
+  },
+  {
+   "kind": "people",
+   "time": "4:20–4:50 PM",
+   "title": "Healthcare Investing: Opportunities and Operational Value Creation",
+   "note": "",
+   "sponsorName": "Cozen O'Connor",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "Christopher Raphaely",
+    "title": "Co-Chair Healthcare & Life Sciences",
+    "firm": "Cozen O'Connor"
+   },
+   "desc": "Healthcare continues to stand out as a compelling sector for private equity, driven by demographic tailwinds, growing demand for care, and innovation across healthcare services, healthcare IT, and medical technology. This panel will examine where investors are seeing the strongest opportunities—from telehealth and value-based care to aging services and specialty healthcare—while addressing the impact of reimbursement changes, regulatory uncertainty, and cost pressures on investment strategy. Speakers will discuss how private equity firms can create value through operational improvement, technology enablement, and scalable models that expand access to high-quality care.",
+   "people": [
+    {
+     "img": "",
+     "name": "Daniel Berglund",
+     "title": "Partner, Head of U.S. Healthcare",
+     "firm": "Nordic Capital"
+    },
+    {
+     "img": "",
+     "name": "Ben Levin",
+     "title": "Founder, CEO",
+     "firm": "Level Equity"
+    },
+    {
+     "img": "",
+     "name": "Robert Mittendorff",
+     "title": "General Partner, Global Head of Healthcare",
+     "firm": "B Capital"
+    },
+    {
+     "img": "",
+     "name": "David Nguyen",
+     "title": "Managing Partner & Co-Head of Healthcare",
+     "firm": "Court Square Capital Partners"
+    }
+   ]
+  },
+  {
+   "kind": "people",
+   "time": "4:50–5:20 PM",
+   "title": "Private Credit and Direct Lending in Today's Market",
+   "note": "",
+   "sponsorName": "Davis Polk  ·  Egan-Jones Ratings",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "Michael Hong",
+    "title": "Partner, Investment Management",
+    "firm": "Davis Polk"
+   },
+   "desc": "As private credit markets continue to mature, investors are navigating a more complex landscape shaped by higher interest rates, tighter liquidity, and evolving borrower needs. This panel will explore how lenders are structuring deals, managing risk, and identifying opportunities across direct lending, opportunistic credit, and special situations in today's market environment.",
+   "people": [
+    {
+     "img": "",
+     "name": "Matthias Ederer",
+     "title": "Senior Managing Director, Co-Head of Underwriting",
+     "firm": "Blue Owl"
+    },
+    {
+     "img": "",
+     "name": "Tucker Greene",
+     "title": "President & COO, Private Credit",
+     "firm": "Goldman Sachs Asset Management"
+    },
+    {
+     "img": "",
+     "name": "Vikas Keswani",
+     "title": "Head of North American Specialty Lending",
+     "firm": "HPS Investment Partners"
+    },
+    {
+     "img": "",
+     "name": "Joel Holsinger",
+     "title": "Partner, Co-Head of Alternative Credit",
+     "firm": "Ares Credit"
+    },
+    {
+     "img": "",
+     "name": "Sean Egan",
+     "title": "Founding Partner and President",
+     "firm": "Egan-Jones Ratings"
+    }
+   ]
+  },
+  {
+   "kind": "people",
+   "time": "5:30–6:00 PM",
+   "title": "Beyond the Pilot Stage: Scaling AI-Driven Value Creation Across the Portfolio",
+   "note": "Hosted at Nasdaq MarketSite · 2nd Floor",
+   "sponsorName": "EY",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "Speaker TBC",
+    "title": "Partner",
+    "firm": "EY"
+   },
+   "desc": "As private equity firms move beyond experimentation, the focus is shifting to scalable operational transformation across portfolio companies. Operating Partners, AI leaders and portfolio executives will discuss what is actually delivering measurable value, how firms are embedding AI into day-to-day operating cadence, and where implementation continues to fall short. The discussion will explore the evolving relationship between investment teams, operators and portfolio management in building AI-enabled businesses.",
+   "people": [
+    {
+     "img": "",
+     "name": "Richa Singh",
+     "title": "Head of AI & Data",
+     "firm": "Lexington Partners"
+    },
+    {
+     "img": "",
+     "name": "Sanji Fernando",
+     "title": "Operating Partner, Data & Artificial Intelligence",
+     "firm": "Frazier Healthcare Partners"
+    },
+    {
+     "img": "",
+     "name": "Ozzie Genc",
+     "title": "Chief Information Officer",
+     "firm": "Charlesbank Capital Partners"
+    },
+    {
+     "img": "",
+     "name": "Luis Suarez",
+     "title": "Chief Technology Officer, AI Leader",
+     "firm": "H.I.G. Capital"
+    }
+   ]
+  },
+  {
+   "kind": "simple",
+   "time": "6:00–6:05 PM",
+   "title": "Closing Remarks",
+   "note": "Nasdaq MarketSite, 2nd Floor",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30
+  },
+  {
+   "kind": "reception",
+   "time": "6:05–7:30 PM",
+   "title": "Networking Cocktail Reception",
+   "cols": [
+    {
+     "h": "Venue",
+     "body": "Nasdaq MarketSite\nTimes Square, Manhattan\nPanoramic city views"
+    },
+    {
+     "h": "Experience",
+     "body": "Premium open bar\nCurated hors d'oeuvres\nNetworking with speakers"
+    },
+    {
+     "h": "Thank You",
+     "body": "We look forward to welcoming you to the New York Private Capital Summit and building meaningful connections as we shape the future of private markets together."
+    }
+   ],
+   "thanks": "Thank you for your interest in the New York Private Capital Summit. We're committed to creating an environment where meaningful conversations drive the future of private markets. Whether you're exploring sponsorship opportunities or planning to attend as a guest, we look forward to welcoming you on October 14, 2026."
+  }
+ ],
+ "sponsors": [
+  {
+   "tier": "Headline Sponsor",
+   "name": "EY",
+   "img": "",
+   "h": 86,
+   "desc": "EY advises private equity firms across the full investment lifecycle, from deal sourcing and diligence to value creation and exit. The firm supports investors with strategy, transaction execution, and operational improvement initiatives. Its teams bring sector expertise and technical capabilities to help drive growth and maximize returns across portfolio companies."
+  },
+  {
+   "tier": "Diamond Sponsor",
+   "name": "Davis Polk",
+   "img": "",
+   "h": 86,
+   "desc": "Davis Polk & Wardwell LLP is a global law firm advising financial institutions, investment managers, and corporations. The firm provides counsel across private funds, capital markets, M&A, and regulatory matters. Its investment management practice supports a wide range of fund structures, including private equity, hedge funds, credit, and ETFs."
+  },
+  {
+   "tier": "Platinum Sponsor",
+   "name": "Kirkland & Ellis",
+   "img": "",
+   "h": 86,
+   "desc": "Kirkland & Ellis is a global law firm advising clients across private equity, M&A, investment funds, and complex corporate transactions. The firm also provides counsel on restructurings, litigation, and regulatory matters. With a broad international platform, Kirkland supports alternative asset managers and institutions on a wide range of legal and strategic issues."
+  },
+  {
+   "tier": "Platinum Sponsor",
+   "name": "Latham & Watkins",
+   "img": "",
+   "h": 86,
+   "desc": "Latham & Watkins is a global law firm advising clients on complex transactions, litigation, and regulatory matters. The firm works with financial institutions, investment managers, and corporations across a range of industries. Its teams combine market insight and sector experience to support clients on critical business and legal challenges."
+  },
+  {
+   "tier": "Platinum Sponsor",
+   "name": "Cleary Gottlieb",
+   "img": "",
+   "h": 86,
+   "desc": "Cleary Gottlieb is a global law firm advising clients on complex legal and business matters across jurisdictions. The firm works with corporations, financial institutions, and governments on transactions, litigation, and regulatory issues. Its teams operate across key financial centers, supporting both domestic and international matters."
+  },
+  {
+   "tier": "Platinum Sponsor",
+   "name": "RSM",
+   "img": "",
+   "h": 86,
+   "desc": "RSM Fund Services provides administration, advisory, and tax services to private equity and real estate funds. The firm supports both emerging and established managers with scalable solutions focused on compliance, risk management, and operational efficiency. Its platform combines industry experience with integrated technology to streamline fund operations."
+  },
+  {
+   "tier": "Platinum Sponsor",
+   "name": "Accordion",
+   "img": "",
+   "h": 86,
+   "desc": "Accordion provides financial consulting services to private equity sponsors and CFOs across the investment lifecycle. The firm's capabilities span finance and technology solutions, business transformation, and transaction support. Its teams leverage data, technology, and AI to help drive value and improve performance across portfolio companies."
+  },
+  {
+   "tier": "Platinum Sponsor",
+   "name": "CAC Specialty",
+   "img": "",
+   "h": 86,
+   "desc": "CAC Specialty is an insurance broker and advisor providing expertise across insurance and capital markets. The firm delivers customized risk solutions for both large corporations and small to mid-sized enterprises. Its teams support clients with tailored strategies to address complex risk management needs."
+  },
+  {
+   "tier": "Platinum Sponsor",
+   "name": "Cozen O'Connor",
+   "img": "",
+   "h": 86,
+   "desc": "Cozen O'Connor is a full-service law firm advising clients across corporate, regulatory, and transactional matters. The firm's Health Care & Life Sciences practice focuses on regulatory, reimbursement, due diligence, and compliance issues. Its teams support clients through transactions with a focus on risk mitigation and efficient execution."
+  },
+  {
+   "tier": "Platinum Sponsor",
+   "name": "Blueflame AI",
+   "img": "",
+   "h": 86,
+   "desc": "Blueflame AI is a technology company that offers a purpose-built, agentic AI platform for alternative investment managers, including private equity, hedge funds, and venture capital firms. It provides tools for enterprise search, intelligent document processing, and no-code workflow automation to help investment firms streamline operations, accelerate deal-making, and gain deeper insights from their data."
+  },
+  {
+   "tier": "Platinum Sponsor",
+   "name": "Morrison Foerster",
+   "img": "",
+   "h": 86,
+   "desc": "Morrison Foerster, widely known as MoFo, is a prominent global law firm headquartered in San Francisco, California. Founded in 1883, the firm employs over 1,000 lawyers across 18 offices spanning the United States, Asia, and Europe. MoFo is best known for its deep roots in the technology and life sciences sectors, as well as its work with Fortune 100 companies and financial institutions."
+  },
+  {
+   "tier": "Gold Sponsor",
+   "name": "Lancor",
+   "img": "",
+   "h": 86,
+   "desc": "Lancor is a global executive placement firm specializing in retained executive search and executive-led deal advisory. We work with growth-stage through leverage buyout firms held by private equity and sovereign wealth funds, as well as select technology and digital-enabled companies. Our goal is to help businesses achieve transformative growth."
+  },
+  {
+   "tier": "Gold Sponsor",
+   "name": "KPMG",
+   "img": "",
+   "h": 86,
+   "desc": "KPMG is one of the world's leading professional services firms and the fastest-growing Big Four firm in the United States. Our global organization of firms has more than 276,000 professionals serving clients in more than 142 countries and territories, providing innovative methodologies and audit, tax, and advisory services to many of the world's largest and most prestigious organizations."
+  },
+  {
+   "tier": "Gold Sponsor",
+   "name": "Egan-Jones Ratings",
+   "img": "",
+   "h": 86,
+   "desc": "Egan-Jones Ratings was founded in 1995 for the purpose of issuing timely, accurate ratings. The firm rapidly gained credibility by flagging the failures of Enron and WorldCom and has since established itself as a leading global provider of credit ratings. Egan-Jones is a Nationally Recognized Statistical Ratings Organization (NRSRO) and is recognized by the National Association of Insurance Commissioners (NAIC) as a Credit Rating Provider."
+  },
+  {
+   "tier": "Gold Sponsor",
+   "name": "Lincoln International",
+   "img": "",
+   "h": 86,
+   "desc": "We are trusted investment banking advisors to business owners and senior executives of leading private equity firms and their portfolio companies and to public and privately held companies around the world. Our services include mergers and acquisitions advisory, private funds and capital markets advisory, and valuations and fairness opinions. As one tightly integrated team of more than 1,400 professionals in more than 25 offices in 16 countries."
+  },
+  {
+   "tier": "Gold Sponsor",
+   "name": "Maples Group",
+   "img": "",
+   "h": 86,
+   "desc": "We are market leaders in the provision of legal, fiduciary, fund, regulatory and compliance and entity formation and management services, with expertise across a range of jurisdictions, sectors and disciplines. We offer a broad range of solutions tailored to the unique requirements of each of our clients, independently providing specialised fiduciary, fund administration, regulatory and compliance, entity formation and management and legal services."
+  },
+  {
+   "tier": "Gold Sponsor",
+   "name": "Auquan",
+   "img": "",
+   "h": 86,
+   "desc": "Auquan provides AI-driven solutions that automate manual, time-intensive tasks for financial services professionals. The firm supports investment teams with tools that enhance research, analysis, and decision-making. Its platform is used by leading global financial institutions to improve efficiency and focus on higher-value work."
+  },
+  {
+   "tier": "Networking Sponsor",
+   "name": "Gain",
+   "img": "",
+   "h": 86,
+   "desc": "Gain.pro provides a data platform focused on delivering visibility into global private markets. The firm combines AI-driven technology with proprietary research to offer detailed insights on private companies. Its platform is used by leading advisory firms, private equity investors, and M&A professionals to support sourcing and decision-making."
+  },
+  {
+   "tier": "Networking Sponsor",
+   "name": "ZEDRA",
+   "img": "",
+   "h": 86,
+   "desc": "ZEDRA is a global independent fund administrator providing services across fund design, implementation, and governance. The firm supports investment managers with integrated solutions combining people, processes, and technology. With operations across key financial jurisdictions, ZEDRA offers local expertise to support global fund structures."
+  },
+  {
+   "tier": "Media Partner",
+   "name": "PE150",
+   "img": "",
+   "h": 86,
+   "desc": "PE 150 delivers precision trends and insights to over 250,000 investors and executives who rely on our insights to drive high-stakes decision making. Originated by an operating executive turned private equity sponsor, our network spans five verticals and reaches principal decision makers across the globe. We craft campaigns that resonate with the most influential minds in finance. From premium content to precise targeting, we help brands connect with decision-makers who matter."
+  }
+ ]
+}

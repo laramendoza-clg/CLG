@@ -1,0 +1,580 @@
+{
+ "v": 2,
+ "theme": "european",
+ "meta": {
+  "city": "EUROPEAN",
+  "event": "Private Capital Summit",
+  "year": "2027",
+  "dateLine": "FEBRUARY 2027",
+  "locLine": "LONDON",
+  "bandLine": "FEBRUARY 2027  ·  ROSEWOOD  ·  LONDON",
+  "headKicker": "Preliminary Agenda",
+  "preliminary": "This is a preliminary agenda. Subject to change",
+  "footerLeft": "EUROPEAN PRIVATE CAPITAL SUMMIT 2027  ·  PRELIMINARY AGENDA  ·  FEB 2027",
+  "showSpeakers": false,
+  "notesFill": true,
+  "bgImg": "../assets/sky-london.jpg",
+  "coverPartners": [
+   {
+    "label": "Official Conference Venue",
+    "name": "THE LONDONER",
+    "img": "",
+    "h": 56
+   },
+   {
+    "label": "Official Data Partner",
+    "name": "PREQIN",
+    "img": "",
+    "h": 56
+   },
+   {
+    "label": "Official Media Partner",
+    "name": "PE150",
+    "img": "",
+    "h": 56
+   }
+  ],
+  "welcome": {
+   "paras": [
+    "The Annual European Private Capital Summit is a one-day, education-focused event for private capital funds, investors, deal makers, and service providers. The purpose of the meeting is to facilitate the dissemination of actionable investment content and support the continued development of the private markets sector in Europe. The conference agenda has been specifically designed to provide relevant and topical educational content for those who manage, advise, allocate to, or oversee private capital investments and operations.",
+    "The event will bring together over 400+ delegates with operational, regulatory, and investment roles, as well as leading investors, to discuss institutional capital allocations into private capital investment vehicles.",
+    "The event aims to provide a macro outlook across the full spectrum of private markets investing. The content will reflect key market trends and feature influential and dynamic speakers from leading private capital funds. Topics include ESG, generative AI, value creation strategies, human capital leadership, structural and regulatory considerations of launching and forming a fund, M&A tax and compliance strategies, operational due diligence, direct lending, NAV financing, and other innovative structures.",
+    "We'd like to thank our event sponsors for their support of this industry-leading event. We look forward to hosting you at the conference!"
+   ],
+   "signName": "Nawshad Noorkhan",
+   "signTitle": "Founder, Managing Director",
+   "signOrg": "CAPLINK GROUP",
+   "signImg": "https://images.squarespace-cdn.com/content/5dc9f095a5705651ea40e08b/27a2c53f-2076-45cf-a764-ee37a8768ad4/Screenshot+2026-06-08+at+5.55.15%E2%80%AFPM.png?content-type=image%2Fpng"
+  },
+  "contactsSub": "We look forward to working with you. Please reach out to any member of the team to discuss how we can maximise your partnership.",
+  "contacts": [
+   {
+    "name": "Nawshad Noorkhan",
+    "role": "Managing Director",
+    "email": "Nawshad.Noorkhan@caplink-group.com",
+    "t": "+44 (0) 208 064 3265",
+    "m": "+44 (0) 7415 880057"
+   },
+   {
+    "name": "Plamena Zlateva",
+    "role": "Head of Operations",
+    "email": "Plamena.Zlateva@caplink-group.com",
+    "t": "",
+    "m": "+1 (332) 288-8893"
+   },
+   {
+    "name": "Doina Roibu",
+    "role": "IR & Production Director",
+    "email": "Doina.Roibu@caplink-group.com",
+    "t": "",
+    "m": "+1 (646) 208-5365"
+   },
+   {
+    "name": "Lara Mendoza",
+    "role": "Head of Marketing & Design",
+    "email": "Lara.Mendoza@caplink-group.com",
+    "t": "",
+    "m": "+1 (646) 208-6876"
+   },
+   {
+    "name": "Ash Baker",
+    "role": "Relationship Manager",
+    "email": "Ash.Baker@caplink-group.com",
+    "t": "+44 (0) 208 064 3266",
+    "m": "+44 (0) 7473 456935"
+   },
+   {
+    "name": "Shiela Smith",
+    "role": "Relationship Manager",
+    "email": "Shiela.Smith@caplink-group.com",
+    "t": "+44 (0) 208 064 4053",
+    "m": ""
+   },
+   {
+    "name": "Erica Jones",
+    "role": "Relationship Manager",
+    "email": "Erica.Jones@caplink-group.com",
+    "t": "+44 (0) 208 064 0846",
+    "m": ""
+   }
+  ],
+  "lockImg": ""
+ },
+ "sessions": [
+  {
+   "kind": "people",
+   "time": "08:00–08:55",
+   "title": "Networking Breakfast",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "",
+   "lead": null,
+   "desc": "Attendees will have the chance to network in the main lobby. Buffet style breakfast will be served for all guests with a large varied selection available.",
+   "people": []
+  },
+  {
+   "kind": "simple",
+   "time": "08:55–09:00",
+   "title": "Opening Remarks - Paddy Moser, UK Head of Private Equity, EY",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30
+  },
+  {
+   "kind": "people",
+   "time": "09:00–09:20",
+   "title": "Keynote Interview",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "",
+   "lead": null,
+   "desc": "Our keynote speaker will sit down with a leading journalist to discuss her current outlook and investment theses on global financial markets. What regions and sectors will provide the best opportunities for growth and where should investors look next?",
+   "people": []
+  },
+  {
+   "kind": "people",
+   "time": "09:20–09:50",
+   "title": "Overview of the European Private Equity Investment Landscape",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "",
+   "lead": null,
+   "desc": "As private equity enters a new phase of the cycle, investors are balancing significant dry powder with evolving market dynamics, shifting exit conditions, and growing demands for operational value creation. Artificial intelligence, sector specialisation, and geopolitical developments are increasingly influencing investment strategies and portfolio management decisions across Europe. This panel will bring together leading investors to discuss where capital is being deployed, how firms are creating value, the outlook for exits and fundraising, and the key themes shaping European private equity over the next 12–24 months.",
+   "people": []
+  },
+  {
+   "kind": "people",
+   "time": "09:50–10:20",
+   "title": "Secondaries & GP-Led Solutions: Scaling Liquidity and Unlocking Value in Private Markets",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "Christopher Good",
+    "title": "Partner",
+    "firm": "Macfarlanes"
+   },
+   "desc": "As secondaries continue to become an integral part of private markets, investors are increasingly using GP-led transactions, continuation vehicles, and structured liquidity solutions to optimise portfolios and unlock value. What was once a niche strategy has evolved into a core portfolio management tool for both LPs and GPs. This session will explore the next phase of the secondaries market, examining how investors are accessing high-quality assets, creating liquidity, managing portfolio exposure, and navigating an increasingly sophisticated and competitive landscape. Where are the most attractive opportunities today, and how is the market evolving to support growing demand from both buyers and sellers?",
+   "people": []
+  },
+  {
+   "kind": "people",
+   "time": "10:20–10:50",
+   "title": "Networking Break",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "",
+   "lead": null,
+   "desc": "Delegates will have access to the main ballroom, exhibition area, and breakout rooms for meetings and networking.",
+   "people": []
+  },
+  {
+   "kind": "people",
+   "time": "10:50–11:20",
+   "title": "The Future of Value Creation: How Operating Partners Are Driving Portfolio Performance",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "Fred Bürger",
+    "title": "Partner, EY Global Private Equity Value Creation Co-Leader",
+    "firm": "EY"
+   },
+   "desc": "Value creation has become a key differentiator for private equity firms seeking to drive growth, improve performance, and maximise outcomes across their portfolios. Operating partners are increasingly taking on a strategic role, leveraging AI, digital transformation, commercial excellence, pricing optimisation, and talent initiatives to create sustainable competitive advantage. This session will explore how leading operating partners are delivering measurable results, scaling best practices across portfolio companies, and evolving their value creation playbooks to meet the demands of an increasingly competitive investment environment.",
+   "people": []
+  },
+  {
+   "kind": "people",
+   "time": "11:20–11:50",
+   "title": "Navigating Complexity: Legal, Regulatory and Structuring Trends in Private Capital",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "Tom Alabaster",
+    "title": "Partner, Head of Funds (EMEA)",
+    "firm": "Ropes & Gray"
+   },
+   "desc": "Panellists will examine the key legal, structural, and regulatory considerations involved in forming, launching, and managing private equity funds across European markets. The discussion will span the entire fund life cycle, from structuring and establishment to operational execution and compliance management, while addressing recent EU regulatory developments and their impact on fund managers in today's evolving landscape.",
+   "people": []
+  },
+  {
+   "kind": "people",
+   "time": "11:50–12:20",
+   "title": "Navigating Tax Complexity in Private Equity",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "Laura Underhill",
+    "title": "Partner",
+    "firm": "Clifford Chance"
+   },
+   "desc": "Tax considerations continue to play a critical role in fund structuring, cross-border investments, and value creation strategies across private markets. Increasing regulatory scrutiny, evolving transparency requirements, and shifting tax policies are creating new challenges for private equity firms operating across multiple jurisdictions. This session will explore the key tax developments shaping the private capital industry, examining how firms are adapting investment structures, managing compliance obligations, and balancing tax efficiency with growing regulatory and investor expectations. Panellists will discuss the practical implications of global tax reforms, evolving reporting requirements, and emerging policy developments that may influence investment decisions and returns.",
+   "people": []
+  },
+  {
+   "kind": "tables",
+   "time": "12:20–13:00",
+   "title": "Roundtables (40 MINUTES)",
+   "desc": "Roundtables will be held in the main ballroom. Each roundtable will be assigned a table number, and topics will be displayed on the main stage, on screens around the venue, and in the event app. To ensure participation, please pre-book your roundtable in advance.",
+   "tables": [
+    {
+     "topic": "Building Funds in Europe Today: Key Strategic Priorities in a Changing Environment",
+     "host": ""
+    },
+    {
+     "topic": "GP M&A and GP Stakes",
+     "host": ""
+    },
+    {
+     "topic": "Private Credit: European Fundraising Market Trends and Perspectives",
+     "host": ""
+    },
+    {
+     "topic": "Value Creation Playbook: Leadership and Board Effectiveness in Today's PE Market",
+     "host": ""
+    },
+    {
+     "topic": "UK Carried Interest Tax Reform: The Impact on Mobile Executives",
+     "host": ""
+    },
+    {
+     "topic": "Beyond the Hype: Practical AI Use-Cases for GPs and Portfolio Companies",
+     "host": ""
+    }
+   ]
+  },
+  {
+   "kind": "simple",
+   "time": "13:00–14:00",
+   "title": "Networking Lunch Break",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30
+  },
+  {
+   "kind": "people",
+   "time": "14:00–14:20",
+   "title": "Keynote Interview",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "",
+   "lead": null,
+   "desc": "Our keynote speaker will sit down with a leading journalist to discuss her current outlook and investment theses on global financial markets. What regions and sectors will provide the best opportunities for growth and where should investors look next?",
+   "people": []
+  },
+  {
+   "kind": "people",
+   "time": "14:20–14:50",
+   "title": "The Human Edge: Building High-Impact Teams to Outperform in PE",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "",
+   "lead": null,
+   "desc": "As the private equity landscape transforms, talent is emerging as a core lever for value creation. This session explores how firms are rethinking human capital strategies, from hiring senior leadership at portfolio companies to embedding purpose-driven culture across operations. With growing LP focus on diversity, succession planning, and leadership agility, the ability to attract, retain, and empower top-tier talent is now central to performance. Experts will share how they are aligning hiring with value creation plans, reshaping firm culture, and using talent as a differentiator in today's competitive, capital-constrained environment.",
+   "people": []
+  },
+  {
+   "kind": "people",
+   "time": "14:50–15:20",
+   "title": "Private Credit Outlook: Navigating Growth and Complexity",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "Diala Minott",
+    "title": "Co-Chair Investment Funds & Private Capital",
+    "firm": "Paul Hastings"
+   },
+   "desc": "Private credit continues to evolve as an increasingly important source of capital for borrowers and a key allocation for investors. As the market matures, managers are navigating larger deal sizes, growing competition, and increasingly sophisticated financing structures while maintaining discipline in underwriting and portfolio construction. This session will explore the opportunities and challenges shaping the private credit landscape, including direct lending, asset-backed finance, fundraising trends, portfolio risk management, and the growing role of technology and data analytics in supporting investment decisions and driving performance.",
+   "people": []
+  },
+  {
+   "kind": "people",
+   "time": "15:20–15:50",
+   "title": "Networking Break",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "",
+   "lead": null,
+   "desc": "Delegates will have access to the main ballroom, exhibition area, and breakout rooms for meetings and networking. Refreshments will be provided by the Rosewood Hotel.",
+   "people": []
+  },
+  {
+   "kind": "people",
+   "time": "15:50–16:20",
+   "title": "The Evolving CFO: Leading Through Operational Complexity",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "",
+   "lead": null,
+   "desc": "As private equity firms navigate an increasingly complex operating environment, CFOs are being asked to play a more strategic role than ever before. From managing cross-border fund structures and evolving regulatory requirements to enhancing investor reporting, overseeing technology transformation, and driving operational efficiency, today's finance leaders sit at the center of the firm's growth agenda. This panel will explore how CFOs are balancing governance, scalability, and value creation while preparing their organizations for the next phase of private markets evolution.",
+   "people": []
+  },
+  {
+   "kind": "people",
+   "time": "16:20–16:50",
+   "title": "Building for Exit: Operational Excellence, Growth and Value Creation",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "Paul Reading",
+    "title": "Senior Managing Director - Head of Europe",
+    "firm": "Accordion"
+   },
+   "desc": "Preparing for a successful exit requires more than a well-timed sale process. Leading private equity firms are embedding exit readiness throughout the investment lifecycle, focusing on operational excellence, financial discipline, governance, technology, and scalable growth strategies that enhance value and support premium valuations. This session will explore how sponsors and portfolio company management teams are preparing businesses for successful exits, aligning value creation initiatives with buyer expectations, and building the capabilities, processes, and reporting frameworks needed to maximise outcomes in an increasingly competitive market.",
+   "people": []
+  },
+  {
+   "kind": "people",
+   "time": "16:50–17:20",
+   "title": "Deploying AI: From Portfolio Strategy to Measurable ROI",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "MODERATOR",
+   "lead": {
+    "img": "",
+    "name": "James Tedman",
+    "title": "Head of Product & Head of Europe",
+    "firm": "Blueflame AI"
+   },
+   "desc": "Artificial intelligence is rapidly becoming a core component of investment and value creation strategies across private markets. Firms are leveraging AI to enhance sourcing, streamline due diligence, improve portfolio monitoring, and identify opportunities for operational and commercial improvement across portfolio companies. This session will explore how private equity firms are integrating AI across the investment lifecycle, from deal origination and decision-making to portfolio performance and exit preparation. Panellists will discuss practical use cases, implementation challenges, governance considerations, and the capabilities required to scale AI adoption and generate measurable business outcomes.",
+   "people": []
+  },
+  {
+   "kind": "simple",
+   "time": "17:20–17:25",
+   "title": "Closing Remarks",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30
+  },
+  {
+   "kind": "simple",
+   "time": "17:35–onwards",
+   "title": "Networking Cocktail",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30
+  }
+ ],
+ "sponsors": [
+  {
+   "tier": "Platinum Sponsor",
+   "name": "EY",
+   "img": "",
+   "h": 86,
+   "desc": "Our global private equity team can help you identify, invest in and transform companies to create more value across your portfolio with confidence, at every step of your transaction lifecycle. What separates the best private equity firms from the rest is their ability to spot the right opportunities, find profitable paths to growth, execute strategies that create more value, and achieve the best possible exit. EY teams can help increase your ability to create differentiated value and maximize return on investment by bringing the skills, technical knowledge, and senior industry expertise you need. We're ready to assemble and deploy teams of people to work at your side from day one of an assignment. It's all part of our commitment to the transformative power of private equity."
+  },
+  {
+   "tier": "Platinum Sponsor",
+   "name": "Clifford Chance",
+   "img": "",
+   "h": 86,
+   "desc": "Clifford Chance is an international law firm with significant depth and range of resources across five continents. We provide the clarity, insights and expertise you need to create lasting value. We deliver our private capital clients high quality, practical legal advice and insights on their most complex transactions and their most challenging business matters. Our experience across sectors and jurisdictions means that we advise on the latest deal structures and market practices. Our global, multi-disciplinary teams collaborate with clients at every step of their investing journey to deliver value that lasts beyond any one transaction. We advise on transactional, regulatory and contentious matters including fund formation and ongoing operations; acquisition financing and deal execution; restructuring; disputes; tax; and antitrust, helping investors to rapidly raise and deploy capital, find creative ways to deliver growth at every stage of the investment lifecycle and outperform the market."
+  },
+  {
+   "tier": "Platinum Sponsor",
+   "name": "Simpson Thacher",
+   "img": "",
+   "h": 86,
+   "desc": "Simpson Thacher is one of the world's most respected law firms. But for us, this has never simply been a matter of size or rankings. It's the direct result of our commitment to one founding principle. Multinationals, banks, investment funds and other sophisticated businesses turn to Simpson Thacher's Tax Practice for advice on their largest and most complex transactions. Our U.S. and U.K. tax lawyers work closely with our corporate and real estate colleagues to offer clients the full spectrum of deal and fund capabilities."
+  },
+  {
+   "tier": "Platinum Sponsor",
+   "name": "Baker McKenzie",
+   "img": "",
+   "h": 86,
+   "desc": "Private equity's fast-paced, competitive and innovative nature requires a law firm with the experience and expertise to meet complex demands on a global basis. From structuring investments, adapting to regulations and addressing volatility in global and local markets, our in-depth knowledge of market trends and deep industry experience helps our clients execute the right deals with the right terms to minimize risk and build portfolio value."
+  },
+  {
+   "tier": "Platinum Sponsor",
+   "name": "Ropes & Gray",
+   "img": "",
+   "h": 86,
+   "desc": "Ropes & Gray is a preeminent global law firm with over 1,600 lawyers serving clients in major centers of business, finance, technology and government. With over 200 private equity lawyers, more than 100 private funds and more than 150 finance lawyers, we advise sophisticated private capital investors in Europe, the U.S. and Asia across the full spectrum of legal services. In Europe, we have been recognised for our leading practices in private equity, M&A, asset management, finance, real estate and litigation & enforcement."
+  },
+  {
+   "tier": "Platinum Sponsor",
+   "name": "Accordion",
+   "img": "",
+   "h": 86,
+   "desc": "We sit at the heart of private equity—where sponsors and CFOs meet. Through financial consulting rooted in data, technology, and AI, we help clients drive value. From foundational finance & technology solutions to business transformations & transactions, we support the office of the CFO across all stages of the investment lifecycle."
+  },
+  {
+   "tier": "Platinum Sponsor",
+   "name": "Macfarlanes",
+   "img": "",
+   "h": 86,
+   "desc": "Servicing the needs of the private capital industry is at the core of our firm. In an ever-changing world of diversification in asset classes, regulatory and tax change and increasingly demanding investor requirements private capital managers need advisors that are immersed in the industry, quick to adapt to change and lead the thinking on new developments. We support our clients on meeting new challenges, including setting up new businesses, all of their house requirements, launching new products, adapting to regulatory and tax change, obtaining finance and deploying capital."
+  },
+  {
+   "tier": "Platinum Sponsor",
+   "name": "Paul Hastings",
+   "img": "",
+   "h": 86,
+   "desc": "With widely recognized elite teams in private equity, finance, mergers & acquisitions, restructuring and special situations, litigation, employment, and real estate, Paul Hastings is a premier law firm providing intellectual capital and superior execution globally to the world's leading investors, investment banks, asset managers, and corporations. Founded in 1951, Paul Hastings has grown strategically to anticipate and respond to our clients' needs in markets across the globe. We have a strong presence throughout Asia, Europe, Latin America, and the U.S. We partner with our clients to understand their business and the challenges ahead of them. In the face of transformative change, we help them reimagine what's possible—and move forward."
+  },
+  {
+   "tier": "Platinum Sponsor",
+   "name": "CEO.works",
+   "img": "",
+   "h": 86,
+   "desc": "Our cutting-edge tools and methodologies are designed to pivot human capital interventions from process excellence to value creation. We supercharge the execution of strategy by precisely connecting it to talent selection, talent allocation, and talent mobilization. We are evidence-based, risk-seeking, and obsessed with defining “the fewest possible things” that will bend your value curve. We are the Talent to Value Company."
+  },
+  {
+   "tier": "Platinum Sponsor",
+   "name": "FTI Consulting",
+   "img": "",
+   "h": 86,
+   "desc": "Our experts serve private equity sponsors, credit fund managers and their portfolio companies to generate value, increase return on investment and mitigate risk throughout the deal lifecycle. We put your interests first, combining our deep industry and capability expertise to execute and deliver value quickly and collaboratively. We take a unique industry-first approach that leverages a senior team of experts that has “sat in the management seat” occupying key roles. And we work alongside you, from ideation through due diligence and deal execution as well as value creation, risk management and exit. Our culture and working style deliver tangible results and pragmatic, execution-ready solutions, making a meaningful and measurable difference."
+  },
+  {
+   "tier": "Platinum Sponsor",
+   "name": "Blueflame AI",
+   "img": "",
+   "h": 86,
+   "desc": "Blueflame AI is a technology company that offers a purpose-built, agentic AI platform for alternative investment managers, including private equity, hedge funds, and venture capital firms. Founded in 2023, it provides tools for enterprise search, intelligent document processing, and no-code workflow automation to help investment firms streamline operations, accelerate deal-making, and gain deeper insights from their data. The company focuses on secure and compliant AI adoption, aiming to empower smaller teams to perform sophisticated analysis and automate multi-step processes across the investment lifecycle."
+  },
+  {
+   "tier": "Exclusive Managed Services Sponsor",
+   "name": "ECI",
+   "img": "",
+   "h": 86,
+   "desc": "ECI stands at the forefront of managed services and technology solutions, revolutionizing the alternative investment management industry. Our roots in the Alternative Investment Market (AIM) have positioned us to expand into highly regulated sectors requiring compliant solutions. We excel in cloud, data, and cybersecurity, driving and securing our clients' digital transformations with precision and innovation."
+  },
+  {
+   "tier": "Gold Sponsor",
+   "name": "ZEDRA",
+   "img": "",
+   "h": 86,
+   "desc": "As a global independent fund administrator, we offer best in class combinations of people, process and technology working efficiently throughout the fund design process, implementation and governance. At the heart of our service ethos is the belief that clients are looking for something more than a simple administration service. Operating from key geographies including the Cayman Islands, Luxembourg, Jersey, Guernsey, the US and Singapore we have the local knowledge you need across the world."
+  },
+  {
+   "tier": "Gold Sponsor",
+   "name": "Alvarez & Marsal",
+   "img": "",
+   "h": 86,
+   "desc": "Founded in 1983, Alvarez & Marsal is a leading global professional services firm. Renowned for its leadership, action and results, Alvarez & Marsal provides advisory, business performance improvement and turnaround management services, delivering practical solutions to address clients' unique challenges. With a worldwide network of experienced operators, world-class consultants, former regulators and industry authorities, Alvarez & Marsal helps corporates, boards, private equity firms, law firms and government agencies drive transformation, mitigate risk and unlock value at every stage of growth."
+  },
+  {
+   "tier": "Gold Sponsor",
+   "name": "Broadridge",
+   "img": "",
+   "h": 86,
+   "desc": "Broadridge Financial Solutions (NYSE: BR) is a global technology leader with trusted expertise and transformative technology, helping clients and the financial services industry operate, innovate, and grow. We power investing, governance, and communications for our clients – driving operational resiliency, elevating business performance, and transforming investor experiences. Our technology and operations platforms process and generate over 7 billion communications annually and underpin the daily average trading of over $15 trillion in equities, fixed income, and other securities globally. A certified Great Place to Work®, Broadridge is part of the S&P 500® Index, employing over 15,000 associates in 21 countries."
+  },
+  {
+   "tier": "Gold Sponsor",
+   "name": "True",
+   "img": "",
+   "h": 86,
+   "desc": "We're not just another search platform; we're talent data architects. True is the only talent management platform that harnesses big data on talent development. Our journey began over a decade ago, fueled by a vision to transform companies through progressive talent. Today, we stand as a global leader, seamlessly bridging the gap between visionary executives and organizations poised for greatness. When you work with us, you're backed by data and experience. Our experts blend insights with instinct, ensuring every hire and talent decision is a strategic win."
+  },
+  {
+   "tier": "Gold Sponsor",
+   "name": "Cruxy",
+   "img": "",
+   "h": 86,
+   "desc": "Cruxy is a growth intelligence firm trusted by some of the world's leading private equity funds, including Advent International, Hg Capital, Montagu, and Permira. Renowned for its forensic approach to product, packaging, and pricing strategy in B2B tech, Cruxy goes far beyond surface-level analysis. The team is known for identifying hidden risks and untapped value pre- and post-deal. At the core of its methodology is the Cortex - Cruxy's proprietary intelligence engine that fuses over 2 billion data points with deep sector expertise. This enables Cruxy to rapidly triangulate the reality behind commercial models and extract actionable insight for its clients. What sets Cruxy apart is its obsession with impact: translating data into real, measurable outcomes that drive growth and value for investors."
+  },
+  {
+   "tier": "Gold Sponsor",
+   "name": "BMS",
+   "img": "",
+   "h": 86,
+   "desc": "We have access to insurance capacity across the world and have developed strong relationships with M&A and Tax insurance markets in London, Europe, North America and Asia. Our team is a group of multi-disciplined professionals with backgrounds in M&A, Insurance, Law, Tax, Finance & Accounting and Litigation. With in-depth global experience, we have extensive expertise in well over 1,000 cross-border M&A transactions."
+  },
+  {
+   "tier": "Gold Sponsor",
+   "name": "Rational Partners",
+   "img": "",
+   "h": 86,
+   "desc": "Rational Partners is a firm of experienced technology leaders who provide fractional CTO, advisory, and execution services, helping non-technical founders, VCs, and PE firms build, scale, and rescue technology businesses by delivering high-caliber tech talent, strategy, and hands-on product delivery, focusing on pragmatic, forward-thinking solutions across various sectors like SaaS, Fintech, and Healthtech. They offer technical leadership, manage teams, and aim to build sustainable capabilities so clients can eventually achieve independence, reducing risk for high-value projects."
+  },
+  {
+   "tier": "Silver Sponsor",
+   "name": "BoardClic",
+   "img": "",
+   "h": 86,
+   "desc": "BoardClic is the leading platform helping private equity firms turn board effectiveness into a measurable driver of performance and value creation. In a market defined by longer holding periods, tighter exits and rising execution risk, performance is no longer won on strategy alone. It is won in the boardroom. BoardClic gives active owners a clear, objective view of how their boards and leadership teams are actually performing, so they can intervene earlier, align faster and compound value across the portfolio. Used by more than 500 PE-backed boards, BoardClic delivers fast, scalable board and leadership evaluations that surface the patterns behind strong execution. Our assessments take minutes to complete, but generate insights that guide sharper decision-making on governance, leadership and the Chair–CEO–Investor dynamic. At the core of BoardClic is a purpose-built methodology combining two decades of private equity experience with advanced analytics and AI-driven insight. We analyse evaluation data at scale to identify trends, benchmark performance and highlight where misalignment, risk or opportunity sits, long before it shows up in financial results."
+  },
+  {
+   "tier": "Networking Sponsor",
+   "name": "Gain",
+   "img": "",
+   "h": 86,
+   "desc": "Gain.pro is on a mission to provide global private market visibility. Our industry-leading platform combines advanced AI tech with local-for-local research. It delivers the highest quality information on the companies that matter to you most. We serve 100% of MBB/Big-4 advisories, clients representing >$1 trillion of private equity capital and more than 70% of the top-20 global M&A houses."
+  },
+  {
+   "tier": "Networking Sponsor",
+   "name": "Vertice",
+   "img": "",
+   "h": 86,
+   "desc": "Vertice is the intelligent procurement platform built for the modern enterprise. Our agentic workflows, AI insights and expert buyers empower finance and procurement teams across 30+ countries to buy smarter and scale faster. Customers use Vertice's platform to review, analyze and negotiate purchases with greater confidence. In the software category alone, Vertice processes over $10bn in spend and has a track record of delivering 20% savings and halving procurement cycles. Vertice is a trusted partner to value creation teams at leading institutional investors such as Apax, EQT, and Vitruvian."
+  },
+  {
+   "tier": "Networking Sponsor",
+   "name": "Ontra",
+   "img": "",
+   "h": 86,
+   "desc": "Ontra is the global leader in AI legal tech for private markets. Ontra's private markets technology platform streamlines and optimizes critical legal and compliance workflows across the full fund lifecycle. Ontra's AI-powered solutions automate contracts, streamline obligation management, digitize entity management, and surface insights."
+  },
+  {
+   "tier": "Networking Sponsor",
+   "name": "EXL",
+   "img": "",
+   "h": 86,
+   "desc": "From our beginnings in business process services to becoming a global leader in data and AI, EXL brings 25+ years of proven expertise helping enterprises transform and redefining what's possible for our clients. We partner with leading companies in insurance, healthcare, banking and capital markets, retail, media and communications, and energy and infrastructure to reimagine business models, deliver measurable outcomes, and accelerate innovation."
+  },
+  {
+   "tier": "Media Partner",
+   "name": "PE150",
+   "img": "",
+   "h": 86,
+   "desc": "PE 150 delivers precision trends and insights to over 250,000 investors and executives who rely on our insights to drive high-stakes decision making. Originated by an operating executive turned private equity sponsor, our network spans five verticals and reaches principal decision makers across the globe. We craft campaigns that resonate with the most influential minds in finance. From premium content to precise targeting, we help brands connect with decision-makers who matter. Our north star is simple: create value for our readers, and results for our marketing partners."
+  }
+ ]
+}

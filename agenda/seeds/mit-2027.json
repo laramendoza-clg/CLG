@@ -1,0 +1,260 @@
+{
+ "v": 2,
+ "theme": "boston",
+ "meta": {
+  "city": "BOSTON",
+  "event": "Private Capital Talent Leadership Summit",
+  "year": "2027",
+  "dateLine": "FEBRUARY 24, 2027",
+  "locLine": "CAMBRIDGE, MA",
+  "bandLine": "TUESDAY, FEBRUARY 24, 2027  ·  MIT  ·  CAMBRIDGE, MA",
+  "headKicker": "Draft Agenda",
+  "preliminary": "This is a draft agenda. Sessions and timings subject to change",
+  "footerLeft": "PRIVATE CAPITAL TALENT LEADERSHIP SUMMIT 2027  ·  DRAFT AGENDA  ·  FEB 24, 2027",
+  "showSpeakers": false,
+  "notesFill": true,
+  "coverPartners": [
+   {
+    "label": "Academic Partner & Venue",
+    "name": "MIT",
+    "img": "",
+    "h": 56
+   },
+   {
+    "label": "Partner",
+    "name": "GENIUSMESH",
+    "img": "",
+    "h": 56
+   }
+  ],
+  "welcome": {
+   "paras": [
+    "The Private Capital Talent Leadership Summit is a focused, one-day forum on human capital and value creation in private equity — how talent, leadership, and AI drive enterprise value across the investment lifecycle. Hosted at MIT and opened by the Dean, the summit deliberately blends senior private equity practitioners with the next generation of leaders from MIT's MBA community.",
+    "The day brings together operating and value-creation partners, chief talent officers, and portfolio company CHROs and executive teams for a curated programme spanning talent strategy, executive team building, AI-enabled operating models, and the leadership decisions that shape portfolio performance.",
+    "We are grateful to MIT, our academic partner and venue, and to GeniusMesh for their partnership in bringing this summit to life. We look forward to welcoming you to Cambridge."
+   ],
+   "signName": "Nawshad Noorkhan",
+   "signTitle": "Founder, Managing Director",
+   "signOrg": "CAPLINK GROUP",
+   "signImg": "https://images.squarespace-cdn.com/content/5dc9f095a5705651ea40e08b/27a2c53f-2076-45cf-a764-ee37a8768ad4/Screenshot+2026-06-08+at+5.55.15%E2%80%AFPM.png?content-type=image%2Fpng"
+  },
+  "contactsSub": "We look forward to working with you. Please reach out to any member of the team to discuss how we can maximise your partnership.",
+  "contacts": [
+   {
+    "name": "Nawshad Noorkhan",
+    "role": "Managing Director",
+    "email": "Nawshad.Noorkhan@caplink-group.com",
+    "t": "+44 (0) 208 064 3265",
+    "m": "+44 (0) 7415 880057"
+   },
+   {
+    "name": "Plamena Zlateva",
+    "role": "Head of Operations",
+    "email": "Plamena.Zlateva@caplink-group.com",
+    "t": "",
+    "m": "+1 (332) 288-8893"
+   },
+   {
+    "name": "Doina Roibu",
+    "role": "Head of Production",
+    "email": "Doina.Roibu@caplink-group.com",
+    "t": "",
+    "m": "+1 (646) 208-5365"
+   },
+   {
+    "name": "Lara Mendoza",
+    "role": "Head of Marketing & Design",
+    "email": "Lara.Mendoza@caplink-group.com",
+    "t": "",
+    "m": "+1 (646) 208-6876"
+   },
+   {
+    "name": "Ash Baker",
+    "role": "Relationship Manager",
+    "email": "Ash.Baker@caplink-group.com",
+    "t": "+44 (0) 208 064 3266",
+    "m": "+44 (0) 7473 456935"
+   },
+   {
+    "name": "Shiela Smith",
+    "role": "Relationship Manager",
+    "email": "Shiela.Smith@caplink-group.com",
+    "t": "+44 (0) 208 064 4053",
+    "m": ""
+   },
+   {
+    "name": "Erica Jones",
+    "role": "Relationship Manager",
+    "email": "Erica.Jones@caplink-group.com",
+    "t": "+44 (0) 208 064 0846",
+    "m": ""
+   }
+  ],
+  "lockImg": ""
+ },
+ "sessions": [
+  {
+   "kind": "simple",
+   "time": "09:00–09:05",
+   "title": "Welcome Remarks — Dean, MIT",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30
+  },
+  {
+   "kind": "simple",
+   "time": "09:05–09:10",
+   "title": "Opening Remarks — Neerja, Founder & CEO, GeniusMesh",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30
+  },
+  {
+   "kind": "people",
+   "time": "09:10–09:50",
+   "title": "Talent as a Strategic Driver of Value Creation",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "",
+   "lead": null,
+   "desc": "Talent has become one of the most powerful levers for driving enterprise value, with leading firms embedding human capital strategies across the investment lifecycle. This session explores how operating partners, chief talent officers, and portfolio leaders partner to identify leadership gaps, accelerate performance, and build repeatable value creation frameworks across their portfolios.",
+   "people": []
+  },
+  {
+   "kind": "people",
+   "time": "09:55–10:35",
+   "title": "AI & the Future of Leadership in Private Equity",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "",
+   "lead": null,
+   "desc": "AI is reshaping how firms assess talent, support portfolio companies, and enhance operational decision-making. This session examines where AI is creating measurable value today, how firms are deploying it across portfolios, and the practical approaches delivering tangible operational and investment outcomes.",
+   "people": []
+  },
+  {
+   "kind": "simple",
+   "time": "10:35–11:00",
+   "title": "Networking Break",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30
+  },
+  {
+   "kind": "people",
+   "time": "11:00–11:40",
+   "title": "Building High-Performing Executive Teams",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "",
+   "lead": null,
+   "desc": "How firms identify transformational CEOs, assess executive capability during due diligence, and develop succession strategies that support value creation from acquisition through exit.",
+   "people": []
+  },
+  {
+   "kind": "people",
+   "time": "11:45–12:25",
+   "title": "Scaling Leadership Across the Portfolio",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "",
+   "lead": null,
+   "desc": "How firms benchmark leadership, strengthen executive teams, and implement scalable talent playbooks that drive consistent portfolio performance across larger, more complex portfolios.",
+   "people": []
+  },
+  {
+   "kind": "simple",
+   "time": "12:25–13:30",
+   "title": "Networking Lunch",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30
+  },
+  {
+   "kind": "people",
+   "time": "13:30–13:50",
+   "title": "Value Creation Spotlight",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "",
+   "lead": null,
+   "desc": "A fireside conversation with a leading operating partner or portfolio executive on the leadership decisions with the greatest impact on portfolio performance, organisational transformation, and enterprise value.",
+   "people": []
+  },
+  {
+   "kind": "people",
+   "time": "13:55–14:35",
+   "title": "The AI-Enabled Operating Model",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "",
+   "lead": null,
+   "desc": "How firms integrate AI into portfolio operations, improve decision-making, accelerate execution, and unlock new opportunities for value creation.",
+   "people": []
+  },
+  {
+   "kind": "people",
+   "time": "14:40–15:20",
+   "title": "The Portfolio CHRO: Leading Talent Through Transformation",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "",
+   "lead": null,
+   "desc": "How portfolio company talent leaders partner with investors and management teams to lead organisational change, build high-performing cultures, retain critical talent, and execute transformation initiatives.",
+   "people": []
+  },
+  {
+   "kind": "simple",
+   "time": "15:20–15:45",
+   "title": "Networking Break",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30
+  },
+  {
+   "kind": "people",
+   "time": "15:45–16:25",
+   "title": "Winning the War for Leadership Talent",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "",
+   "lead": null,
+   "desc": "How firms identify, attract, and retain leadership capable of delivering operational excellence while building cultures that support long-term growth across portfolio companies.",
+   "people": []
+  },
+  {
+   "kind": "people",
+   "time": "16:30–17:00",
+   "title": "Leadership Briefings: Ideas Shaping the Next Generation of Private Capital",
+   "note": "",
+   "sponsorName": "",
+   "sponsorImg": "",
+   "sponsorH": 30,
+   "roleLabel": "",
+   "lead": null,
+   "desc": "Three fast-paced, TED-style presentations from industry leaders on AI, leadership, organisational design, and the future of human capital in private equity.",
+   "people": []
+  }
+ ],
+ "sponsors": []
+}
