@@ -52,7 +52,7 @@
   .pvbar .pub{background:#7c2f5f;border-color:#96487a}
   .pvbar span{color:#cfc8d2;font-size:12.5px;font-weight:600;min-width:56px;text-align:center}
   #pvwrap{flex:1;position:relative;overflow:hidden}
-  #pv{position:absolute;left:50%;top:50%;width:1000px;height:1414px}
+  #pv{position:absolute;left:50%;top:50%}
   #pv .sl{position:absolute;top:0;left:0;display:none;box-shadow:0 22px 60px rgba(0,0,0,.5)}
   #pv .sl.on{display:block}
   /* popovers */
@@ -325,7 +325,7 @@ function renderContacts(){
 function renderForm(){renderEvent();renderWelcome();renderSessions();renderSponsors();renderContacts();}
 
 /* ---------- preview ---------- */
-function fitPv(){const w=document.getElementById("pvwrap");const s=Math.min((w.clientWidth-36)/AgendaRender.W,(w.clientHeight-30)/AgendaRender.H);document.getElementById("pv").style.transform="translate(-50%,-50%) scale("+s+")";}
+function fitPv(){const w=document.getElementById("pvwrap"),p=document.getElementById("pv");p.style.width=AgendaRender.W+"px";p.style.height=AgendaRender.H+"px";const s=Math.min((w.clientWidth-36)/AgendaRender.W,(w.clientHeight-30)/AgendaRender.H);p.style.transform="translate(-50%,-50%) scale("+s+")";}
 function pvShow(i){const sl=document.querySelectorAll("#pv .sl");pvCur=Math.max(0,Math.min(sl.length-1,i));sl.forEach((el,j)=>el.classList.toggle("on",j===pvCur));document.getElementById("pvPg").textContent=(pvCur+1)+" / "+pvTotal;}
 function rebuild(){pvTotal=AgendaRender.buildDeck(document.getElementById("pv"),state,{edit:true});fitPv();pvShow(pvCur);autosave();}
 function queueRebuild(){clearTimeout(_rt);_rt=setTimeout(rebuild,380);}

@@ -12,7 +12,7 @@
   html,body{height:100%}
   body{background:#141016;font-family:'Raleway',system-ui,sans-serif;overflow:hidden}
   #stage{position:fixed;inset:0 0 62px 0;overflow:hidden}
-  #deck{position:absolute;left:50%;top:50%;width:1000px;height:1414px}
+  #deck{position:absolute;left:50%;top:50%}
   #deck .sl{position:absolute;top:0;left:0;opacity:0;pointer-events:none;transition:opacity .25s ease;box-shadow:0 26px 80px rgba(0,0,0,.55)}
   #deck .sl.on{opacity:1;pointer-events:auto}
   #bar{position:fixed;left:0;right:0;bottom:0;height:62px;display:flex;align-items:center;justify-content:center;gap:14px;background:rgba(16,12,18,.94);border-top:1px solid rgba(255,255,255,.08)}
@@ -50,6 +50,7 @@ let cur=0,total=0;
 
 function fit(){
   const st=document.getElementById("stage"),deck=document.getElementById("deck");
+  deck.style.width=AgendaRender.W+"px";deck.style.height=AgendaRender.H+"px";
   const s=Math.min(st.clientWidth/(AgendaRender.W+28),st.clientHeight/(AgendaRender.H+24));
   deck.style.transform="translate(-50%,-50%) scale("+s+")";
 }

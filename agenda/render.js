@@ -227,20 +227,24 @@ function contactSlide(d,n){
 function backSlide(){return slide("dark",'<img class="bg" src="'+SKY+'"><div class="tint"></div><img class="back-logo" src="'+CAP+'">');}
 
 /* --- measurement helpers: run inside a live offscreen slide --- */
-function measureBlocks(root,htmlList,wrapClass){
+function measureBlocks(root,htmlList,wrapClass,width){
   var meas=document.createElement("div");
   meas.className=root.className.replace("agdk-edit","");
   meas.style.cssText="position:absolute;left:-99999px;top:0;visibility:hidden";
-  meas.innerHTML='<div class="sl"><div class="'+wrapClass+'" id="_m"></div></div>';
+  meas.innerHTML='<div class="sl" style="height:auto"><div class="'+wrapClass+'" id="_m"></div></div>';
   document.body.appendChild(meas);
-  var box=meas.querySelector("#_m"),hs=htmlList.map(function(h){box.innerHTML=h;return box.scrollHeight;});
+  var box=meas.querySelector("#_m");
+  /* neutralise any absolute positioning/clamps from the display CSS so we
+     measure natural content height at the real column width */
+  box.style.cssText="position:static;top:auto;bottom:auto;left:auto;right:auto;height:auto;max-height:none;overflow:visible;width:"+width+"px";
+  var hs=htmlList.map(function(h){box.innerHTML=h;return box.scrollHeight;});
   document.body.removeChild(meas);
   return hs;
 }
 function paginateSessions(root,d,startN){
   var PAGE_H=1120;   /* hard budget: 1294 - 48 top - footer zone - safety */
   var htmls=(d.sessions||[]).map(function(s,i){return sessionHtml(s,i);});
-  var hs=measureBlocks(root,htmls,"rows");
+  var hs=measureBlocks(root,htmls,"rows",888);
   var pages=[],cur=[],curH=0;
   htmls.forEach(function(h,i){
     var hh=hs[i]+16;
@@ -254,7 +258,7 @@ function speakersSlides(root,d,startN){
   if(d.meta.showSpeakers===false)return[];
   var entries=speakerEntries(d);
   if(!entries.length)return[];
-  var hs=measureBlocks(root,entries,"spk-col"),COL_H=950;
+  var hs=measureBlocks(root,entries,"spk-col",416),COL_H=950;
   var cols=[],cur=[],curH=0;
   entries.forEach(function(h,i){
     var hh=hs[i]+8;
