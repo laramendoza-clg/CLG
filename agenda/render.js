@@ -246,19 +246,38 @@ function measureBlocks(root,htmlList,wrapClass,width){
 function paginateSessions(root,d,startN){
   var PAGE_H=1168;   /* 1294 - 44 top - 60 footer zone - 22 safety */
   var htmls=(d.sessions||[]).map(function(s,i){return sessionHtml(s,i);});
-  var hs=measureBlocks(root,htmls,"rows",888);
-  var pages=[],cur=[],curH=0,tots=[];
-  htmls.forEach(function(h,i){
-    var hh=hs[i]+12;
-    if(curH+hh>PAGE_H&&cur.length){pages.push(cur);tots.push(curH);cur=[];curH=0;}
-    cur.push(h);curH+=hh;
-  });
-  if(cur.length){pages.push(cur);tots.push(curH);}
-  return pages.map(function(pg,i){
-    /* when a page is mostly full, distribute the slack between sessions so
-       leftover space never pools at the bottom */
-    var fill=(tots[i]>=PAGE_H*0.72&&pg.length>1)?" fill":"";
-    return slide("",'<div class="rows'+fill+'">'+pg.join("")+'</div>'+foot(d.meta,startN+i));
+  var hs=measureBlocks(root,htmls,"rows",888).map(function(h){return h+12;});
+  var n=hs.length;
+  /* Balanced page breaks (what a book typesetter does): instead of greedily
+     stuffing each page and orphaning the leftovers, choose break points that
+     minimise squared slack across ALL pages, so consecutive pages look
+     evenly full. DP over break positions; last page weighted lighter. */
+  var best=[0],brk=[ -1 ];
+  for(var i=1;i<=n;i++){
+    best[i]=Infinity;brk[i]=-1;
+    var sum=0;
+    for(var j=i;j>=1;j--){
+      sum+=hs[j-1];
+      if(sum>PAGE_H&&j<i)break;
+      if(sum>PAGE_H&&j===i){ // single block taller than a page: give it its own
+        if(best[j-1]<best[i]){best[i]=best[j-1];brk[i]=j-1;}
+        break;
+      }
+      var slack=(PAGE_H-sum)/PAGE_H,w=(i===n?0.55:1);
+      var c=best[j-1]+w*slack*slack;
+      if(c<best[i]){best[i]=c;brk[i]=j-1;}
+    }
+    if(brk[i]<0){best[i]=best[i-1];brk[i]=i-1;}
+  }
+  var cuts=[],k=n;
+  while(k>0){cuts.unshift([brk[k],k]);k=brk[k];}
+  return cuts.map(function(cut,pi){
+    var pg=htmls.slice(cut[0],cut[1]);
+    var tot=0;for(var q=cut[0];q<cut[1];q++)tot+=hs[q];
+    /* vertical justification with a cap: spread modest slack between blocks,
+       never more than 42px extra per gap, so spacing reads deliberate */
+    var extra=pg.length>1?Math.min(Math.max(0,(PAGE_H-tot))/(pg.length-1),42):0;
+    return slide("",'<div class="rows" style="gap:'+Math.round(extra)+'px">'+pg.join("")+'</div>'+foot(d.meta,startN+pi));
   });
 }
 function speakersSlides(root,d,startN){
