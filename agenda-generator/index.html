@@ -68,7 +68,7 @@
 <body>
 <div class="app">
   <div class="left">
-    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v8</span></h1>
+    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v9</span></h1>
     <div class="tip">✏️ <b>Edit like Slides:</b> click any text on the page to type. Click a photo or logo to change it. Hover a session for <b>move / add / delete</b>.</div>
 
     <div class="stepbox">
@@ -111,7 +111,7 @@
 
 <div id="pop"></div>
 
-<script src="../agenda/render.js?v=8"></script>
+<script src="../agenda/render.js?v=9"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -277,6 +277,7 @@ function logoRow(base,defH){
 function renderEvent(){
   let h='<label class="f">Colour theme</label><select class="t" data-b="theme">'+[["dubai","Dubai — petrol teal"],["european","European — deep plum"],["newyork","New York — terracotta"],["london","London — navy & gold"]].map(o=>'<option value="'+o[0]+'"'+(state.theme===o[0]?" selected":"")+'>'+o[1]+'</option>').join("")+'</select>';
   h+='<label class="f">Show the auto “Confirmed speakers” page?</label><label style="font-size:12px;color:#555"><input type="checkbox" data-chk="meta.showSpeakers" '+(state.meta.showSpeakers!==false?"checked":"")+'> Yes, include it</label>';
+  h+='<label class="f">Fill leftover space with ruled “Notes” lines?</label><label style="font-size:12px;color:#555"><input type="checkbox" data-chk="meta.notesFill" '+(state.meta.notesFill!==false?"checked":"")+'> Yes (like a printed planner)</label>';
   h+='<label class="f" style="margin-top:12px">Cover partner logos</label>';
   (state.meta.coverPartners||[]).forEach((p,i)=>{
     h+='<div class="card"><div class="bar"><input class="t grow" type="text" value="'+esc(p.label)+'" placeholder="Label" data-b="meta.coverPartners.'+i+'.label"><input class="t grow" type="text" value="'+esc(p.name)+'" placeholder="Name" data-b="meta.coverPartners.'+i+'.name"><button class="mini del" data-del="meta.coverPartners.'+i+'">✕</button></div>'+logoRow("meta.coverPartners."+i,56)+'</div>';

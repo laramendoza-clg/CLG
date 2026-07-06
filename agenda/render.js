@@ -68,6 +68,9 @@ var CSS=
 ".agdk .rtitle{font-size:21px;font-weight:700;color:#241f26;flex:1;line-height:1.28}"+
 ".agdk .rnote{font-size:11.5px;color:#8d8791;font-style:italic;white-space:nowrap}"+
 ".agdk .rmeta{display:flex;justify-content:flex-end;align-items:center;gap:20px;padding:0 4px 12px;margin-top:-2px}"+
+".agdk .notesblk{flex:1;display:flex;flex-direction:column;min-height:0;margin-top:6px}"+
+".agdk .notesblk .nlab{font-size:9px;font-weight:700;letter-spacing:.28em;color:#b3a8b0;text-transform:uppercase;margin:0 4px 2px}"+
+".agdk .notesblk .nlines{flex:1;margin:0 4px;background:repeating-linear-gradient(to bottom,transparent 0,transparent 33px,#e6e0e4 33px,#e6e0e4 34px)}"+
 ".agdk .rspon{display:flex;align-items:center;gap:10px;white-space:nowrap}"+
 ".agdk .rspon .sb{font-size:8px;letter-spacing:.24em;color:#9b95a0;font-weight:600}"+
 ".agdk .rspon img{max-width:150px;object-fit:contain}"+
@@ -275,13 +278,17 @@ function paginateSessions(root,d,startN){
   }
   var cuts=[],k=n;
   while(k>0){cuts.unshift([brk[k],k]);k=brk[k];}
+  var notesOn=d.meta.notesFill!==false;
   return cuts.map(function(cut,pi){
     var pg=htmls.slice(cut[0],cut[1]);
     var tot=0;for(var q=cut[0];q<cut[1];q++)tot+=hs[q];
-    /* vertical justification with a cap: spread modest slack between blocks,
-       never more than 42px extra per gap, so spacing reads deliberate */
-    var extra=pg.length>1?Math.min(Math.max(0,(PAGE_H-tot))/(pg.length-1),42):0;
-    return slide("",'<div class="rows" style="gap:'+Math.round(extra)+'px">'+pg.join("")+'</div>'+foot(d.meta,startN+pi));
+    var rem=Math.max(0,PAGE_H-tot);
+    /* big leftovers become ruled Notes lines (like a printed planner);
+       small leftovers get distributed between blocks, capped so spacing
+       reads deliberate */
+    var notes=(notesOn&&rem>=150)?'<div class="notesblk"><div class="nlab">Notes</div><div class="nlines"></div></div>':"";
+    var extra=(!notes&&pg.length>1)?Math.min(rem/(pg.length-1),42):0;
+    return slide("",'<div class="rows" style="gap:'+Math.round(extra)+'px">'+pg.join("")+notes+'</div>'+foot(d.meta,startN+pi));
   });
 }
 function speakersSlides(root,d,startN){
