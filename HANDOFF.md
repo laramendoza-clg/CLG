@@ -40,6 +40,10 @@ ongoing project (see §3).
    be fully visible; leftover session-page space becomes ruled "Notes" lines
    (reserved on every page so page endings are identical); session spacing
    is fixed, page breaks are balanced (typesetter DP in `paginateSessions`).
+9. **Reception (cocktail) pages are special:** no Notes lines; the card shows
+   Venue/Experience left + a venue photo right (`sessions[i].img`); the
+   thank-you renders as a separate ivory "A Note of Thanks" card that
+   stretches to fill the page (legacy "Thank You" columns fold into it).
 
 ## 3. The agenda system (architecture)
 
