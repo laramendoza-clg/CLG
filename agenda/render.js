@@ -283,12 +283,10 @@ function paginateSessions(root,d,startN){
     var pg=htmls.slice(cut[0],cut[1]);
     var tot=0;for(var q=cut[0];q<cut[1];q++)tot+=hs[q];
     var rem=Math.max(0,PAGE_H-tot);
-    /* big leftovers become ruled Notes lines (like a printed planner);
-       small leftovers get distributed between blocks, capped so spacing
-       reads deliberate */
-    var notes=(notesOn&&rem>=150)?'<div class="notesblk"><div class="nlab">Notes</div><div class="nlines"></div></div>':"";
-    var extra=(!notes&&pg.length>1)?Math.min(rem/(pg.length-1),42):0;
-    return slide("",'<div class="rows" style="gap:'+Math.round(extra)+'px">'+pg.join("")+notes+'</div>'+foot(d.meta,startN+pi));
+    /* session spacing is FIXED (the .row margin) on every page; all leftover
+       space becomes ruled Notes lines whenever there is room for them */
+    var notes=(notesOn&&rem>=88)?'<div class="notesblk"><div class="nlab">Notes</div><div class="nlines"></div></div>':"";
+    return slide("",'<div class="rows">'+pg.join("")+notes+'</div>'+foot(d.meta,startN+pi));
   });
 }
 function speakersSlides(root,d,startN){
