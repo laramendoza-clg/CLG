@@ -149,6 +149,15 @@ var CSS=
 ".agdk .ct .ln:first-child{margin-top:0;font-weight:400;color:#fff}"+
 ".agdk .ln .lk{display:inline-block;width:17px;font-size:8px;font-weight:600;letter-spacing:.1em;color:rgba(255,255,255,.35);text-align:left}"+
 ".agdk .back-logo{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);width:330px}"+
+".agdk .cl-logo{position:absolute;top:225px;left:50%;transform:translateX(-50%);width:305px}"+
+".agdk .cl-web{position:absolute;top:540px;left:0;right:0;text-align:center;font-size:13px;letter-spacing:.34em;font-weight:600;color:rgba(255,255,255,.85);text-transform:uppercase}"+
+".agdk .cl-rule{position:absolute;top:668px;left:130px;right:130px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent)}"+
+".agdk .cl-cap{position:absolute;top:700px;left:0;right:0;text-align:center;font-size:9.5px;letter-spacing:.34em;font-weight:600;color:rgba(255,255,255,.55);text-transform:uppercase}"+
+".agdk .cl-grid{position:absolute;top:756px;left:118px;right:118px;bottom:64px;display:grid;grid-template-columns:1fr 1fr;gap:26px 64px;align-content:space-between}"+
+".agdk .cl-p .nm{font-size:13px;font-weight:600;color:#fff;letter-spacing:.02em}"+
+".agdk .cl-p .rl{font-size:8px;letter-spacing:.24em;color:rgba(255,255,255,.5);text-transform:uppercase;margin:3px 0 5px}"+
+".agdk .cl-p .ln{font-size:10.8px;font-weight:300;color:rgba(255,255,255,.84);line-height:1.55;letter-spacing:.02em;font-variant-numeric:tabular-nums}"+
+".agdk .cl-p .lk{font-size:7.5px;color:rgba(255,255,255,.4);font-weight:600;letter-spacing:.08em}"+
 /* editor affordances (active only under .agdk-edit) */
 ".agdk-edit [data-edit]{cursor:text;border-radius:3px;outline:1px dashed transparent;transition:outline-color .12s,background .12s}"+
 ".agdk-edit [data-edit]:hover{outline-color:#c9a0bd;background:rgba(107,37,84,.07)}"+
@@ -303,6 +312,20 @@ function sponsorSlides(d,startN){
   }
   return out;
 }
+function closingSlide(m){
+  var inner='<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div>'+
+    '<img class="cl-logo" src="'+CAPSTACK+'">'+
+    '<div class="cl-web"'+de("meta.website")+'>'+esc(m.website||"www.caplink-group.com")+'</div>';
+  if(m.contacts&&m.contacts.length){
+    inner+='<div class="cl-rule"></div><div class="cl-cap"'+de("meta.contactsCap")+'>'+esc(m.contactsCap||"Get in Touch")+'</div><div class="cl-grid">'+m.contacts.map(function(c,i){
+      var b="meta.contacts."+i,ph="";
+      if(c.t||EDIT)ph+='<span class="lk">T</span> <span'+de(b+".t")+'>'+esc(c.t)+'</span>';
+      if(c.m||EDIT)ph+=(ph?"&ensp;&ensp;":"")+'<span class="lk">M</span> <span'+de(b+".m")+'>'+esc(c.m)+'</span>';
+      return '<div class="cl-p"><div class="nm"'+de(b+".name")+'>'+esc(c.name)+'</div><div class="rl"'+de(b+".role")+'>'+esc(c.role)+'</div><div class="ln"'+de(b+".email")+'>'+esc(c.email)+'</div>'+(ph?'<div class="ln">'+ph+'</div>':"")+'</div>';
+    }).join("")+'</div>';
+  }
+  return slide("dark",inner);
+}
 function contactSlide(d,n){
   var m=d.meta;if(!m.contacts||!m.contacts.length)return null;
   var cells=m.contacts.map(function(c,i){
@@ -427,8 +450,7 @@ function buildDeck(root,data,opts){
   var spk=speakersSlides(root,d,n);slides=slides.concat(spk);n+=spk.length;
   var ses=paginateSessions(root,d,n);slides=slides.concat(ses);n+=ses.length;
   var spo=sponsorSlides(d,n);slides=slides.concat(spo);n+=spo.length;
-  var ct=contactSlide(d,n);if(ct)slides.push(ct);
-  slides.push(backSlide(m));
+  slides.push(closingSlide(m));
   root.innerHTML=slides.join("");
   return root.querySelectorAll(".sl").length;
 }
