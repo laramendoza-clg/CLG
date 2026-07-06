@@ -57,8 +57,10 @@ var CSS=
 ".agdk .spk-badge{position:absolute;top:150px;left:64px;background:var(--pill);color:#fff;font-size:10px;font-weight:700;letter-spacing:.24em;padding:8px 20px;border-radius:16px;text-transform:uppercase}"+
 ".agdk .spk-wrap{position:absolute;top:206px;left:64px;right:64px;bottom:72px;display:flex;gap:40px}"+
 ".agdk .spk-col{flex:1;min-width:0}"+
-".agdk .spk-col div{margin-bottom:8px;font-size:12px;line-height:1.5;color:#544e57}"+
-".agdk .spk-col b{color:#241020;font-weight:700}.agdk .spk-col i{font-weight:400}.agdk .spk-col .f{font-weight:700;color:#241020}"+
+".agdk .spke{margin-bottom:14px}"+
+".agdk .spkn{font-size:12.8px;font-weight:700;color:#241020;line-height:1.3}"+
+".agdk .spkt{font-size:11px;color:#6b6470;line-height:1.42;margin-top:2px}"+
+".agdk .spkt i{font-weight:400}.agdk .spkt .f{font-weight:700;color:#38323c}"+
 /* agenda rows */
 ".agdk .rows{position:absolute;top:44px;left:56px;right:56px;bottom:60px;overflow:hidden;display:flex;flex-direction:column}"+
 ".agdk .rows.fill{justify-content:space-between}"+
@@ -211,7 +213,10 @@ function speakerEntries(d){
     var all=[];if(s.lead)all.push(s.lead);if(s.people)all=all.concat(s.people);
     all.forEach(function(p){if(p&&p.name&&!/TB[AC]/i.test(p.name)&&!/announced/i.test(p.name)&&!seen[p.name]){seen[p.name]=1;list.push(p);}});
   });
-  return list.map(function(p){return "<div><b>"+esc(p.name)+"</b>"+(p.title?", <i>"+esc(p.title)+"</i>":"")+(p.firm?', <span class="f">'+esc(p.firm)+"</span>":"")+"</div>";});
+  return list.map(function(p){
+    var sub=(p.title?"<i>"+esc(p.title)+"</i>":"")+(p.title&&p.firm?", ":"")+(p.firm?'<span class="f">'+esc(p.firm)+"</span>":"");
+    return '<div class="spke"><div class="spkn">'+esc(p.name)+'</div>'+(sub?'<div class="spkt">'+sub+'</div>':"")+'</div>';
+  });
 }
 function sponsorSlides(d,startN){
   var out=[],sp=d.sponsors||[];
