@@ -20,9 +20,9 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    # No `environment:` block — while the repo is still on branch-based Pages,
-    # the auto-created github-pages environment rejects jobs from custom
-    # workflows before configure-pages gets a chance to switch the source.
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
