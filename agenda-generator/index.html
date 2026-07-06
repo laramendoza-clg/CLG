@@ -73,7 +73,7 @@
 <body>
 <div class="app">
   <div class="left">
-    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v15</span></h1>
+    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v16</span></h1>
     <div class="tip">✏️ <b>Edit like Slides:</b> click any text on the page to type. Click a photo or logo to change it. Hover a session for <b>move / add / delete</b>.</div>
 
     <div class="stepbox">
@@ -117,7 +117,7 @@
 
 <div id="pop"></div>
 
-<script src="../agenda/render.js?v=15"></script>
+<script src="../agenda/render.js?v=16"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -267,6 +267,7 @@ function autosave(){try{localStorage.setItem(LKEY,JSON.stringify({slug:slugEl.va
 function readImg(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=r.result;};r.onerror=rej;r.readAsDataURL(file);});}
 async function squarePhoto(file){const i=await readImg(file);const s=Math.min(i.width,i.height),c=document.createElement("canvas");c.width=c.height=256;c.getContext("2d").drawImage(i,(i.width-s)/2,(i.height-s)/2,s,s,0,0,256,256);return c.toDataURL("image/jpeg",.82);}
 async function logoImg(file){const i=await readImg(file);const m=Math.min(1,420/Math.max(i.width,i.height)),w=Math.max(1,Math.round(i.width*m)),h=Math.max(1,Math.round(i.height*m));const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(i,0,0,w,h);return c.toDataURL("image/png");}
+async function bgFile(file){const i=await readImg(file);const m=Math.min(1,1400/i.width),w=Math.max(1,Math.round(i.width*m)),h=Math.max(1,Math.round(i.height*m));const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(i,0,0,w,h);return c.toDataURL("image/jpeg",.8);}
 function sizePathFor(photoPath){
   if(/\.sponsorImg$/.test(photoPath))return photoPath.replace(/\.sponsorImg$/,".sponsorH");
   if(/^meta\.coverPartners\.\d+\.img$/.test(photoPath)||/^sponsors\.\d+\.img$/.test(photoPath))return photoPath.replace(/\.img$/,".h");
@@ -286,6 +287,12 @@ function renderEvent(){
   h+='<label class="f">Show the auto “Confirmed speakers” page?</label><label style="font-size:12px;color:#555"><input type="checkbox" data-chk="meta.showSpeakers" '+(state.meta.showSpeakers!==false?"checked":"")+'> Yes, include it</label>';
   h+='<label class="f">Speakers page style</label><select class="t" data-b="meta.speakersStyle"><option value="list"'+(state.meta.speakersStyle!=="grid"?" selected":"")+'>Text list — 3 lines per speaker</option><option value="grid"'+(state.meta.speakersStyle==="grid"?" selected":"")+'>Photo grid — best once headshots are added</option></select>';
   h+='<label class="f">Fill leftover space with ruled “Notes” lines?</label><label style="font-size:12px;color:#555"><input type="checkbox" data-chk="meta.notesFill" '+(state.meta.notesFill!==false?"checked":"")+'> Yes (like a printed planner)</label>';
+  h+='<label class="f" style="margin-top:12px">Skyline background (cover &amp; dark pages)</label>';
+  h+='<div class="card"><div class="bar">'+
+    '<button class="mini" data-setbg="../assets/sky.jpg">Dubai</button>'+
+    '<button class="mini" data-setbg="../assets/sky-newyork.jpg">New York</button>'+
+    '<button class="mini up" style="position:relative;overflow:hidden">Upload photo<input type="file" accept="image/*" data-ph="meta.bgImg" data-mode="bg" style="position:absolute;inset:0;opacity:0;cursor:pointer"></button>'+
+    '</div><input class="t" style="margin-top:5px" type="text" placeholder="or paste an image URL" value="'+esc(state.meta.bgImg&&!String(state.meta.bgImg).startsWith("data:")?state.meta.bgImg:"")+'" data-b="meta.bgImg"></div>';
   h+='<label class="f" style="margin-top:12px">Cover partner logos</label>';
   (state.meta.coverPartners||[]).forEach((p,i)=>{
     h+='<div class="card"><div class="bar"><input class="t grow" type="text" value="'+esc(p.label)+'" placeholder="Label" data-b="meta.coverPartners.'+i+'.label"><input class="t grow" type="text" value="'+esc(p.name)+'" placeholder="Name" data-b="meta.coverPartners.'+i+'.name"><button class="mini del" data-del="meta.coverPartners.'+i+'">✕</button></div>'+logoRow("meta.coverPartners."+i,56)+'</div>';
@@ -442,7 +449,7 @@ L.addEventListener("change",async e=>{
   const el=e.target;
   if(el.dataset.chk){set(el.dataset.chk,el.checked);queueRebuild();}
   if(el.dataset.ph&&el.files&&el.files[0]){
-    try{const d=el.dataset.mode==="logo"?await logoImg(el.files[0]):await squarePhoto(el.files[0]);set(el.dataset.ph,d);renderForm();rebuild();}
+    try{const d=el.dataset.mode==="logo"?await logoImg(el.files[0]):(el.dataset.mode==="bg"?await bgFile(el.files[0]):await squarePhoto(el.files[0]));set(el.dataset.ph,d);renderForm();rebuild();}
     catch(_){alert("Couldn't read that image.");}
   }
 });
@@ -455,6 +462,7 @@ L.addEventListener("click",e=>{
   if(b.dataset.down!=null){e.preventDefault();const i=+b.dataset.down;if(i<state.sessions.length-1){const x=state.sessions.splice(i,1)[0];state.sessions.splice(i+1,0,x);renderForm();rebuild();}return;}
   if(b.dataset.upSp!=null){e.preventDefault();const i=+b.dataset.upSp;if(i>0){const x=state.sponsors.splice(i,1)[0];state.sponsors.splice(i-1,0,x);renderForm();rebuild();}return;}
   if(b.dataset.downSp!=null){e.preventDefault();const i=+b.dataset.downSp;if(i<state.sponsors.length-1){const x=state.sponsors.splice(i,1)[0];state.sponsors.splice(i+1,0,x);renderForm();rebuild();}return;}
+  if(b.dataset.setbg){e.preventDefault();set("meta.bgImg",b.dataset.setbg);renderForm();rebuild();return;}
   if(b.dataset.add){
     e.preventDefault();const t=b.dataset.add;
     if(t==="coverPartner")state.meta.coverPartners.push({label:"Official Partner",name:"NAME",img:"",h:56});

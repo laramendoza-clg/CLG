@@ -202,7 +202,7 @@ function coverSlide(d){
     return '<div class="cp"><div class="lbl"'+de(base+".label")+'>'+esc(p.label)+'</div>'+
       (p.img?'<img src="'+esc(p.img)+'" style="height:'+(p.h||56)+'px"'+dp(base+".img","logo")+'>':'<div class="txt"'+de(base+".name")+'>'+esc(p.name)+'</div>')+'</div>';
   }).join("");
-  return slide("dark",'<img class="bg" src="'+SKY+'"><div class="tint"></div>'+
+  return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div>'+
     '<img class="cov-cap" src="'+CAP+'">'+
     '<img class="cov-lock" src="'+LOCK+'">'+
     '<div class="cov-date"><span'+de("meta.dateLine")+' style="font-weight:700">'+esc(m.dateLine)+'</span>  <span>|</span>  <span'+de("meta.locLine")+'>'+esc(m.locLine)+'</span></div>'+
@@ -262,9 +262,10 @@ function contactSlide(d,n){
     return '<div class="ct"><div class="nm"'+de(b+".name")+'>'+esc(c.name)+'</div><div class="rl2"'+de(b+".role")+'>'+esc(c.role)+'</div>'+
       '<div class="ln"'+de(b+".email")+'>'+esc(c.email)+'</div>'+(c.t||EDIT?'<div class="ln">T: <span'+de(b+".t")+'>'+esc(c.t)+'</span></div>':"")+(c.m||EDIT?'<div class="ln">M: <span'+de(b+".m")+'>'+esc(c.m)+'</span></div>':"")+'</div>';
   }).join("");
-  return slide("dark",'<img class="bg" src="'+SKY+'"><div class="tint"></div><div class="ct-cap">Get In Touch</div><div class="ct-title">CONTACT US</div><div class="ct-sub"'+de("meta.contactsSub",1)+'>'+esc(m.contactsSub||"")+'</div><div class="ct-line"></div><div class="ct-grid">'+cells+'</div>');
+  return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><div class="ct-cap">Get In Touch</div><div class="ct-title">CONTACT US</div><div class="ct-sub"'+de("meta.contactsSub",1)+'>'+esc(m.contactsSub||"")+'</div><div class="ct-line"></div><div class="ct-grid">'+cells+'</div>');
 }
-function backSlide(){return slide("dark",'<img class="bg" src="'+SKY+'"><div class="tint"></div><img class="back-logo" src="'+CAP+'">');}
+function bgSrc(m){return (m&&m.bgImg&&String(m.bgImg).trim())?m.bgImg:SKY;}
+function backSlide(m){return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><img class="back-logo" src="'+CAP+'">');}
 
 /* --- measurement helpers: run inside a live offscreen slide --- */
 function measureBlocks(root,htmlList,wrapClass,width){
@@ -376,7 +377,7 @@ function buildDeck(root,data,opts){
   var ses=paginateSessions(root,d,n);slides=slides.concat(ses);n+=ses.length;
   var spo=sponsorSlides(d,n);slides=slides.concat(spo);n+=spo.length;
   var ct=contactSlide(d,n);if(ct)slides.push(ct);
-  slides.push(backSlide());
+  slides.push(backSlide(m));
   root.innerHTML=slides.join("");
   return root.querySelectorAll(".sl").length;
 }
