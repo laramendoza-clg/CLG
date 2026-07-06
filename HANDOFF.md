@@ -104,10 +104,9 @@ ongoing project (see §3).
 Quiet luxury: typography, hairlines, alignment — **no boxes/cards**, no
 clutter, nothing "done by a beginner". Big readable titles; generous but
 *deliberate* spacing (no orphan white space — she will notice). Raleway
-everywhere. Brand plum family + per-event accent. The contact page (v22+)
-is the reference: light-weight letterspaced title, full-width rows with
-hairline rules, right-aligned details. When she says a page "looks bad",
-propose a designed alternative, don't just nudge values.
+everywhere. Brand plum family + per-event accent. Contact info is
+deliberately low-key (bottom of the closing page, v27+). When she says a
+page "looks bad", propose a designed alternative, don't just nudge values.
 
 ## 7. Working with Lara / environment constraints
 
