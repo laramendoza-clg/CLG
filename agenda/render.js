@@ -217,7 +217,11 @@ function sessionHtml(s,i){
 }
 
 function lockupHtml(m){
-  if(m.lockImg)return '<img class="cov-lock" src="'+esc(m.lockImg)+'"'+dp("meta.lockImg","logo")+'>';
+  /* Back-compat: documents published before lockImg existed must render
+     exactly as before (the PCS lockup image). Only an explicit empty value
+     opts in to the text-built lockup. */
+  var li=(m.lockImg===undefined||m.lockImg===null)?LOCK:m.lockImg;
+  if(li)return '<img class="cov-lock" src="'+esc(li)+'"'+dp("meta.lockImg","logo")+'>';
   var city=esc(String(m.city||"").toUpperCase());
   var words=String(m.event||"").toUpperCase().split(/\s+/).filter(Boolean);
   while(words.length>4){var bi=0,bl=1e9;for(var i=0;i<words.length-1;i++){var l=words[i].length+words[i+1].length;if(l<bl){bl=l;bi=i;}}words.splice(bi,2,words[bi]+" "+words[bi+1]);}
