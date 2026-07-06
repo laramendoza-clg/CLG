@@ -73,7 +73,7 @@
 <body>
 <div class="app">
   <div class="left">
-    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v17</span></h1>
+    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v18</span></h1>
     <div class="tip">✏️ <b>Edit like Slides:</b> click any text on the page to type. Click a photo or logo to change it. Hover a session for <b>move / add / delete</b>.</div>
 
     <div class="stepbox">
@@ -117,7 +117,7 @@
 
 <div id="pop"></div>
 
-<script src="../agenda/render.js?v=17"></script>
+<script src="../agenda/render.js?v=18"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -291,6 +291,7 @@ function renderEvent(){
   h+='<div class="card"><div class="bar">'+
     '<button class="mini" data-setbg="../assets/sky.jpg">Dubai</button>'+
     '<button class="mini" data-setbg="../assets/sky-newyork.jpg">New York</button>'+
+    '<button class="mini" data-setbg="../assets/sky-london.jpg">London</button>'+
     '<button class="mini up" style="position:relative;overflow:hidden">Upload photo<input type="file" accept="image/*" data-ph="meta.bgImg" data-mode="bg" style="position:absolute;inset:0;opacity:0;cursor:pointer"></button>'+
     '</div><input class="t" style="margin-top:5px" type="text" placeholder="or paste an image URL" value="'+esc(state.meta.bgImg&&!String(state.meta.bgImg).startsWith("data:")?state.meta.bgImg:"")+'" data-b="meta.bgImg"></div>';
   h+='<label class="f" style="margin-top:12px">Cover partner logos</label>';

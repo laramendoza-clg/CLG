@@ -181,6 +181,7 @@ function sessionHtml(s,i){
     if(EDIT)cells+='<div class="ghost" data-op="addp" data-i="'+i+'">+ Add panelist</div>';
     if(cells)body+='<div class="prow">'+cells+'</div>';
   }else if(s.kind==="tables"){
+    if(s.desc||EDIT)body+='<div class="rdesc"'+de(b+".desc",1)+'>'+esc(s.desc||"")+'</div>';
     var half=Math.ceil(s.tables.length/2),c1="",c2="";
     s.tables.forEach(function(t,j){
       var h='<div class="tbl"><div class="tp"><b>Table '+(j+1)+':</b> <i'+de(b+".tables."+j+".topic")+'>'+esc(t.topic)+'</i></div><div class="hb">Hosted By: <span'+de(b+".tables."+j+".host")+'>'+esc(t.host||"")+'</span></div></div>';
