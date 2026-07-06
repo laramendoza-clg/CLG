@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<title>Agendas · CapLink Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--plum:#2A1228;--accent:#531639;--cream:#FAFAFA;--ink:#241020;--line:#e7e1e4;--mute:#9a8f96}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--cream);color:var(--ink);font-family:'Raleway',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+header{background:radial-gradient(130% 150% at 16% -10%,#42284f 0%,#2A1228 46%,#190b18 100%);color:#fff;padding:30px 24px}
+.hwrap{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:16px}
+header img{height:40px}
+header h1{font-size:20px;font-weight:700;margin:0;letter-spacing:.02em}
+header p{margin:4px 0 0;font-size:12px;font-weight:300;opacity:.75;letter-spacing:.05em}
+.wrap{max-width:860px;margin:0 auto;padding:26px 22px 50px}
+.lead{font-size:14px;color:#6b6068;line-height:1.6;margin:0 0 20px}
+.doc{display:flex;align-items:center;gap:16px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin-bottom:12px;flex-wrap:wrap}
+.doc .ico{width:44px;height:44px;border-radius:9px;background:var(--plum);color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px;flex:0 0 auto}
+.doc .info{flex:1;min-width:200px}
+.doc h2{font-size:16px;font-weight:700;margin:0}
+.doc .meta{font-size:12px;color:var(--mute);margin-top:3px}
+.doc .meta .live{color:#2e7d4f;font-weight:600}
+.doc .btns{display:flex;gap:8px;flex-wrap:wrap}
+.doc a.btn,.doc button.btn{font-family:inherit;text-decoration:none;font-size:12.5px;font-weight:600;padding:9px 14px;border-radius:6px;border:1px solid var(--line);color:var(--accent);background:#fff;cursor:pointer}
+.doc a.btn.primary{background:var(--plum);color:#fff;border-color:var(--plum)}
+.doc a.btn:hover,.doc button.btn:hover{border-color:var(--accent)}
+.foot{font-size:11px;color:var(--mute);margin-top:26px;line-height:1.6}
+.copied{color:#2e7d4f;font-weight:700}
+</style>
+</head>
+<body>
+<header><div class="hwrap">
+  <img src="../assets/caplink-mark.png" alt="CapLink">
+  <div><h1>Event Agendas</h1><p>Live working documents — open one to edit, share its link with the world</p></div>
+</div></header>
+<div class="wrap">
+  <p class="lead">Each agenda is one shared document: everyone edits the same version, and its share link always shows the latest published copy. <b>Edit</b> opens the builder; <b>Share link</b> is what you send out.</p>
+  <div id="list">Loading…</div>
+  <p class="foot">To start a brand-new event, open any agenda and change the “Event link name” to a new one (e.g. <b>london-2027</b>), then Publish — it will appear here automatically.</p>
+</div>
+<script>
+const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
+const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
+const KNOWN=[
+  {slug:"dubai-2026",title:"Dubai Private Capital Summit 2026",ico:"🇦🇪"},
+  {slug:"newyork-2026",title:"New York Private Capital Summit 2026",ico:"🗽"},
+  {slug:"ai-data-breakfast-2026",title:"AI / Data Insights Breakfast 2026",ico:"🤖"},
+  {slug:"europe-2027",title:"European Private Capital Summit 2027",ico:"🇪🇺"},
+  {slug:"mit-2026",title:"MIT Event (name TBC)",ico:"🎓"}
+];
+function edURL(s){return new URL("../agenda-generator/?e="+encodeURIComponent(s),location.href).href;}
+function shURL(s){return new URL("../agenda/?e="+encodeURIComponent(s),location.href).href;}
+function esc(x){return String(x==null?"":x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+async function boot(){
+  let pub={};
+  try{
+    const r=await fetch(SUPA_URL+"/rest/v1/agendas?select=slug,updated_at",{headers:{apikey:SUPA_KEY}});
+    if(r.ok)(await r.json()).forEach(row=>pub[row.slug]=row.updated_at);
+  }catch(e){}
+  const extra=Object.keys(pub).filter(s=>!KNOWN.some(k=>k.slug===s)).map(s=>({slug:s,title:s,ico:"📄"}));
+  const all=KNOWN.concat(extra);
+  document.getElementById("list").innerHTML=all.map(d=>{
+    const up=pub[d.slug];
+    const meta=up?'<span class="live">● Live</span> · updated '+new Date(up).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})+' · '+esc(d.slug)
+                 :'Not started yet — open Edit to create it · '+esc(d.slug);
+    return '<div class="doc"><div class="ico">'+d.ico+'</div><div class="info"><h2>'+esc(d.title)+'</h2><div class="meta">'+meta+'</div></div><div class="btns">'+
+      '<a class="btn primary" href="'+edURL(d.slug)+'">✏️ Edit</a>'+
+      (up?'<a class="btn" href="'+shURL(d.slug)+'" target="_blank">👁 View</a><button class="btn" onclick="navigator.clipboard.writeText(\''+shURL(d.slug)+'\');this.textContent=\'Copied ✓\';this.classList.add(\'copied\')">Copy share link</button>':"")+
+      '</div></div>';
+  }).join("");
+}
+boot();
+</script>
+</body>
+</html>
