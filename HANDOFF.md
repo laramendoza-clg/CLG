@@ -28,6 +28,13 @@ ongoing project (see §3).
    `agenda/index.html` and `agenda-generator/index.html`, and the `v N` badge
    in the builder header. GitHub Pages caches for 10 min; without the bump
    Lara tests stale code and both sides get confused.
+   **Deploys:** the Pages SOURCE branch is
+   `claude/phone-functionality-content-r7yc0s` (changing it needs repo-admin
+   rights nobody's token has). `.github/workflows/pages.yml` mirrors every
+   push to `main` onto that branch and requests a Pages build — check the
+   "Deploy site" run in the Actions tab is green; if the live site is stale,
+   that's where to look first (in July 2026 the site silently froze for 2h
+   because main moved and the source branch didn't).
 3. **Logos are always vertically centred, never top-aligned** — everywhere.
 4. **Speaker photos are square-cornered** (no border-radius). Lara's
    headshots are square; any cropping/rounding looks bad.
