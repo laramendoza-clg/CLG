@@ -252,6 +252,10 @@ function measureBlocks(root,htmlList,wrapClass,width){
 }
 function paginateSessions(root,d,startN){
   var PAGE_H=1168;   /* 1294 - 44 top - 60 footer zone - 22 safety */
+  var notesOn=d.meta.notesFill!==false;
+  /* when Notes lines are on, reserve space for them on EVERY page so all
+     pages end identically: sessions, then ruled lines down to the footer */
+  var CAP=notesOn?PAGE_H-120:PAGE_H;
   var htmls=(d.sessions||[]).map(function(s,i){return sessionHtml(s,i);});
   var hs=measureBlocks(root,htmls,"rows",888).map(function(h){return h+12;});
   var n=hs.length;
@@ -265,12 +269,12 @@ function paginateSessions(root,d,startN){
     var sum=0;
     for(var j=i;j>=1;j--){
       sum+=hs[j-1];
-      if(sum>PAGE_H&&j<i)break;
-      if(sum>PAGE_H&&j===i){ // single block taller than a page: give it its own
+      if(sum>CAP&&j<i)break;
+      if(sum>CAP&&j===i){ // single block taller than a page: give it its own
         if(best[j-1]<best[i]){best[i]=best[j-1];brk[i]=j-1;}
         break;
       }
-      var slack=(PAGE_H-sum)/PAGE_H,w=(i===n?0.55:1);
+      var slack=(CAP-sum)/CAP,w=(i===n?0.55:1);
       var c=best[j-1]+w*slack*slack;
       if(c<best[i]){best[i]=c;brk[i]=j-1;}
     }
@@ -278,14 +282,13 @@ function paginateSessions(root,d,startN){
   }
   var cuts=[],k=n;
   while(k>0){cuts.unshift([brk[k],k]);k=brk[k];}
-  var notesOn=d.meta.notesFill!==false;
   return cuts.map(function(cut,pi){
     var pg=htmls.slice(cut[0],cut[1]);
     var tot=0;for(var q=cut[0];q<cut[1];q++)tot+=hs[q];
-    var rem=Math.max(0,PAGE_H-tot);
-    /* session spacing is FIXED (the .row margin) on every page; all leftover
-       space becomes ruled Notes lines whenever there is room for them */
-    var notes=(notesOn&&rem>=88)?'<div class="notesblk"><div class="nlab">Notes</div><div class="nlines"></div></div>':"";
+    /* session spacing is FIXED (the .row margin) on every page; every page
+       ends with the reserved Notes lines (skip only the rare page filled by
+       one oversized block) */
+    var notes=(notesOn&&(PAGE_H-tot)>=54)?'<div class="notesblk"><div class="nlab">Notes</div><div class="nlines"></div></div>':"";
     return slide("",'<div class="rows">'+pg.join("")+notes+'</div>'+foot(d.meta,startN+pi));
   });
 }
