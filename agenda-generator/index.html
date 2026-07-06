@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<title>CapLink Agenda Builder</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Raleway',sans-serif;-webkit-font-smoothing:antialiased;background:#ececed;color:#222}
+  .app{display:flex;height:100vh;overflow:hidden}
+  .left{width:52%;min-width:430px;overflow-y:auto;padding:16px 22px 48px}
+  .right{flex:1;overflow-y:auto;background:#f5f5f6;border-left:1px solid #d6d6d6;padding:14px 18px 48px}
+  .builder h1{font-size:16px;font-weight:700;letter-spacing:.4px;margin-bottom:3px}
+  .builder .hint{font-size:12px;color:#888;margin-bottom:14px;line-height:1.5}
+  .topbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+  .topbar select,.topbar button,.topbar input[type=text]{font-family:inherit;font-size:13px;padding:7px 12px;border:1px solid #ccc;border-radius:4px;background:#fff;cursor:pointer}
+  .topbar input[type=text]{cursor:text}
+  .topbar button:hover{background:#f4f4f4}
+  .topbar .primary{background:#2A1228;color:#fff;border-color:#2A1228}
+  .topbar .primary:hover{background:#3d1c3a}
+  .fields{display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:14px}
+  .fields label{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8a8088;display:block;margin-bottom:3px}
+  .fields input{width:100%;font-family:inherit;font-size:14px;padding:8px 10px;border:1px solid #ccc;border-radius:4px}
+  .cap{font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#888;margin:14px 0 8px;display:flex;align-items:center;gap:10px}
+  .cap::after{content:'';flex:1;height:1px;background:#e0dde0}
+  .item{border:1px solid #e2e2e2;border-radius:6px;padding:10px 12px;margin-bottom:8px;background:#fafafa}
+  .item .r1{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .item input,.item select{font-family:inherit;font-size:13px;padding:6px 8px;border:1px solid #ccc;border-radius:4px;background:#fff}
+  .item input.time{width:92px}.item input.title{flex:1;min-width:150px}
+  .item input.detail{width:100%;margin-top:6px}
+  .item select.type{width:130px}
+  .item .tools{display:flex;gap:4px;margin-left:auto}
+  .mini{font-size:12px;line-height:1;padding:6px 9px;border:1px solid #ccc;border-radius:4px;background:#fff;cursor:pointer}
+  .mini:hover{background:#f0f0f0}
+  .mini.del{color:#a33;border-color:#e3b3b3}
+  .addbtn{font-family:inherit;font-size:13px;padding:9px 14px;border:1px dashed #b9a; border-radius:6px;background:#fff;color:#6b2554;cursor:pointer;width:100%;margin-top:2px}
+  .addbtn:hover{background:#fbf7fa}
+  .out{margin-top:16px}
+  .out .bar{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+  .out textarea{width:100%;height:150px;font-family:ui-monospace,Menlo,monospace;font-size:11px;border:1px solid #ccc;border-radius:6px;padding:12px;background:#fbfbfb;color:#333}
+  .copybtn{background:#2A1228;color:#fff;border:none;border-radius:4px;padding:9px 18px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer}
+  .copybtn:hover{background:#3d1c3a}
+  .copied{font-size:12px;color:#3f8a5a;font-weight:600;display:none}
+  .scaler{background:#fff;border:1px solid #ddd;border-radius:6px;overflow:hidden}
+  .scaler iframe{border:0;display:block;width:100%;background:#fff}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="left">
+    <div class="builder">
+      <h1>CapLink Agenda Builder</h1>
+      <p class="hint">Edit the schedule on the left; the preview updates live and always stays on-brand. Saves in this browser. Use <strong>Print / PDF</strong> for a shareable doc, or <strong>Copy code</strong> to embed it on the event site.</p>
+      <div class="topbar">
+        <label style="font-size:13px;color:#666">Colours:</label>
+        <select id="themeSel">
+          <option value="dubai">Dubai (petrol teal)</option>
+          <option value="european">European (deep plum)</option>
+          <option value="newyork">New York (terracotta)</option>
+          <option value="london">London / JV (navy + gold)</option>
+        </select>
+        <button id="starterBtn">Reset to starter</button>
+        <button id="backupBtn">⬇ Save backup</button>
+        <button id="restoreBtn">⬆ Load backup</button>
+        <input id="restoreFile" type="file" accept="application/json" style="display:none">
+      </div>
+      <div class="fields">
+        <div><label>Heading</label><input id="titleIn" type="text"></div>
+        <div><label>Subheading</label><input id="subIn" type="text"></div>
+        <div><label>Date &amp; location</label><input id="dateIn" type="text"></div>
+      </div>
+      <p class="cap">Schedule</p>
+      <div id="itemsEditor"></div>
+      <button class="addbtn" id="addItem">+ Add session</button>
+    </div>
+    <div class="out">
+      <div class="bar">
+        <button class="copybtn" id="copyBtn">Copy embed code</button>
+        <button class="mini" id="printBtn" style="padding:9px 14px">🖶 Print / Save as PDF</button>
+        <span class="copied" id="copied">Copied</span>
+      </div>
+      <textarea id="outCode" readonly></textarea>
+    </div>
+  </div>
+  <div class="right">
+    <p class="cap">Live preview</p>
+    <div class="scaler"><iframe id="preview"></iframe></div>
+  </div>
+</div>
+
+<script>
+const THEMES={
+  dubai:{band:"linear-gradient(135deg,#0a1620 0%,#152c33 55%,#385158 100%)",chip:"#385158",time:"#2f5d63"},
+  london:{band:"linear-gradient(135deg,#060e1e 0%,#0D1426 55%,#243057 100%)",chip:"#8A7547",time:"#7a6533"},
+  newyork:{band:"linear-gradient(135deg,#130E15 0%,#472E40 55%,#7B4349 100%)",chip:"#A15D50",time:"#9a4f43"},
+  european:{band:"linear-gradient(135deg,#140d1a 0%,#2A1228 45%,#5a4068 100%)",chip:"#6b2554",time:"#7a2c5e"}
+};
+const THEME_NAMES={dubai:"Dubai",london:"London / JV",newyork:"New York",european:"European"};
+const TYPES=[["registration","Registration"],["keynote","Keynote"],["session","Session"],["panel","Panel"],["fireside","Fireside Chat"],["networking","Networking"],["break","Break"]];
+const TAGGED={keynote:"Keynote",panel:"Panel",fireside:"Fireside Chat",networking:"Networking"};
+const SOFT={registration:1,break:1};
+const SKEY="caplink-agenda-v1";
+
+function it(time,title,detail,type){return{time:time||"",title:title||"",detail:detail||"",type:type||"session"};}
+const STARTER=()=>({theme:"dubai",title:"Agenda",sub:"Dubai Private Capital Summit 2026",date:"September 15, 2026  ·  Dubai, UAE",items:[
+  it("08:30","Registration &amp; Networking Breakfast","","registration"),
+  it("09:15","Welcome &amp; Opening Remarks","CapLink Group","keynote"),
+  it("09:30","The Middle East Moment: Private Equity in a Region Redefined","Julian Barratt-Due — Managing Director, KKR","keynote"),
+  it("10:15","Navigating Fundraising in the Middle East","Panel — moderated by CapLink Group","panel"),
+  it("11:00","Networking Break","","break"),
+  it("11:30","In Conversation: Building Enduring Platforms","Fireside chat","fireside"),
+  it("12:15","Lunch &amp; Networking","","break"),
+  it("13:30","Closing Remarks","","session")
+]});
+
+let state;
+function clone(o){return JSON.parse(JSON.stringify(o));}
+function load(){try{const s=JSON.parse(localStorage.getItem(SKEY));if(s&&s.items)return s;}catch(e){}return STARTER();}
+function save(){try{localStorage.setItem(SKEY,JSON.stringify(state));}catch(e){}}
+function esc(s){return(s||"").replace(/&(?!(amp|lt|gt|quot|#\d+|rsquo|ldquo|rdquo|middot|amp);)/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function escA(s){return(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;");}
+
+function generate(){
+  const t=THEMES[state.theme]||THEMES.dubai;
+  const rows=state.items.map(r=>{
+    const soft=SOFT[r.type]?" agx__row--soft":"";
+    const tag=TAGGED[r.type]?`<span class="agx__type">${esc(TAGGED[r.type])}</span>`:"";
+    const detail=r.detail?`<div class="agx__d">${esc(r.detail)}</div>`:"";
+    return `\n      <div class="agx__row${soft}">\n        <div class="agx__time">${esc(r.time)}</div>\n        <div class="agx__body">\n          <div class="agx__t">${esc(r.title)}${tag}</div>${detail}\n        </div>\n      </div>`;
+  }).join("");
+  return `
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+.agx,.agx *{box-sizing:border-box;margin:0;padding:0;font-family:'Raleway',sans-serif;}
+.agx{width:100%;padding:10px 0;-webkit-font-smoothing:antialiased;}
+.agx__in{max-width:920px;margin:0 auto;padding:0 16px;}
+.agx__band{background:${t.band};color:#fff;padding:40px 44px 34px;border-radius:5px 5px 0 0;}
+.agx__title{font-size:34px;font-weight:700;letter-spacing:-.01em;line-height:1.1;}
+.agx__sub{font-size:15px;font-weight:300;opacity:.84;margin-top:7px;}
+.agx__date{font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.72);margin-top:18px;}
+.agx__list{background:#fff;border:1px solid #ececec;border-top:none;border-radius:0 0 5px 5px;}
+.agx__row{display:flex;gap:24px;padding:18px 40px;border-top:1px solid #f1eff1;align-items:flex-start;}
+.agx__row:first-child{border-top:none;}
+.agx__row--soft{background:#faf8fa;}
+.agx__time{flex:0 0 92px;font-size:15px;font-weight:600;color:${t.time};padding-top:1px;font-variant-numeric:tabular-nums;}
+.agx__body{flex:1;min-width:0;}
+.agx__t{font-size:16px;font-weight:600;color:#1e1a1e;line-height:1.35;display:flex;flex-wrap:wrap;align-items:center;gap:10px;}
+.agx__d{font-size:13.5px;color:#7a7078;margin-top:5px;line-height:1.5;font-weight:300;}
+.agx__type{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:${t.chip};padding:3px 8px;border-radius:2px;white-space:nowrap;}
+@media(max-width:640px){
+  .agx__band{padding:28px 22px 24px;}.agx__title{font-size:25px;}
+  .agx__row{padding:15px 20px;gap:14px;}.agx__time{flex-basis:64px;font-size:13px;}
+  .agx__t{font-size:15px;}
+}
+@media print{.agx{padding:0;}.agx__in{max-width:none;padding:0;}}
+</style>
+<div class="agx">
+  <div class="agx__in">
+    <div class="agx__band">
+      <h2 class="agx__title">${esc(state.title)}</h2>
+      <p class="agx__sub">${esc(state.sub)}</p>
+      <p class="agx__date">${esc(state.date)}</p>
+    </div>
+    <div class="agx__list">${rows}
+    </div>
+  </div>
+</div>`;
+}
+
+function renderEditor(){
+  document.getElementById("themeSel").value=state.theme;
+  document.getElementById("titleIn").value=state.title;
+  document.getElementById("subIn").value=state.sub;
+  document.getElementById("dateIn").value=state.date;
+  const ed=document.getElementById("itemsEditor");ed.innerHTML="";
+  state.items.forEach((r,i)=>{
+    const box=document.createElement("div");box.className="item";
+    const opts=TYPES.map(([v,l])=>`<option value="${v}"${v===r.type?" selected":""}>${l}</option>`).join("");
+    box.innerHTML=
+      '<div class="r1">'+
+        '<input class="time" type="text" placeholder="09:30" value="'+escA(r.time)+'" data-act="time" data-i="'+i+'">'+
+        '<input class="title" type="text" placeholder="Session title" value="'+escA(r.title)+'" data-act="title" data-i="'+i+'">'+
+        '<select class="type" data-act="type" data-i="'+i+'">'+opts+'</select>'+
+        '<span class="tools">'+
+          '<button class="mini" data-act="up" data-i="'+i+'" title="Move up">↑</button>'+
+          '<button class="mini" data-act="down" data-i="'+i+'" title="Move down">↓</button>'+
+          '<button class="mini del" data-act="del" data-i="'+i+'" title="Remove">✕</button>'+
+        '</span>'+
+      '</div>'+
+      '<input class="detail" type="text" placeholder="Speaker / firm / detail (optional)" value="'+escA(r.detail)+'" data-act="detail" data-i="'+i+'">';
+    ed.appendChild(box);
+  });
+}
+let _t=null;
+function renderPreview(){
+  const code=generate();
+  document.getElementById("outCode").value=code;
+  clearTimeout(_t);
+  _t=setTimeout(()=>{const f=document.getElementById("preview");f.srcdoc=code;},140);
+}
+function autoHeight(f){try{const h=f.contentWindow.document.documentElement.scrollHeight;if(h>40)f.style.height=(h+8)+"px";}catch(e){}}
+document.getElementById("preview").addEventListener("load",function(){autoHeight(this);});
+function renderAll(){const l=document.querySelector(".left");const st=l?l.scrollTop:0;renderEditor();renderPreview();if(l)l.scrollTop=st;save();}
+
+document.getElementById("themeSel").addEventListener("change",e=>{state.theme=e.target.value;renderPreview();save();});
+document.getElementById("titleIn").addEventListener("input",e=>{state.title=e.target.value;renderPreview();save();});
+document.getElementById("subIn").addEventListener("input",e=>{state.sub=e.target.value;renderPreview();save();});
+document.getElementById("dateIn").addEventListener("input",e=>{state.date=e.target.value;renderPreview();save();});
+document.getElementById("addItem").addEventListener("click",()=>{state.items.push(it("","New session","","session"));renderAll();});
+document.getElementById("starterBtn").addEventListener("click",()=>{if(!confirm("Reset the agenda to the starter example? Your current sessions will be replaced."))return;state=STARTER();renderAll();});
+document.getElementById("backupBtn").addEventListener("click",()=>{save();const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="caplink-agenda-backup.json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);});
+document.getElementById("restoreBtn").addEventListener("click",()=>document.getElementById("restoreFile").click());
+document.getElementById("restoreFile").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const s=JSON.parse(r.result);if(!s||!s.items)throw 0;state=s;renderAll();}catch(err){alert("That file doesn't look like an agenda backup.");}};r.readAsText(f);e.target.value="";});
+document.getElementById("copyBtn").addEventListener("click",()=>{const ta=document.getElementById("outCode");ta.select();navigator.clipboard.writeText(ta.value).then(()=>{const c=document.getElementById("copied");c.style.display="inline";setTimeout(()=>c.style.display="none",1500);});});
+document.getElementById("printBtn").addEventListener("click",()=>{const w=window.open("","_blank");if(!w){alert("Please allow pop-ups to print.");return;}w.document.open();w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>'+escA(state.title)+' — Agenda</title></head><body style="margin:0">'+generate()+'</body></html>');w.document.close();setTimeout(()=>{w.focus();w.print();},400);});
+
+document.getElementById("itemsEditor").addEventListener("input",e=>{const el=e.target,a=el.dataset.act;if(!a)return;const i=+el.dataset.i;
+  if(a==="time")state.items[i].time=el.value;
+  else if(a==="title")state.items[i].title=el.value;
+  else if(a==="detail")state.items[i].detail=el.value;
+  else if(a==="type"){state.items[i].type=el.value;renderAll();return;}
+  renderPreview();save();
+});
+document.getElementById("itemsEditor").addEventListener("change",e=>{const el=e.target;if(el.dataset.act==="type"){state.items[+el.dataset.i].type=el.value;renderAll();}});
+document.getElementById("itemsEditor").addEventListener("click",e=>{const b=e.target.closest("[data-act]");if(!b)return;const a=b.dataset.act,i=+b.dataset.i;
+  if(a==="del"){state.items.splice(i,1);renderAll();}
+  else if(a==="up"&&i>0){const x=state.items.splice(i,1)[0];state.items.splice(i-1,0,x);renderAll();}
+  else if(a==="down"&&i<state.items.length-1){const x=state.items.splice(i,1)[0];state.items.splice(i+1,0,x);renderAll();}
+});
+
+state=load();renderAll();
+</script>
+</body>
+</html>
