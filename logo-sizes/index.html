@@ -89,8 +89,8 @@ ul.rules li:last-child{margin-bottom:0}
     <div class="panel">
       <p>Every event code block has a <code>LOGO SIZES, EDIT HERE</code> section at the very top. One number per logo. Change it there and it updates everywhere in that block. If the firm is on more than one page, change it in both blocks and update this page.</p>
       <p><code>--logo-scale</code> (currently <strong>0.8</strong>) scales every logo at once. If everything feels big or small, this is the one number to change. Keep it identical in every event file so shared firms stay matched.</p>
-      <p><code>--mobile-scale</code> (currently <strong>0.75</strong>) sets mobile size automatically, so there are no separate mobile numbers to maintain. Rows wrap on mobile so logos stay readable, and dividers that land on a line break hide themselves.</p>
-      <p>Rendered desktop size = number &times; 0.8. Mobile = number &times; 0.8 &times; 0.75, floor 14px.</p>
+      <p><code>--mobile-scale</code> (currently <strong>0.75</strong>) sets mobile size automatically as a pure proportional scale (no floor), so all logos resize together and there are no separate mobile numbers to maintain. Rows wrap on mobile so logos stay readable, and dividers that land on a line break hide themselves.</p>
+      <p>Rendered desktop size = number &times; 0.8. Mobile = number &times; 0.8 &times; 0.75. If everything reads too small on a phone, raise <code>--mobile-scale</code>.</p>
     </div>
   </section>
 
@@ -101,7 +101,7 @@ ul.rules li:last-child{margin-bottom:0}
       <tr><td>EY</td><td class="num">75</td><td class="note">NY, Dubai, European</td></tr>
       <tr><td>Cleary Gottlieb</td><td class="num">18</td><td class="note">NY, Dubai</td></tr>
       <tr><td>Preqin</td><td class="num">36</td><td class="note">NY, Dubai, European</td></tr>
-      <tr><td>PE150</td><td class="num">28</td><td class="note">NY, Dubai, European</td></tr>
+      <tr><td>PE150</td><td class="num">26</td><td class="note">NY, Dubai, European</td></tr>
       <tr><td>Accordion</td><td class="num">18</td><td class="note">NY, European</td></tr>
       <tr><td>Blueflame AI</td><td class="num">28</td><td class="note">NY, European</td></tr>
       <tr><td>Clifford Chance</td><td class="num">20</td><td class="note">Dubai, European</td></tr>
@@ -132,7 +132,7 @@ ul.rules li:last-child{margin-bottom:0}
       <tr><td>Gain</td><td class="num">30</td><td class="note">yes</td></tr>
       <tr><td>Williams Lea</td><td class="num">35</td><td class="note">no</td></tr>
       <tr><td>Preqin</td><td class="num">36</td><td class="note">yes</td></tr>
-      <tr><td>PE 150</td><td class="num">28</td><td class="note">yes</td></tr>
+      <tr><td>PE 150</td><td class="num">26</td><td class="note">yes</td></tr>
     </table></div>
   </section>
 
@@ -141,17 +141,17 @@ ul.rules li:last-child{margin-bottom:0}
     <div class="tablewrap"><table>
       <tr><th>Firm</th><th>Number</th><th>Whiten filter</th></tr>
       <tr><td>EY</td><td class="num">75</td><td class="note">no (white + yellow file, never filter EY)</td></tr>
-      <tr><td>A&amp;O Shearman</td><td class="num">20</td><td class="note">no (white file)</td></tr>
-      <tr><td>Akin</td><td class="num">25</td><td class="note">no (white file)</td></tr>
+      <tr><td>A&amp;O Shearman</td><td class="num">16</td><td class="note">no (white file)</td></tr>
+      <tr><td>Akin</td><td class="num">22</td><td class="note">no (white file)</td></tr>
       <tr><td>Clifford Chance</td><td class="num">20</td><td class="note">no (white file)</td></tr>
-      <tr><td>Gibson Dunn</td><td class="num">22</td><td class="note">no (white file)</td></tr>
-      <tr><td>Skadden</td><td class="num">46</td><td class="note">no (white file)</td></tr>
-      <tr><td>White &amp; Case</td><td class="num">18</td><td class="note">no (white file)</td></tr>
-      <tr><td>Abacus Group</td><td class="num">60</td><td class="note">no (white file)</td></tr>
+      <tr><td>Gibson Dunn</td><td class="num">19</td><td class="note">no (white file)</td></tr>
+      <tr><td>Skadden</td><td class="num">44</td><td class="note">no (white file)</td></tr>
+      <tr><td>White &amp; Case</td><td class="num">16</td><td class="note">no (white file)</td></tr>
+      <tr><td>Abacus Group</td><td class="num">62</td><td class="note">no (white file)</td></tr>
       <tr><td>Cleary Gottlieb</td><td class="num">18</td><td class="note">no (white file)</td></tr>
       <tr><td>Preqin</td><td class="num">36</td><td class="note">no (white file)</td></tr>
-      <tr><td>PE150</td><td class="num">28</td><td class="note">no (white file)</td></tr>
-      <tr><td>Emirates Family Office</td><td class="num">52</td><td class="note">no (white file)</td></tr>
+      <tr><td>PE150</td><td class="num">26</td><td class="note">no (white file)</td></tr>
+      <tr><td>Emirates Family Office</td><td class="num">60</td><td class="note">no (white file)</td></tr>
     </table></div>
   </section>
 
@@ -167,7 +167,7 @@ ul.rules li:last-child{margin-bottom:0}
       <tr><td>Paul Hastings</td><td class="num">35</td><td class="note">yes</td></tr>
       <tr><td>Ropes &amp; Gray</td><td class="num">27</td><td class="note">yes</td></tr>
       <tr><td>Preqin</td><td class="num">36</td><td class="note">no (white file)</td></tr>
-      <tr><td>PE150</td><td class="num">28</td><td class="note">no (white file)</td></tr>
+      <tr><td>PE150</td><td class="num">26</td><td class="note">no (white file)</td></tr>
     </table></div>
   </section>
 
