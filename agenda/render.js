@@ -47,12 +47,15 @@ var CSS=
 ".agdk .cov-host .lbl{font-size:9px;letter-spacing:.3em;font-weight:600;color:rgba(255,255,255,.6);text-transform:uppercase;margin-bottom:8px}"+
 ".agdk .cov-host img{display:block;max-width:360px;object-fit:contain;object-position:left}"+
 ".agdk .cov-lock{position:absolute;top:372px;left:50%;transform:translateX(-50%);width:560px}"+
-".agdk .cov-lockt{position:absolute;top:396px;left:64px;right:64px;display:flex;align-items:center;justify-content:center;gap:30px;color:#fff}"+
+/* soft feathered plate behind the title zone — darkens only where the
+   lockup and date sit, no visible edges, vanishes on already-dark skies */
+".agdk .cov-glow{position:absolute;top:296px;left:0;right:0;height:480px;background:radial-gradient(ellipse 64% 52% at 50% 44%,rgba(10,8,13,.5),rgba(10,8,13,0) 74%)}"+
+".agdk .cov-lockt{position:absolute;top:396px;left:64px;right:64px;display:flex;align-items:center;justify-content:center;gap:30px;color:#fff;text-shadow:0 1px 20px rgba(0,0,0,.5)}"+
 ".agdk .cov-lockt .c1{font-size:46px;font-weight:600;letter-spacing:.05em;white-space:nowrap;text-align:right;line-height:1.18}"+
 ".agdk .cov-lockt .vb{width:3px;align-self:stretch;background:rgba(255,255,255,.92)}"+
 ".agdk .cov-lockt .c2{display:flex;flex-direction:column;font-size:41px;font-weight:700;line-height:1.16;letter-spacing:.03em;text-align:left}"+
 ".agdk-edit .cov-lockt{cursor:pointer}"+
-".agdk .cov-date{position:absolute;top:696px;left:0;right:0;text-align:center;font-size:19px;font-weight:700;letter-spacing:.26em}"+
+".agdk .cov-date{position:absolute;top:696px;left:0;right:0;text-align:center;font-size:19px;font-weight:700;letter-spacing:.26em;text-shadow:0 1px 16px rgba(0,0,0,.45)}"+
 ".agdk .cov-date span{font-weight:300;letter-spacing:.2em;opacity:.85}"+
 ".agdk .cov-rail{position:absolute;left:64px;right:64px;bottom:108px;display:flex;justify-content:center;gap:80px;text-align:center}"+
 ".agdk .cov-rail .cp{display:flex;flex-direction:column;align-items:center;gap:6px}"+
@@ -317,7 +320,7 @@ function coverSlide(d){
   }else{
     host='<img class="cov-cap" src="'+CAPW+'"'+(EDIT?dp("meta.hostImg","logo")+' title="Click to switch to a hosted-by / JV lockup"':"")+'>';
   }
-  return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div>'+
+  return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><div class="cov-glow"></div>'+
     host+
     lockupHtml(m)+
     '<div class="cov-date"><span'+de("meta.dateLine")+' style="font-weight:700">'+esc(m.dateLine)+'</span>  <span>|</span>  <span'+de("meta.locLine")+'>'+esc(m.locLine)+'</span></div>'+
