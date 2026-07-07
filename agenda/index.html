@@ -35,6 +35,7 @@
     #bar,#upd,#msg,#stage,#pdfhint{display:none!important}
     #printRoot{display:block}
     #printRoot .pg{width:8.5in;height:11in;overflow:hidden;page-break-after:always;break-after:page}
+    #printRoot.land .pg{width:11in;height:8.5in}
     #printRoot .pg:last-child{page-break-after:auto;break-after:auto}
     #printRoot .sl{position:relative!important;left:0!important;top:0!important;opacity:1!important;
       box-shadow:none!important;transition:none!important;transform:scale(0.816);transform-origin:top left}
@@ -54,7 +55,7 @@
   <button id="mode"></button>
   <button id="pdf" title="Print or save as PDF">Download PDF</button>
 </div>
-<script src="./render.js?v=50"></script>
+<script src="./render.js?v=51"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -63,11 +64,12 @@ let cur=0,total=0,book=false;const GAPB=16;
 
 function spreads(){return total<=1?total:1+Math.ceil((total-1)/2);}
 function autoBook(){const st=document.getElementById("stage");return st.clientWidth>st.clientHeight*1.12;}
-function deckW(){return book?2*AgendaRender.W+GAPB:AgendaRender.W;}
+function dims(){return AgendaRender.CUR||AgendaRender;}
+function deckW(){return book?2*dims().W+GAPB:dims().W;}
 function fit(){
   const st=document.getElementById("stage"),deck=document.getElementById("deck");
-  deck.style.width=deckW()+"px";deck.style.height=AgendaRender.H+"px";
-  const s=Math.min(st.clientWidth/(deckW()+28),st.clientHeight/(AgendaRender.H+24));
+  deck.style.width=deckW()+"px";deck.style.height=dims().H+"px";
+  const s=Math.min(st.clientWidth/(deckW()+28),st.clientHeight/(dims().H+24));
   deck.style.transform="translate(-50%,-50%) scale("+s+")";
 }
 function updateModeBtn(){const b=document.getElementById("mode");if(b)b.textContent=book?"▤ Single page":"📖 Book view";}
@@ -82,13 +84,13 @@ function show(i){
     cur=Math.max(0,Math.min(spreads()-1,i));
     sl.forEach(el=>el.classList.remove("on"));
     if(cur===0){
-      sl[0].classList.add("on");sl[0].style.left=((deckW()-AgendaRender.W)/2)+"px";
+      sl[0].classList.add("on");sl[0].style.left=((deckW()-dims().W)/2)+"px";
       label="1 / "+total;
     }else{
       const a=2*cur-1,b=a+1;
       sl[a].classList.add("on");sl[a].style.left="0px";
       label=String(a+1);
-      if(b<total){sl[b].classList.add("on");sl[b].style.left=(AgendaRender.W+GAPB)+"px";label+="–"+(b+1);}
+      if(b<total){sl[b].classList.add("on");sl[b].style.left=(dims().W+GAPB)+"px";label+="–"+(b+1);}
       label+=" / "+total;
     }
   }
@@ -112,7 +114,7 @@ async function boot(){
     total=AgendaRender.buildDeck(document.getElementById("deck"),data);
     document.title=((data.meta&&data.meta.city)||"")+" Agenda · CapLink";
     const d=new Date(rows[0].updated_at);
-    document.getElementById("upd").textContent="Updated "+d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})+"  ·  v50";
+    document.getElementById("upd").textContent="Updated "+d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})+"  ·  v51";
     document.getElementById("msg").style.display="none";
     document.getElementById("bar").style.display="flex";
     let pref=null;try{pref=localStorage.getItem("agdk-book");}catch(_){}
@@ -147,6 +149,11 @@ function printFallback(){
   if(pr)pr.remove();
   pr=document.createElement("div");pr.id="printRoot";
   dressLikeDeck(pr);
+  const land=(AgendaRender.CUR||{}).land;
+  pr.classList.toggle("land",!!land);
+  let ps=document.getElementById("pageSize");
+  if(!ps){ps=document.createElement("style");ps.id="pageSize";document.head.appendChild(ps);}
+  ps.textContent="@media print{@page{size:"+(land?"11in 8.5in":"8.5in 11in")+";margin:0}}";
   document.querySelectorAll("#deck .sl").forEach(sl=>{
     const pg=document.createElement("div");pg.className="pg";
     const c=sl.cloneNode(true);
@@ -174,10 +181,11 @@ document.getElementById("pdf").onclick=async()=>{
     await loadPdfLibs();
     const slides=Array.from(document.querySelectorAll("#deck .sl"));
     holder=document.createElement("div");
-    holder.style.cssText="position:fixed;left:-12000px;top:0;width:1000px;z-index:-1";
+    const land=(AgendaRender.CUR||{}).land;
+    holder.style.cssText="position:fixed;left:-12000px;top:0;width:"+dims().W+"px;z-index:-1";
     dressLikeDeck(holder);
     document.body.appendChild(holder);
-    const pdf=new window.jspdf.jsPDF({orientation:"portrait",unit:"in",format:"letter"});
+    const pdf=new window.jspdf.jsPDF({orientation:land?"landscape":"portrait",unit:"in",format:"letter"});
     for(let i=0;i<slides.length;i++){
       hint.textContent="Building your PDF — page "+(i+1)+" of "+slides.length+"…";
       const c=slides[i].cloneNode(true);
@@ -223,8 +231,8 @@ document.getElementById("pdf").onclick=async()=>{
         }
       });
       const canvas=await window.html2canvas(c,{scale:2,useCORS:true,backgroundColor:"#ffffff",logging:false});
-      if(i>0)pdf.addPage("letter","portrait");
-      pdf.addImage(canvas.toDataURL("image/jpeg",0.95),"JPEG",0,0,8.5,11);
+      if(i>0)pdf.addPage("letter",land?"landscape":"portrait");
+      pdf.addImage(canvas.toDataURL("image/jpeg",0.95),"JPEG",0,0,land?11:8.5,land?8.5:11);
       holder.removeChild(c);
     }
     holder.remove();holder=null;

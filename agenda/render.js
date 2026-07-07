@@ -6,6 +6,8 @@
 "use strict";
 
 var W=1000,H=1294;                       /* portrait, US Letter (8.5x11) ratio */
+var LW=1294,LH=1000;                     /* landscape (11x8.5) */
+var LAND=false;                          /* set per document in buildDeck (meta.orient) */
 var THEMES={
   dubai:{pill:"#102b35",ribbon:"#12303c",accent:"#2f5d63"},
   european:{pill:"#2A1228",ribbon:"#2A1228",accent:"#6b2554"},
@@ -201,7 +203,23 @@ var CSS=
 ".agdk-edit .pmv{position:absolute;top:-14px;left:0;display:none;gap:3px;z-index:4}"+
 ".agdk-edit .pcell:hover .pmv{display:flex}"+
 ".agdk-edit .pmv button{font-family:inherit;font-size:10px;line-height:1;padding:4px 7px;border:1px solid #d0b3c6;border-radius:4px;background:#fff;color:#6b2554;cursor:pointer;box-shadow:0 2px 6px rgba(40,20,40,.15);font-weight:700}"+
-".agdk-edit .pmv button:hover{background:#f7eef4}";
+".agdk-edit .pmv button:hover{background:#f7eef4}"+
+/* ---- landscape (11x8.5) overrides — active only with meta.orient:"landscape" ---- */
+".agdk-land .sl{width:"+LW+"px;height:"+LH+"px}"+
+".agdk-land .cov-glow{top:200px;height:430px}"+
+".agdk-land .cov-lock{top:290px}"+
+".agdk-land .cov-lockt{top:322px}"+
+".agdk-land .cov-date{top:562px}"+
+".agdk-land .cov-rail{bottom:88px;gap:110px}"+
+".agdk-land .cov-note{bottom:32px}"+
+".agdk-land .wel-body{column-count:2;column-gap:60px;bottom:64px}"+
+".agdk-land .wel-sig,.agdk-land .wel-sigrow{break-inside:avoid;-webkit-column-break-inside:avoid}"+
+".agdk-land .spk-row{grid-template-columns:repeat(4,1fr)}"+
+".agdk-land .sp-grid{grid-template-columns:repeat(3,1fr)}"+
+".agdk-land .cl2-head{top:138px;right:430px}"+
+".agdk-land .cl2-bar{top:144px;height:92px}"+
+".agdk-land .cl2-grid{top:300px;bottom:78px;grid-template-columns:repeat(3,1fr);gap:36px 44px}"+
+".agdk-land .thanksnote .tn-body{max-width:940px}";
 
 function slide(cls,inner){return '<div class="sl '+(cls||"")+'">'+inner+"</div>";}
 function foot(meta,n){return '<div class="foot"><span'+de("meta.footerLeft")+'>'+esc(meta.footerLeft)+'</span><span>PAGE '+n+'</span></div>';}
@@ -384,9 +402,9 @@ function speakerCells(d){
   });
 }
 function sponsorSlides(d,startN){
-  var out=[],sp=d.sponsors||[];
-  for(var i=0;i<sp.length;i+=4){
-    var cols=sp.slice(i,i+4).map(function(s,k){
+  var out=[],sp=d.sponsors||[],per=LAND?6:4;
+  for(var i=0;i<sp.length;i+=per){
+    var cols=sp.slice(i,i+per).map(function(s,k){
       var b="sponsors."+(i+k);
       return '<div class="sp-col"><div class="sp-rib"'+de(b+".tier")+'>'+esc(s.tier)+'</div><div class="sp-logo">'+(s.img?'<img src="'+esc(s.img)+'" style="max-height:'+(s.h||86)+'px"'+dp(b+".img","logo")+'>':'<div class="snm"'+de(b+".name")+'>'+esc(s.name)+'</div>')+'</div><div class="sp-desc"'+de(b+".desc",1)+'>'+esc(s.desc)+'</div></div>';
     }).join("");
@@ -452,13 +470,13 @@ function measureBlocks(root,htmlList,wrapClass,width){
   return hs;
 }
 function paginateSessions(root,d,startN){
-  var PAGE_H=1168;   /* 1294 - 44 top - 60 footer zone - 22 safety */
+  var PAGE_H=LAND?874:1168;   /* page height - 44 top - 60 footer zone - 22 safety */
   var notesOn=d.meta.notesFill!==false;
   /* when Notes lines are on, reserve space for them on EVERY page so all
      pages end identically: sessions, then ruled lines down to the footer */
   var CAP=notesOn?PAGE_H-120:PAGE_H;
   var htmls=(d.sessions||[]).map(function(s,i){return sessionHtml(s,i);});
-  var hs=measureBlocks(root,htmls,"rows",888).map(function(h){return h+12;});
+  var hs=measureBlocks(root,htmls,"rows",LAND?1182:888).map(function(h){return h+12;});
   var n=hs.length;
   /* Balanced page breaks (what a book typesetter does): instead of greedily
      stuffing each page and orphaning the leftovers, choose break points that
@@ -506,16 +524,18 @@ function speakersGridSlides(root,d,startN){
   if(!cells.length)return[];
   if(EDIT&&curatedSpk(d))cells.push('<div class="ghost" data-op="spkadd" style="min-height:56px">+ Add person</div>');
   var subOn=!!d.meta.speakersSub;
+  var per=LAND?4:3,MW=LAND?1166:872;
+  var PAGE=LAND?(subOn?690:722):(subOn?972:1004);
   var rows=[];
-  for(var i=0;i<cells.length;i+=3)rows.push('<div class="spk-row">'+cells.slice(i,i+3).join("")+'</div>');
-  var hs=measureBlocks(root,rows,"spk-gridwrap",872),PAGE=subOn?972:1004;
+  for(var i=0;i<cells.length;i+=per)rows.push('<div class="spk-row">'+cells.slice(i,i+per).join("")+'</div>');
+  var hs=measureBlocks(root,rows,"spk-gridwrap",MW);
   var total=0,q;for(q=0;q<hs.length;q++)total+=hs[q]+20;
   /* Scale to FILL the page — up as well as down — so a short list never
      leaves a sea of white space. Zoom changes the effective layout width,
      so re-measure at the zoomed width before committing to a scale-up. */
   var scale=Math.max(0.6,Math.min(1.45,PAGE/total*0.98));
   if(scale>1.001){
-    hs=measureBlocks(root,rows,"spk-gridwrap",Math.round(872/scale));
+    hs=measureBlocks(root,rows,"spk-gridwrap",Math.round(MW/scale));
     total=0;for(q=0;q<hs.length;q++)total+=hs[q]+20;
     scale=Math.min(scale,Math.max(0.6,PAGE/total*0.98));
   }
@@ -528,13 +548,14 @@ function speakersSlides(root,d,startN){
   if(!entries.length)return[];
   if(EDIT&&curatedSpk(d))entries.push('<div class="ghost gt" data-op="spkadd">+ Add person</div>');
   var subOn=!!d.meta.speakersSub;
-  var COL_H=subOn?970:1000,GAP=10;
+  var COL_H=LAND?(subOn?674:706):(subOn?970:1000),GAP=10;
+  var W2=LAND?563:416,W3=LAND?371:272;
   function tot(hs){var t=0;for(var q=0;q<hs.length;q++)t+=hs[q]+GAP;return t;}
   /* ALWAYS one page: 2 columns, then 3 (measured at true column width),
      then scale down until it fits */
-  var cols=2,hs=measureBlocks(root,entries,"spk-col",416),total=tot(hs),scale=1;
+  var cols=2,hs=measureBlocks(root,entries,"spk-col",W2),total=tot(hs),scale=1;
   if(total>2*COL_H){
-    cols=3;hs=measureBlocks(root,entries,"spk-col",272);total=tot(hs);
+    cols=3;hs=measureBlocks(root,entries,"spk-col",W3);total=tot(hs);
     if(total>3*COL_H)scale=Math.max(0.6,(3*COL_H)/total*0.96);
   }
   var budget=total/cols+30,colArr=[],curCol=[],curH=0;
@@ -551,10 +572,15 @@ function speakersSlides(root,d,startN){
 function buildDeck(root,data,opts){
   var d=data||{},m=d.meta||{},t=THEMES[d.theme]||THEMES.dubai;
   EDIT=!!(opts&&opts.edit);
+  /* orientation is per DOCUMENT (meta.orient) — absent → portrait, so
+     existing documents never change (rule #1) */
+  LAND=(m.orient==="landscape");
+  window.AgendaRender.CUR={W:LAND?LW:W,H:LAND?LH:H,land:LAND};
   if(!document.getElementById("agdk-css")){
     var st=document.createElement("style");st.id="agdk-css";st.textContent=CSS;document.head.appendChild(st);
   }
   root.classList.add("agdk");
+  root.classList.toggle("agdk-land",LAND);
   root.classList.toggle("agdk-edit",EDIT);
   root.style.setProperty("--pill",t.pill);root.style.setProperty("--ribbon",t.ribbon);root.style.setProperty("--accent",t.accent);
   var slides=[coverSlide(d)],n=2;
@@ -568,5 +594,5 @@ function buildDeck(root,data,opts){
   return root.querySelectorAll(".sl").length;
 }
 
-window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H};
+window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false}};
 })();

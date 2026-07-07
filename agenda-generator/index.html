@@ -73,7 +73,7 @@
 <body>
 <div class="app">
   <div class="left">
-    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v50</span></h1>
+    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v51</span></h1>
     <div class="tip">✏️ <b>Edit like Slides:</b> click any text on the page to type. Click a photo or logo to change it. Hover a session for <b>move / add / delete</b>.</div>
 
     <div class="stepbox">
@@ -120,7 +120,7 @@
 
 <div id="pop"></div>
 
-<script src="../agenda/render.js?v=50"></script>
+<script src="../agenda/render.js?v=51"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -300,6 +300,7 @@ function logoRow(base,defH){
 }
 function renderEvent(){
   let h='<label class="f">Colour theme</label><select class="t" data-b="theme">'+[["dubai","Dubai — petrol teal"],["european","European — deep plum"],["newyork","New York — terracotta"],["london","London — navy & gold"],["boston","Boston / MIT — garnet"]].map(o=>'<option value="'+o[0]+'"'+(state.theme===o[0]?" selected":"")+'>'+o[1]+'</option>').join("")+'</select>';
+  h+='<label class="f">Page orientation</label><select class="t" data-b="meta.orient"><option value=""'+(state.meta.orient!=="landscape"?" selected":"")+'>Portrait — 8.5×11</option><option value="landscape"'+(state.meta.orient==="landscape"?" selected":"")+'>Landscape — 11×8.5</option></select>';
   h+='<label class="f">Show the auto “Confirmed speakers” page?</label><label style="font-size:12px;color:#555"><input type="checkbox" data-chk="meta.showSpeakers" '+(state.meta.showSpeakers!==false?"checked":"")+'> Yes, include it</label>';
   h+='<label class="f">Speakers page style</label><select class="t" data-b="meta.speakersStyle"><option value="list"'+(state.meta.speakersStyle!=="grid"?" selected":"")+'>Text list — 3 lines per speaker</option><option value="grid"'+(state.meta.speakersStyle==="grid"?" selected":"")+'>Photo grid — best once headshots are added</option></select>';
   h+='<label class="f">Fill leftover space with ruled “Notes” lines?</label><label style="font-size:12px;color:#555"><input type="checkbox" data-chk="meta.notesFill" '+(state.meta.notesFill!==false?"checked":"")+'> Yes (like a printed planner)</label>';
@@ -375,7 +376,7 @@ function renderContacts(){
 function renderForm(){renderEvent();renderWelcome();renderSessions();renderSponsors();renderContacts();}
 
 /* ---------- preview ---------- */
-function fitPv(){const w=document.getElementById("pvwrap"),p=document.getElementById("pv");p.style.width=AgendaRender.W+"px";p.style.height=AgendaRender.H+"px";const s=Math.min((w.clientWidth-36)/AgendaRender.W,(w.clientHeight-30)/AgendaRender.H);p.style.transform="translate(-50%,-50%) scale("+s+")";}
+function fitPv(){const w=document.getElementById("pvwrap"),p=document.getElementById("pv"),D=AgendaRender.CUR||AgendaRender;p.style.width=D.W+"px";p.style.height=D.H+"px";const s=Math.min((w.clientWidth-36)/D.W,(w.clientHeight-30)/D.H);p.style.transform="translate(-50%,-50%) scale("+s+")";}
 function pvShow(i){const sl=document.querySelectorAll("#pv .sl");pvCur=Math.max(0,Math.min(sl.length-1,i));sl.forEach((el,j)=>el.classList.toggle("on",j===pvCur));document.getElementById("pvPg").textContent=(pvCur+1)+" / "+pvTotal;}
 function rebuild(){pvTotal=AgendaRender.buildDeck(document.getElementById("pv"),state,{edit:true});fitPv();pvShow(pvCur);autosave();}
 function queueRebuild(){clearTimeout(_rt);_rt=setTimeout(rebuild,380);}
