@@ -321,10 +321,9 @@ var CSS=
 ".agdk-land .spk-badge{font-size:12px}"+
 ".agdk-land .spk-sub{font-size:14.5px;top:204px}"+
 ".agdk-land .spke1{font-size:13.5px}"+
-".agdk-land .spk-cell img{width:72px;height:72px}"+
+/* NOTE: spk-cell img/.tt/.fm sizes live in the speakers block ABOVE —
+   duplicates here once silently overrode weeks of size edits (v54–v76 bug) */
 ".agdk-land .spk-cell .nm{font-size:14px}"+
-".agdk-land .spk-cell .tt{font-size:11.5px}"+
-".agdk-land .spk-cell .fm{font-size:12px}"+
 ".agdk-land .sp-rib{font-size:11px}"+
 ".agdk-land .sp-desc{font-size:13.5px}"+
 ".agdk-land .sp-logo .snm{font-size:25px}"+
@@ -784,5 +783,5 @@ function buildDeck(root,data,opts){
   return root.querySelectorAll(".sl").length;
 }
 
-window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:76};
+window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:77};
 })();
