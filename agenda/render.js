@@ -465,8 +465,16 @@ function speakersGridSlides(root,d,startN){
   var rows=[];
   for(var i=0;i<cells.length;i+=3)rows.push('<div class="spk-row">'+cells.slice(i,i+3).join("")+'</div>');
   var hs=measureBlocks(root,rows,"spk-gridwrap",872),PAGE=subOn?972:1004;
-  var total=0;for(var q=0;q<hs.length;q++)total+=hs[q]+20;
-  var scale=total>PAGE?Math.max(0.6,PAGE/total*0.97):1;
+  var total=0,q;for(q=0;q<hs.length;q++)total+=hs[q]+20;
+  /* Scale to FILL the page — up as well as down — so a short list never
+     leaves a sea of white space. Zoom changes the effective layout width,
+     so re-measure at the zoomed width before committing to a scale-up. */
+  var scale=Math.max(0.6,Math.min(1.45,PAGE/total*0.98));
+  if(scale>1.001){
+    hs=measureBlocks(root,rows,"spk-gridwrap",Math.round(872/scale));
+    total=0;for(q=0;q<hs.length;q++)total+=hs[q]+20;
+    scale=Math.min(scale,Math.max(0.6,PAGE/total*0.98));
+  }
   return [slide("",header(d.meta)+spkHead(d.meta)+'<div class="spk-gridwrap" style="zoom:'+scale.toFixed(3)+(subOn?';top:238px':'')+'">'+rows.join("")+'</div>'+foot(d.meta,startN))];
 }
 function speakersSlides(root,d,startN){

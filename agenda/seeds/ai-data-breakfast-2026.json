@@ -101,39 +101,190 @@
     "t": "",
     "m": "+1 (646) 208-6876"
    }
-  ]
+  ],
+  "speakersStyle": "grid"
  },
  "speakersList": [
-  {"img": "", "name": "Adam Nahari", "title": "Head of Data, Digital & AI", "firm": "Apollo Global Management"},
-  {"img": "", "name": "John Kelleher", "title": "Managing Partner, Global Head of Operations", "firm": "CVC"},
-  {"img": "", "name": "Jaimee Michaud", "title": "Head of Digital and AI", "firm": "SPV Global"},
-  {"img": "", "name": "Adrian Mitri", "title": "Operating Partner", "firm": "Vitruvian Partners"},
-  {"img": "", "name": "Keith Beattie", "title": "Partner, Head of Operations", "firm": "Astorg"},
-  {"img": "", "name": "Dominic Gallello", "title": "Managing Director, Head of Digital", "firm": "Bridgepoint"},
-  {"img": "", "name": "Luis Suarez", "title": "CTO & AI Leader", "firm": "H.I.G. Capital"},
-  {"img": "", "name": "Preston McKenzie", "title": "Operating Partner", "firm": "General Atlantic"},
-  {"img": "", "name": "Ryan Beauchamp", "title": "Head of Product & AI", "firm": "GTCR"},
-  {"img": "", "name": "Esther Naayar", "title": "Managing Director, Value Creation", "firm": "ICG"},
-  {"img": "", "name": "Mittu Sridhara", "title": "Managing Director, Digital & Technology Europe", "firm": "CD&R"},
-  {"img": "", "name": "Fang Fang", "title": "Head of Data Science", "firm": "Apax"},
-  {"img": "", "name": "Stuart Sim", "title": "Managing Director & Head of AI", "firm": "Silver Lake"},
-  {"img": "", "name": "Derek Mills", "title": "Managing Director, Value Creation", "firm": "Permira"},
-  {"img": "", "name": "Ishan Gammampila", "title": "Chief Data & Analytics Officer", "firm": "Apax"},
-  {"img": "", "name": "Alisha Peterle", "title": "PE Operating Partner", "firm": "KKR"},
-  {"img": "", "name": "Cameron Hulett", "title": "Managing Director, Head of AI & Digital", "firm": "BC Partners"},
-  {"img": "", "name": "Riccardo Basile", "title": "Operating Partner", "firm": "Permira"},
-  {"img": "", "name": "Marco Mendes", "title": "Partner, Portfolio Operations", "firm": "Advent International"},
-  {"img": "", "name": "Albert Notini", "title": "Managing Director, Lead Operating Partner", "firm": "New Mountain Capital"},
-  {"img": "", "name": "Selim Loukil", "title": "Managing Director, Portfolio Support Group", "firm": "Advent"},
-  {"img": "", "name": "Robert Mangan", "title": "Operating Partner", "firm": "Bain Capital"},
-  {"img": "", "name": "Jesse Thomas", "title": "Senior Director, Head of Data Science", "firm": "Advent"},
-  {"img": "", "name": "Peter Colman", "title": "Senior Operating Partner", "firm": "H.I.G. European Capital"},
-  {"img": "", "name": "Paul Zuber", "title": "Operating Partner, NA Lead", "firm": "HG Capital"},
-  {"img": "", "name": "Dr. Katia Walsh", "title": "AI Lead, Portfolio Performance", "firm": "Apollo"},
-  {"img": "", "name": "Bjørn Ruwald", "title": "Partner, Operational Support", "firm": "Bridgepoint"},
-  {"img": "", "name": "Thomas Dixon", "title": "Managing Director, Operating Partner", "firm": "Blackstone"},
-  {"img": "", "name": "Valérie Legat", "title": "Managing Director, Head of Digital", "firm": "Astorg"},
-  {"img": "", "name": "Mathieu Frison", "title": "Partner", "firm": "Charterhouse Capital Partners"}
+  {
+   "img": "../assets/speakers/aidb/adam-nahari.jpg",
+   "name": "Adam Nahari",
+   "title": "Head of Data, Digital & AI",
+   "firm": "Apollo Global Management"
+  },
+  {
+   "img": "../assets/speakers/aidb/john-kelleher.jpg",
+   "name": "John Kelleher",
+   "title": "Managing Partner, Global Head of Operations",
+   "firm": "CVC"
+  },
+  {
+   "img": "../assets/speakers/aidb/jaimee-michaud.jpg",
+   "name": "Jaimee Michaud",
+   "title": "Head of Digital and AI",
+   "firm": "SPV Global"
+  },
+  {
+   "img": "../assets/speakers/aidb/adrian-mitri.jpg",
+   "name": "Adrian Mitri",
+   "title": "Operating Partner",
+   "firm": "Vitruvian Partners"
+  },
+  {
+   "img": "../assets/speakers/aidb/keith-beattie.jpg",
+   "name": "Keith Beattie",
+   "title": "Partner, Head of Operations",
+   "firm": "Astorg"
+  },
+  {
+   "img": "../assets/speakers/aidb/dominic-gallello.jpg",
+   "name": "Dominic Gallello",
+   "title": "Managing Director, Head of Digital",
+   "firm": "Bridgepoint"
+  },
+  {
+   "img": "../assets/speakers/aidb/luis-suarez.jpg",
+   "name": "Luis Suarez",
+   "title": "CTO & AI Leader",
+   "firm": "H.I.G. Capital"
+  },
+  {
+   "img": "../assets/speakers/aidb/preston-mckenzie.jpg",
+   "name": "Preston McKenzie",
+   "title": "Operating Partner",
+   "firm": "General Atlantic"
+  },
+  {
+   "img": "../assets/speakers/aidb/ryan-beauchamp.jpg",
+   "name": "Ryan Beauchamp",
+   "title": "Head of Product & AI",
+   "firm": "GTCR"
+  },
+  {
+   "img": "../assets/speakers/aidb/esther-naayar.jpg",
+   "name": "Esther Naayar",
+   "title": "Managing Director, Value Creation",
+   "firm": "ICG"
+  },
+  {
+   "img": "../assets/speakers/aidb/mittu-sridhara.jpg",
+   "name": "Mittu Sridhara",
+   "title": "Managing Director, Digital & Technology Europe",
+   "firm": "CD&R"
+  },
+  {
+   "img": "../assets/speakers/aidb/fang-fang.jpg",
+   "name": "Fang Fang",
+   "title": "Head of Data Science",
+   "firm": "Apax"
+  },
+  {
+   "img": "../assets/speakers/aidb/stuart-sim.jpg",
+   "name": "Stuart Sim",
+   "title": "Managing Director & Head of AI",
+   "firm": "Silver Lake"
+  },
+  {
+   "img": "../assets/speakers/aidb/derek-mills.jpg",
+   "name": "Derek Mills",
+   "title": "Managing Director, Value Creation",
+   "firm": "Permira"
+  },
+  {
+   "img": "../assets/speakers/aidb/ishan-gammampila.jpg",
+   "name": "Ishan Gammampila",
+   "title": "Chief Data & Analytics Officer",
+   "firm": "Apax"
+  },
+  {
+   "img": "../assets/speakers/aidb/alisha-peterle.jpg",
+   "name": "Alisha Peterle",
+   "title": "PE Operating Partner",
+   "firm": "KKR"
+  },
+  {
+   "img": "../assets/speakers/aidb/cameron-hulett.jpg",
+   "name": "Cameron Hulett",
+   "title": "Managing Director, Head of AI & Digital",
+   "firm": "BC Partners"
+  },
+  {
+   "img": "../assets/speakers/aidb/riccardo-basile.jpg",
+   "name": "Riccardo Basile",
+   "title": "Operating Partner",
+   "firm": "Permira"
+  },
+  {
+   "img": "../assets/speakers/aidb/marco-mendes.jpg",
+   "name": "Marco Mendes",
+   "title": "Partner, Portfolio Operations",
+   "firm": "Advent International"
+  },
+  {
+   "img": "../assets/speakers/aidb/albert-notini.jpg",
+   "name": "Albert Notini",
+   "title": "Managing Director, Lead Operating Partner",
+   "firm": "New Mountain Capital"
+  },
+  {
+   "img": "../assets/speakers/aidb/selim-loukil.jpg",
+   "name": "Selim Loukil",
+   "title": "Managing Director, Portfolio Support Group",
+   "firm": "Advent"
+  },
+  {
+   "img": "../assets/speakers/aidb/robert-mangan.jpg",
+   "name": "Robert Mangan",
+   "title": "Operating Partner",
+   "firm": "Bain Capital"
+  },
+  {
+   "img": "../assets/speakers/aidb/jesse-thomas.jpg",
+   "name": "Jesse Thomas",
+   "title": "Senior Director, Head of Data Science",
+   "firm": "Advent"
+  },
+  {
+   "img": "../assets/speakers/aidb/peter-colman.jpg",
+   "name": "Peter Colman",
+   "title": "Senior Operating Partner",
+   "firm": "H.I.G. European Capital"
+  },
+  {
+   "img": "../assets/speakers/aidb/paul-zuber.jpg",
+   "name": "Paul Zuber",
+   "title": "Operating Partner, NA Lead",
+   "firm": "HG Capital"
+  },
+  {
+   "img": "../assets/speakers/aidb/dr-katia-walsh.jpg",
+   "name": "Dr. Katia Walsh",
+   "title": "AI Lead, Portfolio Performance",
+   "firm": "Apollo"
+  },
+  {
+   "img": "../assets/speakers/aidb/bjorn-ruwald.jpg",
+   "name": "Bjørn Ruwald",
+   "title": "Partner, Operational Support",
+   "firm": "Bridgepoint"
+  },
+  {
+   "img": "../assets/speakers/aidb/thomas-dixon.jpg",
+   "name": "Thomas Dixon",
+   "title": "Managing Director, Operating Partner",
+   "firm": "Blackstone"
+  },
+  {
+   "img": "../assets/speakers/aidb/valerie-legat.jpg",
+   "name": "Valérie Legat",
+   "title": "Managing Director, Head of Digital",
+   "firm": "Astorg"
+  },
+  {
+   "img": "../assets/speakers/aidb/mathieu-frison.jpg",
+   "name": "Mathieu Frison",
+   "title": "Partner",
+   "firm": "Charterhouse Capital Partners"
+  }
  ],
  "sessions": [
   {
