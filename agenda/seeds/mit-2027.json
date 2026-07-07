@@ -59,7 +59,26 @@
   "hostImg": "",
   "closingLogo": "",
   "website": "",
-  "backImg": ""
+  "backImg": "",
+  "showClosing": false,
+  "about": {
+   "title": "Our Partners",
+   "on": true,
+   "items": [
+    {
+     "img": "",
+     "head": "Massachusetts Institute of Technology",
+     "sub": "Academic Partner & Venue",
+     "body": "Founded in 1861, the Massachusetts Institute of Technology stands among the world’s foremost research universities, defined by rigorous inquiry across science, engineering and management and a culture of turning ideas into impact. Its Cambridge campus is home to the MIT Sloan School of Management and to generations of founders, operators and investors. The summit convenes on MIT’s campus, bringing senior private capital practitioners together with the Institute’s community of next-generation leaders."
+    },
+    {
+     "img": "",
+     "head": "GeniusMesh",
+     "sub": "Partner",
+     "body": "GeniusMesh is an executive talent platform built around a curated network of executive-MBA alumni from the world’s leading business schools. Pairing that engaged leadership community with AI-enabled matching, GeniusMesh helps private capital firms and their portfolio companies identify, engage and hire senior, board-ready executives with speed and discretion."
+    }
+   ]
+  }
  },
  "sessions": [
   {

@@ -73,7 +73,7 @@
 <body>
 <div class="app">
   <div class="left">
-    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v58</span></h1>
+    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v59</span></h1>
     <div class="tip">✏️ <b>Edit like Slides:</b> click any text on the page to type. Click a photo or logo to change it. Hover a session for <b>move / add / delete</b>.</div>
 
     <div class="stepbox">
@@ -120,7 +120,7 @@
 
 <div id="pop"></div>
 
-<script src="../agenda/render.js?v=58"></script>
+<script src="../agenda/render.js?v=59"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -305,6 +305,8 @@ function renderEvent(){
   h+='<label class="f">Speakers page style</label><select class="t" data-b="meta.speakersStyle"><option value="list"'+(state.meta.speakersStyle!=="grid"?" selected":"")+'>Text list — 3 lines per speaker</option><option value="grid"'+(state.meta.speakersStyle==="grid"?" selected":"")+'>Photo grid — best once headshots are added</option></select>';
   h+='<label class="f">Fill leftover space with ruled “Notes” lines?</label><label style="font-size:12px;color:#555"><input type="checkbox" data-chk="meta.notesFill" '+(state.meta.notesFill!==false?"checked":"")+'> Yes (like a printed planner)</label>';
   h+='<label class="f">End with a full-photo back cover?</label><label style="font-size:12px;color:#555"><input type="checkbox" data-chk="meta.backCover" '+(state.meta.backCover?"checked":"")+'> Yes, add a photo back page</label>';
+  h+='<label class="f">Show the closing “please contact” page?</label><label style="font-size:12px;color:#555"><input type="checkbox" data-chk="meta.showClosing" '+(state.meta.showClosing!==false?"checked":"")+'> Yes, include it</label>';
+  h+='<label class="f">Include an “About our partners” page?</label><label style="font-size:12px;color:#555"><input type="checkbox" data-abt="1" '+(state.meta.about&&state.meta.about.on!==false&&(state.meta.about.items||[]).length?"checked":"")+'> Yes (photo + blurb per partner, after the welcome letter)</label>';
   h+='<label class="f" style="margin-top:12px">Skyline background (cover &amp; dark pages)</label>';
   h+='<div class="card"><div class="bar">'+
     '<button class="mini" data-setbg="../assets/sky.jpg">Dubai</button>'+
@@ -436,6 +438,8 @@ function handleOp(btn){
   else if(op==="sign2img"){const r=btn.getBoundingClientRect();openPopForPath("meta.welcome.sign2.img","logo",r.left,r.bottom);return;}
   else if(op==="lockimg"){const r=btn.getBoundingClientRect();openPopForPath("meta.lockImg","logo",r.left,r.bottom);return;}
   else if(op==="logoslot"){const r=btn.getBoundingClientRect();openPopForPath(btn.dataset.path,btn.dataset.mode||"logo",r.left,r.bottom);return;}
+  else if(op==="abadd"){snapshot();state.meta.about.items.push({img:"",head:"Partner name",sub:"Partner",body:"A short paragraph about this organisation — click to write it."});rebuild();return;}
+  else if(op==="abdel"){if(!confirm("Remove this partner column?")){return;}snapshot();state.meta.about.items.splice(i,1);rebuild();return;}
   else if(op==="recimg"){const r=btn.getBoundingClientRect();openPopForPath("sessions."+i+".img","bg",r.left,r.bottom);return;}
   else if(op==="spadd"){
     snapshot();
@@ -517,6 +521,15 @@ L.addEventListener("input",e=>{
 L.addEventListener("change",async e=>{
   const el=e.target;
   if(el.dataset.chk){snapshot();set(el.dataset.chk,el.checked);queueRebuild();}
+  if(el.dataset.abt){
+    snapshot();
+    if(el.checked){
+      if(!state.meta.about||!(state.meta.about.items||[]).length)
+        state.meta.about={title:"Our Partners",items:[{img:"",head:"Partner name",sub:"Partner",body:"A short paragraph about this organisation — click to write it."},{img:"",head:"Partner name",sub:"Partner",body:"A short paragraph about this organisation — click to write it."}]};
+      state.meta.about.on=true;
+    }else if(state.meta.about)state.meta.about.on=false; /* hide, keep the content */
+    queueRebuild();
+  }
   if(el.dataset.ph&&el.files&&el.files[0]){
     try{const d=el.dataset.mode==="logo"?await logoImg(el.files[0]):(el.dataset.mode==="bg"?await bgFile(el.files[0]):await squarePhoto(el.files[0]));snapshot();set(el.dataset.ph,d);renderForm();rebuild();}
     catch(_){alert("Couldn't read that image.");}

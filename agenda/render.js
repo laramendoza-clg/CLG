@@ -147,6 +147,14 @@ var CSS=
 ".agdk .thanksnote .tn-label{font-size:9.5px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:13px}"+
 ".agdk .thanksnote .tn-body{font-size:14.5px;line-height:1.85;color:#5c5257;font-style:italic;font-weight:400;max-width:740px;margin:0 auto}"+
 ".agdk .rows.recpg .thanksnote{flex:1;display:flex;flex-direction:column;justify-content:center}"+
+/* about-our-partners page (optional, meta.about) — one photo+blurb card per partner */
+".agdk .ab-grid{position:absolute;top:206px;left:64px;right:64px;bottom:72px;display:flex;gap:44px}"+
+".agdk .ab-card{flex:1;min-width:0;display:flex;flex-direction:column;position:relative}"+
+".agdk .ab-photo{height:300px;overflow:hidden;border-radius:6px;background:#efedef;flex:0 0 auto}"+
+".agdk .ab-photo img{width:100%;height:100%;object-fit:cover;display:block}"+
+".agdk .ab-head{font-size:23px;font-weight:700;color:#241020;margin-top:24px}"+
+".agdk .ab-sub{font-size:10px;letter-spacing:.26em;font-weight:700;color:var(--accent);text-transform:uppercase;margin-top:7px}"+
+".agdk .ab-body{font-size:13.2px;line-height:1.78;color:#5a5460;margin-top:16px;overflow:hidden}"+
 /* sponsors */
 ".agdk .sp-grid{position:absolute;top:156px;left:64px;right:64px;bottom:72px;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:26px}"+
 ".agdk .sp-col{min-width:0;display:flex;flex-direction:column}"+
@@ -243,6 +251,10 @@ var CSS=
 ".agdk-land .wel-sig .sig{height:66px}"+
 ".agdk-land .wel-sig .nm{font-size:17px}"+
 ".agdk-land .wel-sig .org{font-size:12px}"+
+".agdk-land .ab-photo{height:330px}"+
+".agdk-land .ab-head{font-size:26px}"+
+".agdk-land .ab-sub{font-size:11.5px}"+
+".agdk-land .ab-body{font-size:15px}"+
 ".agdk-land .spk-row{grid-template-columns:repeat(5,1fr)}"+
 ".agdk-land .prow{grid-template-columns:repeat(5,1fr)}"+
 ".agdk-land .rec2-photo{flex:0 0 520px}"+
@@ -456,6 +468,23 @@ function welcomeSlide(d,n){
     '<div class="wel-band"'+de("meta.bandLine")+'>'+esc(m.bandLine)+'</div>'+
     '<div class="wel-body"><div class="wel-paras">'+(w.paras||[]).map(function(p,i){return '<p'+de("meta.welcome.paras."+i,1)+'>'+esc(p)+"</p>";}).join("")+'</div>'+
     sigs+'</div>'+foot(m,n));
+}
+/* optional "about our partners" page: meta.about={title,on,items:[{img,head,sub,body}]}.
+   Absent → nothing renders (documents that predate it never change);
+   on:false hides it without losing the content. */
+function aboutSlide(d,n){
+  var m=d.meta,a=m.about||{},items=a.items||[];
+  var cards=items.map(function(it,i){
+    var b="meta.about.items."+i;
+    var del=EDIT?'<button class="spx" data-op="abdel" data-i="'+i+'" style="position:absolute;top:-10px;right:-6px;z-index:5" title="Remove this column">✕</button>':"";
+    var ph=it.img?'<div class="ab-photo"><img src="'+esc(it.img)+'"'+dp(b+".img","bg")+'></div>'
+      :(EDIT?'<div class="ab-photo ghost" data-op="logoslot" data-path="'+b+'.img" data-mode="bg">+ photo</div>':'<div class="ab-photo"></div>');
+    return '<div class="ab-card">'+del+ph+'<div class="ab-head"'+de(b+".head")+'>'+esc(it.head)+'</div>'+
+      ((it.sub||EDIT)?'<div class="ab-sub"'+de(b+".sub")+'>'+esc(it.sub||"")+'</div>':"")+
+      '<div class="ab-body"'+de(b+".body",1)+'>'+esc(it.body)+'</div></div>';
+  }).join("");
+  if(EDIT&&items.length<3)cards+='<div class="ab-card ghost" data-op="abadd" style="flex:0 0 110px" title="Add another partner column">+ column</div>';
+  return slide("",header(m)+'<div class="spk-badge"'+de("meta.about.title")+'>'+esc(a.title||"Our Partners")+'</div><div class="ab-grid">'+cards+'</div>'+foot(m,n));
 }
 function speakerList(d){
   /* Back-compat: a curated d.speakersList (e.g. "Past Speakers" pages)
@@ -690,10 +719,12 @@ function buildDeck(root,data,opts){
   root.style.setProperty("--pill",t.pill);root.style.setProperty("--ribbon",t.ribbon);root.style.setProperty("--accent",t.accent);
   var slides=[coverSlide(d)],n=2;
   if(m.welcome&&(m.welcome.paras||[]).length){slides.push(welcomeSlide(d,n));n++;}
+  if(m.about&&m.about.on!==false&&(m.about.items||[]).length){slides.push(aboutSlide(d,n));n++;}
   var spk=speakersSlides(root,d,n);slides=slides.concat(spk);n+=spk.length;
   var ses=paginateSessions(root,d,n);slides=slides.concat(ses);n+=ses.length;
   var spo=sponsorSlides(d,n);slides=slides.concat(spo);n+=spo.length;
-  slides.push(closingSlide(m));
+  /* explicit showClosing:false hides the contact/closing page; absent → shown, as always */
+  if(m.showClosing!==false)slides.push(closingSlide(m));
   if(m.backCover)slides.push(backSlide(m));
   root.innerHTML=slides.join("");
   return root.querySelectorAll(".sl").length;
