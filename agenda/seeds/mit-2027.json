@@ -2,7 +2,7 @@
  "v": 2,
  "theme": "boston",
  "meta": {
-  "city": "BOSTON",
+  "city": "",
   "event": "Private Capital Talent Leadership Summit",
   "year": "2027",
   "dateLine": "FEBRUARY 24, 2027",
@@ -93,7 +93,8 @@
   "lockImg": "",
   "speakersTitle": "Past Speakers Include",
   "speakersSub": "Human capital, operating and value-creation leaders from past CapLink summits",
-  "speakersStyle": "grid"
+  "speakersStyle": "grid",
+  "lockCity": "BOSTON"
  },
  "sessions": [
   {
