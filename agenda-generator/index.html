@@ -73,7 +73,7 @@
 <body>
 <div class="app">
   <div class="left">
-    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v35</span></h1>
+    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v36</span></h1>
     <div class="tip">✏️ <b>Edit like Slides:</b> click any text on the page to type. Click a photo or logo to change it. Hover a session for <b>move / add / delete</b>.</div>
 
     <div class="stepbox">
@@ -100,7 +100,8 @@
     <details><summary>Contacts page</summary><div class="sec" id="secContacts"></div></details>
     <details><summary>Safety copies</summary><div class="sec">
       <div class="brow"><button class="b" id="backupBtn">⬇ Save backup file</button><button class="b" id="restoreBtn">⬆ Load backup file</button></div>
-      <div class="brow"><button class="b" id="seedBtn">📦 Load the prepared draft for this event</button></div>
+      <div class="brow"><button class="b" id="seedSpkBtn">🖼 Import only the speakers page from the draft</button></div>
+      <div class="brow"><button class="b" id="seedBtn">📦 Load the full prepared draft (replaces everything)</button></div>
       <div class="brow"><button class="b" id="starterBtn">Reset to Dubai starter</button></div>
       <input id="restoreFile" type="file" accept="application/json" style="display:none">
     </div></details>
@@ -119,7 +120,7 @@
 
 <div id="pop"></div>
 
-<script src="../agenda/render.js?v=35"></script>
+<script src="../agenda/render.js?v=36"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -599,6 +600,19 @@ document.getElementById("seedBtn").onclick=async()=>{
     snapshot();state=seed;renderForm();rebuild();
     setStatus("📦 Prepared draft loaded — review it, then hit <b>Publish now</b> to make it live.");
   }catch(_){alert("No prepared draft exists for “"+s+"” (drafts are made by Claude and shipped with the site).");}
+};
+document.getElementById("seedSpkBtn").onclick=async()=>{
+  const s=slugEl.value.trim();
+  try{
+    const r=await fetch("../agenda/seeds/"+encodeURIComponent(s)+".json?v="+Date.now());
+    if(!r.ok)throw 0;
+    const seed=await r.json();if(!seed)throw 0;
+    snapshot();
+    if(seed.speakersList)state.speakersList=seed.speakersList;
+    ["speakersTitle","speakersSub","speakersStyle","showSpeakers"].forEach(k=>{if(seed.meta&&seed.meta[k]!==undefined)state.meta[k]=seed.meta[k];});
+    renderForm();rebuild();
+    setStatus("🖼 Speakers page imported from the prepared draft — all your other edits untouched. Hit <b>Publish now</b> when ready.");
+  }catch(_){alert("No prepared draft exists for “"+s+"”.");}
 };
 window.addEventListener("resize",fitPv);
 
