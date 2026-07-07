@@ -40,6 +40,9 @@ var CSS=
 ".agdk-edit [data-edit]:empty{display:inline-block;min-width:34px;min-height:1em}"+
 ".agdk-edit [data-edit]:empty::after{content:'· · ·';opacity:.18}"+
 ".agdk .cov-cap{position:absolute;top:64px;left:64px;height:42px}"+
+".agdk .cov-host{position:absolute;top:56px;left:64px}"+
+".agdk .cov-host .lbl{font-size:9px;letter-spacing:.3em;font-weight:600;color:rgba(255,255,255,.6);text-transform:uppercase;margin-bottom:8px}"+
+".agdk .cov-host img{display:block;max-width:360px;object-fit:contain;object-position:left}"+
 ".agdk .cov-lock{position:absolute;top:372px;left:50%;transform:translateX(-50%);width:560px}"+
 ".agdk .cov-lockt{position:absolute;top:396px;left:64px;right:64px;display:flex;align-items:center;justify-content:center;gap:30px;color:#fff}"+
 ".agdk .cov-lockt .c1{font-size:46px;font-weight:600;letter-spacing:.05em;white-space:nowrap;text-align:right;line-height:1.18}"+
@@ -199,7 +202,7 @@ function foot(meta,n){return '<div class="foot"><span'+de("meta.footerLeft")+'>'
 function header(meta){
   /* All-caps city names get the classic Title-case treatment; mixed-case names (e.g. "AI / Data & Insight") are respected as written */
   var city=meta.city?(/[a-z]/.test(meta.city)?meta.city:meta.city.charAt(0)+meta.city.slice(1).toLowerCase()):"";
-  return '<div class="hd"><div><div class="t1"><span'+de("meta.city")+' style="font-weight:700">'+esc(city)+'</span> <span'+de("meta.event")+' style="font-weight:700">'+esc(meta.event)+'</span> <span'+de("meta.year")+'>'+esc(meta.year)+'</span></div><div class="t2"'+de("meta.headKicker")+'>'+esc(meta.headKicker||"Preliminary Agenda")+'</div></div><img src="'+CAP+'" alt=""></div><div class="hrule"></div>';
+  return '<div class="hd"><div><div class="t1"><span'+de("meta.city")+' style="font-weight:700">'+esc(city)+'</span> <span'+de("meta.event")+' style="font-weight:700">'+esc(meta.event)+'</span> <span'+de("meta.year")+'>'+esc(meta.year)+'</span></div><div class="t2"'+de("meta.headKicker")+'>'+esc(meta.headKicker||"Preliminary Agenda")+'</div></div><img src="'+esc(meta.headImg||CAP)+'"'+(meta.headH?' style="height:'+(+meta.headH||36)+'px"':"")+dp("meta.headImg","logo")+' alt=""></div><div class="hrule"></div>';
 }
 function pcell(p,path,tagPath,tagVal,mv){
   if(!p)return"";
@@ -299,8 +302,17 @@ function coverSlide(d){
     return '<div class="cp"><div class="lbl"'+de(base+".label")+'>'+esc(p.label)+'</div><div class="slot">'+
       (p.img?'<img src="'+esc(p.img)+'" style="height:'+(p.h||56)+'px"'+dp(base+".img","logo")+'>':'<div class="txt"'+de(base+".name")+'>'+esc(p.name)+'</div>')+'</div></div>';
   }).join("");
+  /* Back-compat: hostImg absent → the classic CapLink mark, no label.
+     JV events set hostImg (+ hostLabel) for "Hosted by  CAPLINK × PE150". */
+  var host;
+  if(m.hostImg){
+    var hl=(m.hostLabel===undefined||m.hostLabel===null)?"Hosted by":m.hostLabel;
+    host='<div class="cov-host"><div class="lbl"'+de("meta.hostLabel")+'>'+esc(hl)+'</div><img src="'+esc(m.hostImg)+'" style="height:'+(m.hostH||34)+'px"'+dp("meta.hostImg","logo")+'></div>';
+  }else{
+    host='<img class="cov-cap" src="'+CAPW+'"'+(EDIT?dp("meta.hostImg","logo")+' title="Click to switch to a hosted-by / JV lockup"':"")+'>';
+  }
   return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div>'+
-    '<img class="cov-cap" src="'+CAPW+'">'+
+    host+
     lockupHtml(m)+
     '<div class="cov-date"><span'+de("meta.dateLine")+' style="font-weight:700">'+esc(m.dateLine)+'</span>  <span>|</span>  <span'+de("meta.locLine")+'>'+esc(m.locLine)+'</span></div>'+
     '<div class="cov-rail">'+rail+'</div>'+
@@ -380,7 +392,7 @@ function closingSlide(m){
   var h1=(m.closingHead1===undefined||m.closingHead1===null)?"For further information,":m.closingHead1;
   var h2=(m.closingHead2===undefined||m.closingHead2===null)?"please contact:":m.closingHead2;
   var inner='<div class="cl2-rail"><img class="bg" src="'+esc(bgSrc(m))+'"'+dp("meta.bgImg","bg")+'><div class="cl2-tint"></div>'+
-    '<img class="cl2-logo" src="'+CAPSTACK+'">'+
+    '<img class="cl2-logo" src="'+esc(m.hostImg||CAPSTACK)+'"'+(m.hostImg?dp("meta.hostImg","logo"):"")+'>'+
     '<div class="cl2-web"'+de("meta.website")+'>'+esc(m.website||"www.caplink-group.com")+'</div></div>'+
     '<div class="cl2-bar"></div><div class="cl2-head"><div class="h1"'+de("meta.closingHead1")+'>'+esc(h1)+'</div><div class="h2"'+de("meta.closingHead2")+'>'+esc(h2)+'</div></div>';
   if(m.contacts&&m.contacts.length){
@@ -405,7 +417,7 @@ function contactSlide(d,n){
   return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><div class="ct-tint"></div><div class="ct-cap">Get In Touch</div><div class="ct-title">CONTACT US</div><div class="ct-sub"'+de("meta.contactsSub",1)+'>'+esc(m.contactsSub||"")+'</div><div class="ct-line"></div><div class="ct-list">'+cells+'</div>');
 }
 function bgSrc(m){return (m&&m.bgImg&&String(m.bgImg).trim())?m.bgImg:SKY;}
-function backSlide(m){return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><img class="back-logo" src="'+CAPSTACK+'"><div class="back-web"'+de("meta.website")+'>'+esc(m.website||"www.caplink-group.com")+'</div>');}
+function backSlide(m){return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><img class="back-logo" src="'+esc(m.hostImg||CAPSTACK)+'"'+(m.hostImg?dp("meta.hostImg","logo"):"")+'><div class="back-web"'+de("meta.website")+'>'+esc(m.website||"www.caplink-group.com")+'</div>');}
 
 /* --- measurement helpers: run inside a live offscreen slide --- */
 function measureBlocks(root,htmlList,wrapClass,width){

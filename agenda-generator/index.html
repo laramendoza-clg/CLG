@@ -73,7 +73,7 @@
 <body>
 <div class="app">
   <div class="left">
-    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v37</span></h1>
+    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v38</span></h1>
     <div class="tip">✏️ <b>Edit like Slides:</b> click any text on the page to type. Click a photo or logo to change it. Hover a session for <b>move / add / delete</b>.</div>
 
     <div class="stepbox">
@@ -120,7 +120,7 @@
 
 <div id="pop"></div>
 
-<script src="../agenda/render.js?v=37"></script>
+<script src="../agenda/render.js?v=38"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -311,6 +311,12 @@ function renderEvent(){
     '<button class="mini" data-setbg="../assets/sky-london.jpg">London</button>'+
     '<button class="mini up" style="position:relative;overflow:hidden">Upload photo<input type="file" accept="image/*" data-ph="meta.bgImg" data-mode="bg" style="position:absolute;inset:0;opacity:0;cursor:pointer"></button>'+
     '</div><input class="t" style="margin-top:5px" type="text" placeholder="or paste an image URL" value="'+esc(state.meta.bgImg&&!String(state.meta.bgImg).startsWith("data:")?state.meta.bgImg:"")+'" data-b="meta.bgImg"></div>';
+  h+='<label class="f" style="margin-top:12px">Event branding</label>';
+  if(state.meta.hostImg){
+    h+='<div class="bar"><span style="font-size:11.5px;color:#555;flex:1">“Hosted by” JV lockup is on</span><button class="mini del" data-jvoff="1">Back to CapLink only</button></div>';
+  }else{
+    h+='<div class="addrow"><button data-jvon="1">🤝 Use “Hosted by CAPLINK × PE150”</button></div>';
+  }
   h+='<label class="f" style="margin-top:12px">Cover partner logos</label>';
   (state.meta.coverPartners||[]).forEach((p,i)=>{
     h+='<div class="card"><div class="bar"><input class="t grow" type="text" value="'+esc(p.label)+'" placeholder="Label" data-b="meta.coverPartners.'+i+'.label"><input class="t grow" type="text" value="'+esc(p.name)+'" placeholder="Name" data-b="meta.coverPartners.'+i+'.name"><button class="mini del" data-del="meta.coverPartners.'+i+'">✕</button></div>'+logoRow("meta.coverPartners."+i,56)+'</div>';
@@ -524,6 +530,11 @@ L.addEventListener("click",e=>{
   if(b.dataset.upSp!=null){e.preventDefault();const i=+b.dataset.upSp;if(i>0){snapshot();const x=state.sponsors.splice(i,1)[0];state.sponsors.splice(i-1,0,x);renderForm();rebuild();}return;}
   if(b.dataset.downSp!=null){e.preventDefault();const i=+b.dataset.downSp;if(i<state.sponsors.length-1){snapshot();const x=state.sponsors.splice(i,1)[0];state.sponsors.splice(i+1,0,x);renderForm();rebuild();}return;}
   if(b.dataset.setbg){e.preventDefault();set("meta.bgImg",b.dataset.setbg);renderForm();rebuild();return;}
+  if(b.dataset.jvon){e.preventDefault();snapshot();
+    const JV="https://images.squarespace-cdn.com/content/5dc9f095a5705651ea40e08b/fb26314e-19f0-4b53-a66f-e7966efb95de/CapLink+x+PE150+-+White+and+Orange.png?content-type=image%2Fpng";
+    state.meta.hostLabel="Hosted by";state.meta.hostImg=JV;state.meta.hostH=34;state.meta.headImg=JV;state.meta.headH=24;
+    renderForm();rebuild();return;}
+  if(b.dataset.jvoff){e.preventDefault();snapshot();["hostLabel","hostImg","hostH","headImg","headH"].forEach(k=>delete state.meta[k]);renderForm();rebuild();return;}
   if(b.dataset.add){
     e.preventDefault();snapshot();const t=b.dataset.add;
     if(t==="coverPartner")state.meta.coverPartners.push({label:"Official Partner",name:"NAME",img:"",h:56});
