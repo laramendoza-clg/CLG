@@ -140,7 +140,7 @@ var CSS=
 ".agdk .rdesc{font-size:12.4px;line-height:1.62;color:#6e6873;padding:2px 4px 14px}"+
 ".agdk .prow{display:grid;grid-template-columns:repeat(3,1fr);gap:20px 24px;padding:6px 4px 24px}"+
 ".agdk .pcell{display:flex;gap:13px;align-items:flex-start;min-width:0}"+
-".agdk .pcell img{width:68px;height:68px;object-fit:cover;border-radius:0;flex:0 0 auto}"+
+".agdk .pcell img{width:68px;height:68px;object-fit:cover;border-radius:0;flex:0 0 auto;border:1px solid #e8e5e9}"+
 ".agdk .pcell .mtag{font-size:9px;letter-spacing:.2em;color:var(--accent);font-weight:700;text-transform:uppercase;margin-bottom:3px}"+
 ".agdk .pcell .nm{font-size:12.8px;font-weight:700;color:#241f26;line-height:1.28}"+
 ".agdk .pcell .tt{font-size:11px;color:#7f7984;line-height:1.38;margin-top:2px}"+
@@ -282,7 +282,7 @@ var CSS=
 ".agdk-land .spk-row{grid-template-columns:repeat(4,1fr)}"+
 /* big headshots — Lara's composites carry the firm logo inside the photo,
    so the photo IS the identity; text is secondary */
-".agdk-land .spk-cell img{width:180px;height:180px}"+
+".agdk-land .spk-cell img{width:210px;height:210px}"+
 ".agdk-land .spk-cell .tt{font-size:9.5px}"+
 /* firms: normal case (caps vetoed — read too big), smallest thing in the cell */
 ".agdk-land .spk-cell .fm{font-size:6.5px;font-weight:500;letter-spacing:.02em;text-transform:none;color:#98929c}"+
@@ -306,7 +306,7 @@ var CSS=
 ".agdk-land .rnote{font-size:13px}"+
 ".agdk-land .rdesc{font-size:14px;line-height:1.66}"+
 ".agdk-land .rl{font-size:10px}"+
-".agdk-land .pcell img{width:80px;height:80px}"+
+".agdk-land .pcell img{width:88px;height:88px}"+
 ".agdk-land .pcell .mtag{font-size:10.5px}"+
 ".agdk-land .pcell .nm{font-size:14.5px}"+
 ".agdk-land .pcell .tt{font-size:12.5px}"+
