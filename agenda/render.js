@@ -244,6 +244,9 @@ function sessionHtml(s,i){
   if(s.kind==="simple"||s.kind==="people")metaBits+=sponHtml(s,b);
   var meta=metaBits?'<div class="rmeta">'+metaBits+'</div>':"";
   var body="";
+  if(s.kind==="simple"&&EDIT){
+    body+='<div class="ghost gt" data-op="mkpanel" data-i="'+i+'" style="max-width:420px;margin-top:6px">+ Turn into a panel — add speakers &amp; a description</div>';
+  }
   if(s.kind==="people"){
     if(s.desc||EDIT)body+='<div class="rdesc"'+de(b+".desc",1)+'>'+esc(s.desc)+'</div>';
     var cells="";
