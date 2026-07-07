@@ -41,52 +41,10 @@
   "contactsSub": "We look forward to working with you. Please reach out to any member of the team to discuss how we can maximise your partnership.",
   "contacts": [
    {
-    "name": "Nawshad Noorkhan",
-    "role": "Managing Director",
-    "email": "Nawshad.Noorkhan@caplink-group.com",
-    "t": "+44 (0) 208 064 3265",
-    "m": "+44 (0) 7415 880057"
-   },
-   {
-    "name": "Plamena Zlateva",
-    "role": "Head of Operations",
-    "email": "Plamena.Zlateva@caplink-group.com",
+    "name": "Neerja Bharti",
+    "role": "Founder & CEO, GeniusMesh",
+    "email": "",
     "t": "",
-    "m": "+1 (332) 288-8893"
-   },
-   {
-    "name": "Doina Roibu",
-    "role": "Head of Production",
-    "email": "Doina.Roibu@caplink-group.com",
-    "t": "",
-    "m": "+1 (646) 208-5365"
-   },
-   {
-    "name": "Lara Mendoza",
-    "role": "Head of Marketing & Design",
-    "email": "Lara.Mendoza@caplink-group.com",
-    "t": "",
-    "m": "+1 (646) 208-6876"
-   },
-   {
-    "name": "Ash Baker",
-    "role": "Relationship Manager",
-    "email": "Ash.Baker@caplink-group.com",
-    "t": "+44 (0) 208 064 3266",
-    "m": "+44 (0) 7473 456935"
-   },
-   {
-    "name": "Shiela Smith",
-    "role": "Relationship Manager",
-    "email": "Shiela.Smith@caplink-group.com",
-    "t": "+44 (0) 208 064 4053",
-    "m": ""
-   },
-   {
-    "name": "Erica Jones",
-    "role": "Relationship Manager",
-    "email": "Erica.Jones@caplink-group.com",
-    "t": "+44 (0) 208 064 0846",
     "m": ""
    }
   ],
@@ -138,7 +96,7 @@
    "people": [
     {
      "img": "",
-     "name": "Neerja",
+     "name": "Neerja Bharti",
      "title": "Founder & CEO",
      "firm": "GeniusMesh"
     }
