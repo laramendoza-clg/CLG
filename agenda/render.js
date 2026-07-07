@@ -272,8 +272,9 @@ var CSS=
 ".agdk-land .ab-sub{font-size:11.5px}"+
 ".agdk-land .ab-body{font-size:15px}"+
 ".agdk-land .spk-row{grid-template-columns:repeat(4,1fr)}"+
-".agdk-land .spk-cell .tt{font-size:10.5px}"+
-".agdk-land .spk-cell .fm{font-size:10px;letter-spacing:.14em;text-transform:uppercase}"+
+".agdk-land .spk-cell img{width:92px;height:92px}"+
+".agdk-land .spk-cell .tt{font-size:9.5px}"+
+".agdk-land .spk-cell .fm{font-size:8.5px;letter-spacing:.14em;text-transform:uppercase}"+
 ".agdk-land .prow{grid-template-columns:repeat(5,1fr)}"+
 ".agdk-land .rec2-photo{flex:0 0 520px}"+
 ".agdk-land .sp-grid{grid-template-columns:repeat(3,1fr)}"+
@@ -703,7 +704,10 @@ function speakersGridSlides(root,d,startN){
   /* Scale to FILL the page — up as well as down — so a short list never
      leaves a sea of white space. Zoom changes the effective layout width,
      so re-measure at the zoomed width before committing to a scale-up. */
-  var scale=Math.max(0.6,Math.min(1.45,PAGE/total*0.98));
+  /* landscape caps the fill-the-page zoom-UP hard — it was inflating the
+     carefully-sized small type ("firms WAYYYY too big") */
+  var MAXS=LAND?1.12:1.45;
+  var scale=Math.max(0.6,Math.min(MAXS,PAGE/total*0.98));
   if(scale>1.001){
     hs=measureBlocks(root,rows,"spk-gridwrap",Math.round(MW/scale));
     total=0;for(q=0;q<hs.length;q++)total+=hs[q]+20;
