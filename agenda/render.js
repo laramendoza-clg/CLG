@@ -284,9 +284,9 @@ var CSS=
    so the photo IS the identity; text is secondary */
 /* renders ~151px after page zoom (measured) — 86px read too small, 205px too big */
 ".agdk-land .spk-cell img{width:135px;height:135px}"+
-".agdk-land .spk-cell .tt{font-size:9.5px}"+
-/* firms: normal case (caps vetoed — read too big), smallest thing in the cell */
-".agdk-land .spk-cell .fm{font-size:6.5px;font-weight:500;letter-spacing:.02em;text-transform:none;color:#98929c}"+
+/* title + firm match the session-panel cells (Lara: consistency with pcell) */
+".agdk-land .spk-cell .tt{font-size:12.5px;font-style:normal;color:#7f7984}"+
+".agdk-land .spk-cell .fm{font-size:13px;font-weight:700;letter-spacing:0;text-transform:none;color:#38323c}"+
 ".agdk-land .prow{grid-template-columns:repeat(5,1fr)}"+
 ".agdk-land .rec2-photo{flex:0 0 520px}"+
 ".agdk-land .sp-grid{grid-template-columns:repeat(3,1fr)}"+
@@ -784,5 +784,5 @@ function buildDeck(root,data,opts){
   return root.querySelectorAll(".sl").length;
 }
 
-window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:79};
+window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:80};
 })();
