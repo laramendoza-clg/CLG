@@ -170,6 +170,8 @@ var CSS=
 ".agdk .ct .ln:first-child{margin-top:0;font-weight:400;color:#fff}"+
 ".agdk .ln .lk{display:inline-block;width:17px;font-size:8px;font-weight:600;letter-spacing:.1em;color:rgba(255,255,255,.35);text-align:left}"+
 ".agdk .back-logo{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);width:330px}"+
+/* centred feathered fade so the logo stands out on bright skies */
+".agdk .back-glow{position:absolute;inset:0;background:radial-gradient(ellipse 42% 42% at 50% 48%,rgba(8,6,11,.6) 0%,rgba(8,6,11,.28) 50%,rgba(8,6,11,0) 74%)}"+
 /* closing page — editorial contact spread with photo rail */
 ".agdk .cl2-rail{position:absolute;top:0;right:0;bottom:0;width:330px;overflow:hidden}"+
 ".agdk .cl2-rail .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}"+
@@ -230,6 +232,7 @@ var CSS=
 ".agdk-land .cov-rail img{max-width:250px}"+
 ".agdk-land .cov-rail .txt{font-size:24px}"+
 ".agdk-land .cov-note{bottom:32px;font-size:11.5px}"+
+".agdk-land .back-logo{width:430px}"+
 /* landscape welcome: a proper letter — full-width text edge to edge,
    larger type, signature bottom-LEFT under the text (Lara: no columns,
    no side rail, signature belongs on the left with the name) */
@@ -531,7 +534,7 @@ function bgSrc(m){return (m&&m.bgImg&&String(m.bgImg).trim())?m.bgImg:SKY;}
    CapLink mark. Click it in the builder to swap. */
 function backSlide(m){
   var src=m.backImg||m.hostImg||CAPSTACK;
-  return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><img class="back-logo" src="'+esc(src)+'"'+dp("meta.backImg","logo")+(m.backW?' style="width:'+(+m.backW||330)+'px"':"")+'>');
+  return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><div class="back-glow"></div><img class="back-logo" src="'+esc(src)+'"'+dp("meta.backImg","logo")+(m.backW?' style="width:'+(+m.backW||330)+'px"':"")+'>');
 }
 
 /* --- measurement helpers: run inside a live offscreen slide --- */
