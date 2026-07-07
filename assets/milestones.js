@@ -169,7 +169,33 @@ window.StudioMilestones=(function(){
       body:JSON.stringify({id:id,done:!!done,by_name:by})}).catch(function(){});
   }
   var TRACKS={design:"Design",marketing:"Marketing",production:"Production",sales:"Sales"};
-  function inTracks(item,tracks){return !tracks||tracks.indexOf(item.track)>=0;}
+  function inTracks(item,tracks){
+    if(!tracks)return true;
+    if(typeof tracks==="function")return tracks(item);
+    return tracks.indexOf(item.track)>=0;
+  }
+  /* ---- personal lane: the track labels are only DEFAULTS for what shows
+     on your dashboard. Any item can be pulled in or kicked out; the
+     preference is personal, so it lives on this device. ---- */
+  var DEFAULT_LANE=["design","marketing"];
+  var LS_LANE="studio-my-lane";
+  function laneGet(){try{return JSON.parse(localStorage.getItem(LS_LANE))||{add:{},remove:{}};}catch(_){return {add:{},remove:{}};}}
+  function laneSet(l){try{localStorage.setItem(LS_LANE,JSON.stringify(l));}catch(_){}}
+  function laneHas(item){
+    var l=laneGet();
+    if(l.remove[item.id])return false;
+    if(l.add[item.id])return true;
+    return DEFAULT_LANE.indexOf(item.track)>=0;
+  }
+  function laneToggle(item){
+    var l=laneGet();
+    if(laneHas(item)){
+      if(l.add[item.id])delete l.add[item.id];else l.remove[item.id]=1;
+    }else{
+      if(l.remove[item.id])delete l.remove[item.id];else l.add[item.id]=1;
+    }
+    laneSet(l);
+  }
   /* Everything still open across all events, soonest first.
      tracks (optional array) narrows to a lane, e.g. ["design","marketing"]. */
   function agendaOfTheWeek(doneMap,now,horizonDays,tracks){
@@ -204,6 +230,7 @@ window.StudioMilestones=(function(){
     return null;
   }
   return {TEMPLATE:TEMPLATE,DATES:DATES,SHORT:SHORT,ACC:ACC,TRACKS:TRACKS,
+    DEFAULT_LANE:DEFAULT_LANE,laneHas:laneHas,laneToggle:laneToggle,
     schedule:schedule,next:next,fmt:fmt,status:status,
     linkFor:linkFor,loadDone:loadDone,setDone:setDone,agendaOfTheWeek:agendaOfTheWeek,completed:completed,
     loadTasks:loadTasks,saveTask:saveTask,removeTask:removeTask,newTaskId:newTaskId};

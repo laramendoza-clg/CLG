@@ -202,11 +202,11 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
     <a class="backstage" href="./backstage/">Backstage &rarr;</a>
   </div>
 </div>
-<script src="./assets/milestones.js?v=7"></script>
+<script src="./assets/milestones.js?v=8"></script>
 <script>
 (function(){
   var M=window.StudioMilestones;if(!M)return;
-  var MY_TRACKS=["design","marketing"]; /* this dashboard shows the design & marketing lane */
+  var MINE=function(it){return M.laneHas(it);}; /* personal lane: design+marketing by default, per-item overrides */
   var doneMap={};
   function ago(days){
     if(days===0)return "today";
@@ -219,7 +219,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
       var s=M.schedule(cardEl.dataset.e);
       if(!s){slot.innerHTML="<b>Next deadline</b>Date TBC";return;}
       var it=null;
-      for(var j=0;j<s.items.length;j++){var c=s.items[j];if(!doneMap[c.id]&&MY_TRACKS.indexOf(c.track)>=0){it=c;break;}}
+      for(var j=0;j<s.items.length;j++){var c=s.items[j];if(!doneMap[c.id]&&MINE(c)){it=c;break;}}
       if(!it){slot.innerHTML="<b>All done</b>Everything on the standard timeline is checked off.";return;}
       var days=Math.round((it.date-new Date())/864e5);
       slot.classList.toggle("overdue",days<=14&&it.w!==0);
@@ -248,7 +248,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
       sub.textContent=new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"});
       var openTasks=tasks.filter(function(t){return !t.done;}).map(taskRow)
         .filter(function(r){return r.days==null||r.days<=21;});
-      var items=M.agendaOfTheWeek(doneMap,null,21,MY_TRACKS).concat(openTasks);
+      var items=M.agendaOfTheWeek(doneMap,null,21,MINE).concat(openTasks);
       items.sort(function(a,b){
         if(!a.item.date&&!b.item.date)return 0;
         if(!a.item.date)return -1;if(!b.item.date)return 1;
@@ -260,16 +260,16 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
         var when=n.item.date?M.fmt(n.item.date)+(n.est?" (est.)":"")+" · "+ago(n.days):"no date";
         var go=n.task?(n.slug?'<a class="jump" href="./event/?e='+encodeURIComponent(n.slug)+'">Go</a>':"")
                      :'<a class="jump" href="'+M.linkFor(n.slug,n.item,"./")+'">Go</a>';
-        return '<div class="nowi'+(n.days!=null&&n.days<0?' late':'')+'" data-id="'+esc(n.item.id)+'"'+(n.task?' data-task="1"':'')+'>'+
+        return '<div class="nowi'+(n.days!=null&&n.days<0?' late':'')+'" data-id="'+esc(n.item.id)+'" data-track="'+esc(n.item.track||"")+'"'+(n.task?' data-task="1"':'')+'>'+
           '<button class="tick" title="Mark done"></button>'+
           '<span class="ev" style="--evc:'+n.acc+'">'+esc(n.short)+'</span>'+
           '<span class="what">'+esc(n.item.label)+'</span>'+
           '<span class="when">'+when+'</span>'+go+
-          (n.task?'<button class="del" title="Delete this task">✕</button>':"")+'</div>';
+          (n.task?'<button class="del" title="Delete this task">✕</button>':'<button class="del lane" title="Not mine — take it off my list (stays on the event page)">–</button>')+'</div>';
       }).join("");
     }else{
       sub.textContent="Everything ticked off — click ✓ to put one back";
-      var done=M.completed(doneMap,MY_TRACKS).concat(tasks.filter(function(t){return t.done;}).map(taskRow));
+      var done=M.completed(doneMap,MINE).concat(tasks.filter(function(t){return t.done;}).map(taskRow));
       if(!done.length){rowsHtml='<div class="now-empty">Nothing completed yet.</div>';}
       else rowsHtml=done.map(function(n){
         var meta=n.task?{by:n.task.by_name}:doneMeta[n.item.id];
@@ -300,6 +300,11 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
     list.querySelectorAll(".del").forEach(function(btn){
       btn.addEventListener("click",function(){
         var id=btn.closest(".nowi").dataset.id;
+        if(btn.classList.contains("lane")){
+          M.laneToggle({id:id,track:btn.closest(".nowi").dataset.track||""});
+          renderNow();renderCards();
+          return;
+        }
         if(!confirm("Delete this task completely?"))return;
         tasks=tasks.filter(function(x){return x.id!==id;});
         M.removeTask(id);

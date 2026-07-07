@@ -50,6 +50,8 @@ div.card.off h3{color:#8a8088}
 .ms.soon .d,.ms.soon .lb b{color:#7a4d0f}
 .ms.future .st{background:#f1ecef;color:#6b6068}
 .ms.nextup{box-shadow:inset 4px 0 0 var(--acc)}
+.ms .star{flex:0 0 18px;border:none;background:none;padding:0;font-size:15px;line-height:1;color:#d6cdd2;cursor:pointer;align-self:center}
+.ms .star:hover,.ms .star.on{color:#B7791F}
 .ms .tick{flex:0 0 20px;width:20px;height:20px;border:2px solid #d6cdd2;border-radius:50%;background:#fff;cursor:pointer;padding:0;font-size:12px;line-height:1;color:#fff;align-self:center}
 .ms .tick:hover{border-color:#2e7d4f;background:#eaf4ee}
 .ms .tick.on{background:#2e7d4f;border-color:#2e7d4f}
@@ -88,7 +90,7 @@ div.card.off h3{color:#8a8088}
   </section>
   <a class="back" href="../">← All events</a>
 </div>
-<script src="../assets/milestones.js?v=7"></script>
+<script src="../assets/milestones.js?v=8"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -136,7 +138,9 @@ document.getElementById("socGrid").innerHTML=ev.social?
       const chip=done?"Done ✓":(st==="past"?"Still open":(st==="soon"?"Due soon":"Upcoming"));
       const stCls=done?"past done":(st==="past"?"soon":st);
       const wk=m.w===0?"Event":(m.w<0?(-m.w)+" wk after":m.w+" wk"+(m.w>1?"s":"")+" out");
-      html+='<div class="ms '+stCls+(i===nextIdx?' nextup':'')+'" data-id="'+m.id+'">'+
+      const mine=M.laneHas(m);
+      html+='<div class="ms '+stCls+(i===nextIdx?' nextup':'')+'" data-id="'+m.id+'" data-i="'+i+'">'+
+        '<button class="star'+(mine?' on':'')+'" title="'+(mine?"On my dashboard list — click to take it off":"Add to my dashboard list")+'">'+(mine?"★":"☆")+'</button>'+
         '<button class="tick'+(done?' on':'')+'" title="'+(done?"Mark as not done":"Mark done")+'">'+(done?"✓":"")+'</button>'+
         '<div class="d">'+M.fmt(m.date)+'</div>'+
         '<div class="wk">'+wk+'</div>'+
@@ -155,10 +159,16 @@ document.getElementById("socGrid").innerHTML=ev.social?
         render();
       });
     });
+    list.querySelectorAll(".star").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        M.laneToggle(s.items[+btn.closest(".ms").dataset.i]);
+        render();
+      });
+    });
   }
   render();
   M.loadDone().then(r=>{doneMap=r.done;render();});
-  note.textContent="The standard CapLink production timeline, computed from the event date"+(s.est?" (date is estimated — deadlines shift when the date is confirmed)":"")+". Tick things off as they finish — everyone sees the same list. Tell Lara if a deadline needs to move.";
+  note.textContent="The standard event timeline, computed from the event date"+(s.est?" (date is estimated — deadlines shift when the date is confirmed)":"")+". Tick things off as they finish — everyone sees the same ticks. The lane labels are only suggestions: star ★ anything to put it on your own dashboard list, or unstar to take it off.";
 })();
 (async()=>{
   try{
