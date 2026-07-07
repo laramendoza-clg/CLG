@@ -13,21 +13,27 @@ window.StudioMilestones=(function(){
     {w:30,phase:"T-7 months",label:"Website live",track:"marketing",to:"event"},
     {w:30,phase:"T-7 months",label:"Speaker outreach begins",track:"production",to:"event"},
     {w:30,phase:"T-7 months",label:"Event branding and assets prepared",track:"design",detail:"Event lockup, colours, theme, key art",to:"event"},
+    {w:30,phase:"T-7 months",label:"Save-the-date announcement",track:"marketing",detail:"First LinkedIn post + save-the-date email when the website goes live",to:"event"},
 
     {w:26,phase:"T-6 months",label:"Agenda 20–40% done",track:"production",detail:"And continuously updated from here on",to:"agenda"},
     {w:26,phase:"T-6 months",label:"Website updated with confirmed speakers",track:"marketing",to:"event"},
-    {w:26,phase:"T-6 months",label:"Marketing campaigns launched",track:"marketing",to:"event"},
+    {w:26,phase:"T-6 months",label:"Marketing campaigns launched",track:"marketing",detail:"Campaign plan live across channels",to:"event"},
+    {w:26,phase:"T-6 months",label:"LinkedIn posting begins",track:"marketing",detail:"Steady cadence from here: 1–2 posts a week",to:"event"},
+    {w:26,phase:"T-6 months",label:"Email campaign #1 — event announcement",track:"marketing",detail:"First blast to the database",to:"event"},
     {w:26,phase:"T-6 months",label:"Sponsor prospecting continues",track:"sales",to:"event"},
 
     {w:22,phase:"T-5 months",label:"Agenda 80% done",track:"production",detail:"Four speakers on each panel",to:"agenda"},
     {w:22,phase:"T-5 months",label:"Delegate outreach begins",track:"sales",detail:"Focus on CFOs, Operating Partners, Tax, GCs, Talent, etc.",to:"event"},
     {w:22,phase:"T-5 months",label:"Initial sponsor confirmations",track:"sales",to:"event"},
+    {w:22,phase:"T-5 months",label:"Speaker announcement posts begin",track:"marketing",detail:"Speaker cards roll out as confirmations land",to:"event"},
+    {w:22,phase:"T-5 months",label:"Email campaign #2 — first speakers & early agenda",track:"marketing",to:"event"},
 
     {w:17,phase:"T-4 months",label:"Majority of speakers & moderators confirmed",track:"production",to:"agenda"},
     {w:17,phase:"T-4 months",label:"Majority of agenda complete",track:"production",to:"agenda"},
     {w:17,phase:"T-4 months",label:"Delegate outreach ramps up",track:"sales",to:"event"},
     {w:17,phase:"T-4 months",label:"Sponsor deliverables requested",track:"sales",to:"event"},
     {w:17,phase:"T-4 months",label:"Bios & headshots — collection begins",track:"production",detail:"Production starts collecting / chasing",to:"agenda"},
+    {w:17,phase:"T-4 months",label:"Promo video — brief & script",track:"design",detail:"Concept, script, footage/asset list agreed",to:"event"},
 
     {w:13,phase:"T-3 months",label:"Final speaker recruitment (keynotes)",track:"production",to:"agenda"},
     {w:13,phase:"T-3 months",label:"Remaining agenda gaps filled",track:"production",to:"agenda"},
@@ -36,12 +42,16 @@ window.StudioMilestones=(function(){
     {w:13,phase:"T-3 months",label:"Initial AV requirements collected",track:"production",to:"event"},
     {w:13,phase:"T-3 months",label:"AUMs & notes on the ML — keep filling in",track:"sales",to:"event"},
     {w:13,phase:"T-3 months",label:"Initial app planning",track:"production",to:"event"},
+    {w:13,phase:"T-3 months",label:"Promo video — produced & launched",track:"marketing",detail:"Cut, approved, posted to LinkedIn + embedded on the website",to:"event"},
+    {w:13,phase:"T-3 months",label:"Email campaign #3 — agenda highlights",track:"marketing",to:"event"},
+    {w:13,phase:"T-3 months",label:"Event app — design & branding assets delivered",track:"design",detail:"Splash, banners, icons, colours handed to the app build",to:"event"},
 
     {w:9,phase:"T-2 months",label:"Speaker & guest reconfirmations",track:"production",to:"event"},
     {w:9,phase:"T-2 months",label:"Final request for bios & headshots",track:"production",to:"agenda"},
     {w:9,phase:"T-2 months",label:"Event app build begins",track:"production",to:"event"},
     {w:9,phase:"T-2 months",label:"Speaker pages uploaded",track:"marketing",to:"event"},
-    {w:9,phase:"T-2 months",label:"Marketing push",track:"marketing",to:"event"},
+    {w:9,phase:"T-2 months",label:"Marketing push",track:"marketing",detail:"LinkedIn steps up to 2–3 posts a week — speaker cards, sponsor spotlights, countdown content",to:"event"},
+    {w:9,phase:"T-2 months",label:"Email campaign #4 — registration push",track:"marketing",detail:"Plus sponsor spotlight block",to:"event"},
     {w:9,phase:"T-2 months",label:"Final sponsor assets requested",track:"sales",to:"event"},
     {w:9,phase:"T-2 months",label:"Podcast preferences & scheduling",track:"sales",detail:"Sales asks sponsors for preferences; podcasts scheduled",to:"event"},
     {w:9,phase:"T-2 months",label:"Print & staging designs done",track:"design",detail:"Lanyards, badges, signage, backdrop/staging — final artwork approved",to:"event"},
@@ -51,7 +61,7 @@ window.StudioMilestones=(function(){
     {w:4,phase:"T-1 month",label:"Panel preparation calls scheduled",track:"production",detail:"For roughly two weeks before the event",to:"event"},
     {w:4,phase:"T-1 month",label:"Moderator briefing preparation",track:"production",to:"event"},
     {w:4,phase:"T-1 month",label:"Final agenda published",track:"design",to:"agenda"},
-    {w:4,phase:"T-1 month",label:"Registration push",track:"marketing",to:"event"},
+    {w:4,phase:"T-1 month",label:"Registration push",track:"marketing",detail:"Final-call emails; near-daily LinkedIn in the last stretch",to:"event"},
     {w:4,phase:"T-1 month",label:"Final event app review",track:"production",to:"event"},
     {w:4,phase:"T-1 month",label:"Name badge data finalised",track:"production",to:"event"},
     {w:4,phase:"T-1 month",label:"Printing requirements confirmed · orders placed",track:"design",detail:"All print and staging orders with the vendor; delivery dates confirmed",to:"event"},
@@ -63,10 +73,13 @@ window.StudioMilestones=(function(){
     {w:2,phase:"T-2 weeks",label:"Name badges printed",track:"production",detail:"Mark on the ML what didn't make the final print run — those print on site",to:"event"},
     {w:2,phase:"T-2 weeks",label:"Print materials completed",track:"production",to:"event"},
     {w:2,phase:"T-2 weeks",label:"Final operational review & event-day plan",track:"production",to:"event"},
+    {w:2,phase:"T-2 weeks",label:"Countdown content — final week",track:"marketing",detail:"“One week to go”, speaker reels, last-chance posts",to:"event"},
+    {w:2,phase:"T-2 weeks",label:"Know-before-you-go email drafted",track:"marketing",detail:"Sends the day before the event",to:"event"},
 
     {w:0,phase:"Event day",label:"Event day",track:"production",detail:"Speaker & moderator check-ins · registration desk · AV testing · sponsor check-ins · green room · on-site badge printing · live execution & troubleshooting",to:"event"},
 
-    {w:-1,phase:"Post event",label:"Thank-yous & follow-ups",track:"production",detail:"Speaker thank-you emails · sponsor follow-up · delegate follow-up",to:"event"}
+    {w:-1,phase:"Post event",label:"Thank-yous & follow-ups",track:"production",detail:"Speaker thank-you emails · sponsor follow-up · delegate follow-up",to:"event"},
+    {w:-1,phase:"Post event",label:"Highlights & recap content",track:"marketing",detail:"Photo selects, recap post, sponsor thank-you graphics",to:"event"}
   ];
   var SHORT={"dubai-2026":"Dubai","newyork-2026":"New York","ai-data-breakfast-2026":"AI / Data","europe-2027":"Europe","mit-2027":"MIT"};
   var ACC={"dubai-2026":"#2f5d63","newyork-2026":"#A15D50","ai-data-breakfast-2026":"#8A7547","europe-2027":"#6b2554","mit-2027":"#5E1A2E"};
@@ -82,7 +95,7 @@ window.StudioMilestones=(function(){
     var ev=new Date(e.date+"T12:00:00");
     return {event:ev,est:!!e.est,items:TEMPLATE.map(function(m,i){
       return {w:m.w,phase:m.phase,label:m.label,detail:m.detail,to:m.to,track:m.track,
-        id:slug+"#"+m.w+"#"+i,
+        id:slug+"#"+m.w+"#"+String(m.label).toLowerCase().replace(/[^a-z0-9]+/g,"-").slice(0,28),
         date:new Date(ev.getTime()-m.w*7*864e5)};
     })};
   }
