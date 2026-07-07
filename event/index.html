@@ -20,6 +20,9 @@ header .meta{font-size:12.5px;font-weight:300;color:rgba(255,255,255,.75);letter
 .sec{margin-top:30px}
 .sec h2{display:flex;align-items:center;gap:11px;margin:0 0 14px;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--plum)}
 .sec h2::after{content:'';flex:1;height:1px;background:var(--line)}
+.msfilter{display:flex;gap:4px}
+.msfilter button{font-family:inherit;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);background:none;border:1px solid var(--line);cursor:pointer;padding:4px 10px;border-radius:12px}
+.msfilter button.on{color:#fff;background:var(--acc);border-color:var(--acc)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
 a.card,div.card{display:flex;flex-direction:column;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);border-left:4px solid var(--acc);border-radius:8px;padding:18px 19px 16px;transition:box-shadow .18s,transform .18s}
 a.card:hover{box-shadow:0 14px 34px rgba(42,18,40,.15);transform:translateY(-2px)}
@@ -71,7 +74,7 @@ div.card.off h3{color:#8a8088}
 </div></header>
 <div class="wrap">
   <section class="sec">
-    <h2>Milestones &amp; deadlines</h2>
+    <h2>Milestones &amp; deadlines <span class="msfilter"><button id="fltAll" class="on">Everything</button><button id="fltMine">Just mine</button></span></h2>
     <div id="msList" class="mslist"></div>
     <p class="status" id="msNote"></p>
   </section>
@@ -122,17 +125,22 @@ document.getElementById("socGrid").innerHTML=ev.social?
   const M=window.StudioMilestones,s=M&&M.schedule(slug);
   const list=document.getElementById("msList"),note=document.getElementById("msNote");
   if(!s){list.innerHTML='<div class="ms"><div class="lb"><b>No date set for this event yet</b><span>Add it to assets/milestones.js and the full schedule appears here.</span></div></div>';return;}
-  let doneMap={};
+  let doneMap={},justMine=false;
+  try{justMine=localStorage.getItem("studio-ms-flt")==="mine";}catch(_){}
   function render(){
     const now=new Date();
+    document.getElementById("fltAll").classList.toggle("on",!justMine);
+    document.getElementById("fltMine").classList.toggle("on",justMine);
     let nextIdx=-1;
-    s.items.forEach((m,i)=>{if(nextIdx<0&&!doneMap[m.id]&&M.status(m.date,now)!=="past")nextIdx=i;});
-    let html="",lastPhase=null;
+    s.items.forEach((m,i)=>{if(nextIdx<0&&!doneMap[m.id]&&M.status(m.date,now)!=="past"&&(!justMine||M.laneHas(m)))nextIdx=i;});
+    let html="",lastPhase=null,headerHtml=null;
     s.items.forEach((m,i)=>{
       if(m.phase&&m.phase!==lastPhase){
         lastPhase=m.phase;
-        html+='<div class="msph"><span>'+m.phase+'</span><span>'+M.fmt(m.date)+'</span></div>';
+        headerHtml='<div class="msph"><span>'+m.phase+'</span><span>'+M.fmt(m.date)+'</span></div>';
       }
+      if(justMine&&!M.laneHas(m))return;
+      if(headerHtml){html+=headerHtml;headerHtml=null;}
       const done=!!doneMap[m.id];
       const st=done?"done":M.status(m.date,now);
       const chip=done?"Done ✓":(st==="past"?"Still open":(st==="soon"?"Due soon":"Upcoming"));
@@ -149,6 +157,7 @@ document.getElementById("socGrid").innerHTML=ev.social?
         (m.w!==0&&!done?'<a class="msgo" href="'+M.linkFor(slug,m,"../")+'">Go</a>':"")+
         '<div class="st">'+chip+'</div></div>';
     });
+    if(!html)html='<div class="ms"><div class="lb"><b>Nothing in your lane for this event</b><span>Switch to Everything and star ★ the items that are yours.</span></div></div>';
     list.innerHTML=html;
     list.querySelectorAll(".tick").forEach(btn=>{
       btn.addEventListener("click",()=>{
@@ -166,6 +175,9 @@ document.getElementById("socGrid").innerHTML=ev.social?
       });
     });
   }
+  function setFlt(v){justMine=v;try{localStorage.setItem("studio-ms-flt",v?"mine":"all");}catch(_){}render();}
+  document.getElementById("fltAll").addEventListener("click",()=>setFlt(false));
+  document.getElementById("fltMine").addEventListener("click",()=>setFlt(true));
   render();
   M.loadDone().then(r=>{doneMap=r.done;render();});
   note.textContent="The standard event timeline, computed from the event date"+(s.est?" (date is estimated — deadlines shift when the date is confirmed)":"")+". Tick things off as they finish — everyone sees the same ticks. The lane labels are only suggestions: star ★ anything to put it on your own dashboard list, or unstar to take it off.";
