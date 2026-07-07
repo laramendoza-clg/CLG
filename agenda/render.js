@@ -115,6 +115,8 @@ var CSS=
 ".agdk .spk-cell .nm{font-size:12px;font-weight:700;color:#241020;line-height:1.25}"+
 ".agdk .spk-cell .tt{font-size:9.8px;color:#7f7984;font-style:italic;line-height:1.3;margin-top:1px}"+
 ".agdk .spk-cell .fm{font-size:10.4px;font-weight:700;color:#38323c;margin-top:2px;line-height:1.25}"+
+/* optional firm logo under each speaker (speakersList[i].logo) */
+".agdk .spk-cell .fl{height:20px;max-width:120px;object-fit:contain;object-position:left;margin-top:6px;display:block}"+
 /* agenda rows */
 ".agdk .rows{position:absolute;top:44px;left:56px;right:56px;bottom:60px;overflow:hidden;display:flex;flex-direction:column}"+
 ".agdk .rows.fill{justify-content:space-between}"+
@@ -163,8 +165,12 @@ var CSS=
 /* about-our-partners page (optional, meta.about) — one photo+blurb card per partner */
 ".agdk .ab-grid{position:absolute;top:206px;left:64px;right:64px;bottom:72px;display:flex;gap:44px}"+
 ".agdk .ab-card{flex:1;min-width:0;display:flex;flex-direction:column;position:relative}"+
-".agdk .ab-photo{height:300px;overflow:hidden;border-radius:6px;background:#efedef;flex:0 0 auto}"+
+".agdk .ab-photo{height:300px;overflow:hidden;border-radius:6px;background:#efedef;flex:0 0 auto;position:relative}"+
 ".agdk .ab-photo img{width:100%;height:100%;object-fit:cover;display:block}"+
+/* optional partner logo overlaid centred ON the photo (items[i].logo) */
+".agdk .ab-plogo{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}"+
+".agdk .ab-plogo img{width:auto;height:auto;max-height:56px;max-width:62%;object-fit:contain;filter:drop-shadow(0 2px 12px rgba(0,0,0,.5))}"+
+".agdk-edit .ab-plogo{pointer-events:auto}"+
 ".agdk .ab-head{font-size:23px;font-weight:700;color:#241020;margin-top:24px}"+
 ".agdk .ab-sub{font-size:10px;letter-spacing:.26em;font-weight:700;color:var(--accent);text-transform:uppercase;margin-top:7px}"+
 ".agdk .ab-body{font-size:13.2px;line-height:1.78;color:#5a5460;margin-top:16px;overflow:hidden}"+
@@ -274,7 +280,7 @@ var CSS=
 ".agdk-land .spk-row{grid-template-columns:repeat(4,1fr)}"+
 ".agdk-land .spk-cell img{width:92px;height:92px}"+
 ".agdk-land .spk-cell .tt{font-size:9.5px}"+
-".agdk-land .spk-cell .fm{font-size:8.5px;letter-spacing:.14em;text-transform:uppercase}"+
+".agdk-land .spk-cell .fm{font-size:8px;letter-spacing:.14em;text-transform:uppercase}"+
 ".agdk-land .prow{grid-template-columns:repeat(5,1fr)}"+
 ".agdk-land .rec2-photo{flex:0 0 520px}"+
 ".agdk-land .sp-grid{grid-template-columns:repeat(3,1fr)}"+
@@ -514,7 +520,10 @@ function aboutSlide(d,n){
   var cards=items.map(function(it,i){
     var b="meta.about.items."+i;
     var del=EDIT?'<button class="spx" data-op="abdel" data-i="'+i+'" style="position:absolute;top:-10px;right:-6px;z-index:5" title="Remove this column">✕</button>':"";
-    var ph=it.img?'<div class="ab-photo"><img src="'+esc(it.img)+'"'+dp(b+".img","bg")+'></div>'
+    /* optional logo sitting right on top of the photo */
+    var plogo=it.logo?'<div class="ab-plogo"><img src="'+esc(it.logo)+'"'+dp(b+".logo","logo")+'></div>'
+      :(EDIT&&it.img?'<div class="ghost gt" data-op="logoslot" data-path="'+b+'.logo" data-mode="logo" style="position:absolute;top:10px;right:10px;min-height:22px;padding:3px 9px;font-size:9px;z-index:4">+ logo on photo</div>':"");
+    var ph=it.img?'<div class="ab-photo"><img src="'+esc(it.img)+'"'+dp(b+".img","bg")+'>'+plogo+'</div>'
       :(EDIT?'<div class="ab-photo ghost" data-op="logoslot" data-path="'+b+'.img" data-mode="bg">+ photo</div>':'<div class="ab-photo"></div>');
     return '<div class="ab-card">'+del+ph+'<div class="ab-head"'+de(b+".head")+'>'+esc(it.head)+'</div>'+
       ((it.sub||EDIT)?'<div class="ab-sub"'+de(b+".sub")+'>'+esc(it.sub||"")+'</div>':"")+
@@ -558,7 +567,10 @@ function speakerCells(d){
       '<img src="'+pic(p.img)+'"'+(cur?dp(b+".img","photo"):"")+'><div style="min-width:0">'+
       '<div class="nm"'+(cur?de(b+".name"):"")+'>'+esc(p.name)+'</div>'+
       ((p.title||(EDIT&&cur))?'<div class="tt"'+(cur?de(b+".title"):"")+'>'+esc(p.title||"")+'</div>':"")+
-      ((p.firm||(EDIT&&cur))?'<div class="fm"'+(cur?de(b+".firm"):"")+'>'+esc(p.firm||"")+'</div>':"")+'</div></div>';
+      ((p.firm||(EDIT&&cur))?'<div class="fm"'+(cur?de(b+".firm"):"")+'>'+esc(p.firm||"")+'</div>':"")+
+      (p.logo?'<img class="fl" src="'+esc(p.logo)+'"'+(cur?dp(b+".logo","logo"):"")+'>'
+        :(EDIT&&cur?'<div class="ghost gt" data-op="logoslot" data-path="'+b+'.logo" data-mode="logo" style="min-height:18px;max-width:86px;font-size:8.5px;margin-top:5px;padding:2px 6px">+ logo</div>':""))+
+      '</div></div>';
   });
 }
 function sponsorSlides(d,startN){
