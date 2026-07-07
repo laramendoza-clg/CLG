@@ -117,8 +117,6 @@ var CSS=
 ".agdk .spk-cell .nm{font-size:12px;font-weight:700;color:#241020;line-height:1.25}"+
 ".agdk .spk-cell .tt{font-size:9.8px;color:#7f7984;font-style:italic;line-height:1.3;margin-top:1px}"+
 ".agdk .spk-cell .fm{font-size:10.4px;font-weight:700;color:#38323c;margin-top:2px;line-height:1.25}"+
-/* optional firm logo under each speaker (speakersList[i].logo) */
-".agdk .spk-cell .fl{height:20px;max-width:120px;object-fit:contain;object-position:left;margin-top:6px;display:block}"+
 /* agenda rows */
 ".agdk .rows{position:absolute;top:44px;left:56px;right:56px;bottom:60px;overflow:hidden;display:flex;flex-direction:column}"+
 ".agdk .rows.fill{justify-content:space-between}"+
@@ -281,11 +279,13 @@ var CSS=
 ".agdk-land .ab-sub{font-size:11.5px}"+
 ".agdk-land .ab-body{font-size:15px}"+
 ".agdk-land .spk-row{grid-template-columns:repeat(4,1fr)}"+
-".agdk-land .spk-cell img{width:92px;height:92px}"+
+/* big headshots — Lara's composites carry the firm logo inside the photo,
+   so the photo IS the identity; text is secondary */
+".agdk-land .spk-cell img{width:120px;height:120px}"+
 ".agdk-land .spk-cell .tt{font-size:9.5px}"+
 /* firms are the QUIETEST element in the cell — caps read optically ~20%
    larger than lowercase, so they must sit well below the title size */
-".agdk-land .spk-cell .fm{font-size:7px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#98929c}"+
+".agdk-land .spk-cell .fm{font-size:6.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#98929c}"+
 ".agdk-land .prow{grid-template-columns:repeat(5,1fr)}"+
 ".agdk-land .rec2-photo{flex:0 0 520px}"+
 ".agdk-land .sp-grid{grid-template-columns:repeat(3,1fr)}"+
@@ -572,8 +572,6 @@ function speakerCells(d){
       '<div class="nm"'+(cur?de(b+".name"):"")+'>'+esc(p.name)+'</div>'+
       ((p.title||(EDIT&&cur))?'<div class="tt"'+(cur?de(b+".title"):"")+'>'+esc(p.title||"")+'</div>':"")+
       ((p.firm||(EDIT&&cur))?'<div class="fm"'+(cur?de(b+".firm"):"")+'>'+esc(p.firm||"")+'</div>':"")+
-      (p.logo?'<img class="fl" src="'+esc(p.logo)+'" style="height:'+(+p.logoH||20)+'px"'+(cur?dp(b+".logo","logo"):"")+'>'
-        :(EDIT&&cur?'<div class="ghost gt" data-op="logoslot" data-path="'+b+'.logo" data-mode="logo" style="min-height:18px;max-width:86px;font-size:8.5px;margin-top:5px;padding:2px 6px">+ logo</div>':""))+
       '</div></div>';
   });
 }
