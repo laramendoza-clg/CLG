@@ -241,7 +241,7 @@ var CSS=
    the event lockup that starts mid-page, feathering to NOTHING before
    the top so the sky stays completely clean. No edges anywhere. */
 ".agdk-land .cov .tint{background:none}"+
-".agdk-land .cov-glow{top:0;height:100%;background:radial-gradient(ellipse 90% 80% at 50% 100%,rgba(0,0,0,.74) 0%,rgba(0,0,0,.6) 42%,rgba(0,0,0,.3) 68%,rgba(0,0,0,0) 100%)}"+
+".agdk-land .cov-glow{top:0;height:100%;background:radial-gradient(ellipse 70% 90% at 50% 100%,rgba(0,0,0,.74) 0%,rgba(0,0,0,.6) 44%,rgba(0,0,0,.3) 70%,rgba(0,0,0,0) 100%)}"+
 ".agdk-land .cov-cap{height:58px}"+
 ".agdk-land .cov-host .lbl{font-size:11px}"+
 ".agdk-land .cov-host img{max-width:480px}"+
