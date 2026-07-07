@@ -73,7 +73,7 @@
 <body>
 <div class="app">
   <div class="left">
-    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v85</span></h1>
+    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v86</span></h1>
     <div class="tip">✏️ <b>Edit like Slides:</b> click any text on the page to type. Click a photo or logo to change it. Hover a session for <b>move / add / delete</b>.</div>
 
     <div class="stepbox">
@@ -120,7 +120,7 @@
 
 <div id="pop"></div>
 
-<script src="../agenda/render.js?v=85"></script>
+<script src="../agenda/render.js?v=86"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -590,13 +590,18 @@ async function loadCloud(){
         const sr=await fetch("../agenda/seeds/"+encodeURIComponent(s)+".json?v="+Date.now());
         if(sr.ok){const seed=await sr.json();if(seed&&seed.sessions){if(state)snapshot();state=seed;renderForm();rebuild();setStatus("📦 Loaded the prepared draft for “"+esc(s)+"” — review it, then hit <b>Publish now</b> to make it live.");return;}}
       }catch(_){}
+      if(!state){state=starter();renderForm();rebuild();}
       setStatus("This will be a new agenda called “"+esc(s)+"”. Hit <b>Publish now</b> when it looks right.");return;
     }
     if(state)snapshot();state=rows[0].data;renderForm();rebuild();
     setStatus("✅ You're editing the newest version (published "+new Date(rows[0].updated_at).toLocaleString()+").");
-  }catch(e){setStatus("⚠ Couldn't check for the newest version — working from this device's copy. ("+esc(e.message||e)+")");}
+  }catch(e){
+    if(!state){state=starter();renderForm();rebuild();}
+    setStatus("⚠ Couldn't check for the newest version — working from this device's copy. ("+esc(e.message||e)+")");
+  }
 }
 async function publish(){
+  if(!state){alert("One second — still loading the newest version.");return;}
   if(editing)commitEdit();
   const s=slugEl.value.trim();if(!s){alert("Give the event a link name first, e.g. dubai-2026");return;}
   let key=localStorage.getItem(EKEY);
@@ -718,9 +723,11 @@ setInterval(beat,20000);setInterval(pollWho,12000);
   try{saved=JSON.parse(localStorage.getItem(lkeyFor(slugEl.value)));}catch(e){}
   if(!saved){try{const g=JSON.parse(localStorage.getItem(LKEY));if(g&&g.slug===slugEl.value.trim())saved=g;}catch(e){}}
   if(saved&&saved.data&&saved.data.sessions)state=saved.data;
-  if(!state)state=starter();
   try{await document.fonts.ready;}catch(_){}
-  renderForm();rebuild();
+  /* No local draft -> do NOT flash the Dubai starter while fetching; show a
+     quiet loading note and let loadCloud render the right document. */
+  if(state){renderForm();rebuild();}
+  else{document.getElementById("pv").innerHTML='<div style="color:#cfc8d2;font-size:15px;font-weight:600;padding:60px;white-space:nowrap">Loading the newest published version…</div>';}
   updateUndoUI();
   renderWho([]);
   loadCloud();
