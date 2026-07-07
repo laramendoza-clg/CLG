@@ -53,6 +53,21 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
 .go{margin-top:16px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--cat);display:inline-flex;gap:7px}
 .go .arw{transition:transform .18s ease}
 .card:hover .go .arw{transform:translateX(4px)}
+/* featured document card */
+.feature{display:flex;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);
+  border-top:3px solid var(--cat);border-radius:8px;overflow:hidden;
+  transition:box-shadow .18s ease,transform .18s ease,border-color .18s ease}
+.feature:hover{box-shadow:0 16px 40px rgba(42,18,40,.16);transform:translateY(-3px);border-color:var(--cat)}
+.ft-main{flex:1;padding:24px 26px 22px;display:flex;flex-direction:column;align-items:flex-start}
+.ft-main h3{font-size:21px;font-weight:600;margin:10px 0 8px;letter-spacing:.005em}
+.ft-main p{font-size:13.5px;line-height:1.6;color:#6b6068;margin:0 0 18px;max-width:520px;flex:1}
+.ft-side{flex:0 0 240px;border-left:1px solid var(--line);background:#fbf8fa;padding:20px 20px 18px;display:flex;flex-direction:column;gap:2px}
+.ft-lbl{font-size:9.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
+.ft-ev{font-size:13px;font-weight:600;color:var(--accent);padding:6px 9px;border-radius:5px}
+.ft-ev:hover{background:rgba(83,22,57,.08)}
+.ft-ev::after{content:'\2197';font-size:10.5px;opacity:.45;margin-left:6px}
+@media(max-width:640px){.feature{flex-direction:column}.ft-side{flex:auto;border-left:none;border-top:1px solid var(--line)}}
+
 .soon{border-top-color:var(--line);border-style:dashed;background:transparent;cursor:default}
 .soon:hover{box-shadow:none;transform:none;border-color:var(--line)}
 .soon .tag{color:var(--mute)}
@@ -79,69 +94,66 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
 </header>
 
 <div class="wrap">
-  <p class="lead">Pick what you&rsquo;re making. Everything runs in your browser &mdash; nothing is uploaded.</p>
+  <p class="lead">Everything the team makes, in one place. It all runs in your browser &mdash; nothing is uploaded.</p>
 
   <section class="section cat-web">
-    <h2><span class="dot"></span>Website <span class="count">3</span></h2>
-    <div class="grid">
-      <a class="card" href="./sponsor-generator/">
-        <span class="tag">Event Page &middot; Embed</span>
-        <h3>Event Page &mdash; Sponsor Section</h3>
-        <p>Build the embeddable sponsor roster (tiers, logos, pop-up bios) for an event page &mdash; themed per city, with live preview and copy-paste code.</p>
-        <span class="go">Open <span class="arw">&rarr;</span></span>
-      </a>
-      <a class="card" href="./agendas/">
-        <span class="tag">Live Documents</span>
+    <h2><span class="dot"></span>Live documents</h2>
+    <a class="feature" href="./agendas/">
+      <div class="ft-main">
+        <span class="tag">Always the latest version</span>
         <h3>Event Agendas</h3>
-        <p>The team&rsquo;s live agenda documents &mdash; Dubai, New York, AI/Data Breakfast, Europe, MIT. Open one to edit; each has a share link that always shows the latest version.</p>
+        <p>One shared document per event &mdash; anyone on the team can edit, and the share link always shows the newest published copy. Print-ready PDF built in.</p>
+        <span class="go">All agendas &amp; share links <span class="arw">&rarr;</span></span>
+      </div>
+      <div class="ft-side">
+        <span class="ft-lbl">Jump into an agenda</span>
+        <span class="ft-ev" data-e="dubai-2026">Dubai 2026</span>
+        <span class="ft-ev" data-e="newyork-2026">New York 2026</span>
+        <span class="ft-ev" data-e="ai-data-breakfast-2026">AI / Data Breakfast 2026</span>
+        <span class="ft-ev" data-e="europe-2027">Europe 2027</span>
+        <span class="ft-ev" data-e="mit-2027">MIT 2027</span>
+      </div>
+    </a>
+  </section>
+
+  <section class="section cat-social">
+    <h2><span class="dot"></span>Create a graphic</h2>
+    <div class="grid">
+      <a class="card" href="./dubai-pcs-card/">
+        <span class="tag">Social &middot; 1080&times;1350</span>
+        <h3>&ldquo;I&rsquo;m Attending&rdquo; Card</h3>
+        <p>Personalised attendance card for Dubai PCS 2026, with an optional headshot.</p>
         <span class="go">Open <span class="arw">&rarr;</span></span>
       </a>
-      <a class="card" href="./logo-sizes/">
-        <span class="tag">Reference &middot; Logos</span>
-        <h3>Sponsor Logo Sizes</h3>
-        <p>The shared size dictionary: one number per firm, the same on every event page, plus the scale knobs and row spacing rules. Check here before adding or resizing any sponsor logo.</p>
+      <a class="card" href="./speaker-card/">
+        <span class="tag">Social &middot; 1200&times;675</span>
+        <h3>Speaker &amp; Panel Card</h3>
+        <p>Announcement card for keynote speakers, panellists and moderators.</p>
+        <span class="go">Open <span class="arw">&rarr;</span></span>
+      </a>
+      <a class="card" href="./sponsor-generator/">
+        <span class="tag">Website &middot; Embed</span>
+        <h3>Sponsor Section</h3>
+        <p>The sponsor roster block for an event page &mdash; tiers, logos, bios, copy-paste code.</p>
         <span class="go">Open <span class="arw">&rarr;</span></span>
       </a>
     </div>
   </section>
 
   <section class="section cat-app">
-    <h2><span class="dot"></span>App <span class="count">Soon</span></h2>
+    <h2><span class="dot"></span>Reference</h2>
     <div class="grid">
-      <div class="card soon">
-        <span class="tag">Coming soon</span>
-        <h3>App generators</h3>
-        <p>In-app graphics and assets will live here. Tell Lara what you need first.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section cat-email">
-    <h2><span class="dot"></span>Email campaigns <span class="count">Soon</span></h2>
-    <div class="grid">
-      <div class="card soon">
-        <span class="tag">Coming soon</span>
-        <h3>Email generators</h3>
-        <p>Campaign headers, banners and templated blocks will live here.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section cat-social">
-    <h2><span class="dot"></span>Social media <span class="count">2</span></h2>
-    <div class="grid">
-      <a class="card" href="./dubai-pcs-card/">
-        <span class="tag">Event &middot; Social</span>
-        <h3>Dubai PCS &mdash; &ldquo;I&rsquo;m Attending&rdquo; Card</h3>
-        <p>Personalised 1080&times;1350 attendance card for the Dubai Private Capital Summit 2026, with an optional headshot.</p>
+      <a class="card" href="./logo-sizes/">
+        <span class="tag">Logos</span>
+        <h3>Sponsor Logo Sizes</h3>
+        <p>The shared size dictionary &mdash; check here before adding or resizing any sponsor logo.</p>
         <span class="go">Open <span class="arw">&rarr;</span></span>
       </a>
-      <a class="card" href="./speaker-card/">
-        <span class="tag">Event &middot; Speakers</span>
-        <h3>Dubai PCS &mdash; Speaker &amp; Panel Card</h3>
-        <p>Landscape 1200&times;675 social card for keynote speakers, panellists and moderators &mdash; skyline background, session title and sponsor logo.</p>
-        <span class="go">Open <span class="arw">&rarr;</span></span>
-      </a>
+      <div class="card soon">
+        <span class="tag">Your idea here</span>
+        <h3>Need a new tool?</h3>
+        <p>App graphics, email banners, anything repetitive &mdash; tell Lara and it gets built.</p>
+      </div>
     </div>
   </section>
 
@@ -150,6 +162,14 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
     <p>A CapLink Group studio &middot; internal tools, unlisted (not indexed by search engines). Share within CapLink only.</p>
   </div>
 </div>
+<script>
+document.querySelectorAll(".ft-ev").forEach(function(el){
+  el.addEventListener("click",function(e){
+    e.preventDefault();e.stopPropagation();
+    location.href="./agenda-generator/?e="+encodeURIComponent(el.dataset.e);
+  });
+});
+</script>
 <script src="./assets/studio-nav.js?v=1"></script>
 </body>
 </html>
