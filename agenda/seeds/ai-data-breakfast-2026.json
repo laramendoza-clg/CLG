@@ -101,7 +101,8 @@
   "hostImg": "https://images.squarespace-cdn.com/content/5dc9f095a5705651ea40e08b/fb26314e-19f0-4b53-a66f-e7966efb95de/CapLink+x+PE150+-+White+and+Orange.png?content-type=image%2Fpng",
   "hostH": 34,
   "headImg": "https://images.squarespace-cdn.com/content/5dc9f095a5705651ea40e08b/fb26314e-19f0-4b53-a66f-e7966efb95de/CapLink+x+PE150+-+White+and+Orange.png?content-type=image%2Fpng",
-  "headH": 24
+  "headH": 24,
+  "orient": "landscape"
  },
  "speakersList": [
   {

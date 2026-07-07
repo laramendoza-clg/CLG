@@ -101,7 +101,8 @@
   "lockImg": "",
   "speakersStyle": "list",
   "speakersTitle": "Past Confirmed Speakers Include",
-  "speakersSub": "A selection of the investors, operators and advisers who have joined CapLink summits"
+  "speakersSub": "A selection of the investors, operators and advisers who have joined CapLink summits",
+  "orient": "landscape"
  },
  "sessions": [
   {

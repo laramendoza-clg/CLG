@@ -745,21 +745,36 @@ function speakersSlides(root,d,startN){
   var COL_H=LAND?(subOn?674:706):(subOn?970:1000),GAP=10;
   var W2=LAND?739:416,W3=LAND?489:272;
   function tot(hs){var t=0;for(var q=0;q<hs.length;q++)t+=hs[q]+GAP;return t;}
-  /* ALWAYS one page: 2 columns, then 3 (measured at true column width),
-     then scale down until it fits */
-  var cols=2,hs=measureBlocks(root,entries,"spk-col",W2),total=tot(hs),scale=1;
-  if(total>2*COL_H){
-    cols=3;hs=measureBlocks(root,entries,"spk-col",W3);total=tot(hs);
-    if(total>3*COL_H)scale=Math.max(0.6,(3*COL_H)/total*0.96);
+  /* ALWAYS one page: 2 columns, then 3, then (landscape only) 4 — measured
+     at true column widths. Fit is computed from the EXACT packed column
+     heights (the old total/cols estimate under-counted the tallest column
+     and let long lists poke into the footer), with one re-measure at the
+     zoomed width because zoom changes how entries wrap. */
+  var cols=2,CW=W2,hs=measureBlocks(root,entries,"spk-col",W2),total=tot(hs),scale=1;
+  if(total>2*COL_H){cols=3;CW=W3;hs=measureBlocks(root,entries,"spk-col",W3);total=tot(hs);}
+  if(total>3*COL_H&&LAND){
+    var hs4=measureBlocks(root,entries,"spk-col",360),t4=tot(hs4);
+    if(t4/4<=total/3){cols=4;CW=360;hs=hs4;}
   }
-  var budget=total/cols+30,colArr=[],curCol=[],curH=0;
-  entries.forEach(function(h,idx){
-    var hh=hs[idx]+GAP;
-    if(curH+hh>budget&&curCol.length&&colArr.length<cols-1){colArr.push(curCol);curCol=[];curH=0;}
-    curCol.push(h);curH+=hh;
-  });
-  if(curCol.length)colArr.push(curCol);
-  var inner='<div class="spk-wrap" style="zoom:'+scale.toFixed(3)+';gap:'+(cols===3?26:40)+'px'+(subOn?';top:238px':'')+'">'+colArr.map(function(c){return '<div class="spk-col">'+c.join("")+'</div>';}).join("")+'</div>';
+  function pack(hh){
+    var budget=tot(hh)/cols+30,colArr=[],cur=[],curH=0,heights=[];
+    entries.forEach(function(h,idx){
+      var e=hh[idx]+GAP;
+      if(curH+e>budget&&cur.length&&colArr.length<cols-1){colArr.push(cur);heights.push(curH);cur=[];curH=0;}
+      cur.push(h);curH+=e;
+    });
+    if(cur.length){colArr.push(cur);heights.push(curH);}
+    return {colArr:colArr,maxH:Math.max.apply(null,heights)};
+  }
+  var pk=pack(hs);
+  if(pk.maxH>COL_H){
+    scale=Math.max(0.6,COL_H/pk.maxH);
+    hs=measureBlocks(root,entries,"spk-col",Math.round(CW/scale));
+    pk=pack(hs);
+    scale=Math.max(0.6,Math.min(1,COL_H/pk.maxH*0.99));
+  }
+  var colArr=pk.colArr;
+  var inner='<div class="spk-wrap" style="zoom:'+scale.toFixed(3)+';gap:'+(cols>=4?22:(cols===3?26:40))+'px'+(subOn?';top:238px':'')+'">'+colArr.map(function(c){return '<div class="spk-col">'+c.join("")+'</div>';}).join("")+'</div>';
   return [slide("",header(d.meta)+spkHead(d.meta)+inner+foot(d.meta,startN))];
 }
 
@@ -790,5 +805,5 @@ function buildDeck(root,data,opts){
   return root.querySelectorAll(".sl").length;
 }
 
-window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:88};
+window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:89};
 })();
