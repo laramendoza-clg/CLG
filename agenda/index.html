@@ -56,7 +56,7 @@
   <button id="pdf" title="One-click PDF (rendered image pages)">Download PDF</button>
   <button id="pdfhq" title="Sharpest output — opens the print dialog; choose Save as PDF and tick Background graphics">Print-quality PDF</button>
 </div>
-<script src="./render.js?v=83"></script>
+<script src="./render.js?v=84"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -116,7 +116,7 @@ async function boot(){
     document.title=((data.meta&&data.meta.city)||"")+" Agenda · CapLink";
     const d=new Date(rows[0].updated_at);
     const rv=(window.AgendaRender&&AgendaRender.V)||0;
-    document.getElementById("upd").textContent="Updated "+d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})+"  ·  v83"+(rv===83?"":"  ·  ⚠ STALE RENDERER r"+(rv||"?"));
+    document.getElementById("upd").textContent="Updated "+d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})+"  ·  v84"+(rv===84?"":"  ·  ⚠ STALE RENDERER r"+(rv||"?"));
     document.getElementById("msg").style.display="none";
     document.getElementById("bar").style.display="flex";
     let pref=null;try{pref=localStorage.getItem("agdk-book");}catch(_){}
@@ -196,25 +196,42 @@ document.getElementById("pdf").onclick=async()=>{
       c.style.cssText="position:relative;left:0;top:0;opacity:1;transition:none;box-shadow:none";
       holder.appendChild(c);
       /* the rasteriser doesn't understand object-fit — swap each cropped
-         image for a background-image block it renders correctly */
-      c.querySelectorAll("img").forEach(img=>{
+         image for a CANVAS pre-drawn at export resolution. (The previous
+         background-image workaround rasterised at LAYOUT size then
+         upscaled 4x — measured 60x sharpness loss on photos.) */
+      for(const img of Array.from(c.querySelectorAll("img"))){
         const cs=getComputedStyle(img);
-        if(cs.objectFit!=="cover"&&cs.objectFit!=="contain")return;
-        const d=document.createElement("div");
-        d.className=img.className;
-        d.style.cssText=img.style.cssText;
-        d.style.position=cs.position;
-        if(cs.position==="absolute"){d.style.top=cs.top;d.style.left=cs.left;}
-        d.style.width=(img.offsetWidth||parseFloat(cs.width)||0)+"px";
-        d.style.height=(img.offsetHeight||parseFloat(cs.height)||0)+"px";
-        d.style.display="block";
-        d.style.flex=cs.flex;
-        d.style.backgroundImage='url("'+img.src+'")';
-        d.style.backgroundSize=cs.objectFit;
-        d.style.backgroundPosition=cs.objectPosition||"50% 50%";
-        d.style.backgroundRepeat="no-repeat";
-        img.replaceWith(d);
-      });
+        if(cs.objectFit!=="cover"&&cs.objectFit!=="contain")continue;
+        const W=img.offsetWidth||parseFloat(cs.width)||0;
+        const H=img.offsetHeight||parseFloat(cs.height)||0;
+        if(!W||!H)continue;
+        const im=await new Promise(res=>{const t=new Image();t.crossOrigin="anonymous";t.onload=()=>res(t);t.onerror=()=>res(null);t.src=img.src;});
+        const cv=document.createElement("canvas");
+        cv.width=Math.max(1,Math.round(W*4));cv.height=Math.max(1,Math.round(H*4));
+        if(im){
+          const x=cv.getContext("2d");x.imageSmoothingQuality="high";
+          const nw=im.naturalWidth,nh=im.naturalHeight;
+          const op=(cs.objectPosition||"50% 50%").split(" ");
+          const px=(parseFloat(op[0])||0)/100,py=(parseFloat(op[1]||"50%")||0)/100;
+          if(cs.objectFit==="cover"){
+            const sc=Math.max(W/nw,H/nh),sw=W/sc,sh=H/sc;
+            x.drawImage(im,(nw-sw)*px,(nh-sh)*py,sw,sh,0,0,cv.width,cv.height);
+          }else{
+            const sc=Math.min(W/nw,H/nh),dw=nw*sc*4,dh=nh*sc*4;
+            x.drawImage(im,0,0,nw,nh,(cv.width-dw)*px,(cv.height-dh)*py,dw,dh);
+          }
+        }
+        cv.className=img.className;
+        cv.style.cssText=img.style.cssText;
+        cv.style.position=cs.position;
+        if(cs.position==="absolute"){cv.style.top=cs.top;cv.style.left=cs.left;}
+        cv.style.width=W+"px";
+        cv.style.height=H+"px";
+        cv.style.display="block";
+        cv.style.flex=cs.flex;
+        cv.style.border=cs.border;
+        img.replaceWith(cv);
+      }
       /* the rasteriser doesn't understand CSS zoom (used to fit the
          speakers page) — convert each zoomed block to an equivalent
          transform, pinned to its exact on-screen position */
