@@ -20,10 +20,8 @@
     "#studio-nav{position:sticky;top:0;z-index:99999;display:flex;align-items:center;gap:20px;"+
       "height:46px;padding:0 18px;background:rgba(22,10,22,.97);border-bottom:1px solid rgba(255,255,255,.09);"+
       "font-family:'Raleway',system-ui,sans-serif;-webkit-font-smoothing:antialiased}"+
-    "#studio-nav .sn-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#fff;flex:0 0 auto}"+
-    "#studio-nav .sn-brand img{height:20px;width:auto;display:block}"+
-    "#studio-nav .sn-brand span{font-size:13px;letter-spacing:.04em;font-weight:300}"+
-    "#studio-nav .sn-brand b{font-weight:700}"+
+    "#studio-nav .sn-brand{display:flex;align-items:center;text-decoration:none;flex:0 0 auto}"+
+    "#studio-nav .sn-brand img{height:22px;width:auto;display:block}"+
     "#studio-nav .sn-links{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}"+
     "#studio-nav .sn-links::-webkit-scrollbar{display:none}"+
     "#studio-nav .sn-links a{white-space:nowrap;text-decoration:none;font-size:10.5px;font-weight:600;"+
@@ -43,7 +41,8 @@
     try{on=(new URL(href,location.href)).pathname===here?' class="on"':"";}catch(_){}
     return "<a"+on+' href="'+href+'">'+l[1]+"</a>";
   }).join("");
-  nav.innerHTML='<a class="sn-brand" href="'+base+'"><img src="'+base+'assets/caplink-mark.png" alt=""><span>CapLink <b>Studio</b></span></a><div class="sn-links">'+links+"</div>";
+  var LOGO="https://images.squarespace-cdn.com/content/5dc9f095a5705651ea40e08b/7a1e92c4-a7c8-4d34-b62e-bd2bbaef4550/CapLink+Studio+-+logo.png?content-type=image%2Fpng";
+  nav.innerHTML='<a class="sn-brand" href="'+base+'"><img src="'+LOGO+'" alt="CapLink Studio"></a><div class="sn-links">'+links+"</div>";
   function mount(){document.body.insertBefore(nav,document.body.firstChild);}
   if(document.body)mount();else document.addEventListener("DOMContentLoaded",mount);
 })();

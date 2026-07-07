@@ -23,11 +23,11 @@ header{position:relative;overflow:hidden;color:var(--cream);padding:42px 26px 36
 header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
   background:linear-gradient(90deg,var(--social),var(--email),var(--app),var(--web))}
 .brand{display:flex;align-items:center;gap:18px;max-width:980px;margin:0 auto}
-.brand .mark{height:48px;width:auto;display:block;flex:0 0 auto}
+.brand .mark-logo{height:56px;width:auto;display:block}
 .wordmark{font-size:26px;letter-spacing:.03em;line-height:1;color:#fff}
 .wordmark .w1{font-weight:300;opacity:.92}
 .wordmark .w2{font-weight:700}
-.tagline{margin-top:8px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.58);font-weight:500}
+.tagline{margin-top:10px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.58);font-weight:500}
 
 /* ---- layout ---- */
 .wrap{max-width:980px;margin:0 auto;padding:30px 22px 10px}
@@ -78,16 +78,15 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
 .foot p{margin:0;font-size:11px;color:var(--mute);line-height:1.6}
 @media(max-width:560px){
   header{padding:30px 20px 26px}
-  .brand{gap:14px}.brand .mark{height:40px}.wordmark{font-size:22px}
+  .brand{gap:14px}.brand .mark-logo{height:44px}.wordmark{font-size:22px}
 }
 </style>
 </head>
 <body>
 <header>
   <div class="brand">
-    <img class="mark" src="./assets/caplink-mark.png" alt="CapLink">
     <div>
-      <div class="wordmark"><span class="w1">CapLink</span> <span class="w2">Studio</span></div>
+      <img class="mark-logo" src="https://images.squarespace-cdn.com/content/5dc9f095a5705651ea40e08b/7a1e92c4-a7c8-4d34-b62e-bd2bbaef4550/CapLink+Studio+-+logo.png?content-type=image%2Fpng" alt="CapLink Studio">
       <div class="tagline">Creative generators</div>
     </div>
   </div>
@@ -170,6 +169,6 @@ document.querySelectorAll(".ft-ev").forEach(function(el){
   });
 });
 </script>
-<script src="./assets/studio-nav.js?v=1"></script>
+<script src="./assets/studio-nav.js?v=2"></script>
 </body>
 </html>
