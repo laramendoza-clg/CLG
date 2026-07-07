@@ -206,12 +206,25 @@ var CSS=
 ".agdk-edit .pmv button:hover{background:#f7eef4}"+
 /* ---- landscape (legal, 14x8.5) overrides — active only with meta.orient:"landscape" ---- */
 ".agdk-land .sl{width:"+LW+"px;height:"+LH+"px}"+
-".agdk-land .cov-glow{top:200px;height:430px}"+
-".agdk-land .cov-lock{top:290px}"+
-".agdk-land .cov-lockt{top:322px}"+
-".agdk-land .cov-date{top:562px}"+
+/* landscape cover: everything scaled UP for the wide legal page, and a
+   stronger (still daytime) gradient — a top band under the host logos plus
+   a feathered plate behind the title — busy skylines made legible */
+".agdk-land .cov-glow{top:0;height:780px;background:linear-gradient(180deg,rgba(10,8,13,.55) 0%,rgba(10,8,13,.16) 20%,rgba(10,8,13,0) 32%),radial-gradient(ellipse 60% 44% at 50% 56%,rgba(10,8,13,.56),rgba(10,8,13,0) 76%)}"+
+".agdk-land .cov-cap{height:58px}"+
+".agdk-land .cov-host .lbl{font-size:11px}"+
+".agdk-land .cov-host img{max-width:480px}"+
+".agdk-land .cov-lock{top:270px;width:720px}"+
+".agdk-land .cov-lockt{top:300px;gap:38px}"+
+".agdk-land .cov-lockt .c1{font-size:58px}"+
+".agdk-land .cov-lockt .vb{width:4px}"+
+".agdk-land .cov-lockt .c2{font-size:52px}"+
+".agdk-land .cov-date{top:600px;font-size:24px}"+
 ".agdk-land .cov-rail{bottom:88px;gap:120px}"+
-".agdk-land .cov-note{bottom:32px}"+
+".agdk-land .cov-rail .lbl{font-size:11.5px}"+
+".agdk-land .cov-rail .slot{height:120px}"+
+".agdk-land .cov-rail img{max-width:250px}"+
+".agdk-land .cov-rail .txt{font-size:24px}"+
+".agdk-land .cov-note{bottom:32px;font-size:11.5px}"+
 /* landscape welcome: ONE readable text column, signatures on a right rail
    (two-column letter text read badly) */
 ".agdk-land .wel-body{display:flex;gap:90px;bottom:64px;font-size:13.5px;line-height:1.7}"+
@@ -333,17 +346,20 @@ function lockupHtml(m){
 }
 function coverSlide(d){
   var m=d.meta;
+  /* landscape covers display every logo larger (stored sizes unchanged, so
+     flipping orientation back changes nothing) */
+  var CZ=LAND?1.35:1;
   var rail=(m.coverPartners||[]).map(function(p,i){
     var base="meta.coverPartners."+i;
     return '<div class="cp"><div class="lbl"'+de(base+".label")+'>'+esc(p.label)+'</div><div class="slot">'+
-      (p.img?'<img src="'+esc(p.img)+'" style="height:'+(p.h||56)+'px"'+dp(base+".img","logo")+'>':'<div class="txt"'+de(base+".name")+'>'+esc(p.name)+'</div>')+'</div></div>';
+      (p.img?'<img src="'+esc(p.img)+'" style="height:'+Math.round((p.h||56)*CZ)+'px"'+dp(base+".img","logo")+'>':'<div class="txt"'+de(base+".name")+'>'+esc(p.name)+'</div>')+'</div></div>';
   }).join("");
   /* Back-compat: hostImg absent → the classic CapLink mark, no label.
      JV events set hostImg (+ hostLabel) for "Hosted by  CAPLINK × PE150". */
   var host;
   if(m.hostImg){
     var hl=(m.hostLabel===undefined||m.hostLabel===null)?"Hosted by":m.hostLabel;
-    host='<div class="cov-host"><div class="lbl"'+de("meta.hostLabel")+'>'+esc(hl)+'</div><img src="'+esc(m.hostImg)+'" style="height:'+(m.hostH||34)+'px"'+dp("meta.hostImg","logo")+'></div>';
+    host='<div class="cov-host"><div class="lbl"'+de("meta.hostLabel")+'>'+esc(hl)+'</div><img src="'+esc(m.hostImg)+'" style="height:'+Math.round((m.hostH||34)*CZ)+'px"'+dp("meta.hostImg","logo")+'></div>';
   }else{
     host='<img class="cov-cap" src="'+CAPW+'"'+(EDIT?dp("meta.hostImg","logo")+' title="Click to switch to a hosted-by / JV lockup"':"")+'>';
   }
