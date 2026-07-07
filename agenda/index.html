@@ -56,7 +56,7 @@
   <button id="pdf" title="One-click PDF (rendered image pages)">Download PDF</button>
   <button id="pdfhq" title="Sharpest output — opens the print dialog; choose Save as PDF and tick Background graphics">Print-quality PDF</button>
 </div>
-<script src="./render.js?v=82"></script>
+<script src="./render.js?v=83"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -116,7 +116,7 @@ async function boot(){
     document.title=((data.meta&&data.meta.city)||"")+" Agenda · CapLink";
     const d=new Date(rows[0].updated_at);
     const rv=(window.AgendaRender&&AgendaRender.V)||0;
-    document.getElementById("upd").textContent="Updated "+d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})+"  ·  v82"+(rv===82?"":"  ·  ⚠ STALE RENDERER r"+(rv||"?"));
+    document.getElementById("upd").textContent="Updated "+d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})+"  ·  v83"+(rv===83?"":"  ·  ⚠ STALE RENDERER r"+(rv||"?"));
     document.getElementById("msg").style.display="none";
     document.getElementById("bar").style.display="flex";
     let pref=null;try{pref=localStorage.getItem("agdk-book");}catch(_){}
@@ -164,7 +164,7 @@ function printFallback(){
   });
   document.body.appendChild(pr);
   const hint=document.getElementById("pdfhint");
-  hint.innerHTML='In the print dialog choose <b>Save as PDF</b> and make sure <b>“Background graphics”</b> (Chrome) or <b>“Print backgrounds”</b> (Safari) is ticked — otherwise the browser strips the colours.';
+  hint.innerHTML='In the print dialog check ALL of these: <b>Destination: Save as PDF</b> · <b>Paper size: '+(land?"Legal":"Letter")+'</b> · <b>Margins: None</b> · <b>Scale: 100</b> · <b>☑ Background graphics</b> (Safari: “Print backgrounds”) — the browser remembers old settings, and a wrong one moves or strips the design.';
   hint.style.display="block";
   setTimeout(()=>window.print(),350);
   setTimeout(()=>{hint.style.display="none";},15000);
