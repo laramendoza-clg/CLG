@@ -221,6 +221,9 @@ var CSS=
 ".agdk-land .cov-lockt .vb{width:4px}"+
 ".agdk-land .cov-lockt .c2{font-size:52px}"+
 ".agdk-land .cov-date{top:600px;font-size:24px;text-shadow:0 2px 8px rgba(0,0,0,.6),0 0 30px rgba(0,0,0,.65)}"+
+/* soft dark fade ONLY behind the date/location line — feathered on every
+   side so it reads as shading, never a shape */
+".agdk-land .cov-dateglow{position:absolute;top:536px;left:0;right:0;height:160px;background:radial-gradient(ellipse 46% 54% at 50% 50%,rgba(8,6,11,.68) 0%,rgba(8,6,11,.34) 48%,rgba(8,6,11,0) 74%)}"+
 ".agdk-land .cov-rail{bottom:88px;gap:120px}"+
 ".agdk-land .cov-rail .lbl{font-size:11.5px}"+
 ".agdk-land .cov-rail .slot{height:120px}"+
@@ -417,6 +420,7 @@ function coverSlide(d){
   return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><div class="cov-glow"></div>'+
     host+
     lockupHtml(m)+
+    (LAND?'<div class="cov-dateglow"></div>':'')+
     '<div class="cov-date"><span'+de("meta.dateLine")+' style="font-weight:700">'+esc(m.dateLine)+'</span>  <span>|</span>  <span'+de("meta.locLine")+'>'+esc(m.locLine)+'</span></div>'+
     '<div class="cov-rail">'+rail+'</div>'+
     (m.preliminary||EDIT?'<div class="cov-note"'+de("meta.preliminary")+'>'+esc(m.preliminary)+'</div>':""));
