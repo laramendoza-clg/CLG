@@ -236,12 +236,12 @@ var CSS=
 /* ---- landscape (legal, 14x8.5) overrides — active only with meta.orient:"landscape" ---- */
 ".agdk-land .sl{width:"+LW+"px;height:"+LH+"px}"+
 /* landscape cover: everything scaled UP for the wide legal page.
-   Lara's cover treatment (v72): a black CENTRE COLUMN that fades out to
-   the left and right edges — everything on the cover is horizontally
-   centred (title, date, partner rail), so the dark band sits behind all
-   of it while the photo's sides stay clean. No edges anywhere. */
+   Lara's cover treatment (v73): a HALF-DOME of black rising from the
+   bottom edge — darkest low (partner logos, date), still solid behind
+   the event lockup that starts mid-page, feathering to NOTHING before
+   the top so the sky stays completely clean. No edges anywhere. */
 ".agdk-land .cov .tint{background:none}"+
-".agdk-land .cov-glow{top:0;height:100%;background:linear-gradient(90deg,rgba(0,0,0,0) 0%,rgba(0,0,0,.28) 18%,rgba(0,0,0,.58) 36%,rgba(0,0,0,.62) 50%,rgba(0,0,0,.58) 64%,rgba(0,0,0,.28) 82%,rgba(0,0,0,0) 100%)}"+
+".agdk-land .cov-glow{top:0;height:100%;background:radial-gradient(ellipse 90% 80% at 50% 100%,rgba(0,0,0,.74) 0%,rgba(0,0,0,.6) 42%,rgba(0,0,0,.3) 68%,rgba(0,0,0,0) 100%)}"+
 ".agdk-land .cov-cap{height:58px}"+
 ".agdk-land .cov-host .lbl{font-size:11px}"+
 ".agdk-land .cov-host img{max-width:480px}"+
