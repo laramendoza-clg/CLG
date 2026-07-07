@@ -426,7 +426,8 @@ function contactSlide(d,n){
   return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><div class="ct-tint"></div><div class="ct-cap">Get In Touch</div><div class="ct-title">CONTACT US</div><div class="ct-sub"'+de("meta.contactsSub",1)+'>'+esc(m.contactsSub||"")+'</div><div class="ct-line"></div><div class="ct-list">'+cells+'</div>');
 }
 function bgSrc(m){return (m&&m.bgImg&&String(m.bgImg).trim())?m.bgImg:SKY;}
-function backSlide(m){return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><img class="back-logo" src="'+esc(m.hostImg||CAPSTACK)+'"'+(m.hostImg?dp("meta.hostImg","logo"):"")+'><div class="back-web"'+de("meta.website")+'>'+esc(m.website||"www.caplink-group.com")+'</div>');}
+/* back cover: just the sky photo and the centred lockup — nothing else */
+function backSlide(m){return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><img class="back-logo" src="'+esc(m.hostImg||CAPSTACK)+'"'+(m.hostImg?dp("meta.hostImg","logo"):"")+'>');}
 
 /* --- measurement helpers: run inside a live offscreen slide --- */
 function measureBlocks(root,htmlList,wrapClass,width){

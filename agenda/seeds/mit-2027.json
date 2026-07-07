@@ -94,7 +94,8 @@
   "speakersTitle": "Past Speakers Include",
   "speakersSub": "Human capital, operating and value-creation leaders from past CapLink summits",
   "speakersStyle": "grid",
-  "lockCity": "BOSTON"
+  "lockCity": "BOSTON",
+  "backCover": true
  },
  "sessions": [
   {
