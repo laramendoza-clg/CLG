@@ -282,7 +282,8 @@ var CSS=
 ".agdk-land .spk-row{grid-template-columns:repeat(4,1fr)}"+
 /* big headshots — Lara's composites carry the firm logo inside the photo,
    so the photo IS the identity; text is secondary */
-".agdk-land .spk-cell img{width:210px;height:210px}"+
+/* renders ~151px after page zoom (measured) — 86px read too small, 205px too big */
+".agdk-land .spk-cell img{width:135px;height:135px}"+
 ".agdk-land .spk-cell .tt{font-size:9.5px}"+
 /* firms: normal case (caps vetoed — read too big), smallest thing in the cell */
 ".agdk-land .spk-cell .fm{font-size:6.5px;font-weight:500;letter-spacing:.02em;text-transform:none;color:#98929c}"+
@@ -783,5 +784,5 @@ function buildDeck(root,data,opts){
   return root.querySelectorAll(".sl").length;
 }
 
-window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:78};
+window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:79};
 })();
