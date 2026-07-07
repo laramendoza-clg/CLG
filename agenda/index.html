@@ -22,11 +22,17 @@
   #upd{position:fixed;top:12px;right:16px;color:rgba(255,255,255,.45);font-size:11px;letter-spacing:.06em}
   #msg{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;color:#cfc8d2;font-size:15px;text-align:center;padding:30px;line-height:1.7}
   @media print{
+    /* Force backgrounds/gradients to print (covers, pills, accents) */
+    *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
     body{background:#fff;overflow:visible}
     #bar,#upd,#msg{display:none!important}
     #stage{position:static;overflow:visible}
     #deck{position:static;transform:none!important;width:auto;height:auto}
-    #deck .sl{position:static!important;opacity:1!important;box-shadow:none;page-break-after:always;break-after:page;zoom:0.815}
+    /* relative (NOT static): every element inside a page is absolutely
+       positioned and must anchor to its own page. left/top reset kills
+       the book-view side-by-side offsets. */
+    #deck .sl{position:relative!important;left:0!important;top:0!important;opacity:1!important;box-shadow:none;page-break-after:always;break-after:page;zoom:0.815}
+    #deck .sl:last-child{page-break-after:auto;break-after:auto}
     @page{size:8.5in 11in;margin:0}
   }
 </style>
@@ -42,7 +48,7 @@
   <button id="mode"></button>
   <button id="pdf" title="Print or save as PDF">Download PDF</button>
 </div>
-<script src="./render.js?v=39"></script>
+<script src="./render.js?v=40"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -100,7 +106,7 @@ async function boot(){
     total=AgendaRender.buildDeck(document.getElementById("deck"),data);
     document.title=((data.meta&&data.meta.city)||"")+" Agenda · CapLink";
     const d=new Date(rows[0].updated_at);
-    document.getElementById("upd").textContent="Updated "+d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"});
+    document.getElementById("upd").textContent="Updated "+d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})+"  ·  v40";
     document.getElementById("msg").style.display="none";
     document.getElementById("bar").style.display="flex";
     let pref=null;try{pref=localStorage.getItem("agdk-book");}catch(_){}
