@@ -80,7 +80,9 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
 .foot{display:flex;align-items:center;gap:15px;flex-wrap:wrap;
   max-width:980px;margin:42px auto 0;padding:20px 22px 40px;border-top:1px solid var(--line)}
 .foot img{height:17px;width:auto;filter:brightness(0);opacity:.32}
-.foot p{margin:0;font-size:11px;color:var(--mute);line-height:1.6}
+.foot p{margin:0;font-size:11px;color:var(--mute);line-height:1.6;flex:1}
+.foot .backstage{font-size:11px;font-weight:600;color:var(--mute);text-decoration:none;letter-spacing:.06em}
+.foot .backstage:hover{color:var(--accent)}
 @media(max-width:560px){
   header{padding:30px 20px 26px}
   .brand{gap:14px}.brand .mark-logo{height:44px}.wordmark{font-size:22px}
@@ -131,32 +133,11 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
     </div>
   </section>
 
-  <section class="section cat-app">
-    <h2><span class="dot"></span>Not tied to one event</h2>
-    <div class="grid">
-      <a class="card" href="./agendas/">
-        <span class="tag">All agendas</span>
-        <h3>Agendas &amp; share links</h3>
-        <p>Every agenda document in one list, with its live status and share link.</p>
-        <span class="go">Open <span class="arw">&rarr;</span></span>
-      </a>
-      <a class="card" href="./logo-sizes/">
-        <span class="tag">Reference</span>
-        <h3>Sponsor Logo Sizes</h3>
-        <p>The shared size dictionary &mdash; check before adding or resizing any sponsor logo.</p>
-        <span class="go">Open <span class="arw">&rarr;</span></span>
-      </a>
-      <div class="card soon">
-        <span class="tag">Your idea here</span>
-        <h3>Need a new tool?</h3>
-        <p>App graphics, email banners, anything repetitive &mdash; tell Lara and it gets built.</p>
-      </div>
-    </div>
-  </section>
 
   <div class="foot">
     <img src="./assets/caplink-group.png" alt="CapLink Group">
     <p>A CapLink Group studio &middot; internal tools, unlisted (not indexed by search engines). Share within CapLink only.</p>
+    <a class="backstage" href="./backstage/">Backstage &rarr;</a>
   </div>
 </div>
 <script src="./assets/studio-nav.js?v=4"></script>
