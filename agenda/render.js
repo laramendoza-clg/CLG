@@ -81,10 +81,14 @@ var CSS=
 ".agdk .wel-sig .sig{height:58px;display:block;margin-bottom:9px;max-width:280px;object-fit:contain;object-position:left}"+
 ".agdk .wel-sig .nm{font-size:15.5px;color:#241020}.agdk .wel-sig .nm b{font-weight:700}"+
 ".agdk .wel-sig .org{font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--accent);margin-top:5px;text-transform:uppercase}"+
-/* optional "at a glance" strip pinned to the bottom of the welcome page
-   (meta.welcome.facts) — fills the space under short letters */
+/* optional "at a glance" strip and slim photo band pinned to the bottom of
+   the welcome page (meta.welcome.facts / meta.welcome.bandImg) — they fill
+   the space under short letters as a bottom group */
 ".agdk .wel-body.hasfacts{display:flex;flex-direction:column}"+
+".agdk .wel-photo{margin-top:auto;height:170px;border-radius:6px;overflow:hidden;flex:0 0 auto}"+
+".agdk .wel-photo img{width:100%;height:100%;object-fit:cover;display:block}"+
 ".agdk .wel-facts{margin-top:auto;display:flex;gap:34px;padding-top:26px}"+
+".agdk .wel-photo~.wel-facts{margin-top:28px}"+
 ".agdk .wf{flex:1;min-width:0;border-top:2.5px solid var(--accent);padding-top:12px;position:relative}"+
 ".agdk .wf .k{font-size:9.5px;letter-spacing:.26em;font-weight:700;color:var(--accent);text-transform:uppercase}"+
 ".agdk .wf .v{font-size:14.5px;font-weight:600;color:#241020;margin-top:8px;line-height:1.5}"+
@@ -254,7 +258,8 @@ var CSS=
    larger type, signature bottom-LEFT under the text (Lara: no columns,
    no side rail, signature belongs on the left with the name) */
 ".agdk-land .wel-band{font-size:13px}"+
-".agdk-land .wel-body{bottom:64px;font-size:16.5px;line-height:1.78}"+
+".agdk-land .wel-body{bottom:64px;font-size:18px;line-height:1.8}"+
+".agdk-land .wel-photo{height:180px}"+
 ".agdk-land .wel-body p{margin-bottom:20px}"+
 ".agdk-land .wel-sig{margin-top:30px}"+
 ".agdk-land .wel-sig .sig{height:66px}"+
@@ -478,6 +483,10 @@ function welcomeSlide(d,n){
   /* optional at-a-glance tiles (meta.welcome.facts) — absent → the classic
      letter page, unchanged. margin-top:auto pins them to the page bottom. */
   var facts=w.facts||[],fhtml="";
+  /* optional slim photo band above the tiles — absent → nothing (classic page) */
+  var bhtml="";
+  if(w.bandImg)bhtml='<div class="wel-photo"><img src="'+esc(w.bandImg)+'"'+dp("meta.welcome.bandImg","bg")+'></div>';
+  else if(EDIT)bhtml='<div class="wel-photo ghost" data-op="logoslot" data-path="meta.welcome.bandImg" data-mode="bg" style="height:auto;min-height:56px;margin-top:26px">+ Photo band (slim image strip under the letter)</div>';
   if(facts.length){
     var tiles=facts.map(function(ft,i){
       var b="meta.welcome.facts."+i;
@@ -491,8 +500,8 @@ function welcomeSlide(d,n){
   }
   return slide("",header(m)+
     '<div class="wel-band"'+de("meta.bandLine")+'>'+esc(m.bandLine)+'</div>'+
-    '<div class="wel-body'+(facts.length?' hasfacts':'')+'"><div class="wel-paras">'+(w.paras||[]).map(function(p,i){return '<p'+de("meta.welcome.paras."+i,1)+'>'+esc(p)+"</p>";}).join("")+'</div>'+
-    sigs+fhtml+'</div>'+foot(m,n));
+    '<div class="wel-body'+((facts.length||w.bandImg)?' hasfacts':'')+'"><div class="wel-paras">'+(w.paras||[]).map(function(p,i){return '<p'+de("meta.welcome.paras."+i,1)+'>'+esc(p)+"</p>";}).join("")+'</div>'+
+    sigs+bhtml+fhtml+'</div>'+foot(m,n));
 }
 /* optional "about our partners" page: meta.about={title,on,items:[{img,head,sub,body}]}.
    Absent → nothing renders (documents that predate it never change);
