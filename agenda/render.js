@@ -407,9 +407,10 @@ function closingSlide(m){
   if(m.contacts&&m.contacts.length){
     inner+='<div class="cl2-grid">'+m.contacts.map(function(c,i){
       var b="meta.contacts."+i,ph="";
-      if(c.t||EDIT)ph+='<span class="lk">T</span> <span'+de(b+".t")+'>'+esc(c.t)+'</span>';
-      if(c.m||EDIT)ph+=(ph?"&ensp;&ensp;":"")+'<span class="lk">M</span> <span'+de(b+".m")+'>'+esc(c.m)+'</span>';
-      return '<div class="cl2-p"><div class="nm"'+de(b+".name")+'>'+esc(c.name)+'</div><div class="rl"'+de(b+".role")+'>'+esc(c.role)+'</div><div class="ln em"'+de(b+".email")+'>'+esc(c.email)+'</div>'+(ph?'<div class="ln">'+ph+'</div>':"")+'</div>';
+      /* one line per number — T and M never share a line */
+      if(c.t||EDIT)ph+='<div class="ln"><span class="lk">T</span> <span'+de(b+".t")+'>'+esc(c.t)+'</span></div>';
+      if(c.m||EDIT)ph+='<div class="ln"><span class="lk">M</span> <span'+de(b+".m")+'>'+esc(c.m)+'</span></div>';
+      return '<div class="cl2-p"><div class="nm"'+de(b+".name")+'>'+esc(c.name)+'</div><div class="rl"'+de(b+".role")+'>'+esc(c.role)+'</div><div class="ln em"'+de(b+".email")+'>'+esc(c.email)+'</div>'+ph+'</div>';
     }).join("")+'</div>';
   }
   return slide("",inner);
