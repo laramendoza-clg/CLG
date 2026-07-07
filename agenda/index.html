@@ -112,7 +112,7 @@ async function boot(){
     total=AgendaRender.buildDeck(document.getElementById("deck"),data);
     document.title=((data.meta&&data.meta.city)||"")+" Agenda · CapLink";
     const d=new Date(rows[0].updated_at);
-    document.getElementById("upd").textContent="Updated "+d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})+"  ·  v43";
+    document.getElementById("upd").textContent="Updated "+d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})+"  ·  v44";
     document.getElementById("msg").style.display="none";
     document.getElementById("bar").style.display="flex";
     let pref=null;try{pref=localStorage.getItem("agdk-book");}catch(_){}
@@ -124,7 +124,14 @@ async function boot(){
 }
 document.getElementById("prev").onclick=()=>show(cur-1);
 document.getElementById("next").onclick=()=>show(cur+1);
-document.getElementById("pdf").onclick=()=>{
+/* --- PDF: rendered in-page (pixel-identical to the screen), with the
+       browser print dialog only as a fallback --- */
+function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement("script");s.src=src;s.onload=res;s.onerror=()=>rej(new Error("could not load "+src));document.head.appendChild(s);});}
+async function loadPdfLibs(){
+  if(!window.html2canvas)await loadScript("https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js");
+  if(!window.jspdf)await loadScript("https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js");
+}
+function printFallback(){
   let pr=document.getElementById("printRoot");
   if(pr)pr.remove();
   pr=document.createElement("div");pr.id="printRoot";
@@ -136,15 +143,67 @@ document.getElementById("pdf").onclick=()=>{
   });
   document.body.appendChild(pr);
   const hint=document.getElementById("pdfhint");
+  hint.innerHTML='In the print dialog choose <b>Save as PDF</b> and make sure <b>“Background graphics”</b> (Chrome) or <b>“Print backgrounds”</b> (Safari) is ticked — otherwise the browser strips the colours.';
   hint.style.display="block";
   setTimeout(()=>window.print(),350);
   setTimeout(()=>{hint.style.display="none";},15000);
-};
+}
 window.addEventListener("afterprint",()=>{
   const pr=document.getElementById("printRoot");
   if(pr)pr.remove();
   document.getElementById("pdfhint").style.display="none";
 });
+document.getElementById("pdf").onclick=async()=>{
+  const btn=document.getElementById("pdf"),hint=document.getElementById("pdfhint");
+  btn.disabled=true;
+  let holder=null;
+  try{
+    hint.textContent="Preparing your PDF…";hint.style.display="block";
+    await loadPdfLibs();
+    const slides=Array.from(document.querySelectorAll("#deck .sl"));
+    holder=document.createElement("div");
+    holder.style.cssText="position:fixed;left:-12000px;top:0;width:1000px;z-index:-1";
+    document.body.appendChild(holder);
+    const pdf=new window.jspdf.jsPDF({orientation:"portrait",unit:"in",format:"letter"});
+    for(let i=0;i<slides.length;i++){
+      hint.textContent="Building your PDF — page "+(i+1)+" of "+slides.length+"…";
+      const c=slides[i].cloneNode(true);
+      c.classList.add("on");
+      c.style.cssText="position:relative;left:0;top:0;opacity:1;transition:none;box-shadow:none";
+      holder.appendChild(c);
+      /* the rasteriser doesn't understand CSS zoom (used to fit the
+         speakers page) — convert each zoomed block to an equivalent
+         transform, pinned to its exact on-screen position */
+      const sr=c.getBoundingClientRect();
+      c.querySelectorAll("*").forEach(el=>{
+        const z=parseFloat(el.style&&el.style.zoom||"");
+        if(z&&Math.abs(z-1)>0.001){
+          const r=el.getBoundingClientRect();
+          el.style.zoom="";
+          el.style.left=(r.left-sr.left)+"px";
+          el.style.top=(r.top-sr.top)+"px";
+          el.style.right="auto";el.style.bottom="auto";
+          el.style.width=(r.width/z)+"px";
+          el.style.height=(r.height/z)+"px";
+          el.style.transform="scale("+z+")";
+          el.style.transformOrigin="top left";
+        }
+      });
+      const canvas=await window.html2canvas(c,{scale:2,useCORS:true,backgroundColor:"#ffffff",logging:false});
+      if(i>0)pdf.addPage("letter","portrait");
+      pdf.addImage(canvas.toDataURL("image/jpeg",0.92),"JPEG",0,0,8.5,11);
+      holder.removeChild(c);
+    }
+    holder.remove();holder=null;
+    pdf.save(slug+"-agenda.pdf");
+    hint.textContent="PDF downloaded ✓";
+    setTimeout(()=>{hint.style.display="none";},4000);
+  }catch(err){
+    if(holder)holder.remove();
+    hint.style.display="none";
+    printFallback();
+  }finally{btn.disabled=false;}
+};
 document.getElementById("mode").onclick=()=>setBook(!book);
 document.addEventListener("keydown",e=>{if(e.key==="ArrowRight"||e.key===" ")show(cur+1);if(e.key==="ArrowLeft")show(cur-1);});
 let tx=null;
