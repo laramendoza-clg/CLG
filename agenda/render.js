@@ -164,6 +164,13 @@ var CSS=
 ".agdk .rec2 p{font-size:12.2px;line-height:1.7;color:#6e6873}"+
 ".agdk .rec2-photo{flex:0 0 360px;overflow:hidden;min-height:210px;border-radius:4px}"+
 ".agdk .rec2-photo img{width:100%;height:100%;object-fit:cover;display:block}"+
+/* optional slim photo strip on any non-reception session row (e.g. the
+   closing cocktail hour's venue) — a lighter-weight alternative to the
+   full reception treatment when the photo is just one row on a page,
+   not a dedicated block */
+".agdk .row-photo{margin:12px 0 4px;border-radius:6px;overflow:hidden;height:130px}"+
+".agdk .row-photo img{width:100%;height:100%;object-fit:cover;display:block}"+
+".agdk-edit .ghost.row-photo{margin:12px 0 4px}"+
 ".agdk .thanksnote{background:#faf7f3;border:1px solid #ece3d8;border-radius:10px;padding:36px 52px;text-align:center;margin-top:2px}"+
 ".agdk .thanksnote .tn-label{font-size:9.5px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:13px}"+
 ".agdk .thanksnote .tn-body{font-size:14.5px;line-height:1.85;color:#5c5257;font-style:italic;font-weight:400;max-width:740px;margin:0 auto}"+
@@ -296,6 +303,7 @@ var CSS=
 ".agdk-land .spk-cell .fm{font-size:13px;font-weight:700;letter-spacing:0;text-transform:none;color:#38323c}"+
 ".agdk-land .prow{grid-template-columns:repeat(5,1fr)}"+
 ".agdk-land .rec2-photo{flex:0 0 520px}"+
+".agdk-land .row-photo{height:170px}"+
 ".agdk-land .sp-grid{grid-template-columns:repeat(3,1fr)}"+
 ".agdk-land .cl2-rail{width:400px}"+
 ".agdk-land .cl2-logo{width:220px}"+
@@ -390,7 +398,7 @@ function rowbar(i){
   if(!EDIT)return"";
   return '<div class="rowbar"><button data-op="up" data-i="'+i+'" title="Move up">↑</button><button data-op="down" data-i="'+i+'" title="Move down">↓</button><button data-op="add" data-i="'+i+'" title="Add a session below">＋ Add below</button><button data-op="del" data-i="'+i+'" title="Delete" style="color:#a33;border-color:#dfb6b6">✕</button></div>';
 }
-function sessionHtml(s,i){
+function sessionHtml(s,i,isLast){
   var b="sessions."+i;
   var head='<div class="rhead"><span class="pill"'+de(b+".time")+'>'+esc(s.time)+'</span><span class="rtitle"'+de(b+".title")+'>'+esc(s.title)+'</span></div>';
   var metaBits="";
@@ -432,6 +440,15 @@ function sessionHtml(s,i){
     var photo=s.img?'<div class="rec2-photo"><img src="'+esc(s.img)+'"'+dp(b+".img","bg")+'></div>'
       :(EDIT?'<div class="rec2-photo ghost" data-op="recimg" data-i="'+i+'">+ Venue photo</div>':"");
     body='<div class="rec2"><div class="rec2-cols">'+colHtml+'</div>'+photo+'</div>';
+  }
+  /* optional slim photo strip on a SIMPLE row — real photos render on
+     ANY simple row with s.img set, but the "add one" prompt only offers
+     itself on the LAST session (the usual cocktail-hour closer), so
+     Opening Remarks / Networking Break / Lunch don't all sprout a photo
+     box in the builder too. Absent → nothing, exactly as before. */
+  if(s.kind==="simple"){
+    if(s.img)body+='<div class="row-photo"><img src="'+esc(s.img)+'"'+dp(b+".img","bg")+'></div>';
+    else if(EDIT&&isLast)body+='<div class="ghost row-photo" data-op="rowimg" data-i="'+i+'">+ Add a photo (e.g. the cocktail venue)</div>';
   }
   var html='<div class="row" data-sess="'+i+'">'+rowbar(i)+head+body+meta+'</div>';
   if(s.kind==="reception"){
@@ -685,7 +702,7 @@ function paginateSessions(root,d,startN){
   /* when Notes lines are on, reserve space for them on EVERY page so all
      pages end identically: sessions, then ruled lines down to the footer */
   var CAP=notesOn?PAGE_H-120:PAGE_H;
-  var htmls=(d.sessions||[]).map(function(s,i){return sessionHtml(s,i);});
+  var htmls=(d.sessions||[]).map(function(s,i){return sessionHtml(s,i,i===d.sessions.length-1);});
   var hs=measureBlocks(root,htmls,"rows",LAND?1535:888).map(function(h){return h+12;});
   var n=hs.length;
   /* Balanced page breaks (what a book typesetter does): instead of greedily
@@ -820,5 +837,5 @@ function buildDeck(root,data,opts){
   return root.querySelectorAll(".sl").length;
 }
 
-window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:90};
+window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:91};
 })();
