@@ -206,10 +206,13 @@ var CSS=
 ".agdk-edit .pmv button:hover{background:#f7eef4}"+
 /* ---- landscape (legal, 14x8.5) overrides — active only with meta.orient:"landscape" ---- */
 ".agdk-land .sl{width:"+LW+"px;height:"+LH+"px}"+
-/* landscape cover: everything scaled UP for the wide legal page, and a
-   stronger (still daytime) gradient — a top band under the host logos plus
-   a feathered plate behind the title — busy skylines made legible */
-".agdk-land .cov-glow{top:0;height:780px;background:linear-gradient(180deg,rgba(10,8,13,.55) 0%,rgba(10,8,13,.16) 20%,rgba(10,8,13,0) 32%),radial-gradient(ellipse 60% 44% at 50% 56%,rgba(10,8,13,.56),rgba(10,8,13,0) 76%)}"+
+/* landscape cover: everything scaled UP for the wide legal page. Legibility
+   over busy skylines: gradients alone couldn't do it without going night-
+   time, so the title + date sit on a translucent PLATE BAND (hairline
+   edges, photo ghosts through) while top/bottom logo zones get firm bands
+   — the photo stays bright everywhere else */
+".agdk-land .cov-glow{top:0;height:100%;background:linear-gradient(180deg,rgba(10,8,13,.62) 0%,rgba(10,8,13,.2) 22%,rgba(10,8,13,0) 34%),linear-gradient(0deg,rgba(10,8,13,.6) 0%,rgba(10,8,13,.18) 18%,rgba(10,8,13,0) 30%)}"+
+".agdk-land .cov-plate{position:absolute;top:252px;height:412px;left:0;right:0;background:rgba(10,8,13,.72);border-top:1px solid rgba(255,255,255,.16);border-bottom:1px solid rgba(255,255,255,.16)}"+
 ".agdk-land .cov-cap{height:58px}"+
 ".agdk-land .cov-host .lbl{font-size:11px}"+
 ".agdk-land .cov-host img{max-width:480px}"+
@@ -225,13 +228,16 @@ var CSS=
 ".agdk-land .cov-rail img{max-width:250px}"+
 ".agdk-land .cov-rail .txt{font-size:24px}"+
 ".agdk-land .cov-note{bottom:32px;font-size:11.5px}"+
-/* landscape welcome: ONE readable text column, signatures on a right rail
-   (two-column letter text read badly) */
-".agdk-land .wel-body{display:flex;gap:90px;bottom:64px;font-size:13.5px;line-height:1.7}"+
-".agdk-land .wel-paras{flex:1 1 auto;min-width:0;max-width:1060px}"+
-".agdk-land .wel-body>.wel-sig{margin-top:0;flex:0 0 300px;align-self:center}"+
-".agdk-land .wel-body>.wel-sigrow{margin-top:0;flex:0 0 300px;align-self:center;display:flex;flex-direction:column;gap:46px}"+
-".agdk-land .wel-sigrow .wel-sig{margin-top:0;flex:none;align-self:auto}"+
+/* landscape welcome: a proper letter — full-width text edge to edge,
+   larger type, signature bottom-LEFT under the text (Lara: no columns,
+   no side rail, signature belongs on the left with the name) */
+".agdk-land .wel-band{font-size:13px}"+
+".agdk-land .wel-body{bottom:64px;font-size:16.5px;line-height:1.78}"+
+".agdk-land .wel-body p{margin-bottom:20px}"+
+".agdk-land .wel-sig{margin-top:30px}"+
+".agdk-land .wel-sig .sig{height:66px}"+
+".agdk-land .wel-sig .nm{font-size:17px}"+
+".agdk-land .wel-sig .org{font-size:12px}"+
 ".agdk-land .spk-row{grid-template-columns:repeat(5,1fr)}"+
 ".agdk-land .prow{grid-template-columns:repeat(5,1fr)}"+
 ".agdk-land .rec2-photo{flex:0 0 520px}"+
@@ -241,7 +247,53 @@ var CSS=
 ".agdk-land .cl2-head{top:138px;right:560px}"+
 ".agdk-land .cl2-bar{top:144px;height:92px}"+
 ".agdk-land .cl2-grid{top:300px;bottom:78px;right:474px;grid-template-columns:repeat(3,1fr);gap:36px 44px}"+
-".agdk-land .thanksnote .tn-body{max-width:1100px}";
+".agdk-land .thanksnote .tn-body{max-width:1100px;font-size:16px}"+
+/* landscape type scale: portrait sizes read TINY on the bigger legal page —
+   every text role steps up. Pagination re-measures with these applied. */
+".agdk-land .hd .t1{font-size:28px}"+
+".agdk-land .hd .t2{font-size:10.5px}"+
+".agdk-land .hd img{height:42px}"+
+".agdk-land .foot{font-size:10.5px}"+
+".agdk-land .pill{font-size:16px;padding:10px 22px}"+
+".agdk-land .rtitle{font-size:24px}"+
+".agdk-land .rnote{font-size:13px}"+
+".agdk-land .rdesc{font-size:14px;line-height:1.66}"+
+".agdk-land .rl{font-size:10px}"+
+".agdk-land .pcell img{width:80px;height:80px}"+
+".agdk-land .pcell .mtag{font-size:10.5px}"+
+".agdk-land .pcell .nm{font-size:14.5px}"+
+".agdk-land .pcell .tt{font-size:12.5px}"+
+".agdk-land .pcell .fm{font-size:13px}"+
+".agdk-land .tbl{font-size:13px}"+
+".agdk-land .tbl .hb{font-size:11.5px}"+
+".agdk-land .rec2 p{font-size:14px}"+
+".agdk-land .rec2 h4{font-size:12px}"+
+".agdk-land .rspon .sb{font-size:9.5px}"+
+".agdk-land .rspon .snm{font-size:15px}"+
+".agdk-land .notesblk .nlab{font-size:10.5px}"+
+".agdk-land .spk-badge{font-size:12px}"+
+".agdk-land .spk-sub{font-size:14.5px;top:204px}"+
+".agdk-land .spke1{font-size:13.5px}"+
+".agdk-land .spk-cell img{width:72px;height:72px}"+
+".agdk-land .spk-cell .nm{font-size:14px}"+
+".agdk-land .spk-cell .tt{font-size:11.5px}"+
+".agdk-land .spk-cell .fm{font-size:12px}"+
+".agdk-land .sp-rib{font-size:11px}"+
+".agdk-land .sp-desc{font-size:13.5px}"+
+".agdk-land .sp-logo .snm{font-size:25px}"+
+".agdk-land .cl2-head .h1{font-size:42px}"+
+".agdk-land .cl2-head .h2{font-size:34px}"+
+".agdk-land .cl2-p .nm{font-size:17px}"+
+".agdk-land .cl2-p .rl{font-size:10px}"+
+".agdk-land .cl2-p .ln{font-size:13px}"+
+".agdk-land .cl2-web{font-size:11px}"+
+".agdk-land .ct-title{font-size:48px}"+
+".agdk-land .ct-cap{font-size:11.5px}"+
+".agdk-land .ct-sub{font-size:14px}"+
+".agdk-land .ct .nm{font-size:19px}"+
+".agdk-land .ct .rl2{font-size:10px}"+
+".agdk-land .ct .ln{font-size:13.5px}"+
+".agdk-land .ct-web{font-size:13.5px}";
 
 function slide(cls,inner){return '<div class="sl '+(cls||"")+'">'+inner+"</div>";}
 function foot(meta,n){return '<div class="foot"><span'+de("meta.footerLeft")+'>'+esc(meta.footerLeft)+'</span><span>PAGE '+n+'</span></div>';}
@@ -364,6 +416,7 @@ function coverSlide(d){
     host='<img class="cov-cap" src="'+CAPW+'"'+(EDIT?dp("meta.hostImg","logo")+' title="Click to switch to a hosted-by / JV lockup"':"")+'>';
   }
   return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><div class="cov-glow"></div>'+
+    (LAND?'<div class="cov-plate"></div>':'')+
     host+
     lockupHtml(m)+
     '<div class="cov-date"><span'+de("meta.dateLine")+' style="font-weight:700">'+esc(m.dateLine)+'</span>  <span>|</span>  <span'+de("meta.locLine")+'>'+esc(m.locLine)+'</span></div>'+
