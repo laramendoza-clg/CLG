@@ -116,7 +116,7 @@ var CSS=
 ".agdk .spk-cell .tt{font-size:9.8px;color:#7f7984;font-style:italic;line-height:1.3;margin-top:1px}"+
 ".agdk .spk-cell .fm{font-size:10.4px;font-weight:700;color:#38323c;margin-top:2px;line-height:1.25}"+
 /* optional firm logo under each speaker (speakersList[i].logo) */
-".agdk .spk-cell .fl{height:20px;max-width:120px;object-fit:contain;object-position:left;margin-top:6px;display:block;filter:grayscale(1);opacity:.82}"+
+".agdk .spk-cell .fl{height:20px;max-width:120px;object-fit:contain;object-position:left;margin-top:6px;display:block}"+
 /* agenda rows */
 ".agdk .rows{position:absolute;top:44px;left:56px;right:56px;bottom:60px;overflow:hidden;display:flex;flex-direction:column}"+
 ".agdk .rows.fill{justify-content:space-between}"+
@@ -523,7 +523,7 @@ function aboutSlide(d,n){
     var b="meta.about.items."+i;
     var del=EDIT?'<button class="spx" data-op="abdel" data-i="'+i+'" style="position:absolute;top:-10px;right:-6px;z-index:5" title="Remove this column">✕</button>':"";
     /* optional logo sitting right on top of the photo */
-    var plogo=it.logo?'<div class="ab-plogo"><img src="'+esc(it.logo)+'"'+dp(b+".logo","logo")+'></div>'
+    var plogo=it.logo?'<div class="ab-plogo"><img src="'+esc(it.logo)+'" style="max-height:'+(+it.logoH||56)+'px"'+dp(b+".logo","logo")+'></div>'
       :(EDIT&&it.img?'<div class="ghost gt" data-op="logoslot" data-path="'+b+'.logo" data-mode="logo" style="position:absolute;top:10px;right:10px;min-height:22px;padding:3px 9px;font-size:9px;z-index:4">+ logo on photo</div>':"");
     var ph=it.img?'<div class="ab-photo"><img src="'+esc(it.img)+'"'+dp(b+".img","bg")+'>'+plogo+'</div>'
       :(EDIT?'<div class="ab-photo ghost" data-op="logoslot" data-path="'+b+'.img" data-mode="bg">+ photo</div>':'<div class="ab-photo"></div>');
@@ -570,7 +570,7 @@ function speakerCells(d){
       '<div class="nm"'+(cur?de(b+".name"):"")+'>'+esc(p.name)+'</div>'+
       ((p.title||(EDIT&&cur))?'<div class="tt"'+(cur?de(b+".title"):"")+'>'+esc(p.title||"")+'</div>':"")+
       ((p.firm||(EDIT&&cur))?'<div class="fm"'+(cur?de(b+".firm"):"")+'>'+esc(p.firm||"")+'</div>':"")+
-      (p.logo?'<img class="fl" src="'+esc(p.logo)+'"'+(cur?dp(b+".logo","logo"):"")+'>'
+      (p.logo?'<img class="fl" src="'+esc(p.logo)+'" style="height:'+(+p.logoH||20)+'px"'+(cur?dp(b+".logo","logo"):"")+'>'
         :(EDIT&&cur?'<div class="ghost gt" data-op="logoslot" data-path="'+b+'.logo" data-mode="logo" style="min-height:18px;max-width:86px;font-size:8.5px;margin-top:5px;padding:2px 6px">+ logo</div>':""))+
       '</div></div>';
   });
