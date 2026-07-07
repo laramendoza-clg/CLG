@@ -281,7 +281,7 @@ var CSS=
 ".agdk-land .spk-row{grid-template-columns:repeat(4,1fr)}"+
 /* big headshots — Lara's composites carry the firm logo inside the photo,
    so the photo IS the identity; text is secondary */
-".agdk-land .spk-cell img{width:120px;height:120px}"+
+".agdk-land .spk-cell img{width:150px;height:150px}"+
 ".agdk-land .spk-cell .tt{font-size:9.5px}"+
 /* firms are the QUIETEST element in the cell — caps read optically ~20%
    larger than lowercase, so they must sit well below the title size */
