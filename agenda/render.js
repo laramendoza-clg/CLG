@@ -82,6 +82,11 @@ var CSS=
 ".agdk .spk-gridwrap{position:absolute;top:206px;left:64px;right:64px;bottom:72px;display:flex;flex-direction:column;gap:20px}"+
 ".agdk .spk-row{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 22px}"+
 ".agdk .spk-cell{display:flex;gap:11px;align-items:flex-start;min-width:0}"+
+".agdk-edit .spk-cell{position:relative}"+
+".agdk-edit .spk-cell .spx{position:absolute;top:-8px;right:-4px;display:none;z-index:5}"+
+".agdk-edit .spk-cell:hover .spx{display:block}"+
+".agdk-edit .spke1 .spx{margin-left:6px;display:none;vertical-align:1px}"+
+".agdk-edit .spke1:hover .spx{display:inline-block}"+
 ".agdk .spk-cell img{width:56px;height:56px;object-fit:cover;border-radius:0;flex:0 0 auto}"+
 ".agdk .spk-cell .nm{font-size:12px;font-weight:700;color:#241020;line-height:1.25}"+
 ".agdk .spk-cell .tt{font-size:9.8px;color:#7f7984;font-style:italic;line-height:1.3;margin-top:1px}"+
@@ -330,22 +335,31 @@ function speakerList(d){
   });
   return list;
 }
+function curatedSpk(d){return !!(d.speakersList&&d.speakersList.length);}
 function speakerEntries(d){
-  /* compact one-line entries: Name, Title, Firm — wraps within the entry */
-  return speakerList(d).map(function(p){
-    var bits="<b>"+esc(p.name)+"</b>";
-    if(p.title)bits+=", <i>"+esc(p.title)+"</i>";
-    if(p.firm)bits+=', <span class="f">'+esc(p.firm)+"</span>";
+  /* compact one-line entries: Name, Title, Firm — wraps within the entry.
+     Curated lists (d.speakersList) are editable in place; session-derived
+     entries are edited on their session pages and update here. */
+  var cur=curatedSpk(d);
+  return speakerList(d).map(function(p,i){
+    var b="speakersList."+i;
+    var bits="<b"+(cur?de(b+".name"):"")+">"+esc(p.name)+"</b>";
+    if(p.title||(EDIT&&cur))bits+=", <i"+(cur?de(b+".title"):"")+">"+esc(p.title||"")+"</i>";
+    if(p.firm||(EDIT&&cur))bits+=', <span class="f"'+(cur?de(b+".firm"):"")+'>'+esc(p.firm||"")+"</span>";
+    if(EDIT&&cur)bits+=' <button class="spx" data-op="spkdel" data-i="'+i+'" title="Remove from this page">✕</button>';
     return '<div class="spke1">'+bits+"</div>";
   });
 }
 function speakerCells(d){
   /* photo-grid cells: headshot + name / title / firm */
-  return speakerList(d).map(function(p){
-    return '<div class="spk-cell"><img src="'+pic(p.img)+'"><div style="min-width:0">'+
-      '<div class="nm">'+esc(p.name)+'</div>'+
-      (p.title?'<div class="tt">'+esc(p.title)+'</div>':"")+
-      (p.firm?'<div class="fm">'+esc(p.firm)+'</div>':"")+'</div></div>';
+  var cur=curatedSpk(d);
+  return speakerList(d).map(function(p,i){
+    var b="speakersList."+i;
+    return '<div class="spk-cell">'+(EDIT&&cur?'<button class="spx" data-op="spkdel" data-i="'+i+'" title="Remove from this page">✕</button>':"")+
+      '<img src="'+pic(p.img)+'"'+(cur?dp(b+".img","photo"):"")+'><div style="min-width:0">'+
+      '<div class="nm"'+(cur?de(b+".name"):"")+'>'+esc(p.name)+'</div>'+
+      ((p.title||(EDIT&&cur))?'<div class="tt"'+(cur?de(b+".title"):"")+'>'+esc(p.title||"")+'</div>':"")+
+      ((p.firm||(EDIT&&cur))?'<div class="fm"'+(cur?de(b+".firm"):"")+'>'+esc(p.firm||"")+'</div>':"")+'</div></div>';
   });
 }
 function sponsorSlides(d,startN){
@@ -461,6 +475,7 @@ function spkHead(m){
 function speakersGridSlides(root,d,startN){
   var cells=speakerCells(d);
   if(!cells.length)return[];
+  if(EDIT&&curatedSpk(d))cells.push('<div class="ghost" data-op="spkadd" style="min-height:56px">+ Add person</div>');
   var subOn=!!d.meta.speakersSub;
   var rows=[];
   for(var i=0;i<cells.length;i+=3)rows.push('<div class="spk-row">'+cells.slice(i,i+3).join("")+'</div>');
@@ -482,6 +497,7 @@ function speakersSlides(root,d,startN){
   if(d.meta.speakersStyle==="grid")return speakersGridSlides(root,d,startN);
   var entries=speakerEntries(d);
   if(!entries.length)return[];
+  if(EDIT&&curatedSpk(d))entries.push('<div class="ghost gt" data-op="spkadd">+ Add person</div>');
   var subOn=!!d.meta.speakersSub;
   var COL_H=subOn?970:1000,GAP=10;
   function tot(hs){var t=0;for(var q=0;q<hs.length;q++)t+=hs[q]+GAP;return t;}

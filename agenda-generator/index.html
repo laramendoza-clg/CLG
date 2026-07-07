@@ -73,7 +73,7 @@
 <body>
 <div class="app">
   <div class="left">
-    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v36</span></h1>
+    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v37</span></h1>
     <div class="tip">✏️ <b>Edit like Slides:</b> click any text on the page to type. Click a photo or logo to change it. Hover a session for <b>move / add / delete</b>.</div>
 
     <div class="stepbox">
@@ -120,7 +120,7 @@
 
 <div id="pop"></div>
 
-<script src="../agenda/render.js?v=36"></script>
+<script src="../agenda/render.js?v=37"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -408,7 +408,9 @@ pv.addEventListener("keydown",e=>{
 });
 function handleOp(btn){
   const i=+btn.dataset.i,op=btn.dataset.op;
-  if(["up","down","del","addp","addlead","addtable","pleft","pright","spdel"].indexOf(op)>=0)snapshot();
+  if(["up","down","del","addp","addlead","addtable","pleft","pright","spdel","spkadd","spkdel"].indexOf(op)>=0)snapshot();
+  if(op==="spkadd"){if(!Array.isArray(state.speakersList))state.speakersList=[];state.speakersList.push({img:"",name:"Full Name",title:"Title",firm:"Firm"});rebuild();return;}
+  if(op==="spkdel"){if(!confirm("Remove this person from the speakers page?")){undoStack.pop();updateUndoUI();return;}state.speakersList.splice(i,1);rebuild();return;}
   if(op==="pleft"||op==="pright"){
     const j=+btn.dataset.j,arr=state.sessions[i].people,k=op==="pleft"?j-1:j+1;
     if(k>=0&&k<arr.length){const x=arr[j];arr[j]=arr[k];arr[k]=x;renderForm();rebuild();}
