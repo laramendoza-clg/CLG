@@ -48,7 +48,10 @@ var CSS=
 ".agdk .cov-host{position:absolute;top:56px;left:64px}"+
 ".agdk .cov-host .lbl{font-size:9px;letter-spacing:.3em;font-weight:600;color:rgba(255,255,255,.6);text-transform:uppercase;margin-bottom:8px}"+
 ".agdk .cov-host img{display:block;max-width:360px;object-fit:contain;object-position:left}"+
-".agdk .cov-lock{position:absolute;top:372px;left:50%;transform:translateX(-50%);width:560px}"+
+/* event-logo cover images: a fixed HEIGHT, never a fixed width — so every
+   event's logo reads at the same scale regardless of its own proportions
+   (a near-square mark no longer renders huge next to a wide wordmark) */
+".agdk .cov-lock{position:absolute;top:372px;left:50%;transform:translateX(-50%);height:150px;width:auto;max-width:760px;object-fit:contain}"+
 /* soft feathered plate behind the title zone — darkens only where the
    lockup and date sit, no visible edges, vanishes on already-dark skies */
 ".agdk .cov-glow{position:absolute;top:296px;left:0;right:0;height:480px;background:radial-gradient(ellipse 64% 52% at 50% 44%,rgba(10,8,13,.5),rgba(10,8,13,0) 74%)}"+
@@ -258,7 +261,7 @@ var CSS=
 ".agdk-land .cov-cap{height:58px}"+
 ".agdk-land .cov-host .lbl{font-size:11px}"+
 ".agdk-land .cov-host img{max-width:480px}"+
-".agdk-land .cov-lock{top:270px;width:720px}"+
+".agdk-land .cov-lock{top:270px;height:190px;width:auto;max-width:1100px}"+
 ".agdk-land .cov-lockt{top:300px;gap:38px;text-shadow:0 2px 8px rgba(0,0,0,.6),0 0 36px rgba(0,0,0,.65)}"+
 ".agdk-land .cov-lockt .c1{font-size:58px}"+
 ".agdk-land .cov-lockt .vb{width:4px}"+
@@ -837,5 +840,5 @@ function buildDeck(root,data,opts){
   return root.querySelectorAll(".sl").length;
 }
 
-window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:92};
+window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:93};
 })();
