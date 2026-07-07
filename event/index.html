@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<title>Event · CapLink Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--plum:#2A1228;--cream:#FAFAFA;--ink:#241020;--line:#e7e1e4;--mute:#9a8f96;--acc:#531639}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--cream);color:var(--ink);font-family:'Raleway',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+header{color:#fff;padding:38px 24px 32px;background:radial-gradient(130% 150% at 16% -10%,#42284f 0%,#2A1228 46%,#190b18 100%);border-bottom:3px solid var(--acc)}
+.hwrap{max-width:880px;margin:0 auto}
+.kick{font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+header h1{margin:8px 0 6px;font-size:27px;font-weight:700;letter-spacing:.01em}
+header .meta{font-size:12.5px;font-weight:300;color:rgba(255,255,255,.75);letter-spacing:.06em}
+.wrap{max-width:880px;margin:0 auto;padding:26px 22px 50px}
+.sec{margin-top:30px}
+.sec h2{display:flex;align-items:center;gap:11px;margin:0 0 14px;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--plum)}
+.sec h2::after{content:'';flex:1;height:1px;background:var(--line)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+a.card,div.card{display:flex;flex-direction:column;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);border-left:4px solid var(--acc);border-radius:8px;padding:18px 19px 16px;transition:box-shadow .18s,transform .18s}
+a.card:hover{box-shadow:0 14px 34px rgba(42,18,40,.15);transform:translateY(-2px)}
+.card h3{margin:0 0 5px;font-size:16px;font-weight:700}
+.card p{margin:0;font-size:12.5px;line-height:1.55;color:#6b6068;flex:1}
+.card .go{margin-top:13px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--acc)}
+div.card.off{border-left-color:var(--line);border-style:dashed;background:transparent}
+div.card.off h3{color:#8a8088}
+.status{font-size:12px;color:var(--mute);margin:4px 0 0}
+.status .live{color:#2e7d4f;font-weight:700}
+.back{display:inline-block;margin-top:26px;font-size:12.5px;font-weight:600;color:var(--acc);text-decoration:none}
+</style>
+</head>
+<body>
+<header><div class="hwrap">
+  <div class="kick">CapLink Studio · Event workspace</div>
+  <h1 id="evName">Loading…</h1>
+  <div class="meta" id="evMeta"></div>
+</div></header>
+<div class="wrap">
+  <section class="sec">
+    <h2>Agenda</h2>
+    <div class="grid" id="agGrid"></div>
+    <p class="status" id="agStatus"></p>
+  </section>
+  <section class="sec">
+    <h2>Website</h2>
+    <div class="grid" id="webGrid"></div>
+  </section>
+  <section class="sec">
+    <h2>Social media</h2>
+    <div class="grid" id="socGrid"></div>
+  </section>
+  <a class="back" href="../">← All events</a>
+</div>
+<script>
+const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
+const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
+const EVENTS={
+  "dubai-2026":{name:"Dubai Private Capital Summit 2026",meta:"September 15, 2026 · The Lana · Dubai",acc:"#2f5d63",social:true},
+  "newyork-2026":{name:"New York Private Capital Summit 2026",meta:"October 14, 2026 · WELL& by Durst + Nasdaq · New York",acc:"#A15D50",social:false},
+  "ai-data-breakfast-2026":{name:"AI / Data & Insight Private Capital Breakfast 2026",meta:"November 18, 2026 · The May Fair Hotel · London · with PE150",acc:"#8A7547",social:false},
+  "europe-2027":{name:"European Private Capital Summit 2027",meta:"February 2027 · London",acc:"#6b2554",social:false},
+  "mit-2027":{name:"Private Capital Talent Leadership Summit 2027",meta:"February 24, 2027 · MIT · Cambridge, MA",acc:"#5E1A2E",social:false}
+};
+const slug=new URLSearchParams(location.search).get("e")||"dubai-2026";
+const ev=EVENTS[slug]||{name:slug,meta:"",acc:"#531639",social:false};
+document.documentElement.style.setProperty("--acc",ev.acc);
+document.getElementById("evName").textContent=ev.name;
+document.getElementById("evMeta").textContent=ev.meta;
+document.title=ev.name+" · CapLink Studio";
+function card(href,title,desc,cta){return '<a class="card" href="'+href+'"><h3>'+title+'</h3><p>'+desc+'</p><span class="go">'+cta+' →</span></a>';}
+document.getElementById("agGrid").innerHTML=
+  card("../agenda-generator/?e="+encodeURIComponent(slug),"✏️ Edit the agenda","Google-Slides-style editor — click anything on the page to change it. Publish makes it live for everyone.","Open editor")+
+  card("../agenda/?e="+encodeURIComponent(slug),"👁 View & share","The live document your guests see — always the newest published version, with built-in PDF download.","Open share link");
+document.getElementById("webGrid").innerHTML=
+  card("../sponsor-generator/","Sponsor Section","Build the sponsor roster block for this event's web page — tiers, logos, bios, copy-paste code.","Open")+
+  card("../logo-sizes/","Sponsor Logo Sizes","The shared size dictionary — check before adding or resizing any sponsor logo.","Open");
+document.getElementById("socGrid").innerHTML=ev.social?
+  card("../dubai-pcs-card/","“I'm Attending” Card","Personalised 1080×1350 attendance card, with optional headshot.","Open")+
+  card("../speaker-card/","Speaker & Panel Card","1200×675 announcement card for speakers, panellists and moderators.","Open")
+  :'<div class="card off"><h3>Not set up for this event yet</h3><p>The attendance and speaker cards are built for Dubai 2026 so far — tell Lara when this event needs its own social cards and they get cloned with this event’s branding.</p></div>';
+(async()=>{
+  try{
+    const r=await fetch(SUPA_URL+"/rest/v1/agendas?slug=eq."+encodeURIComponent(slug)+"&select=updated_at",{headers:{apikey:SUPA_KEY}});
+    if(!r.ok)return;
+    const rows=await r.json();
+    document.getElementById("agStatus").innerHTML=rows.length
+      ?'<span class="live">● Live</span> — last published '+new Date(rows[0].updated_at).toLocaleString()
+      :"Not published yet — open the editor and hit Publish to make it live.";
+  }catch(_){}
+})();
+</script>
+<script src="../assets/studio-nav.js?v=3"></script>
+</body>
+</html>

@@ -30,8 +30,13 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
 .tagline{margin-top:10px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.58);font-weight:500}
 
 /* ---- layout ---- */
-.wrap{max-width:980px;margin:0 auto;padding:30px 22px 10px}
+.wrap{max-width:980px;margin:0 auto;padding:34px 22px 10px}
+.ask{margin:0 0 8px;font-size:25px;font-weight:700;letter-spacing:.005em}
 .lead{font-size:14.5px;color:#6b6068;margin:0;line-height:1.55;font-weight:400}
+.evgrid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.evcard{border-top-width:4px;padding:22px 22px 20px}
+.evcard h3{font-size:20px;line-height:1.3;margin:12px 0 4px;flex:1}
+.evcard .go{margin-top:18px}
 
 .section{margin-top:34px}
 .section h2{display:flex;align-items:center;gap:11px;margin:0 0 16px;
@@ -93,59 +98,52 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
 </header>
 
 <div class="wrap">
-  <p class="lead">Everything the team makes, in one place. It all runs in your browser &mdash; nothing is uploaded.</p>
+  <h1 class="ask">Which event are you working on?</h1>
+  <p class="lead">Pick an event to get everything for it in one place &mdash; its agenda, website pieces and social cards.</p>
 
-  <section class="section cat-web">
-    <h2><span class="dot"></span>Live documents</h2>
-    <a class="feature" href="./agendas/">
-      <div class="ft-main">
-        <span class="tag">Always the latest version</span>
-        <h3>Event Agendas</h3>
-        <p>One shared document per event &mdash; anyone on the team can edit, and the share link always shows the newest published copy. Print-ready PDF built in.</p>
-        <span class="go">All agendas &amp; share links <span class="arw">&rarr;</span></span>
-      </div>
-      <div class="ft-side">
-        <span class="ft-lbl">Jump into an agenda</span>
-        <span class="ft-ev" data-e="dubai-2026">Dubai 2026</span>
-        <span class="ft-ev" data-e="newyork-2026">New York 2026</span>
-        <span class="ft-ev" data-e="ai-data-breakfast-2026">AI / Data Breakfast 2026</span>
-        <span class="ft-ev" data-e="europe-2027">Europe 2027</span>
-        <span class="ft-ev" data-e="mit-2027">MIT 2027</span>
-      </div>
-    </a>
-  </section>
-
-  <section class="section cat-social">
-    <h2><span class="dot"></span>Create a graphic</h2>
-    <div class="grid">
-      <a class="card" href="./dubai-pcs-card/">
-        <span class="tag">Social &middot; 1080&times;1350</span>
-        <h3>&ldquo;I&rsquo;m Attending&rdquo; Card</h3>
-        <p>Personalised attendance card for Dubai PCS 2026, with an optional headshot.</p>
-        <span class="go">Open <span class="arw">&rarr;</span></span>
+  <section class="section">
+    <div class="grid evgrid">
+      <a class="card evcard" style="--cat:#2f5d63" href="./event/?e=dubai-2026">
+        <span class="tag">September 15, 2026 &middot; The Lana</span>
+        <h3>Dubai<br>Private Capital Summit</h3>
+        <span class="go">Open workspace <span class="arw">&rarr;</span></span>
       </a>
-      <a class="card" href="./speaker-card/">
-        <span class="tag">Social &middot; 1200&times;675</span>
-        <h3>Speaker &amp; Panel Card</h3>
-        <p>Announcement card for keynote speakers, panellists and moderators.</p>
-        <span class="go">Open <span class="arw">&rarr;</span></span>
+      <a class="card evcard" style="--cat:#A15D50" href="./event/?e=newyork-2026">
+        <span class="tag">October 14, 2026 &middot; WELL&amp; + Nasdaq</span>
+        <h3>New York<br>Private Capital Summit</h3>
+        <span class="go">Open workspace <span class="arw">&rarr;</span></span>
       </a>
-      <a class="card" href="./sponsor-generator/">
-        <span class="tag">Website &middot; Embed</span>
-        <h3>Sponsor Section</h3>
-        <p>The sponsor roster block for an event page &mdash; tiers, logos, bios, copy-paste code.</p>
-        <span class="go">Open <span class="arw">&rarr;</span></span>
+      <a class="card evcard" style="--cat:#8A7547" href="./event/?e=ai-data-breakfast-2026">
+        <span class="tag">November 18, 2026 &middot; London &middot; with PE150</span>
+        <h3>AI / Data &amp; Insight<br>Private Capital Breakfast</h3>
+        <span class="go">Open workspace <span class="arw">&rarr;</span></span>
+      </a>
+      <a class="card evcard" style="--cat:#6b2554" href="./event/?e=europe-2027">
+        <span class="tag">February 2027 &middot; London</span>
+        <h3>European<br>Private Capital Summit</h3>
+        <span class="go">Open workspace <span class="arw">&rarr;</span></span>
+      </a>
+      <a class="card evcard" style="--cat:#5E1A2E" href="./event/?e=mit-2027">
+        <span class="tag">February 24, 2027 &middot; MIT, Cambridge</span>
+        <h3>Talent Leadership<br>Summit (MIT)</h3>
+        <span class="go">Open workspace <span class="arw">&rarr;</span></span>
       </a>
     </div>
   </section>
 
   <section class="section cat-app">
-    <h2><span class="dot"></span>Reference</h2>
+    <h2><span class="dot"></span>Not tied to one event</h2>
     <div class="grid">
+      <a class="card" href="./agendas/">
+        <span class="tag">All agendas</span>
+        <h3>Agendas &amp; share links</h3>
+        <p>Every agenda document in one list, with its live status and share link.</p>
+        <span class="go">Open <span class="arw">&rarr;</span></span>
+      </a>
       <a class="card" href="./logo-sizes/">
-        <span class="tag">Logos</span>
+        <span class="tag">Reference</span>
         <h3>Sponsor Logo Sizes</h3>
-        <p>The shared size dictionary &mdash; check here before adding or resizing any sponsor logo.</p>
+        <p>The shared size dictionary &mdash; check before adding or resizing any sponsor logo.</p>
         <span class="go">Open <span class="arw">&rarr;</span></span>
       </a>
       <div class="card soon">
@@ -161,14 +159,6 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
     <p>A CapLink Group studio &middot; internal tools, unlisted (not indexed by search engines). Share within CapLink only.</p>
   </div>
 </div>
-<script>
-document.querySelectorAll(".ft-ev").forEach(function(el){
-  el.addEventListener("click",function(e){
-    e.preventDefault();e.stopPropagation();
-    location.href="./agenda-generator/?e="+encodeURIComponent(el.dataset.e);
-  });
-});
-</script>
-<script src="./assets/studio-nav.js?v=2"></script>
+<script src="./assets/studio-nav.js?v=3"></script>
 </body>
 </html>
