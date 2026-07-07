@@ -116,7 +116,7 @@ var CSS=
 ".agdk .spk-cell .tt{font-size:9.8px;color:#7f7984;font-style:italic;line-height:1.3;margin-top:1px}"+
 ".agdk .spk-cell .fm{font-size:10.4px;font-weight:700;color:#38323c;margin-top:2px;line-height:1.25}"+
 /* optional firm logo under each speaker (speakersList[i].logo) */
-".agdk .spk-cell .fl{height:20px;max-width:120px;object-fit:contain;object-position:left;margin-top:6px;display:block}"+
+".agdk .spk-cell .fl{height:20px;max-width:120px;object-fit:contain;object-position:left;margin-top:6px;display:block;filter:grayscale(1);opacity:.82}"+
 /* agenda rows */
 ".agdk .rows{position:absolute;top:44px;left:56px;right:56px;bottom:60px;overflow:hidden;display:flex;flex-direction:column}"+
 ".agdk .rows.fill{justify-content:space-between}"+
