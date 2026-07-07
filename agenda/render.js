@@ -426,8 +426,14 @@ function contactSlide(d,n){
   return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><div class="ct-tint"></div><div class="ct-cap">Get In Touch</div><div class="ct-title">CONTACT US</div><div class="ct-sub"'+de("meta.contactsSub",1)+'>'+esc(m.contactsSub||"")+'</div><div class="ct-line"></div><div class="ct-list">'+cells+'</div>');
 }
 function bgSrc(m){return (m&&m.bgImg&&String(m.bgImg).trim())?m.bgImg:SKY;}
-/* back cover: just the sky photo and the centred lockup — nothing else */
-function backSlide(m){return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><img class="back-logo" src="'+esc(m.hostImg||CAPSTACK)+'"'+(m.hostImg?dp("meta.hostImg","logo"):"")+'>');}
+/* back cover: just the sky photo and the centred lockup — nothing else.
+   meta.backImg (optional) sets the back-cover logo independently of the
+   rest of the document; absent → the JV lockup if set, else the stacked
+   CapLink mark. Click it in the builder to swap. */
+function backSlide(m){
+  var src=m.backImg||m.hostImg||CAPSTACK;
+  return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><img class="back-logo" src="'+esc(src)+'"'+dp("meta.backImg","logo")+(m.backW?' style="width:'+(+m.backW||330)+'px"':"")+'>');
+}
 
 /* --- measurement helpers: run inside a live offscreen slide --- */
 function measureBlocks(root,htmlList,wrapClass,width){
