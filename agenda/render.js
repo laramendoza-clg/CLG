@@ -81,6 +81,15 @@ var CSS=
 ".agdk .wel-sig .sig{height:58px;display:block;margin-bottom:9px;max-width:280px;object-fit:contain;object-position:left}"+
 ".agdk .wel-sig .nm{font-size:15.5px;color:#241020}.agdk .wel-sig .nm b{font-weight:700}"+
 ".agdk .wel-sig .org{font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--accent);margin-top:5px;text-transform:uppercase}"+
+/* optional "at a glance" strip pinned to the bottom of the welcome page
+   (meta.welcome.facts) — fills the space under short letters */
+".agdk .wel-body.hasfacts{display:flex;flex-direction:column}"+
+".agdk .wel-facts{margin-top:auto;display:flex;gap:34px;padding-top:26px}"+
+".agdk .wf{flex:1;min-width:0;border-top:2.5px solid var(--accent);padding-top:12px;position:relative}"+
+".agdk .wf .k{font-size:9.5px;letter-spacing:.26em;font-weight:700;color:var(--accent);text-transform:uppercase}"+
+".agdk .wf .v{font-size:14.5px;font-weight:600;color:#241020;margin-top:8px;line-height:1.5}"+
+".agdk-edit .wf .spx{position:absolute;top:4px;right:0;display:none}"+
+".agdk-edit .wf:hover .spx{display:block}"+
 /* speakers */
 ".agdk .spk-badge{position:absolute;top:150px;left:64px;background:var(--pill);color:#fff;font-size:10px;font-weight:700;letter-spacing:.24em;padding:8px 20px;border-radius:16px;text-transform:uppercase}"+
 ".agdk .spk-sub{position:absolute;top:198px;left:66px;right:64px;font-size:12.5px;font-style:italic;font-weight:400;color:#8a7f86;letter-spacing:.02em}"+
@@ -251,6 +260,8 @@ var CSS=
 ".agdk-land .wel-sig .sig{height:66px}"+
 ".agdk-land .wel-sig .nm{font-size:17px}"+
 ".agdk-land .wel-sig .org{font-size:12px}"+
+".agdk-land .wf .k{font-size:10.5px}"+
+".agdk-land .wf .v{font-size:16px}"+
 ".agdk-land .ab-photo{height:330px}"+
 ".agdk-land .ab-head{font-size:26px}"+
 ".agdk-land .ab-sub{font-size:11.5px}"+
@@ -464,10 +475,24 @@ function welcomeSlide(d,n){
       (s2.img?'<img class="sig" src="'+esc(s2.img)+'"'+dp(b2+".img","logo")+'>':(EDIT?'<div class="ghost gt" data-op="sign2img" style="width:210px;margin-bottom:9px">+ Signature image</div>':""))+
       '<div class="nm"><b'+de(b2+".name")+'>'+esc(s2.name)+'</b>, <span'+de(b2+".title")+'>'+esc(s2.title)+'</span></div><div class="org"'+de(b2+".org")+'>'+esc(s2.org)+'</div></div></div>';
   }
+  /* optional at-a-glance tiles (meta.welcome.facts) — absent → the classic
+     letter page, unchanged. margin-top:auto pins them to the page bottom. */
+  var facts=w.facts||[],fhtml="";
+  if(facts.length){
+    var tiles=facts.map(function(ft,i){
+      var b="meta.welcome.facts."+i;
+      var rm=EDIT?'<button class="spx" data-op="wfdel" data-i="'+i+'" title="Remove this tile">✕</button>':"";
+      return '<div class="wf">'+rm+'<div class="k"'+de(b+".k")+'>'+esc(ft.k)+'</div><div class="v"'+de(b+".v",1)+'>'+esc(ft.v)+'</div></div>';
+    }).join("");
+    if(EDIT&&facts.length<5)tiles+='<div class="wf ghost" data-op="wfadd" style="min-height:48px;border-top:none">+ tile</div>';
+    fhtml='<div class="wel-facts">'+tiles+'</div>';
+  }else if(EDIT){
+    fhtml='<div class="ghost gt" data-op="wfadd" style="margin-top:26px;max-width:440px">+ Add an “at a glance” strip (date · venue · format) to fill this page</div>';
+  }
   return slide("",header(m)+
     '<div class="wel-band"'+de("meta.bandLine")+'>'+esc(m.bandLine)+'</div>'+
-    '<div class="wel-body"><div class="wel-paras">'+(w.paras||[]).map(function(p,i){return '<p'+de("meta.welcome.paras."+i,1)+'>'+esc(p)+"</p>";}).join("")+'</div>'+
-    sigs+'</div>'+foot(m,n));
+    '<div class="wel-body'+(facts.length?' hasfacts':'')+'"><div class="wel-paras">'+(w.paras||[]).map(function(p,i){return '<p'+de("meta.welcome.paras."+i,1)+'>'+esc(p)+"</p>";}).join("")+'</div>'+
+    sigs+fhtml+'</div>'+foot(m,n));
 }
 /* optional "about our partners" page: meta.about={title,on,items:[{img,head,sub,body}]}.
    Absent → nothing renders (documents that predate it never change);

@@ -36,7 +36,25 @@
    "signName": "",
    "signTitle": "",
    "signOrg": "",
-   "signImg": ""
+   "signImg": "",
+   "facts": [
+    {
+     "k": "Date",
+     "v": "Tuesday, February 24, 2027"
+    },
+    {
+     "k": "Venue",
+     "v": "MIT Campus, Cambridge, MA"
+    },
+    {
+     "k": "Format",
+     "v": "A focused one-day forum — panels, a fireside spotlight and TED-style briefings"
+    },
+    {
+     "k": "Who Attends",
+     "v": "Operating & value-creation partners, chief talent officers and portfolio CHROs, with MIT’s MBA community"
+    }
+   ]
   },
   "contactsSub": "We look forward to working with you. Please reach out to any member of the team to discuss how we can maximise your partnership.",
   "contacts": [
