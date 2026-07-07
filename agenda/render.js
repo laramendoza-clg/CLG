@@ -79,8 +79,13 @@ var CSS=
 ".agdk .wel-sig{margin-top:34px}"+
 ".agdk .wel-sigrow{display:flex;gap:120px}"+
 ".agdk .wel-sig .sig{height:58px;display:block;margin-bottom:9px;max-width:280px;object-fit:contain;object-position:left}"+
+/* signature block is THREE stacked lines (Nawshad): name / title / org */
 ".agdk .wel-sig .nm{font-size:15.5px;color:#241020}.agdk .wel-sig .nm b{font-weight:700}"+
+".agdk .wel-sig .ttl{font-size:13px;color:#5a5460;margin-top:3px;line-height:1.4}"+
 ".agdk .wel-sig .org{font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--accent);margin-top:5px;text-transform:uppercase}"+
+/* never let the photo band / tiles crowd the signature */
+".agdk .wel-body.hasfacts .wel-sig{margin-bottom:34px}"+
+".agdk .wel-body.hasfacts>.wel-sigrow{margin-bottom:34px}"+
 /* optional "at a glance" strip and slim photo band pinned to the bottom of
    the welcome page (meta.welcome.facts / meta.welcome.bandImg) — they fill
    the space under short letters as a bottom group */
@@ -272,6 +277,7 @@ var CSS=
 ".agdk-land .wel-sig{margin-top:30px}"+
 ".agdk-land .wel-sig .sig{height:66px}"+
 ".agdk-land .wel-sig .nm{font-size:17px}"+
+".agdk-land .wel-sig .ttl{font-size:14.5px}"+
 ".agdk-land .wel-sig .org{font-size:12px}"+
 ".agdk-land .wf .k{font-size:10.5px}"+
 ".agdk-land .wf .v{font-size:16px}"+
@@ -481,7 +487,7 @@ function welcomeSlide(d,n){
   var m=d.meta,w=m.welcome||{};
   var sig1='<div class="wel-sig">'+
     (w.signImg?'<img class="sig" src="'+esc(w.signImg)+'"'+dp("meta.welcome.signImg","logo")+'>':(EDIT?'<div class="ghost gt" data-op="signimg" style="width:210px;margin-bottom:9px">+ Signature image</div>':""))+
-    '<div class="nm"><b'+de("meta.welcome.signName")+'>'+esc(w.signName)+'</b>, <span'+de("meta.welcome.signTitle")+'>'+esc(w.signTitle)+'</span></div><div class="org"'+de("meta.welcome.signOrg")+'>'+esc(w.signOrg)+'</div></div>';
+    '<div class="nm"><b'+de("meta.welcome.signName")+'>'+esc(w.signName)+'</b></div><div class="ttl"'+de("meta.welcome.signTitle")+'>'+esc(w.signTitle)+'</div><div class="org"'+de("meta.welcome.signOrg")+'>'+esc(w.signOrg)+'</div></div>';
   /* signature block hides entirely in the published view when every field
      is blank (unbranded letters, e.g. pending MTA) — the builder still
      shows the editable placeholders so it can be re-added later */
@@ -491,7 +497,7 @@ function welcomeSlide(d,n){
     var s2=w.sign2,b2="meta.welcome.sign2";
     sigs='<div class="wel-sigrow">'+sig1+'<div class="wel-sig">'+
       (s2.img?'<img class="sig" src="'+esc(s2.img)+'"'+dp(b2+".img","logo")+'>':(EDIT?'<div class="ghost gt" data-op="sign2img" style="width:210px;margin-bottom:9px">+ Signature image</div>':""))+
-      '<div class="nm"><b'+de(b2+".name")+'>'+esc(s2.name)+'</b>, <span'+de(b2+".title")+'>'+esc(s2.title)+'</span></div><div class="org"'+de(b2+".org")+'>'+esc(s2.org)+'</div></div></div>';
+      '<div class="nm"><b'+de(b2+".name")+'>'+esc(s2.name)+'</b></div><div class="ttl"'+de(b2+".title")+'>'+esc(s2.title)+'</div><div class="org"'+de(b2+".org")+'>'+esc(s2.org)+'</div></div></div>';
   }
   /* optional at-a-glance tiles (meta.welcome.facts) — absent → the classic
      letter page, unchanged. margin-top:auto pins them to the page bottom. */
@@ -784,5 +790,5 @@ function buildDeck(root,data,opts){
   return root.querySelectorAll(".sl").length;
 }
 
-window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:87};
+window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:88};
 })();
