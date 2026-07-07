@@ -32,10 +32,10 @@ var CSS=
 /* dark pages */
 ".agdk .dark{color:#fff}"+
 ".agdk .dark .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}"+
-/* Standard cover scrim: strong at top (host lockup / venue rail), a firm
-   band mid-frame behind the title lockup, strongest at the bottom (date,
-   partner logos, small print) — keeps type and logos legible on any photo */
-".agdk .dark .tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,8,13,.66) 0%,rgba(10,8,13,.34) 24%,rgba(10,8,13,.44) 46%,rgba(10,8,13,.34) 66%,rgba(10,8,13,.74) 100%)}"+
+/* Standard cover scrim: gentle bands where type sits (top: host lockup,
+   mid: title, bottom: date + partners) that ease off between them —
+   legible without flattening the photo into night */
+".agdk .dark .tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,10,16,.5) 0%,rgba(12,10,16,.2) 26%,rgba(12,10,16,.3) 46%,rgba(12,10,16,.2) 64%,rgba(12,10,16,.56) 100%)}"+
 ".agdk .ct-tint{position:absolute;inset:0;background:linear-gradient(160deg,rgba(30,11,27,.96) 0%,rgba(42,18,40,.9) 48%,rgba(22,8,20,.96) 100%)}"+
 ".agdk .ct-logo{position:absolute;top:58px;right:64px;height:34px}"+
 ".agdk .ct-web{position:absolute;left:0;right:0;bottom:44px;text-align:center;font-size:12px;letter-spacing:.32em;font-weight:600;color:rgba(255,255,255,.75);text-transform:uppercase}"+
