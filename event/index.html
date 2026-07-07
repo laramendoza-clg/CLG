@@ -31,6 +31,23 @@ div.card.off h3{color:#8a8088}
 .status{font-size:12px;color:var(--mute);margin:4px 0 0}
 .status .live{color:#2e7d4f;font-weight:700}
 .back{display:inline-block;margin-top:26px;font-size:12.5px;font-weight:600;color:var(--acc);text-decoration:none}
+/* milestones timeline */
+.mslist{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.ms{display:flex;align-items:baseline;gap:14px;padding:11px 16px;border-bottom:1px solid #f1ecef}
+.ms:last-child{border-bottom:none}
+.ms .d{flex:0 0 96px;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
+.ms .wk{flex:0 0 62px;font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.ms .lb{flex:1;min-width:0}
+.ms .lb b{font-size:13.5px;font-weight:600;color:var(--ink)}
+.ms .lb span{display:block;font-size:11.5px;color:#8a8088;line-height:1.45;margin-top:1px}
+.ms .st{flex:0 0 auto;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border-radius:10px}
+.ms.past{opacity:.5}
+.ms.past .st{background:#efeaed;color:#8a8088}
+.ms.soon{background:#fdf6ee}
+.ms.soon .st{background:#B7791F;color:#fff}
+.ms.soon .d,.ms.soon .lb b{color:#7a4d0f}
+.ms.future .st{background:#f1ecef;color:#6b6068}
+.ms.nextup{box-shadow:inset 4px 0 0 var(--acc)}
 </style>
 </head>
 <body>
@@ -40,6 +57,11 @@ div.card.off h3{color:#8a8088}
   <div class="meta" id="evMeta"></div>
 </div></header>
 <div class="wrap">
+  <section class="sec">
+    <h2>Milestones &amp; deadlines</h2>
+    <div id="msList" class="mslist"></div>
+    <p class="status" id="msNote"></p>
+  </section>
   <section class="sec">
     <h2>Agenda</h2>
     <div class="grid" id="agGrid"></div>
@@ -55,6 +77,7 @@ div.card.off h3{color:#8a8088}
   </section>
   <a class="back" href="../">← All events</a>
 </div>
+<script src="../assets/milestones.js?v=1"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -82,6 +105,24 @@ document.getElementById("socGrid").innerHTML=ev.social?
   card("../dubai-pcs-card/","“I'm Attending” Card","Personalised 1080×1350 attendance card, with optional headshot.","Open")+
   card("../speaker-card/","Speaker & Panel Card","1200×675 announcement card for speakers, panellists and moderators.","Open")
   :'<div class="card off"><h3>Not set up for this event yet</h3><p>The attendance and speaker cards are built for Dubai 2026 so far — tell Lara when this event needs its own social cards and they get cloned with this event’s branding.</p></div>';
+(function(){
+  const M=window.StudioMilestones,s=M&&M.schedule(slug);
+  const list=document.getElementById("msList"),note=document.getElementById("msNote");
+  if(!s){list.innerHTML='<div class="ms"><div class="lb"><b>No date set for this event yet</b><span>Add it to assets/milestones.js and the full schedule appears here.</span></div></div>';return;}
+  const now=new Date();
+  let nextIdx=-1;
+  s.items.forEach((m,i)=>{if(nextIdx<0&&M.status(m.date,now)!=="past")nextIdx=i;});
+  list.innerHTML=s.items.map((m,i)=>{
+    const st=M.status(m.date,now);
+    const chip=st==="past"?"Passed":(st==="soon"?"Due soon":"Upcoming");
+    return '<div class="ms '+st+(i===nextIdx?' nextup':'')+'">'+
+      '<div class="d">'+M.fmt(m.date)+'</div>'+
+      '<div class="wk">'+(m.w===0?"Event":m.w+" wk"+(m.w>1?"s":"")+" out")+'</div>'+
+      '<div class="lb"><b>'+m.label+'</b>'+(m.detail?'<span>'+m.detail+'</span>':'')+'</div>'+
+      '<div class="st">'+chip+'</div></div>';
+  }).join("");
+  note.textContent="The standard CapLink production timeline, computed from the event date"+(s.est?" (date is estimated — deadlines shift when the date is confirmed)":"")+". Tell Lara if a deadline needs to move — the standard lives in one file and updates every event.";
+})();
 (async()=>{
   try{
     const r=await fetch(SUPA_URL+"/rest/v1/agendas?slug=eq."+encodeURIComponent(slug)+"&select=updated_at",{headers:{apikey:SUPA_KEY}});

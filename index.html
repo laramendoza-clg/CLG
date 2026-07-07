@@ -36,7 +36,10 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
 .evgrid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
 .evcard{border-top-width:4px;padding:22px 22px 20px}
 .evcard h3{font-size:20px;line-height:1.3;margin:12px 0 4px;flex:1}
-.evcard .go{margin-top:18px}
+.evcard .go{margin-top:14px}
+.nextms{display:block;margin-top:12px;padding-top:11px;border-top:1px solid #f1ecef;font-size:11.5px;line-height:1.5;color:#6b6068}
+.nextms b{color:var(--cat);font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:2px}
+.nextms.overdue b{color:#B7791F}
 
 .section{margin-top:34px}
 .section h2{display:flex;align-items:center;gap:11px;margin:0 0 16px;
@@ -105,29 +108,34 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
 
   <section class="section">
     <div class="grid evgrid">
-      <a class="card evcard" style="--cat:#2f5d63" href="./event/?e=dubai-2026">
+      <a class="card evcard" data-e="dubai-2026" style="--cat:#2f5d63" href="./event/?e=dubai-2026">
         <span class="tag">September 15, 2026 &middot; The Lana</span>
         <h3>Dubai<br>Private Capital Summit</h3>
+        <span class="nextms"></span>
         <span class="go">Open workspace <span class="arw">&rarr;</span></span>
       </a>
-      <a class="card evcard" style="--cat:#A15D50" href="./event/?e=newyork-2026">
+      <a class="card evcard" data-e="newyork-2026" style="--cat:#A15D50" href="./event/?e=newyork-2026">
         <span class="tag">October 14, 2026 &middot; WELL&amp; + Nasdaq</span>
         <h3>New York<br>Private Capital Summit</h3>
+        <span class="nextms"></span>
         <span class="go">Open workspace <span class="arw">&rarr;</span></span>
       </a>
-      <a class="card evcard" style="--cat:#8A7547" href="./event/?e=ai-data-breakfast-2026">
+      <a class="card evcard" data-e="ai-data-breakfast-2026" style="--cat:#8A7547" href="./event/?e=ai-data-breakfast-2026">
         <span class="tag">November 18, 2026 &middot; London &middot; with PE150</span>
         <h3>AI / Data &amp; Insight<br>Private Capital Breakfast</h3>
+        <span class="nextms"></span>
         <span class="go">Open workspace <span class="arw">&rarr;</span></span>
       </a>
-      <a class="card evcard" style="--cat:#6b2554" href="./event/?e=europe-2027">
+      <a class="card evcard" data-e="europe-2027" style="--cat:#6b2554" href="./event/?e=europe-2027">
         <span class="tag">February 2027 &middot; London</span>
         <h3>European<br>Private Capital Summit</h3>
+        <span class="nextms"></span>
         <span class="go">Open workspace <span class="arw">&rarr;</span></span>
       </a>
-      <a class="card evcard" style="--cat:#5E1A2E" href="./event/?e=mit-2027">
+      <a class="card evcard" data-e="mit-2027" style="--cat:#5E1A2E" href="./event/?e=mit-2027">
         <span class="tag">February 24, 2027 &middot; MIT, Cambridge</span>
         <h3>Talent Leadership<br>Summit (MIT)</h3>
+        <span class="nextms"></span>
         <span class="go">Open workspace <span class="arw">&rarr;</span></span>
       </a>
     </div>
@@ -140,6 +148,19 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
     <a class="backstage" href="./backstage/">Backstage &rarr;</a>
   </div>
 </div>
+<script src="./assets/milestones.js?v=1"></script>
+<script>
+document.querySelectorAll(".evcard[data-e]").forEach(function(cardEl){
+  var M=window.StudioMilestones,slot=cardEl.querySelector(".nextms");
+  if(!M||!slot)return;
+  var n=M.next(cardEl.dataset.e);
+  if(!n){slot.innerHTML="<b>Next deadline</b>Date TBC";return;}
+  var days=Math.round((n.item.date-new Date())/864e5);
+  var when=n.item.w===0?"Event day":M.fmt(n.item.date)+(n.est?" (est.)":"")+" · "+(days<=0?"today":days+" day"+(days>1?"s":""));
+  if(days<=14&&n.item.w!==0)slot.classList.add("overdue");
+  slot.innerHTML="<b>Next deadline"+(days<=14&&n.item.w!==0?" — due soon":"")+"</b>"+n.item.label+"<br>"+when;
+});
+</script>
 <script src="./assets/studio-nav.js?v=4"></script>
 </body>
 </html>
