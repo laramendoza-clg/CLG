@@ -168,7 +168,7 @@ var CSS=
    closing cocktail hour's venue) — a lighter-weight alternative to the
    full reception treatment when the photo is just one row on a page,
    not a dedicated block */
-".agdk .row-photo{margin:12px 0 4px;border-radius:6px;overflow:hidden;height:130px}"+
+".agdk .row-photo{margin:12px 0 4px;border-radius:6px;overflow:hidden;height:250px}"+
 ".agdk .row-photo img{width:100%;height:100%;object-fit:cover;display:block}"+
 ".agdk-edit .ghost.row-photo{margin:12px 0 4px}"+
 ".agdk .thanksnote{background:#faf7f3;border:1px solid #ece3d8;border-radius:10px;padding:36px 52px;text-align:center;margin-top:2px}"+
@@ -303,7 +303,7 @@ var CSS=
 ".agdk-land .spk-cell .fm{font-size:13px;font-weight:700;letter-spacing:0;text-transform:none;color:#38323c}"+
 ".agdk-land .prow{grid-template-columns:repeat(5,1fr)}"+
 ".agdk-land .rec2-photo{flex:0 0 520px}"+
-".agdk-land .row-photo{height:170px}"+
+".agdk-land .row-photo{height:300px}"+
 ".agdk-land .sp-grid{grid-template-columns:repeat(3,1fr)}"+
 ".agdk-land .cl2-rail{width:400px}"+
 ".agdk-land .cl2-logo{width:220px}"+
@@ -837,5 +837,5 @@ function buildDeck(root,data,opts){
   return root.querySelectorAll(".sl").length;
 }
 
-window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:91};
+window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:92};
 })();
