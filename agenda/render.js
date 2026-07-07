@@ -305,7 +305,12 @@ function foot(meta,n){return '<div class="foot"><span'+de("meta.footerLeft")+'>'
 function header(meta){
   /* All-caps city names get the classic Title-case treatment; mixed-case names (e.g. "AI / Data & Insight") are respected as written */
   var city=meta.city?(/[a-z]/.test(meta.city)?meta.city:meta.city.charAt(0)+meta.city.slice(1).toLowerCase()):"";
-  return '<div class="hd"><div><div class="t1"><span'+de("meta.city")+' style="font-weight:700">'+esc(city)+'</span> <span'+de("meta.event")+' style="font-weight:700">'+esc(meta.event)+'</span> <span'+de("meta.year")+'>'+esc(meta.year)+'</span></div><div class="t2"'+de("meta.headKicker")+'>'+esc(meta.headKicker||"Preliminary Agenda")+'</div></div><img src="'+esc(meta.headImg||CAP)+'"'+(meta.headH?' style="height:'+(+meta.headH||36)+'px"':"")+dp("meta.headImg","logo")+' alt=""></div><div class="hrule"></div>';
+  /* explicit headImg:"" → NO header logo (unbranded, e.g. pending MTA);
+     absent → the CapLink mark, as always */
+  var hi=(meta.headImg===undefined||meta.headImg===null)?CAP:meta.headImg;
+  var hlogo=hi?'<img src="'+esc(hi)+'"'+(meta.headH?' style="height:'+(+meta.headH||36)+'px"':"")+dp("meta.headImg","logo")+' alt="">'
+    :(EDIT?'<div class="ghost gt" data-op="logoslot" data-path="meta.headImg" data-mode="logo" style="min-height:32px;padding:4px 12px">+ logo</div>':"");
+  return '<div class="hd"><div><div class="t1"><span'+de("meta.city")+' style="font-weight:700">'+esc(city)+'</span> <span'+de("meta.event")+' style="font-weight:700">'+esc(meta.event)+'</span> <span'+de("meta.year")+'>'+esc(meta.year)+'</span></div><div class="t2"'+de("meta.headKicker")+'>'+esc(meta.headKicker||"Preliminary Agenda")+'</div></div>'+hlogo+'</div><div class="hrule"></div>';
 }
 function pcell(p,path,tagPath,tagVal,mv){
   if(!p)return"";
@@ -417,6 +422,9 @@ function coverSlide(d){
   if(m.hostImg){
     var hl=(m.hostLabel===undefined||m.hostLabel===null)?"Hosted by":m.hostLabel;
     host='<div class="cov-host"><div class="lbl"'+de("meta.hostLabel")+'>'+esc(hl)+'</div><img src="'+esc(m.hostImg)+'" style="height:'+Math.round((m.hostH||34)*CZ)+'px"'+dp("meta.hostImg","logo")+'></div>';
+  }else if(m.hostImg===""){
+    /* explicit "" → unbranded cover (no mark at all); EDIT keeps a slot */
+    host=EDIT?'<div class="cov-host"><div class="ghost gt" data-op="logoslot" data-path="meta.hostImg" data-mode="logo" style="padding:6px 14px;background:rgba(255,255,255,.85)">+ host logo</div></div>':"";
   }else{
     host='<img class="cov-cap" src="'+CAPW+'"'+(EDIT?dp("meta.hostImg","logo")+' title="Click to switch to a hosted-by / JV lockup"':"")+'>';
   }
@@ -433,7 +441,10 @@ function welcomeSlide(d,n){
   var sig1='<div class="wel-sig">'+
     (w.signImg?'<img class="sig" src="'+esc(w.signImg)+'"'+dp("meta.welcome.signImg","logo")+'>':(EDIT?'<div class="ghost gt" data-op="signimg" style="width:210px;margin-bottom:9px">+ Signature image</div>':""))+
     '<div class="nm"><b'+de("meta.welcome.signName")+'>'+esc(w.signName)+'</b>, <span'+de("meta.welcome.signTitle")+'>'+esc(w.signTitle)+'</span></div><div class="org"'+de("meta.welcome.signOrg")+'>'+esc(w.signOrg)+'</div></div>';
-  var sigs=sig1;
+  /* signature block hides entirely in the published view when every field
+     is blank (unbranded letters, e.g. pending MTA) — the builder still
+     shows the editable placeholders so it can be re-added later */
+  var sigs=(!EDIT&&!(w.signName||w.signTitle||w.signOrg||w.signImg))?"":sig1;
   /* Back-compat: optional second signatory (co-hosted events). Absent → exactly the classic single signature. */
   if(w.sign2){
     var s2=w.sign2,b2="meta.welcome.sign2";
@@ -501,9 +512,16 @@ function closingSlide(m){
      carrying the stacked CapLink logo and website. */
   var h1=(m.closingHead1===undefined||m.closingHead1===null)?"For further information,":m.closingHead1;
   var h2=(m.closingHead2===undefined||m.closingHead2===null)?"please contact:":m.closingHead2;
+  /* rail logo: meta.closingLogo overrides; explicit "" → NO logo (unbranded);
+     absent → JV lockup if set, else the stacked CapLink mark, as always.
+     Same explicit-"" rule for the website line. */
+  var cl=(m.closingLogo===undefined||m.closingLogo===null)?(m.hostImg||CAPSTACK):m.closingLogo;
+  var clHtml=cl?'<img class="cl2-logo" src="'+esc(cl)+'"'+dp("meta.closingLogo","logo")+'>'
+    :(EDIT?'<div class="cl2-logo ghost" data-op="logoslot" data-path="meta.closingLogo" data-mode="logo" style="min-height:52px;background:rgba(255,255,255,.85)">+ logo</div>':"");
+  var web=(m.website===undefined||m.website===null)?"www.caplink-group.com":m.website;
   var inner='<div class="cl2-rail"><img class="bg" src="'+esc(bgSrc(m))+'"'+dp("meta.bgImg","bg")+'><div class="cl2-tint"></div>'+
-    '<img class="cl2-logo" src="'+esc(m.hostImg||CAPSTACK)+'"'+(m.hostImg?dp("meta.hostImg","logo"):"")+'>'+
-    '<div class="cl2-web"'+de("meta.website")+'>'+esc(m.website||"www.caplink-group.com")+'</div></div>'+
+    clHtml+
+    ((web||EDIT)?'<div class="cl2-web"'+de("meta.website")+'>'+esc(web)+'</div>':"")+'</div>'+
     '<div class="cl2-bar"></div><div class="cl2-head"><div class="h1"'+de("meta.closingHead1")+'>'+esc(h1)+'</div><div class="h2"'+de("meta.closingHead2")+'>'+esc(h2)+'</div></div>';
   if(m.contacts&&m.contacts.length){
     inner+='<div class="cl2-grid">'+m.contacts.map(function(c,i){
@@ -533,8 +551,12 @@ function bgSrc(m){return (m&&m.bgImg&&String(m.bgImg).trim())?m.bgImg:SKY;}
    rest of the document; absent → the JV lockup if set, else the stacked
    CapLink mark. Click it in the builder to swap. */
 function backSlide(m){
-  var src=m.backImg||m.hostImg||CAPSTACK;
-  return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><div class="back-glow"></div><img class="back-logo" src="'+esc(src)+'"'+dp("meta.backImg","logo")+(m.backW?' style="width:'+(+m.backW||330)+'px"':"")+'>');
+  /* explicit backImg:"" → photo-only back cover, no logo (unbranded);
+     absent → the JV lockup if set, else the stacked CapLink mark */
+  var src=(m.backImg===undefined||m.backImg===null)?(m.hostImg||CAPSTACK):m.backImg;
+  var lg=src?'<img class="back-logo" src="'+esc(src)+'"'+dp("meta.backImg","logo")+(m.backW?' style="width:'+(+m.backW||330)+'px"':"")+'>'
+    :(EDIT?'<div class="back-logo ghost" data-op="logoslot" data-path="meta.backImg" data-mode="logo" style="min-height:64px;background:rgba(255,255,255,.85)">+ logo</div>':"");
+  return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><div class="back-glow"></div>'+lg);
 }
 
 /* --- measurement helpers: run inside a live offscreen slide --- */

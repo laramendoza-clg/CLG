@@ -72,9 +72,13 @@ that's for Bitrix; Lara owns only her lane.
    session-page space becomes ruled "Notes" lines (reserved on every page so
    page endings are identical); session spacing is fixed, page breaks are
    balanced (typesetter DP in `paginateSessions`). Landscape re-flows:
-   welcome letter = ONE text column + signature rail on the right (two
-   columns read badly — Lara vetoed), 5-up speaker/panelist grids, 3×2
-   sponsor pages, 3-column closing directory.
+   welcome letter = full-width text, larger type, signature bottom-LEFT
+   (Lara vetoed both two-column text AND a right-side signature rail),
+   5-up speaker/panelist grids, 3×2 sponsor pages, 3-column closing
+   directory, and a full landscape type-scale bump (portrait sizes read
+   tiny on legal). Cover legibility = GRADIENTS ONLY — a hard plate band
+   was vetoed as "a black block"; the dome + per-line date fade pattern
+   is in the `.agdk-land .cov-*` rules.
 9. **The document closes with ONE page** (v32 design): light editorial
    contact page — accent bar + "For further information, / please contact:"
    headline (editable: `meta.closingHead1/2`), airy two-column directory,
@@ -154,7 +158,7 @@ that's for Bitrix; Lara owns only her lane.
 | dubai-2026 | Dubai PCS, Sep 15 2026, The Lana | **Published & edited by Lara** — venue photo for reception page still owed |
 | newyork-2026 | NY PCS, Oct 14 2026, WELL& by Durst + Nasdaq | Seeded — needs review+publish; sponsor logos not hosted |
 | europe-2027 | European PCS, Feb 2027, London | Seeded — venue conflict in source (The Londoner vs Rosewood), date has no day yet (milestones marked est.); past-speakers page possible now the feature exists but content wasn't re-transcribed |
-| mit-2027 | Private Capital Talent Leadership Summit, Feb 24 2027, MIT Cambridge | Seed rebuilt from Doina's Feb-24 draft incl. Past Speakers page (13 names, 6 with photos reused from aidb); header drops "Boston" (city:"" + lockCity:"BOSTON"); the internal firm-sourcing list under Value Creation Spotlight was DELIBERATELY excluded (rule 6). **Official title order pending Nawshad** — Lara's logo may say "Talent Leadership Private Capital Summit" vs the documents' "Private Capital Talent Leadership Summit". Still TBC: venue building, sponsors, confirmed speakers, hosted logos (MIT/GeniusMesh/event), Boston background photo, ticketing/student rate |
+| mit-2027 | Private Capital Talent Leadership Summit, Feb 24 2027, MIT Cambridge | Seed rebuilt from Doina's Feb-24 draft incl. Past Speakers page (13 names, 6 with photos reused from aidb); header drops "Boston" (city:"" + lockCity:"BOSTON"); the internal firm-sourcing list under Value Creation Spotlight was DELIBERATELY excluded (rule 6). **Official title order pending Nawshad** — Lara's logo may say "Talent Leadership Private Capital Summit" vs the documents' "Private Capital Talent Leadership Summit". Still TBC: venue building, sponsors, confirmed speakers, hosted logos (MIT/GeniusMesh/event), Boston background photo, ticketing/student rate. **UNBRANDED until the MTA is signed** (July 2026): all CapLink logos, Nawshad's signature block, website line and "CapLink" mentions removed via explicit-"" fields (headImg/hostImg/closingLogo/website/backImg + blank welcome signature) — empty slots stay clickable in the builder to re-add after approval. Contacts directory (names + @caplink-group emails) kept — confirm with Lara if the MTA needs that blanked too |
 | ai-data-breakfast-2026 | AI / Data & Insight Private Capital Breakfast, Nov 18 2026, The May Fair, London (JV with PE150) | Published by Lara (edited); seed has full content: JV "Hosted by" branding, two-signature welcome, Past Speakers photo grid (30 headshots extracted from her PDF in `assets/speakers/aidb/`), May Fair logo. Still missing: Exact Insight + past-sponsor logos, Aram Taghavi signature image; "Two platforms, one room" partnership page has no template page type (decision pending). NB: Jaimee Michaud's photo in the source PDF carries an Advent logo though she's listed at SPV Global — flagged to Lara |
 
 ## 5. Open items

@@ -33,10 +33,10 @@
     "The day brings together operating and value-creation partners, chief talent officers, and portfolio company CHROs and executive teams for a curated programme spanning talent strategy, executive team building, AI-enabled operating models, and the leadership decisions that shape portfolio performance.",
     "We are grateful to MIT, our academic partner and venue, and to GeniusMesh for their partnership in bringing this summit to life. We look forward to welcoming you to Cambridge."
    ],
-   "signName": "Nawshad Noorkhan",
-   "signTitle": "Founder, Managing Director",
-   "signOrg": "CAPLINK GROUP",
-   "signImg": "https://images.squarespace-cdn.com/content/5dc9f095a5705651ea40e08b/27a2c53f-2076-45cf-a764-ee37a8768ad4/Screenshot+2026-06-08+at+5.55.15%E2%80%AFPM.png?content-type=image%2Fpng"
+   "signName": "",
+   "signTitle": "",
+   "signOrg": "",
+   "signImg": ""
   },
   "contactsSub": "We look forward to working with you. Please reach out to any member of the team to discuss how we can maximise your partnership.",
   "contacts": [
@@ -92,11 +92,16 @@
   ],
   "lockImg": "",
   "speakersTitle": "Past Speakers Include",
-  "speakersSub": "Human capital, operating and value-creation leaders from past CapLink summits",
+  "speakersSub": "Human capital, operating and value-creation leaders from previous summits",
   "speakersStyle": "grid",
   "lockCity": "BOSTON",
   "backCover": true,
-  "orient": "landscape"
+  "orient": "landscape",
+  "headImg": "",
+  "hostImg": "",
+  "closingLogo": "",
+  "website": "",
+  "backImg": ""
  },
  "sessions": [
   {
