@@ -111,7 +111,9 @@ var CSS=
 ".agdk-edit .spk-cell:hover .spx{display:block}"+
 ".agdk-edit .spke1 .spx{margin-left:6px;display:none;vertical-align:1px}"+
 ".agdk-edit .spke1:hover .spx{display:inline-block}"+
-".agdk .spk-cell img{width:56px;height:56px;object-fit:cover;border-radius:0;flex:0 0 auto}"+
+/* hairline keyline so white-background headshots keep their square edge
+   on the white speakers page (invisible on darker photos) */
+".agdk .spk-cell img{width:56px;height:56px;object-fit:cover;border-radius:0;flex:0 0 auto;border:1px solid #e8e5e9}"+
 ".agdk .spk-cell .nm{font-size:12px;font-weight:700;color:#241020;line-height:1.25}"+
 ".agdk .spk-cell .tt{font-size:9.8px;color:#7f7984;font-style:italic;line-height:1.3;margin-top:1px}"+
 ".agdk .spk-cell .fm{font-size:10.4px;font-weight:700;color:#38323c;margin-top:2px;line-height:1.25}"+
