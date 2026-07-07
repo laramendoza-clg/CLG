@@ -99,6 +99,11 @@ ongoing project (see §3).
   co-hosted events, builder has add/remove), `meta.backCover`,
   `meta.closingHead1/2`. Mixed-case `meta.city` is respected in headers
   (all-caps still gets the classic Title-case treatment).
+  JV events (CapLink × PE150): `meta.hostLabel/hostImg/hostH` put a
+  "Hosted by" + JV lockup on the cover (also replaces the back-cover and
+  closing-rail logos); `meta.headImg/headH` swap the interior header mark.
+  One-click toggle in the builder's Design section uses the official
+  Squarespace "CapLink x PE150 - White and Orange" URL.
 
 ## 4. Event status (as of last session)
 
