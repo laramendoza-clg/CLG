@@ -54,7 +54,7 @@
   <button id="mode"></button>
   <button id="pdf" title="Print or save as PDF">Download PDF</button>
 </div>
-<script src="./render.js?v=45"></script>
+<script src="./render.js?v=46"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -112,7 +112,7 @@ async function boot(){
     total=AgendaRender.buildDeck(document.getElementById("deck"),data);
     document.title=((data.meta&&data.meta.city)||"")+" Agenda · CapLink";
     const d=new Date(rows[0].updated_at);
-    document.getElementById("upd").textContent="Updated "+d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})+"  ·  v45";
+    document.getElementById("upd").textContent="Updated "+d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})+"  ·  v46";
     document.getElementById("msg").style.display="none";
     document.getElementById("bar").style.display="flex";
     let pref=null;try{pref=localStorage.getItem("agdk-book");}catch(_){}
@@ -184,6 +184,26 @@ document.getElementById("pdf").onclick=async()=>{
       c.classList.add("on");
       c.style.cssText="position:relative;left:0;top:0;opacity:1;transition:none;box-shadow:none";
       holder.appendChild(c);
+      /* the rasteriser doesn't understand object-fit — swap each cropped
+         image for a background-image block it renders correctly */
+      c.querySelectorAll("img").forEach(img=>{
+        const cs=getComputedStyle(img);
+        if(cs.objectFit!=="cover"&&cs.objectFit!=="contain")return;
+        const d=document.createElement("div");
+        d.className=img.className;
+        d.style.cssText=img.style.cssText;
+        d.style.position=cs.position;
+        if(cs.position==="absolute"){d.style.top=cs.top;d.style.left=cs.left;}
+        d.style.width=(img.offsetWidth||parseFloat(cs.width)||0)+"px";
+        d.style.height=(img.offsetHeight||parseFloat(cs.height)||0)+"px";
+        d.style.display="block";
+        d.style.flex=cs.flex;
+        d.style.backgroundImage='url("'+img.src+'")';
+        d.style.backgroundSize=cs.objectFit;
+        d.style.backgroundPosition=cs.objectPosition||"50% 50%";
+        d.style.backgroundRepeat="no-repeat";
+        img.replaceWith(d);
+      });
       /* the rasteriser doesn't understand CSS zoom (used to fit the
          speakers page) — convert each zoomed block to an equivalent
          transform, pinned to its exact on-screen position */
@@ -204,7 +224,7 @@ document.getElementById("pdf").onclick=async()=>{
       });
       const canvas=await window.html2canvas(c,{scale:2,useCORS:true,backgroundColor:"#ffffff",logging:false});
       if(i>0)pdf.addPage("letter","portrait");
-      pdf.addImage(canvas.toDataURL("image/jpeg",0.92),"JPEG",0,0,8.5,11);
+      pdf.addImage(canvas.toDataURL("image/jpeg",0.95),"JPEG",0,0,8.5,11);
       holder.removeChild(c);
     }
     holder.remove();holder=null;

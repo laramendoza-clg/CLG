@@ -73,7 +73,7 @@
 <body>
 <div class="app">
   <div class="left">
-    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v45</span></h1>
+    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v46</span></h1>
     <div class="tip">✏️ <b>Edit like Slides:</b> click any text on the page to type. Click a photo or logo to change it. Hover a session for <b>move / add / delete</b>.</div>
 
     <div class="stepbox">
@@ -120,7 +120,7 @@
 
 <div id="pop"></div>
 
-<script src="../agenda/render.js?v=45"></script>
+<script src="../agenda/render.js?v=46"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -280,9 +280,9 @@ function updateUndoUI(){const u=document.getElementById("undoBtn"),r=document.ge
 
 /* ---------- images ---------- */
 function readImg(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=r.result;};r.onerror=rej;r.readAsDataURL(file);});}
-async function squarePhoto(file){const i=await readImg(file);const s=Math.min(i.width,i.height),c=document.createElement("canvas");c.width=c.height=256;c.getContext("2d").drawImage(i,(i.width-s)/2,(i.height-s)/2,s,s,0,0,256,256);return c.toDataURL("image/jpeg",.82);}
-async function logoImg(file){const i=await readImg(file);const m=Math.min(1,420/Math.max(i.width,i.height)),w=Math.max(1,Math.round(i.width*m)),h=Math.max(1,Math.round(i.height*m));const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(i,0,0,w,h);return c.toDataURL("image/png");}
-async function bgFile(file){const i=await readImg(file);const m=Math.min(1,1400/i.width),w=Math.max(1,Math.round(i.width*m)),h=Math.max(1,Math.round(i.height*m));const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(i,0,0,w,h);return c.toDataURL("image/jpeg",.8);}
+async function squarePhoto(file){const i=await readImg(file);const s=Math.min(i.width,i.height),c=document.createElement("canvas");c.width=c.height=560;c.getContext("2d").drawImage(i,(i.width-s)/2,(i.height-s)/2,s,s,0,0,560,560);return c.toDataURL("image/jpeg",.85);}
+async function logoImg(file){const i=await readImg(file);const m=Math.min(1,1200/Math.max(i.width,i.height)),w=Math.max(1,Math.round(i.width*m)),h=Math.max(1,Math.round(i.height*m));const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(i,0,0,w,h);return c.toDataURL("image/png");}
+async function bgFile(file){const i=await readImg(file);const m=Math.min(1,2200/i.width),w=Math.max(1,Math.round(i.width*m)),h=Math.max(1,Math.round(i.height*m));const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(i,0,0,w,h);return c.toDataURL("image/jpeg",.8);}
 function sizePathFor(photoPath){
   if(/\.sponsors\.\d+\.img$/.test(photoPath))return photoPath.replace(/\.img$/,".h");
   if(/\.sponsorImg$/.test(photoPath))return photoPath.replace(/\.sponsorImg$/,".sponsorH");
