@@ -271,7 +271,9 @@ var CSS=
 ".agdk-land .ab-head{font-size:26px}"+
 ".agdk-land .ab-sub{font-size:11.5px}"+
 ".agdk-land .ab-body{font-size:15px}"+
-".agdk-land .spk-row{grid-template-columns:repeat(5,1fr)}"+
+".agdk-land .spk-row{grid-template-columns:repeat(4,1fr)}"+
+".agdk-land .spk-cell .tt{font-size:10.5px}"+
+".agdk-land .spk-cell .fm{font-size:10px;letter-spacing:.14em;text-transform:uppercase}"+
 ".agdk-land .prow{grid-template-columns:repeat(5,1fr)}"+
 ".agdk-land .rec2-photo{flex:0 0 520px}"+
 ".agdk-land .sp-grid{grid-template-columns:repeat(3,1fr)}"+
@@ -692,7 +694,7 @@ function speakersGridSlides(root,d,startN){
   if(!cells.length)return[];
   if(EDIT&&curatedSpk(d))cells.push('<div class="ghost" data-op="spkadd" style="min-height:56px">+ Add person</div>');
   var subOn=!!d.meta.speakersSub;
-  var per=LAND?5:3,MW=LAND?1519:872;
+  var per=LAND?4:3,MW=LAND?1519:872;
   var PAGE=LAND?(subOn?690:722):(subOn?972:1004);
   var rows=[];
   for(var i=0;i<cells.length;i+=per)rows.push('<div class="spk-row">'+cells.slice(i,i+per).join("")+'</div>');
