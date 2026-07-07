@@ -73,7 +73,7 @@
 <body>
 <div class="app">
   <div class="left">
-    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v86</span></h1>
+    <h1>Agenda Builder <span style="font-size:10px;font-weight:600;color:#b9aeb6;letter-spacing:.06em">v87</span></h1>
     <div class="tip">✏️ <b>Edit like Slides:</b> click any text on the page to type. Click a photo or logo to change it. Hover a session for <b>move / add / delete</b>.</div>
 
     <div class="stepbox">
@@ -120,7 +120,7 @@
 
 <div id="pop"></div>
 
-<script src="../agenda/render.js?v=86"></script>
+<script src="../agenda/render.js?v=87"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -304,6 +304,11 @@ function renderEvent(){
   h+='<label class="f">Page orientation</label><select class="t" data-b="meta.orient"><option value=""'+(state.meta.orient!=="landscape"?" selected":"")+'>Portrait — letter, 8.5×11</option><option value="landscape"'+(state.meta.orient==="landscape"?" selected":"")+'>Landscape — legal, 14×8.5</option></select>';
   h+='<label class="f">Show the auto “Confirmed speakers” page?</label><label style="font-size:12px;color:#555"><input type="checkbox" data-chk="meta.showSpeakers" '+(state.meta.showSpeakers!==false?"checked":"")+'> Yes, include it</label>';
   h+='<label class="f">Speakers page style</label><select class="t" data-b="meta.speakersStyle"><option value="list"'+(state.meta.speakersStyle!=="grid"?" selected":"")+'>Text list — 3 lines per speaker</option><option value="grid"'+(state.meta.speakersStyle==="grid"?" selected":"")+'>Photo grid — best once headshots are added</option></select>';
+  const curNow=Array.isArray(state.speakersList)&&state.speakersList.length>0;
+  h+='<label class="f">Speakers page list</label>';
+  h+=curNow
+    ?'<div style="font-size:11.5px;color:#6b6068;margin:2px 0 4px">Hand-curated ('+state.speakersList.length+' people) — edit them directly on the page; the title (e.g. “Past Confirmed Speakers Include”) is click-editable too.</div><div class="brow"><button class="b" data-curoff="1">Switch back to automatic (from sessions)</button></div>'
+    :'<div style="font-size:11.5px;color:#6b6068;margin:2px 0 4px">Automatic — built from the people on your session pages.</div><div class="brow"><button class="b" data-curon="1">Switch to a hand-curated list (e.g. past speakers)</button></div>';
   h+='<label class="f">Fill leftover space with ruled “Notes” lines?</label><label style="font-size:12px;color:#555"><input type="checkbox" data-chk="meta.notesFill" '+(state.meta.notesFill!==false?"checked":"")+'> Yes (like a printed planner)</label>';
   h+='<label class="f">End with a full-photo back cover?</label><label style="font-size:12px;color:#555"><input type="checkbox" data-chk="meta.backCover" '+(state.meta.backCover?"checked":"")+'> Yes, add a photo back page</label>';
   h+='<label class="f">Show the closing “please contact” page?</label><label style="font-size:12px;color:#555"><input type="checkbox" data-chk="meta.showClosing" '+(state.meta.showClosing!==false?"checked":"")+'> Yes, include it</label>';
@@ -554,6 +559,25 @@ L.addEventListener("click",e=>{
   if(b.dataset.down!=null){e.preventDefault();const i=+b.dataset.down;if(i<state.sessions.length-1){snapshot();const x=state.sessions.splice(i,1)[0];state.sessions.splice(i+1,0,x);renderForm();rebuild();}return;}
   if(b.dataset.upSp!=null){e.preventDefault();const i=+b.dataset.upSp;if(i>0){snapshot();const x=state.sponsors.splice(i,1)[0];state.sponsors.splice(i-1,0,x);renderForm();rebuild();}return;}
   if(b.dataset.downSp!=null){e.preventDefault();const i=+b.dataset.downSp;if(i<state.sponsors.length-1){snapshot();const x=state.sponsors.splice(i,1)[0];state.sponsors.splice(i+1,0,x);renderForm();rebuild();}return;}
+  if(b.dataset.curon){
+    e.preventDefault();snapshot();
+    /* start the curated list from whoever is already on the session pages */
+    const seen={},der=[];
+    (state.sessions||[]).forEach(s0=>{
+      const all=[];if(s0.lead)all.push(s0.lead);(s0.people||[]).forEach(p=>all.push(p));
+      all.forEach(p=>{if(p&&p.name&&!/TB[AC]/i.test(p.name)&&!/announced/i.test(p.name)&&!seen[p.name]){seen[p.name]=1;der.push({img:p.img||"",name:p.name,title:p.title||"",firm:p.firm||""});}});
+    });
+    state.speakersList=der.length?der:[{img:"",name:"Full Name",title:"Title",firm:"Firm"}];
+    if(state.meta.speakersTitle===undefined||state.meta.speakersTitle===null)state.meta.speakersTitle="Past Confirmed Speakers Include";
+    if(state.meta.showSpeakers===false)state.meta.showSpeakers=true;
+    renderForm();rebuild();return;
+  }
+  if(b.dataset.curoff){
+    e.preventDefault();
+    if(!confirm("Remove the hand-curated list and go back to the automatic speakers page? (The curated names and photos are deleted from this document.)"))return;
+    snapshot();delete state.speakersList;delete state.meta.speakersTitle;
+    renderForm();rebuild();return;
+  }
   if(b.dataset.setbg){e.preventDefault();set("meta.bgImg",b.dataset.setbg);renderForm();rebuild();return;}
   if(b.dataset.jvon){e.preventDefault();snapshot();
     const JV="https://images.squarespace-cdn.com/content/5dc9f095a5705651ea40e08b/fb26314e-19f0-4b53-a66f-e7966efb95de/CapLink+x+PE150+-+White+and+Orange.png?content-type=image%2Fpng";

@@ -11,7 +11,7 @@
   "headKicker": "Preliminary Agenda",
   "preliminary": "This is a preliminary agenda. Subject to change",
   "footerLeft": "EUROPEAN PRIVATE CAPITAL SUMMIT 2027  ·  PRELIMINARY AGENDA  ·  FEB 2027",
-  "showSpeakers": false,
+  "showSpeakers": true,
   "notesFill": true,
   "bgImg": "../assets/sky-london.jpg",
   "coverPartners": [
@@ -98,7 +98,10 @@
     "m": ""
    }
   ],
-  "lockImg": ""
+  "lockImg": "",
+  "speakersStyle": "grid",
+  "speakersTitle": "Past Confirmed Speakers Include",
+  "speakersSub": "A selection of the investors, operators and advisers who have joined CapLink summits"
  },
  "sessions": [
   {
@@ -575,6 +578,50 @@
    "img": "",
    "h": 86,
    "desc": "PE 150 delivers precision trends and insights to over 250,000 investors and executives who rely on our insights to drive high-stakes decision making. Originated by an operating executive turned private equity sponsor, our network spans five verticals and reaches principal decision makers across the globe. We craft campaigns that resonate with the most influential minds in finance. From premium content to precise targeting, we help brands connect with decision-makers who matter. Our north star is simple: create value for our readers, and results for our marketing partners."
+  }
+ ],
+ "speakersList": [
+  {
+   "img": "",
+   "name": "Christopher Good",
+   "title": "Partner",
+   "firm": "Macfarlanes"
+  },
+  {
+   "img": "",
+   "name": "Fred Bürger",
+   "title": "Partner, EY Global Private Equity Value Creation Co-Leader",
+   "firm": "EY"
+  },
+  {
+   "img": "",
+   "name": "Tom Alabaster",
+   "title": "Partner, Head of Funds (EMEA)",
+   "firm": "Ropes & Gray"
+  },
+  {
+   "img": "",
+   "name": "Laura Underhill",
+   "title": "Partner",
+   "firm": "Clifford Chance"
+  },
+  {
+   "img": "",
+   "name": "Diala Minott",
+   "title": "Co-Chair Investment Funds & Private Capital",
+   "firm": "Paul Hastings"
+  },
+  {
+   "img": "",
+   "name": "Paul Reading",
+   "title": "Senior Managing Director - Head of Europe",
+   "firm": "Accordion"
+  },
+  {
+   "img": "",
+   "name": "James Tedman",
+   "title": "Head of Product & Head of Europe",
+   "firm": "Blueflame AI"
   }
  ]
 }
