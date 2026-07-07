@@ -280,7 +280,9 @@ var CSS=
 ".agdk-land .spk-row{grid-template-columns:repeat(4,1fr)}"+
 ".agdk-land .spk-cell img{width:92px;height:92px}"+
 ".agdk-land .spk-cell .tt{font-size:9.5px}"+
-".agdk-land .spk-cell .fm{font-size:8px;letter-spacing:.14em;text-transform:uppercase}"+
+/* firms are the QUIETEST element in the cell — caps read optically ~20%
+   larger than lowercase, so they must sit well below the title size */
+".agdk-land .spk-cell .fm{font-size:7px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#98929c}"+
 ".agdk-land .prow{grid-template-columns:repeat(5,1fr)}"+
 ".agdk-land .rec2-photo{flex:0 0 520px}"+
 ".agdk-land .sp-grid{grid-template-columns:repeat(3,1fr)}"+
