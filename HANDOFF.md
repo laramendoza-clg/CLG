@@ -64,10 +64,17 @@ that's for Bitrix; Lara owns only her lane.
    sourcing lists stay out of published agendas).
 7. **The team publish password is never shared in chat or committed.** Lara
    has it; publishing is deliberately a human step.
-8. Agenda pages are **US Letter (8.5×11)** portrait; the footer must always
-   be fully visible; leftover session-page space becomes ruled "Notes" lines
-   (reserved on every page so page endings are identical); session spacing
-   is fixed, page breaks are balanced (typesetter DP in `paginateSessions`).
+8. Agenda pages default to **US Letter (8.5×11) portrait**; per-document
+   `meta.orient:"landscape"` switches that document to **LEGAL landscape
+   (14×8.5)** — Nawshad's preference, MIT first (builder: Design & event
+   details → Page orientation). Absent → portrait, so existing documents
+   never change. The footer must always be fully visible; leftover
+   session-page space becomes ruled "Notes" lines (reserved on every page so
+   page endings are identical); session spacing is fixed, page breaks are
+   balanced (typesetter DP in `paginateSessions`). Landscape re-flows:
+   welcome letter = ONE text column + signature rail on the right (two
+   columns read badly — Lara vetoed), 5-up speaker/panelist grids, 3×2
+   sponsor pages, 3-column closing directory.
 9. **The document closes with ONE page** (v32 design): light editorial
    contact page — accent bar + "For further information, / please contact:"
    headline (editable: `meta.closingHead1/2`), airy two-column directory,
@@ -103,7 +110,10 @@ that's for Bitrix; Lara owns only her lane.
 - **Viewer** `/agenda/?e=<slug>`: always fetches latest published version;
   flip with arrows/swipe; desktop defaults to a BOOK SPREAD (toggle in the
   bar, remembered per device); shows a version marker top-right. Download
-  PDF clones each page into a true 8.5×11in box scaled via transform
+  PDF renders in-page (html2canvas scale 3 ≈ 350dpi — scale 2 printed soft
+  — into jsPDF at the document's paper size: letter portrait or legal
+  landscape); the print-dialog fallback clones each page into a true
+  paper-size box scaled via transform
   (NOT zoom — some print engines ignore it) and shows a tip about the
   browser's "Background graphics / Print backgrounds" checkbox, which no
   site CSS can force in Safari. The speakers page is ALWAYS exactly one

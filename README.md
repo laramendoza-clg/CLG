@@ -35,7 +35,9 @@ with a branded dashboard. Live at `https://laramendoza-clg.github.io/CLG/`.
   Text is edited by clicking it on the page; photos/logos by clicking them.
 - The **viewer** (`/agenda/?e=<slug>`) always fetches the latest published
   version and prints to true 8.5×11 via Download PDF.
-- Pages are US-Letter portrait (1000×1294). Session pages use balanced
+- Pages are US-Letter portrait (1000×1294) by default; a per-document
+  "Page orientation" setting switches to legal-size landscape (14×8.5,
+  1647×1000). Session pages use balanced
   (typesetter-style) page breaks, fixed session spacing, and ruled "Notes"
   lines that absorb leftover space. Logos are always vertically centred;
   speaker photos are square-cornered.

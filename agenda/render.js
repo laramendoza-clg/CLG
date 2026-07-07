@@ -6,7 +6,7 @@
 "use strict";
 
 var W=1000,H=1294;                       /* portrait, US Letter (8.5x11) ratio */
-var LW=1294,LH=1000;                     /* landscape (11x8.5) */
+var LW=1647,LH=1000;                     /* landscape — LEGAL paper (14x8.5), same px-per-inch as portrait */
 var LAND=false;                          /* set per document in buildDeck (meta.orient) */
 var THEMES={
   dubai:{pill:"#102b35",ribbon:"#12303c",accent:"#2f5d63"},
@@ -204,22 +204,31 @@ var CSS=
 ".agdk-edit .pcell:hover .pmv{display:flex}"+
 ".agdk-edit .pmv button{font-family:inherit;font-size:10px;line-height:1;padding:4px 7px;border:1px solid #d0b3c6;border-radius:4px;background:#fff;color:#6b2554;cursor:pointer;box-shadow:0 2px 6px rgba(40,20,40,.15);font-weight:700}"+
 ".agdk-edit .pmv button:hover{background:#f7eef4}"+
-/* ---- landscape (11x8.5) overrides — active only with meta.orient:"landscape" ---- */
+/* ---- landscape (legal, 14x8.5) overrides — active only with meta.orient:"landscape" ---- */
 ".agdk-land .sl{width:"+LW+"px;height:"+LH+"px}"+
 ".agdk-land .cov-glow{top:200px;height:430px}"+
 ".agdk-land .cov-lock{top:290px}"+
 ".agdk-land .cov-lockt{top:322px}"+
 ".agdk-land .cov-date{top:562px}"+
-".agdk-land .cov-rail{bottom:88px;gap:110px}"+
+".agdk-land .cov-rail{bottom:88px;gap:120px}"+
 ".agdk-land .cov-note{bottom:32px}"+
-".agdk-land .wel-body{column-count:2;column-gap:60px;bottom:64px}"+
-".agdk-land .wel-sig,.agdk-land .wel-sigrow{break-inside:avoid;-webkit-column-break-inside:avoid}"+
-".agdk-land .spk-row{grid-template-columns:repeat(4,1fr)}"+
+/* landscape welcome: ONE readable text column, signatures on a right rail
+   (two-column letter text read badly) */
+".agdk-land .wel-body{display:flex;gap:90px;bottom:64px;font-size:13.5px;line-height:1.7}"+
+".agdk-land .wel-paras{flex:1 1 auto;min-width:0;max-width:1060px}"+
+".agdk-land .wel-body>.wel-sig{margin-top:0;flex:0 0 300px;align-self:center}"+
+".agdk-land .wel-body>.wel-sigrow{margin-top:0;flex:0 0 300px;align-self:center;display:flex;flex-direction:column;gap:46px}"+
+".agdk-land .wel-sigrow .wel-sig{margin-top:0;flex:none;align-self:auto}"+
+".agdk-land .spk-row{grid-template-columns:repeat(5,1fr)}"+
+".agdk-land .prow{grid-template-columns:repeat(5,1fr)}"+
+".agdk-land .rec2-photo{flex:0 0 520px}"+
 ".agdk-land .sp-grid{grid-template-columns:repeat(3,1fr)}"+
-".agdk-land .cl2-head{top:138px;right:430px}"+
+".agdk-land .cl2-rail{width:400px}"+
+".agdk-land .cl2-logo{width:220px}"+
+".agdk-land .cl2-head{top:138px;right:560px}"+
 ".agdk-land .cl2-bar{top:144px;height:92px}"+
-".agdk-land .cl2-grid{top:300px;bottom:78px;grid-template-columns:repeat(3,1fr);gap:36px 44px}"+
-".agdk-land .thanksnote .tn-body{max-width:940px}";
+".agdk-land .cl2-grid{top:300px;bottom:78px;right:474px;grid-template-columns:repeat(3,1fr);gap:36px 44px}"+
+".agdk-land .thanksnote .tn-body{max-width:1100px}";
 
 function slide(cls,inner){return '<div class="sl '+(cls||"")+'">'+inner+"</div>";}
 function foot(meta,n){return '<div class="foot"><span'+de("meta.footerLeft")+'>'+esc(meta.footerLeft)+'</span><span>PAGE '+n+'</span></div>';}
@@ -360,7 +369,7 @@ function welcomeSlide(d,n){
   }
   return slide("",header(m)+
     '<div class="wel-band"'+de("meta.bandLine")+'>'+esc(m.bandLine)+'</div>'+
-    '<div class="wel-body">'+(w.paras||[]).map(function(p,i){return '<p'+de("meta.welcome.paras."+i,1)+'>'+esc(p)+"</p>";}).join("")+
+    '<div class="wel-body"><div class="wel-paras">'+(w.paras||[]).map(function(p,i){return '<p'+de("meta.welcome.paras."+i,1)+'>'+esc(p)+"</p>";}).join("")+'</div>'+
     sigs+'</div>'+foot(m,n));
 }
 function speakerList(d){
@@ -476,7 +485,7 @@ function paginateSessions(root,d,startN){
      pages end identically: sessions, then ruled lines down to the footer */
   var CAP=notesOn?PAGE_H-120:PAGE_H;
   var htmls=(d.sessions||[]).map(function(s,i){return sessionHtml(s,i);});
-  var hs=measureBlocks(root,htmls,"rows",LAND?1182:888).map(function(h){return h+12;});
+  var hs=measureBlocks(root,htmls,"rows",LAND?1535:888).map(function(h){return h+12;});
   var n=hs.length;
   /* Balanced page breaks (what a book typesetter does): instead of greedily
      stuffing each page and orphaning the leftovers, choose break points that
@@ -524,7 +533,7 @@ function speakersGridSlides(root,d,startN){
   if(!cells.length)return[];
   if(EDIT&&curatedSpk(d))cells.push('<div class="ghost" data-op="spkadd" style="min-height:56px">+ Add person</div>');
   var subOn=!!d.meta.speakersSub;
-  var per=LAND?4:3,MW=LAND?1166:872;
+  var per=LAND?5:3,MW=LAND?1519:872;
   var PAGE=LAND?(subOn?690:722):(subOn?972:1004);
   var rows=[];
   for(var i=0;i<cells.length;i+=per)rows.push('<div class="spk-row">'+cells.slice(i,i+per).join("")+'</div>');
@@ -549,7 +558,7 @@ function speakersSlides(root,d,startN){
   if(EDIT&&curatedSpk(d))entries.push('<div class="ghost gt" data-op="spkadd">+ Add person</div>');
   var subOn=!!d.meta.speakersSub;
   var COL_H=LAND?(subOn?674:706):(subOn?970:1000),GAP=10;
-  var W2=LAND?563:416,W3=LAND?371:272;
+  var W2=LAND?739:416,W3=LAND?489:272;
   function tot(hs){var t=0;for(var q=0;q<hs.length;q++)t+=hs[q]+GAP;return t;}
   /* ALWAYS one page: 2 columns, then 3 (measured at true column width),
      then scale down until it fits */

@@ -35,7 +35,7 @@
     #bar,#upd,#msg,#stage,#pdfhint{display:none!important}
     #printRoot{display:block}
     #printRoot .pg{width:8.5in;height:11in;overflow:hidden;page-break-after:always;break-after:page}
-    #printRoot.land .pg{width:11in;height:8.5in}
+    #printRoot.land .pg{width:14in;height:8.5in}
     #printRoot .pg:last-child{page-break-after:auto;break-after:auto}
     #printRoot .sl{position:relative!important;left:0!important;top:0!important;opacity:1!important;
       box-shadow:none!important;transition:none!important;transform:scale(0.816);transform-origin:top left}
@@ -55,7 +55,7 @@
   <button id="mode"></button>
   <button id="pdf" title="Print or save as PDF">Download PDF</button>
 </div>
-<script src="./render.js?v=51"></script>
+<script src="./render.js?v=52"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -114,7 +114,7 @@ async function boot(){
     total=AgendaRender.buildDeck(document.getElementById("deck"),data);
     document.title=((data.meta&&data.meta.city)||"")+" Agenda · CapLink";
     const d=new Date(rows[0].updated_at);
-    document.getElementById("upd").textContent="Updated "+d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})+"  ·  v51";
+    document.getElementById("upd").textContent="Updated "+d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})+"  ·  v52";
     document.getElementById("msg").style.display="none";
     document.getElementById("bar").style.display="flex";
     let pref=null;try{pref=localStorage.getItem("agdk-book");}catch(_){}
@@ -153,7 +153,7 @@ function printFallback(){
   pr.classList.toggle("land",!!land);
   let ps=document.getElementById("pageSize");
   if(!ps){ps=document.createElement("style");ps.id="pageSize";document.head.appendChild(ps);}
-  ps.textContent="@media print{@page{size:"+(land?"11in 8.5in":"8.5in 11in")+";margin:0}}";
+  ps.textContent="@media print{@page{size:"+(land?"14in 8.5in":"8.5in 11in")+";margin:0}}";
   document.querySelectorAll("#deck .sl").forEach(sl=>{
     const pg=document.createElement("div");pg.className="pg";
     const c=sl.cloneNode(true);
@@ -185,7 +185,8 @@ document.getElementById("pdf").onclick=async()=>{
     holder.style.cssText="position:fixed;left:-12000px;top:0;width:"+dims().W+"px;z-index:-1";
     dressLikeDeck(holder);
     document.body.appendChild(holder);
-    const pdf=new window.jspdf.jsPDF({orientation:land?"landscape":"portrait",unit:"in",format:"letter"});
+    /* landscape documents are LEGAL paper (14×8.5); portrait stays letter */
+    const pdf=new window.jspdf.jsPDF({orientation:land?"landscape":"portrait",unit:"in",format:land?[14,8.5]:"letter"});
     for(let i=0;i<slides.length;i++){
       hint.textContent="Building your PDF — page "+(i+1)+" of "+slides.length+"…";
       const c=slides[i].cloneNode(true);
@@ -230,9 +231,10 @@ document.getElementById("pdf").onclick=async()=>{
           el.style.transformOrigin="top left";
         }
       });
-      const canvas=await window.html2canvas(c,{scale:2,useCORS:true,backgroundColor:"#ffffff",logging:false});
-      if(i>0)pdf.addPage("letter",land?"landscape":"portrait");
-      pdf.addImage(canvas.toDataURL("image/jpeg",0.95),"JPEG",0,0,land?11:8.5,land?8.5:11);
+      /* scale 3 ≈ 350dpi — scale 2 left photos and logos visibly soft in print */
+      const canvas=await window.html2canvas(c,{scale:3,useCORS:true,backgroundColor:"#ffffff",logging:false});
+      if(i>0)pdf.addPage(land?[14,8.5]:"letter",land?"landscape":"portrait");
+      pdf.addImage(canvas.toDataURL("image/jpeg",0.93),"JPEG",0,0,land?14:8.5,land?8.5:11);
       holder.removeChild(c);
     }
     holder.remove();holder=null;
