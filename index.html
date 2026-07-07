@@ -62,6 +62,15 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
 .nowi .jump{flex:0 0 auto;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);text-decoration:none;padding:5px 9px;border:1px solid var(--line);border-radius:6px}
 .nowi .jump:hover{border-color:var(--accent)}
 .now-empty{padding:10px 2px 14px;font-size:13px;color:#6b6068}
+.nowi .del{flex:0 0 auto;border:none;background:none;color:#c9bec5;font-size:13px;cursor:pointer;padding:2px 5px;border-radius:4px}
+.nowi .del:hover{color:#a33;background:#f9eef0}
+.addtask{display:flex;gap:8px;align-items:center;padding:11px 2px 12px;border-top:1px solid #f4f0f2;margin-top:2px}
+.addtask input[type=text]{flex:1;min-width:0;font-family:inherit;font-size:13px;padding:9px 11px;border:1px solid var(--line);border-radius:7px;background:#fbf9fa}
+.addtask input[type=text]:focus{outline:none;border-color:var(--accent);background:#fff}
+.addtask select,.addtask input[type=date]{font-family:inherit;font-size:12px;padding:8px 8px;border:1px solid var(--line);border-radius:7px;background:#fff;color:#5a5460}
+.addtask button{font-family:inherit;font-size:12px;font-weight:700;letter-spacing:.06em;padding:9px 16px;border:none;border-radius:7px;background:var(--plum);color:#fff;cursor:pointer}
+.addtask button:hover{background:var(--accent)}
+@media(max-width:640px){.addtask{flex-wrap:wrap}.addtask input[type=text]{flex-basis:100%}}
 @media(max-width:560px){.nowi .jump{display:none}}
 
 .section{margin-top:34px}
@@ -133,6 +142,19 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
       <span class="now-sub" id="nowSub"></span>
     </div>
     <div id="nowList"></div>
+    <div class="addtask" id="addTask">
+      <input type="text" id="tkLabel" placeholder="+ Add a task… (e.g. “Send Nawshad the banner mockups”)" maxlength="140">
+      <select id="tkEvent">
+        <option value="">General</option>
+        <option value="dubai-2026">Dubai</option>
+        <option value="newyork-2026">New York</option>
+        <option value="ai-data-breakfast-2026">AI / Data</option>
+        <option value="europe-2027">Europe</option>
+        <option value="mit-2027">MIT</option>
+      </select>
+      <input type="date" id="tkDue" title="Due date (optional)">
+      <button id="tkAdd">Add</button>
+    </div>
   </div>
 
   <h1 class="ask">Which event are you working on?</h1>
@@ -180,7 +202,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
     <a class="backstage" href="./backstage/">Backstage &rarr;</a>
   </div>
 </div>
-<script src="./assets/milestones.js?v=3"></script>
+<script src="./assets/milestones.js?v=4"></script>
 <script>
 (function(){
   var M=window.StudioMilestones;if(!M)return;
@@ -203,55 +225,105 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
       slot.innerHTML="<b>Next deadline"+(days<0?" — overdue":(days<=14&&it.w!==0?" — due soon":""))+"</b>"+it.label+"<br>"+M.fmt(it.date)+(s.est?" (est.)":"")+" · "+ago(days);
     });
   }
-  var doneMeta={},view="week";
+  var doneMeta={},tasks=[],view="week";
+  function esc(x){return String(x==null?"":x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+  function taskRow(t){
+    var slugged=t.slug&&M.SHORT[t.slug];
+    return {slug:t.slug||"",short:slugged?M.SHORT[t.slug]:"Task",acc:slugged?M.ACC[t.slug]:"#6b6068",est:false,task:t,
+      item:{id:t.id,label:t.label,date:t.due?new Date(t.due+"T12:00:00"):null,to:"event"},
+      days:t.due?Math.round((new Date(t.due+"T12:00:00")-new Date())/864e5):null};
+  }
   function renderNow(){
     var panel=document.getElementById("nowPanel"),list=document.getElementById("nowList"),sub=document.getElementById("nowSub");
     panel.style.display="block";
     document.getElementById("tabWeek").classList.toggle("on",view==="week");
-    var doneCount=Object.keys(doneMap).length;
+    var doneCount=Object.keys(doneMap).length+tasks.filter(function(t){return t.done;}).length;
     var td=document.getElementById("tabDone");
     td.classList.toggle("on",view==="done");
     td.textContent="Completed"+(doneCount?" ("+doneCount+")":"");
+    document.getElementById("addTask").style.display=view==="week"?"flex":"none";
+    var rowsHtml;
     if(view==="week"){
       sub.textContent=new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"});
-      var items=M.agendaOfTheWeek(doneMap).slice(0,7);
-      if(!items.length){list.innerHTML='<div class="now-empty">Nothing due in the next three weeks — you’re ahead. ✨</div>';}
-      else list.innerHTML=items.map(function(n){
-        return '<div class="nowi'+(n.days<0?' late':'')+'" data-id="'+n.item.id+'">'+
+      var openTasks=tasks.filter(function(t){return !t.done;}).map(taskRow)
+        .filter(function(r){return r.days==null||r.days<=21;});
+      var items=M.agendaOfTheWeek(doneMap).concat(openTasks);
+      items.sort(function(a,b){
+        if(!a.item.date&&!b.item.date)return 0;
+        if(!a.item.date)return -1;if(!b.item.date)return 1;
+        return a.item.date-b.item.date;
+      });
+      items=items.slice(0,10);
+      if(!items.length){rowsHtml='<div class="now-empty">Nothing due in the next three weeks — you’re ahead. ✨</div>';}
+      else rowsHtml=items.map(function(n){
+        var when=n.item.date?M.fmt(n.item.date)+(n.est?" (est.)":"")+" · "+ago(n.days):"no date";
+        var go=n.task?(n.slug?'<a class="jump" href="./event/?e='+encodeURIComponent(n.slug)+'">Go</a>':"")
+                     :'<a class="jump" href="'+M.linkFor(n.slug,n.item,"./")+'">Go</a>';
+        return '<div class="nowi'+(n.days!=null&&n.days<0?' late':'')+'" data-id="'+esc(n.item.id)+'"'+(n.task?' data-task="1"':'')+'>'+
           '<button class="tick" title="Mark done"></button>'+
-          '<span class="ev" style="--evc:'+n.acc+'">'+n.short+'</span>'+
-          '<span class="what">'+n.item.label+'</span>'+
-          '<span class="when">'+M.fmt(n.item.date)+(n.est?" (est.)":"")+' · '+ago(n.days)+'</span>'+
-          '<a class="jump" href="'+M.linkFor(n.slug,n.item,"./")+'">Go</a></div>';
+          '<span class="ev" style="--evc:'+n.acc+'">'+esc(n.short)+'</span>'+
+          '<span class="what">'+esc(n.item.label)+'</span>'+
+          '<span class="when">'+when+'</span>'+go+
+          (n.task?'<button class="del" title="Delete this task">✕</button>':"")+'</div>';
       }).join("");
     }else{
       sub.textContent="Everything ticked off — click ✓ to put one back";
-      var done=M.completed(doneMap);
-      if(!done.length){list.innerHTML='<div class="now-empty">Nothing completed yet.</div>';}
-      else list.innerHTML=done.map(function(n){
-        var meta=doneMeta[n.item.id];
-        var who=meta&&meta.by?'<span class="who">by '+meta.by+'</span>':"";
-        return '<div class="nowi donei" data-id="'+n.item.id+'">'+
+      var done=M.completed(doneMap).concat(tasks.filter(function(t){return t.done;}).map(taskRow));
+      if(!done.length){rowsHtml='<div class="now-empty">Nothing completed yet.</div>';}
+      else rowsHtml=done.map(function(n){
+        var meta=n.task?{by:n.task.by_name}:doneMeta[n.item.id];
+        var who=meta&&meta.by?'<span class="who">by '+esc(meta.by)+'</span>':"";
+        var when=n.item.date?"was due "+M.fmt(n.item.date):"";
+        return '<div class="nowi donei" data-id="'+esc(n.item.id)+'"'+(n.task?' data-task="1"':'')+'>'+
           '<button class="tick" title="Put back on the list">✓</button>'+
-          '<span class="ev" style="--evc:'+n.acc+'">'+n.short+'</span>'+
-          '<span class="what">'+n.item.label+'</span>'+who+
-          '<span class="when">was due '+M.fmt(n.item.date)+'</span></div>';
+          '<span class="ev" style="--evc:'+n.acc+'">'+esc(n.short)+'</span>'+
+          '<span class="what">'+esc(n.item.label)+'</span>'+who+
+          '<span class="when">'+when+'</span>'+
+          (n.task?'<button class="del" title="Delete this task">✕</button>':"")+'</div>';
       }).join("");
     }
+    list.innerHTML=rowsHtml;
     list.querySelectorAll(".tick").forEach(function(btn){
       btn.addEventListener("click",function(){
-        var id=btn.closest(".nowi").dataset.id;
-        var nowDone=view==="week";
-        if(nowDone)doneMap[id]=1;else delete doneMap[id];
-        M.setDone(id,nowDone);
+        var row=btn.closest(".nowi"),id=row.dataset.id,nowDone=view==="week";
+        if(row.dataset.task){
+          var t=tasks.find(function(x){return x.id===id;});
+          if(t){t.done=nowDone;M.saveTask(t);}
+        }else{
+          if(nowDone)doneMap[id]=1;else delete doneMap[id];
+          M.setDone(id,nowDone);
+        }
         renderNow();renderCards();
       });
     });
+    list.querySelectorAll(".del").forEach(function(btn){
+      btn.addEventListener("click",function(){
+        var id=btn.closest(".nowi").dataset.id;
+        if(!confirm("Delete this task completely?"))return;
+        tasks=tasks.filter(function(x){return x.id!==id;});
+        M.removeTask(id);
+        renderNow();
+      });
+    });
   }
+  function addTask(){
+    var lab=document.getElementById("tkLabel"),evs=document.getElementById("tkEvent"),due=document.getElementById("tkDue");
+    var label=lab.value.trim();if(!label)return;
+    var t={id:M.newTaskId(),label:label,slug:evs.value,due:due.value||null,done:false};
+    tasks.push(t);M.saveTask(t);
+    lab.value="";due.value="";
+    renderNow();
+    lab.focus();
+  }
+  document.getElementById("tkAdd").addEventListener("click",addTask);
+  document.getElementById("tkLabel").addEventListener("keydown",function(e){if(e.key==="Enter")addTask();});
   document.getElementById("tabWeek").addEventListener("click",function(){view="week";renderNow();});
   document.getElementById("tabDone").addEventListener("click",function(){view="done";renderNow();});
   renderCards();
-  M.loadDone().then(function(r){doneMap=r.done;doneMeta=r.meta;renderCards();renderNow();});
+  Promise.all([M.loadDone(),M.loadTasks()]).then(function(res){
+    doneMap=res[0].done;doneMeta=res[0].meta;tasks=res[1]||[];
+    renderCards();renderNow();
+  });
 })();
 </script>
 <script src="./assets/studio-nav.js?v=4"></script>

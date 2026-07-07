@@ -61,6 +61,31 @@ window.StudioMilestones=(function(){
       })
       .catch(function(){return {done:lsGet(),meta:{}};});
   }
+  /* ---- one-off tasks (quick-added from the dashboard) ---- */
+  var LS_T="studio-tasks",cloudTasksOk=false;
+  function ltGet(){try{return JSON.parse(localStorage.getItem(LS_T))||[];}catch(_){return [];}}
+  function ltSet(a){try{localStorage.setItem(LS_T,JSON.stringify(a));}catch(_){}}
+  function loadTasks(){
+    return fetch(SUPA_URL+"/rest/v1/tasks?select=id,label,slug,due,done,by_name,at",{headers:{apikey:SUPA_KEY}})
+      .then(function(r){if(!r.ok)throw 0;return r.json();})
+      .then(function(rows){cloudTasksOk=true;ltSet(rows);return rows;})
+      .catch(function(){return ltGet();});
+  }
+  function saveTask(t){
+    ltSet(ltGet().filter(function(x){return x.id!==t.id;}).concat([t]));
+    if(!cloudTasksOk)return;
+    var by=null;try{var p=JSON.parse(localStorage.getItem("caplink-profile")||"null");by=p&&p.name||null;}catch(_){}
+    fetch(SUPA_URL+"/rest/v1/tasks",{method:"POST",
+      headers:{apikey:SUPA_KEY,"Content-Type":"application/json",Prefer:"resolution=merge-duplicates"},
+      body:JSON.stringify({id:t.id,label:t.label,slug:t.slug||"",due:t.due||null,done:!!t.done,by_name:t.by_name||by})}).catch(function(){});
+  }
+  function removeTask(id){
+    ltSet(ltGet().filter(function(x){return x.id!==id;}));
+    if(!cloudTasksOk)return;
+    fetch(SUPA_URL+"/rest/v1/tasks?id=eq."+encodeURIComponent(id),{method:"DELETE",headers:{apikey:SUPA_KEY}}).catch(function(){});
+  }
+  function newTaskId(){return "t"+Math.random().toString(36).slice(2,10)+Date.now().toString(36);}
+
   /* everything ticked off, most recent deadline first — the reference log */
   function completed(doneMap){
     var out=[];
@@ -113,5 +138,6 @@ window.StudioMilestones=(function(){
   }
   return {TEMPLATE:TEMPLATE,DATES:DATES,SHORT:SHORT,ACC:ACC,
     schedule:schedule,next:next,fmt:fmt,status:status,
-    linkFor:linkFor,loadDone:loadDone,setDone:setDone,agendaOfTheWeek:agendaOfTheWeek,completed:completed};
+    linkFor:linkFor,loadDone:loadDone,setDone:setDone,agendaOfTheWeek:agendaOfTheWeek,completed:completed,
+    loadTasks:loadTasks,saveTask:saveTask,removeTask:removeTask,newTaskId:newTaskId};
 })();
