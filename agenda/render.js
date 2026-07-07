@@ -104,7 +104,8 @@ var CSS=
 ".agdk .spk-sub{position:absolute;top:198px;left:66px;right:64px;font-size:12.5px;font-style:italic;font-weight:400;color:#8a7f86;letter-spacing:.02em}"+
 ".agdk .spk-wrap{position:absolute;top:206px;left:64px;right:64px;bottom:72px;display:flex;gap:40px}"+
 ".agdk .spk-col{flex:1;min-width:0}"+
-".agdk .spke1{font-size:11.6px;line-height:1.5;margin-bottom:10px;color:#5a5460}"+
+/* one line, no wrap — long entries auto-shrink (zoom) instead of wrapping */
+".agdk .spke1{font-size:11.6px;line-height:1.5;margin-bottom:10px;color:#5a5460;white-space:nowrap;transform-origin:left top}"+
 ".agdk .spke1 b{color:#241020;font-weight:700}"+
 ".agdk .spke1 i{font-weight:400}"+
 ".agdk .spke1 .f{font-weight:700;color:#38323c}"+
@@ -660,6 +661,24 @@ function measureBlocks(root,htmlList,wrapClass,width){
   document.body.removeChild(meas);
   return hs;
 }
+/* natural (unwrapped, un-zoomed) single-line size of each block — used to
+   decide how much a one-line entry needs to shrink to avoid wrapping */
+function measureNatural(root,htmlList,wrapClass){
+  var meas=document.createElement("div");
+  meas.className=root.className.replace("agdk-edit","");
+  meas.style.cssText="position:absolute;left:-99999px;top:0;visibility:hidden;width:3000px";
+  meas.innerHTML='<div class="sl" style="height:auto;width:3000px"><div class="'+wrapClass+'" id="_m" style="width:3000px"></div></div>';
+  document.body.appendChild(meas);
+  var box=meas.querySelector("#_m");
+  var out=htmlList.map(function(h){
+    box.innerHTML=h;
+    var el=box.firstElementChild;
+    el.style.display="inline-block";el.style.width="auto";
+    return {w:el.scrollWidth,h:el.scrollHeight};
+  });
+  document.body.removeChild(meas);
+  return out;
+}
 function paginateSessions(root,d,startN){
   var PAGE_H=LAND?874:1168;   /* page height - 44 top - 60 footer zone - 22 safety */
   var notesOn=d.meta.notesFill!==false;
@@ -743,38 +762,34 @@ function speakersSlides(root,d,startN){
   if(EDIT&&curatedSpk(d))entries.push('<div class="ghost gt" data-op="spkadd">+ Add person</div>');
   var subOn=!!d.meta.speakersSub;
   var COL_H=LAND?(subOn?674:706):(subOn?970:1000),GAP=10;
-  var W2=LAND?739:416,W3=LAND?489:272;
-  function tot(hs){var t=0;for(var q=0;q<hs.length;q++)t+=hs[q]+GAP;return t;}
-  /* ALWAYS one page: 2 columns, then 3, then (landscape only) 4 — measured
-     at true column widths. Fit is computed from the EXACT packed column
-     heights (the old total/cols estimate under-counted the tallest column
-     and let long lists poke into the footer), with one re-measure at the
-     zoomed width because zoom changes how entries wrap. */
-  var cols=2,CW=W2,hs=measureBlocks(root,entries,"spk-col",W2),total=tot(hs),scale=1;
-  if(total>2*COL_H){cols=3;CW=W3;hs=measureBlocks(root,entries,"spk-col",W3);total=tot(hs);}
-  if(total>3*COL_H&&LAND){
-    var hs4=measureBlocks(root,entries,"spk-col",360),t4=tot(hs4);
-    if(t4/4<=total/3){cols=4;CW=360;hs=hs4;}
-  }
-  function pack(hh){
-    var budget=tot(hh)/cols+30,colArr=[],cur=[],curH=0,heights=[];
-    entries.forEach(function(h,idx){
-      var e=hh[idx]+GAP;
-      if(curH+e>budget&&cur.length&&colArr.length<cols-1){colArr.push(cur);heights.push(curH);cur=[];curH=0;}
-      cur.push(h);curH+=e;
+  var W2=LAND?739:416,W3=LAND?489:272,W4=360;
+  /* Each entry is ONE LINE, never wraps (Lara: no wrapping) — an entry too
+     wide for its column auto-shrinks (zoom) just enough to fit, instead. */
+  var nat=measureNatural(root,entries,"spk-col");
+  function layout(cols,CW){
+    var per=nat.map(function(n,i){
+      var z=Math.max(0.68,Math.min(1,CW/n.w));
+      var html=(z<0.995)?entries[i].replace(/class="([^"]*)"/,'class="$1" style="zoom:'+z.toFixed(3)+'"'):entries[i];
+      return {html:html,rh:n.h*z};
     });
-    if(cur.length){colArr.push(cur);heights.push(curH);}
-    return {colArr:colArr,maxH:Math.max.apply(null,heights)};
+    var perCol=Math.ceil(per.length/cols),colArr=[],maxH=0;
+    for(var c=0;c<cols;c++){
+      var slice=per.slice(c*perCol,(c+1)*perCol);
+      if(!slice.length)continue;
+      var ch=0,html="";
+      slice.forEach(function(e){ch+=e.rh+GAP;html+=e.html;});
+      maxH=Math.max(maxH,ch);
+      colArr.push(html);
+    }
+    return {colArr:colArr,maxH:maxH};
   }
-  var pk=pack(hs);
-  if(pk.maxH>COL_H){
-    scale=Math.max(0.6,COL_H/pk.maxH);
-    hs=measureBlocks(root,entries,"spk-col",Math.round(CW/scale));
-    pk=pack(hs);
-    scale=Math.max(0.6,Math.min(1,COL_H/pk.maxH*0.99));
-  }
-  var colArr=pk.colArr;
-  var inner='<div class="spk-wrap" style="zoom:'+scale.toFixed(3)+';gap:'+(cols>=4?22:(cols===3?26:40))+'px'+(subOn?';top:238px':'')+'">'+colArr.map(function(c){return '<div class="spk-col">'+c.join("")+'</div>';}).join("")+'</div>';
+  var cols=2,CW=W2,res=layout(2,W2);
+  if(res.maxH>COL_H){cols=3;CW=W3;res=layout(3,W3);}
+  if(res.maxH>COL_H&&LAND){cols=4;CW=W4;res=layout(4,W4);}
+  /* last-resort: even the narrowest column layout is too tall (very long
+     lists) — zoom the whole block down rather than let it hit the footer */
+  var scale=res.maxH>COL_H?Math.max(0.7,COL_H/res.maxH*0.99):1;
+  var inner='<div class="spk-wrap" style="zoom:'+scale.toFixed(3)+';gap:'+(cols>=4?22:(cols===3?26:40))+'px'+(subOn?';top:238px':'')+'">'+res.colArr.map(function(c){return '<div class="spk-col">'+c+'</div>';}).join("")+'</div>';
   return [slide("",header(d.meta)+spkHead(d.meta)+inner+foot(d.meta,startN))];
 }
 
@@ -805,5 +820,5 @@ function buildDeck(root,data,opts){
   return root.querySelectorAll(".sl").length;
 }
 
-window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:89};
+window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:90};
 })();
