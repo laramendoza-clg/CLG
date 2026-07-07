@@ -21,7 +21,7 @@
       "height:58px;padding:0 20px;background:rgba(22,10,22,.97);border-bottom:1px solid rgba(255,255,255,.1);"+
       "font-family:'Raleway',system-ui,sans-serif;-webkit-font-smoothing:antialiased}"+
     "#studio-nav .sn-brand{display:flex;align-items:center;text-decoration:none;flex:0 0 auto}"+
-    "#studio-nav .sn-brand img{height:28px;width:auto;display:block}"+
+    "#studio-nav .sn-brand img{height:28px;width:auto;display:block;filter:brightness(0) invert(1)}"+
     "#studio-nav .sn-links{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}"+
     "#studio-nav .sn-links::-webkit-scrollbar{display:none}"+
     "#studio-nav .sn-links a{white-space:nowrap;text-decoration:none;font-size:12.5px;font-weight:600;"+
