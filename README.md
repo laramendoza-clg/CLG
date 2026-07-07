@@ -6,16 +6,22 @@ with a branded dashboard. Live at `https://laramendoza-clg.github.io/CLG/`.
 ## Structure
 
 ```
-/                      dashboard (index.html) — tools grouped by category
+/                      dashboard — "This week" deadlines panel + event picker
+/event/                per-event workspace (?e=<slug>): milestones + tools
+/backstage/            cross-event admin (agendas list, references)
 /agendas/              index of the team's live agenda documents
 /agenda-generator/     agenda BUILDER (Slides-like click-to-edit, publish)
 /agenda/               agenda VIEWER (share link: /agenda/?e=<slug>)
 /agenda/render.js      shared deck renderer used by builder and viewer
+/agenda/seeds/         prepared agenda content per event (builder auto-loads)
 /dubai-pcs-card/       "I'm Attending" social card generator (Dubai PCS 2026)
 /speaker-card/         Speaker & Panel social card generator (Dubai PCS 2026)
 /sponsor-generator/    event-page sponsor section generator (embeddable code)
 /logo-sizes/           sponsor logo size reference dictionary
-/assets/               shared brand assets (logos, skylines: Dubai/NY/London)
+/assets/               brand assets, skylines, speaker photos
+/assets/studio-nav.js  shared nav bar (injected on internal pages only)
+/assets/milestones.js  standard event timeline + ticks / quick-add tasks
+/.github/workflows/    Pages deploy (mirrors main → the Pages source branch)
 ```
 
 ## The agenda system
@@ -34,8 +40,11 @@ with a branded dashboard. Live at `https://laramendoza-clg.github.io/CLG/`.
   lines that absorb leftover space. Logos are always vertically centred;
   speaker photos are square-cornered.
 - Known documents are listed in `/agendas/` (`KNOWN` array) — currently
-  dubai-2026, newyork-2026, ai-data-breakfast-2026, europe-2027, mit-2026.
-  Any newly published slug appears automatically.
+  dubai-2026, newyork-2026, ai-data-breakfast-2026, europe-2027, mit-2027.
+  Any newly published slug appears automatically. Adding a NEW event means:
+  seed JSON in `/agenda/seeds/`, KNOWN in `/agendas/`, EVENTS in `/event/`,
+  a card on `/`, LINKS in `assets/studio-nav.js`, and DATES/SHORT/ACC in
+  `assets/milestones.js`.
 
 ## Notes
 

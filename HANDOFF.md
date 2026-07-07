@@ -11,12 +11,33 @@ from the code.
 
 CapLink Studio (`https://laramendoza-clg.github.io/CLG/`) is CapLink Group's
 internal tool suite, hosted on GitHub Pages from this repo (`main` branch =
-live site). All pages are `noindex` (unlisted, shared within CapLink only).
+live site, deployed via the mirror workflow — see rule 2). All pages are
+`noindex` (unlisted, shared within CapLink only).
 
-Tools: dashboard (`/`), social card generators (`/dubai-pcs-card/`,
-`/speaker-card/`), sponsor-section generator (`/sponsor-generator/`),
-logo-size reference (`/logo-sizes/`), and the **agenda system** — the main
-ongoing project (see §3).
+Structure is **event-first**: the dashboard (`/`) opens with a personal
+"This week" deadlines panel + "Which event are you working on?" cards;
+each event gets a workspace at `/event/?e=<slug>` (milestones timeline,
+agenda links, website + social tools). A shared sticky nav
+(`assets/studio-nav.js`, injected on every internal page, never on the
+public agenda viewer) navigates by event. Cross-event admin lives at
+`/backstage/` (quiet footer link only). Tools: agenda system (§3 — the
+main project), social card generators (`/dubai-pcs-card/`,
+`/speaker-card/`), sponsor-section generator, logo-size reference.
+The Studio brand mark is Lara's logo (Squarespace URL, rendered white via
+CSS filter on dark surfaces).
+
+**The milestones system** (`assets/milestones.js`): ONE standard event
+timeline (Doina's production draft, July 2026 + Lara's design/marketing
+cadence), phases T-7 months → post-event, computed from each event's date
+(`DATES` map; ids derive from labels so edits don't reset ticks). Every
+item has a `track` (design/marketing/production/sales) — tracks are
+DEFAULTS, not ownership: Lara's dashboard shows only design+marketing plus
+per-item star/hide overrides (localStorage) and her own quick-added tasks;
+the full timeline lives on event pages with an Everything/Just-mine
+filter. Ticks are shared via Supabase `milestones` table, one-off tasks
+via `tasks` table (both public-write like presence; localStorage fallback
+if absent). The whole-team tracker deliberately does NOT live here —
+that's for Bitrix; Lara owns only her lane.
 
 ## 2. Iron rules (established with Lara — do not violate)
 
@@ -66,24 +87,35 @@ ongoing project (see §3).
   updated_at)` — public read via RLS; writes ONLY via RPC
   `publish_agenda(p_slug,p_data,p_key)` which checks the team password in
   `studio_secrets`. Optional `presence` table powers live "who's editing"
-  avatars (SQL was given to Lara — confirm it was run).
+  avatars (SQL was given to Lara — confirm it was run). `milestones`
+  (id,done,by_name,at — confirmed run) and `tasks`
+  (id,label,slug,due,done,by_name,at — given, unconfirmed) are public-write
+  like presence and back the dashboard ticks / quick-add tasks.
 - **Builder** `/agenda-generator/?e=<slug>`: loads newest published version;
   Google-Slides-style editing (click text on the page to type; click
   photos/logos for upload/URL/size popover; hover a session for
-  move/add/delete; hover a panelist for ◂ ▸ reorder arrows). Undo/redo
-  buttons + Ctrl/Cmd+Z / Shift+Z cover every mutation. Autosaves locally;
-  **Publish** makes it live.
+  move/add/delete; hover a panelist for ◂ ▸ reorder arrows; simple rows
+  have "+ Turn into a panel"; curated speakers pages edit in place with
+  hover-✕ remove and "+ Add person"). Undo/redo buttons + Ctrl/Cmd+Z /
+  Shift+Z cover every mutation. Local drafts are **per event**
+  (`caplink-agenda-builder-v3:<slug>` — one shared slot once caused NY
+  content to nearly publish under the AI slug). **Publish** makes it live.
 - **Viewer** `/agenda/?e=<slug>`: always fetches latest published version;
-  flip with arrows/swipe; desktop defaults to a BOOK SPREAD (cover alone,
-  then facing pairs; toggle in the bar, remembered per device); Download PDF
-  prints true 8.5×11. The Confirmed Speakers page is ALWAYS exactly one page
-  (2→3 columns, then gentle scaling).
+  flip with arrows/swipe; desktop defaults to a BOOK SPREAD (toggle in the
+  bar, remembered per device); shows a version marker top-right. Download
+  PDF clones each page into a true 8.5×11in box scaled via transform
+  (NOT zoom — some print engines ignore it) and shows a tip about the
+  browser's "Background graphics / Print backgrounds" checkbox, which no
+  site CSS can force in Safari. The speakers page is ALWAYS exactly one
+  page (list: 2→3 columns then shrink; grid: scales up OR down to fill).
 - **Documents index** `/agendas/`: lists known events (KNOWN array) plus any
   published slug; Edit / View / Copy share link.
 - **Seeds** `agenda/seeds/<slug>.json`: prepared content committed to the
-  repo. The builder auto-loads a seed when an event has no published version
-  yet — so new-event content ships via git and Lara only reviews + publishes.
-  Seeds are ignored once a cloud version exists.
+  repo. The builder auto-loads a seed ONLY when an event has no published
+  version. Once published, use Safety copies → "Load the full prepared
+  draft" (replaces everything) or "Import only the speakers page from the
+  draft" (touches nothing else — added after a full load wiped Lara's
+  session-photo edits; prefer the surgical one).
 - Shared renderer `agenda/render.js` (all layout lives here). Themes:
   dubai (petrol), european (plum), newyork (terracotta), london (navy/gold),
   boston (garnet #5E1A2E, for MIT). Backgrounds: `meta.bgImg` with presets
@@ -109,26 +141,35 @@ ongoing project (see §3).
 
 | Slug | Event | Status |
 |---|---|---|
-| dubai-2026 | Dubai PCS, Sep 15 2026, The Lana | **Published & edited by Lara** |
-| newyork-2026 | NY PCS, Oct 14 2026, WELL& by Durst + Nasdaq | Seeded — needs review+publish |
-| europe-2027 | European PCS, Feb 2027, London | Seeded — venue conflict in source (The Londoner vs Rosewood), date has no day yet, past-speakers page intentionally omitted |
-| mit-2027 | Private Capital Talent Leadership Summit, Feb 24 2027, MIT Cambridge | Seeded — welcome letter is Claude-drafted (needs Nawshad review); venue building TBC; no sponsors yet; speakers indicative only (NOT placed in sessions on purpose); needs a Boston/Cambridge background photo |
-| ai-data-breakfast-2026 | AI / Data & Insight Private Capital Breakfast, Nov 18 2026, The May Fair Hotel, London (co-hosted with PE150) | Seeded from Lara's PDF — needs review+publish. Not represented: the "Two platforms, one room" partnership page (no template page type); PE150 logo, Exact Insight logo, Aram Taghavi signature image not hosted yet |
+| dubai-2026 | Dubai PCS, Sep 15 2026, The Lana | **Published & edited by Lara** — venue photo for reception page still owed |
+| newyork-2026 | NY PCS, Oct 14 2026, WELL& by Durst + Nasdaq | Seeded — needs review+publish; sponsor logos not hosted |
+| europe-2027 | European PCS, Feb 2027, London | Seeded — venue conflict in source (The Londoner vs Rosewood), date has no day yet (milestones marked est.); past-speakers page possible now the feature exists but content wasn't re-transcribed |
+| mit-2027 | Private Capital Talent Leadership Summit, Feb 24 2027, MIT Cambridge | Seed rebuilt from Doina's Feb-24 draft incl. Past Speakers page (13 names, 6 with photos reused from aidb); header drops "Boston" (city:"" + lockCity:"BOSTON"); the internal firm-sourcing list under Value Creation Spotlight was DELIBERATELY excluded (rule 6). **Official title order pending Nawshad** — Lara's logo may say "Talent Leadership Private Capital Summit" vs the documents' "Private Capital Talent Leadership Summit". Still TBC: venue building, sponsors, confirmed speakers, hosted logos (MIT/GeniusMesh/event), Boston background photo, ticketing/student rate |
+| ai-data-breakfast-2026 | AI / Data & Insight Private Capital Breakfast, Nov 18 2026, The May Fair, London (JV with PE150) | Published by Lara (edited); seed has full content: JV "Hosted by" branding, two-signature welcome, Past Speakers photo grid (30 headshots extracted from her PDF in `assets/speakers/aidb/`), May Fair logo. Still missing: Exact Insight + past-sponsor logos, Aram Taghavi signature image; "Two platforms, one room" partnership page has no template page type (decision pending). NB: Jaimee Michaud's photo in the source PDF carries an Advent logo though she's listed at SPV Global — flagged to Lara |
 
 ## 5. Open items
 
-- AI/Data Breakfast: Lara to review + publish; still missing PE150 /
-  Exact Insight / past-sponsor logos, Aram Taghavi signature image, and a
-  decision on the partnership ("Two platforms, one room") page.
-- Confirm the `presence` SQL was run; Lara to send **team names + photos**
-  to pre-seed the presence picker (currently self-serve name/photo).
-- Speaker headshot URLs → panels (Lara has them all); once photos are in,
-  flip the speakers page to the **photo grid** style (Design section).
-- MIT: venue line, sponsors, confirmed speakers, hosted logos (MIT,
-  GeniusMesh, event logo), Boston background, ticketing/student rate.
-- Possible future: "Past Speakers" page type (Europe deck had one; not built).
-- Deferred: real login (Cloudflare Access, domain `caplink-group.com`);
-  currently the site is unlisted-but-open by explicit choice.
+**Waiting on Lara / team:**
+- Nawshad: confirm MIT's official title order (Lara's logo may need redoing).
+- Doina: react to the marketing/design additions in the standard timeline
+  (print & staging designs T-2mo; orders placed + holding slides T-1mo);
+  the team-wide tracker itself should live in Bitrix, not the Studio.
+- Confirm the `presence` SQL was run; team **names + photos** for the
+  presence picker. `milestones` SQL confirmed run; `tasks` SQL given but
+  unconfirmed (tasks fall back to per-device silently until then).
+- Assets owed: Dubai reception venue photo (High Society), NY reception
+  photo (Nasdaq MarketSite), NY/AI sponsor logos, Aram Taghavi signature,
+  MIT logos + Boston background, speaker headshot URLs for NY/Europe panels.
+- Publish NY + Europe from their seeds.
+
+**Deferred / possible:**
+- "Two platforms, one room" partnership page type (AI/Data deck page 9).
+- Weekly Monday email of Lara's This-week list; per-event assets/links box.
+- Europe past-speakers page (feature exists; content needs re-transcribing).
+- Real login (Cloudflare Access, `caplink-group.com`); currently
+  unlisted-but-open by explicit choice.
+- If PDF colour still fails with the print-dialog checkbox on: render pages
+  to images client-side and build the PDF in-page (no print dialog).
 
 ## 6. Lara's design taste (hard-won — respect it)
 
@@ -138,6 +179,14 @@ clutter, nothing "done by a beginner". Big readable titles; generous but
 everywhere. Brand plum family + per-event accent. Contact info is
 deliberately low-key (bottom of the closing page, v27+). When she says a
 page "looks bad", propose a designed alternative, don't just nudge values.
+Cover scrims: legible but never "night-time" — protect the text zones,
+let the photo breathe between them (tuned v43).
+
+The dashboard's design brief (implicit, don't restate it to her): it does
+the remembering. One glance answers "what's next for me" — most urgent
+first, direct Go links to where the work happens, one-click capture for
+incoming requests, done things move aside but stay findable, and other
+departments' work never lands in her lists.
 
 ## 7. Working with Lara / environment constraints
 
