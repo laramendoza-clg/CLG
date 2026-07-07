@@ -235,12 +235,12 @@ var CSS=
 ".agdk-edit .pmv button:hover{background:#f7eef4}"+
 /* ---- landscape (legal, 14x8.5) overrides — active only with meta.orient:"landscape" ---- */
 ".agdk-land .sl{width:"+LW+"px;height:"+LH+"px}"+
-/* landscape cover: everything scaled UP for the wide legal page. Legibility
-   over busy skylines is GRADIENT ONLY (a hard plate band was vetoed —
-   "black block"): soft top/bottom bands for the logo zones plus a deep,
-   fully feathered dome behind the title — no visible edges anywhere —
-   and heavy text shadows doing the rest */
-".agdk-land .cov-glow{top:0;height:100%;background:linear-gradient(180deg,rgba(10,8,13,.6) 0%,rgba(10,8,13,.18) 20%,rgba(10,8,13,0) 33%),linear-gradient(0deg,rgba(10,8,13,.58) 0%,rgba(10,8,13,.16) 17%,rgba(10,8,13,0) 30%),radial-gradient(ellipse 78% 62% at 50% 47%,rgba(10,8,13,.62) 0%,rgba(10,8,13,.38) 45%,rgba(10,8,13,0) 76%)}"+
+/* landscape cover: everything scaled UP for the wide legal page.
+   Lara's cover treatment (v67): ONE clean black gradient — solid at the
+   bottom (behind the partner logos and date), easing to transparent at
+   the very top. The old banded tint is disabled on this page. */
+".agdk-land .cov .tint{background:none}"+
+".agdk-land .cov-glow{top:0;height:100%;background:linear-gradient(0deg,rgba(0,0,0,.86) 0%,rgba(0,0,0,.55) 26%,rgba(0,0,0,.22) 52%,rgba(0,0,0,0) 100%)}"+
 ".agdk-land .cov-cap{height:58px}"+
 ".agdk-land .cov-host .lbl{font-size:11px}"+
 ".agdk-land .cov-host img{max-width:480px}"+
@@ -250,9 +250,6 @@ var CSS=
 ".agdk-land .cov-lockt .vb{width:4px}"+
 ".agdk-land .cov-lockt .c2{font-size:52px}"+
 ".agdk-land .cov-date{top:600px;font-size:24px;text-shadow:0 2px 8px rgba(0,0,0,.6),0 0 30px rgba(0,0,0,.65)}"+
-/* soft dark fade ONLY behind the date/location line — feathered on every
-   side so it reads as shading, never a shape */
-".agdk-land .cov-dateglow{position:absolute;top:536px;left:0;right:0;height:160px;background:radial-gradient(ellipse 46% 54% at 50% 50%,rgba(8,6,11,.68) 0%,rgba(8,6,11,.34) 48%,rgba(8,6,11,0) 74%)}"+
 ".agdk-land .cov-rail{bottom:88px;gap:120px}"+
 ".agdk-land .cov-rail .lbl{font-size:11.5px}"+
 ".agdk-land .cov-rail .slot{height:120px}"+
@@ -260,6 +257,10 @@ var CSS=
 ".agdk-land .cov-rail .txt{font-size:24px}"+
 ".agdk-land .cov-note{bottom:32px;font-size:11.5px}"+
 ".agdk-land .back-logo{width:430px}"+
+/* landscape back cover: radial gradient, dark in the CENTRE (behind the
+   logo) fading outwards; banded tint off */
+".agdk-land .bck .tint{background:none}"+
+".agdk-land .bck .back-glow{background:radial-gradient(ellipse 52% 52% at 50% 50%,rgba(0,0,0,.72) 0%,rgba(0,0,0,.4) 46%,rgba(0,0,0,0) 78%)}"+
 /* landscape welcome: a proper letter — full-width text edge to edge,
    larger type, signature bottom-LEFT under the text (Lara: no columns,
    no side rail, signature belongs on the left with the name) */
@@ -467,10 +468,9 @@ function coverSlide(d){
   }else{
     host='<img class="cov-cap" src="'+CAPW+'"'+(EDIT?dp("meta.hostImg","logo")+' title="Click to switch to a hosted-by / JV lockup"':"")+'>';
   }
-  return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><div class="cov-glow"></div>'+
+  return slide("dark cov",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><div class="cov-glow"></div>'+
     host+
     lockupHtml(m)+
-    (LAND?'<div class="cov-dateglow"></div>':'')+
     '<div class="cov-date"><span'+de("meta.dateLine")+' style="font-weight:700">'+esc(m.dateLine)+'</span>  <span>|</span>  <span'+de("meta.locLine")+'>'+esc(m.locLine)+'</span></div>'+
     '<div class="cov-rail">'+rail+'</div>'+
     (m.preliminary||EDIT?'<div class="cov-note"'+de("meta.preliminary")+'>'+esc(m.preliminary)+'</div>':""));
@@ -636,7 +636,7 @@ function backSlide(m){
   var src=(m.backImg===undefined||m.backImg===null)?(m.hostImg||CAPSTACK):m.backImg;
   var lg=src?'<img class="back-logo" src="'+esc(src)+'"'+dp("meta.backImg","logo")+(m.backW?' style="width:'+(+m.backW||330)+'px"':"")+'>'
     :(EDIT?'<div class="back-logo ghost" data-op="logoslot" data-path="meta.backImg" data-mode="logo" style="min-height:64px;background:rgba(255,255,255,.85)">+ logo</div>':"");
-  return slide("dark",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><div class="back-glow"></div>'+lg);
+  return slide("dark bck",'<img class="bg" src="'+esc(bgSrc(m))+'"><div class="tint"></div><div class="back-glow"></div>'+lg);
 }
 
 /* --- measurement helpers: run inside a live offscreen slide --- */
