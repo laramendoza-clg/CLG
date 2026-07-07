@@ -154,6 +154,17 @@ var CSS=
 ".agdk .pcell .nm{font-size:12.8px;font-weight:700;color:#241f26;line-height:1.28}"+
 ".agdk .pcell .tt{font-size:11px;color:#7f7984;line-height:1.38;margin-top:2px}"+
 ".agdk .pcell .fm{font-size:11.2px;font-weight:700;color:#38323c;margin-top:3px;line-height:1.28}"+
+/* moderator column — sits left of the description + panelist grid */
+".agdk .pblock{display:flex;gap:26px;align-items:flex-start}"+
+".agdk .pmod{flex:0 0 190px;min-width:0;border-right:1px solid #ece7ea;padding-right:22px}"+
+".agdk .pmod-cell img{width:80px;height:80px;object-fit:cover;border:1px solid #e8e5e9;display:block;margin-bottom:10px}"+
+".agdk .pmod-cell .mtag{font-size:9px;letter-spacing:.2em;color:var(--accent);font-weight:700;text-transform:uppercase;margin-bottom:3px}"+
+".agdk .pmod-cell .nm{font-size:12.8px;font-weight:700;color:#241f26;line-height:1.28}"+
+".agdk .pmod-cell .tt{font-size:11px;color:#7f7984;line-height:1.38;margin-top:2px}"+
+".agdk .pmod-cell .fm{font-size:11.2px;font-weight:700;color:#38323c;margin-top:3px;line-height:1.28}"+
+".agdk .pmain{flex:1;min-width:0}"+
+".agdk .pmain .rdesc{padding-top:0}"+
+".agdk-edit .ghost.pmod-add{flex:0 0 190px;min-height:170px;margin:0}"+
 /* roundtables */
 ".agdk .tbl-wrap{display:flex;gap:44px;padding:8px 4px 18px}"+
 ".agdk .tbl-col{flex:1}"+
@@ -305,6 +316,9 @@ var CSS=
 ".agdk-land .spk-cell .tt{font-size:12.5px;font-style:normal;color:#7f7984}"+
 ".agdk-land .spk-cell .fm{font-size:13px;font-weight:700;letter-spacing:0;text-transform:none;color:#38323c}"+
 ".agdk-land .prow{grid-template-columns:repeat(5,1fr)}"+
+".agdk-land .pmod{flex:0 0 220px}"+
+".agdk-land .pmod-cell img{width:92px;height:92px}"+
+".agdk-land.agdk-edit .ghost.pmod-add{flex:0 0 220px}"+
 ".agdk-land .rec2-photo{flex:0 0 520px}"+
 ".agdk-land .row-photo{height:300px}"+
 ".agdk-land .sp-grid{grid-template-columns:repeat(3,1fr)}"+
@@ -380,6 +394,19 @@ function pcell(p,path,tagPath,tagVal,mv){
     '<div class="tt"'+de(path+".title")+'>'+esc(p.title)+'</div>'+
     '<div class="fm"'+de(path+".firm")+'>'+esc(p.firm)+'</div></div></div>';
 }
+/* moderator/interviewer card — a vertical mini-profile that sits in its own
+   column to the LEFT of the description + panelist grid, so the panelist
+   grid only ever has to fit the actual panelists (never the moderator +
+   panelists together), which is what left a lone panelist stranded on its
+   own row whenever a panel had exactly a full row of panelists */
+function modCell(p,path,tagPath,tagVal){
+  if(!p)return"";
+  return '<div class="pmod-cell"><img src="'+pic(p.img)+'"'+dp(path+".img","photo")+'>'+
+    (tagPath?'<div class="mtag"'+de(tagPath)+'>'+esc(tagVal||"")+'</div>':"")+
+    '<div class="nm"'+de(path+".name")+'>'+esc(p.name)+'</div>'+
+    '<div class="tt"'+de(path+".title")+'>'+esc(p.title)+'</div>'+
+    '<div class="fm"'+de(path+".firm")+'>'+esc(p.firm)+'</div></div>';
+}
 function sponHtml(s,b){
   var i=b.split(".")[1];
   var hasArr=Array.isArray(s.sponsors);
@@ -413,11 +440,8 @@ function sessionHtml(s,i,isLast){
     body+='<div class="ghost gt" data-op="mkpanel" data-i="'+i+'" style="max-width:420px;margin-top:6px">+ Turn into a panel — add speakers &amp; a description</div>';
   }
   if(s.kind==="people"){
-    if(s.desc||EDIT)body+='<div class="rdesc"'+de(b+".desc",1)+'>'+esc(s.desc)+'</div>';
-    var cells="";
-    if(s.lead)cells+=pcell(s.lead,b+".lead",b+".roleLabel",s.roleLabel||"MODERATOR");
-    else if(EDIT)cells+='<div class="ghost" data-op="addlead" data-i="'+i+'">+ Moderator</div>';
-    cells+=(s.people||[]).map(function(p,j){
+    var descHtml=(s.desc||EDIT)?'<div class="rdesc"'+de(b+".desc",1)+'>'+esc(s.desc)+'</div>':"";
+    var cells=(s.people||[]).map(function(p,j){
       var mv="";
       if(EDIT&&s.people.length>1){
         mv='<span class="pmv">'+(j>0?'<button data-op="pleft" data-i="'+i+'" data-j="'+j+'" title="Move earlier">◂</button>':"")+(j<s.people.length-1?'<button data-op="pright" data-i="'+i+'" data-j="'+j+'" title="Move later">▸</button>':"")+'</span>';
@@ -425,7 +449,20 @@ function sessionHtml(s,i,isLast){
       return pcell(p,b+".people."+j,null,null,mv);
     }).join("");
     if(EDIT)cells+='<div class="ghost" data-op="addp" data-i="'+i+'">+ Add panelist</div>';
-    if(cells)body+='<div class="prow">'+cells+'</div>';
+    var prowHtml=cells?'<div class="prow">'+cells+'</div>':"";
+    /* the moderator/interviewer gets their OWN column to the left, so the
+       panelist grid only ever has to fit the panelists — previously the
+       moderator took one of the grid's slots, which could strand a single
+       panelist alone on its own row (e.g. moderator + 5 panelists in a
+       5-column grid). A session with no lead and not being edited renders
+       exactly as before: full-width description + panelist grid. */
+    if(s.lead){
+      body+='<div class="pblock"><div class="pmod">'+modCell(s.lead,b+".lead",b+".roleLabel",s.roleLabel||"MODERATOR")+'</div><div class="pmain">'+descHtml+prowHtml+'</div></div>';
+    }else if(EDIT){
+      body+='<div class="pblock"><div class="ghost pmod-add" data-op="addlead" data-i="'+i+'">+ Moderator</div><div class="pmain">'+descHtml+prowHtml+'</div></div>';
+    }else{
+      body+=descHtml+prowHtml;
+    }
   }else if(s.kind==="tables"){
     if(s.desc||EDIT)body+='<div class="rdesc"'+de(b+".desc",1)+'>'+esc(s.desc||"")+'</div>';
     var half=Math.ceil(s.tables.length/2),c1="",c2="";
@@ -840,5 +877,5 @@ function buildDeck(root,data,opts){
   return root.querySelectorAll(".sl").length;
 }
 
-window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:93};
+window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:94};
 })();
