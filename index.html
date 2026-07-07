@@ -43,9 +43,14 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
 
 /* the This-week panel */
 .now{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 18px 8px;margin:0 0 28px;box-shadow:0 10px 30px rgba(42,18,40,.06)}
-.now-head{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
-.now-title{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--plum)}
-.now-sub{font-size:11.5px;color:var(--mute)}
+.now-head{display:flex;align-items:baseline;gap:6px;margin-bottom:8px}
+.now-tab{font-family:inherit;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);background:none;border:none;cursor:pointer;padding:5px 10px;border-radius:5px}
+.now-tab.on{color:var(--plum);background:#f4eff2}
+.now-sub{font-size:11.5px;color:var(--mute);margin-left:auto}
+.nowi.donei{opacity:.75}
+.nowi.donei .tick{background:#2e7d4f;border-color:#2e7d4f;color:#fff;font-size:12px;line-height:1}
+.nowi.donei .what{font-weight:500;color:#6b6068}
+.nowi .who{flex:0 0 auto;font-size:11px;color:var(--mute);font-style:italic}
 .nowi{display:flex;align-items:center;gap:12px;padding:9px 2px;border-top:1px solid #f4f0f2}
 .nowi:first-child{border-top:none}
 .nowi .tick{flex:0 0 20px;width:20px;height:20px;border:2px solid #d6cdd2;border-radius:50%;background:#fff;cursor:pointer;padding:0}
@@ -122,7 +127,11 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
 
 <div class="wrap">
   <div id="nowPanel" class="now" style="display:none">
-    <div class="now-head"><span class="now-title">This week</span><span class="now-sub" id="nowSub"></span></div>
+    <div class="now-head">
+      <button class="now-tab on" id="tabWeek">This week</button>
+      <button class="now-tab" id="tabDone">Completed</button>
+      <span class="now-sub" id="nowSub"></span>
+    </div>
     <div id="nowList"></div>
   </div>
 
@@ -171,7 +180,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
     <a class="backstage" href="./backstage/">Backstage &rarr;</a>
   </div>
 </div>
-<script src="./assets/milestones.js?v=2"></script>
+<script src="./assets/milestones.js?v=3"></script>
 <script>
 (function(){
   var M=window.StudioMilestones;if(!M)return;
@@ -194,30 +203,55 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
       slot.innerHTML="<b>Next deadline"+(days<0?" — overdue":(days<=14&&it.w!==0?" — due soon":""))+"</b>"+it.label+"<br>"+M.fmt(it.date)+(s.est?" (est.)":"")+" · "+ago(days);
     });
   }
+  var doneMeta={},view="week";
   function renderNow(){
     var panel=document.getElementById("nowPanel"),list=document.getElementById("nowList"),sub=document.getElementById("nowSub");
-    var items=M.agendaOfTheWeek(doneMap).slice(0,7);
     panel.style.display="block";
-    sub.textContent=new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"});
-    if(!items.length){list.innerHTML='<div class="now-empty">Nothing due in the next three weeks — you’re ahead. ✨</div>';return;}
-    list.innerHTML=items.map(function(n){
-      return '<div class="nowi'+(n.days<0?' late':'')+'" data-id="'+n.item.id+'">'+
-        '<button class="tick" title="Mark done"></button>'+
-        '<span class="ev" style="--evc:'+n.acc+'">'+n.short+'</span>'+
-        '<span class="what">'+n.item.label+'</span>'+
-        '<span class="when">'+M.fmt(n.item.date)+(n.est?" (est.)":"")+' · '+ago(n.days)+'</span>'+
-        '<a class="jump" href="'+M.linkFor(n.slug,n.item,"./")+'">Go</a></div>';
-    }).join("");
+    document.getElementById("tabWeek").classList.toggle("on",view==="week");
+    var doneCount=Object.keys(doneMap).length;
+    var td=document.getElementById("tabDone");
+    td.classList.toggle("on",view==="done");
+    td.textContent="Completed"+(doneCount?" ("+doneCount+")":"");
+    if(view==="week"){
+      sub.textContent=new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"});
+      var items=M.agendaOfTheWeek(doneMap).slice(0,7);
+      if(!items.length){list.innerHTML='<div class="now-empty">Nothing due in the next three weeks — you’re ahead. ✨</div>';}
+      else list.innerHTML=items.map(function(n){
+        return '<div class="nowi'+(n.days<0?' late':'')+'" data-id="'+n.item.id+'">'+
+          '<button class="tick" title="Mark done"></button>'+
+          '<span class="ev" style="--evc:'+n.acc+'">'+n.short+'</span>'+
+          '<span class="what">'+n.item.label+'</span>'+
+          '<span class="when">'+M.fmt(n.item.date)+(n.est?" (est.)":"")+' · '+ago(n.days)+'</span>'+
+          '<a class="jump" href="'+M.linkFor(n.slug,n.item,"./")+'">Go</a></div>';
+      }).join("");
+    }else{
+      sub.textContent="Everything ticked off — click ✓ to put one back";
+      var done=M.completed(doneMap);
+      if(!done.length){list.innerHTML='<div class="now-empty">Nothing completed yet.</div>';}
+      else list.innerHTML=done.map(function(n){
+        var meta=doneMeta[n.item.id];
+        var who=meta&&meta.by?'<span class="who">by '+meta.by+'</span>':"";
+        return '<div class="nowi donei" data-id="'+n.item.id+'">'+
+          '<button class="tick" title="Put back on the list">✓</button>'+
+          '<span class="ev" style="--evc:'+n.acc+'">'+n.short+'</span>'+
+          '<span class="what">'+n.item.label+'</span>'+who+
+          '<span class="when">was due '+M.fmt(n.item.date)+'</span></div>';
+      }).join("");
+    }
     list.querySelectorAll(".tick").forEach(function(btn){
       btn.addEventListener("click",function(){
         var id=btn.closest(".nowi").dataset.id;
-        doneMap[id]=1;M.setDone(id,true);
+        var nowDone=view==="week";
+        if(nowDone)doneMap[id]=1;else delete doneMap[id];
+        M.setDone(id,nowDone);
         renderNow();renderCards();
       });
     });
   }
+  document.getElementById("tabWeek").addEventListener("click",function(){view="week";renderNow();});
+  document.getElementById("tabDone").addEventListener("click",function(){view="done";renderNow();});
   renderCards();
-  M.loadDone().then(function(m){doneMap=m;renderCards();renderNow();});
+  M.loadDone().then(function(r){doneMap=r.done;doneMeta=r.meta;renderCards();renderNow();});
 })();
 </script>
 <script src="./assets/studio-nav.js?v=4"></script>

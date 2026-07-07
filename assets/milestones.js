@@ -51,10 +51,27 @@ window.StudioMilestones=(function(){
   function lsGet(){try{return JSON.parse(localStorage.getItem(LS))||{};}catch(_){return {};}}
   function lsSet(m){try{localStorage.setItem(LS,JSON.stringify(m));}catch(_){}}
   function loadDone(){
-    return fetch(SUPA_URL+"/rest/v1/milestones?select=id,done",{headers:{apikey:SUPA_KEY}})
+    /* resolves {done:{id:1}, meta:{id:{by,at}}} — meta only when the shared table exists */
+    return fetch(SUPA_URL+"/rest/v1/milestones?select=id,done,by_name,at",{headers:{apikey:SUPA_KEY}})
       .then(function(r){if(!r.ok)throw 0;return r.json();})
-      .then(function(rows){cloudOk=true;var m={};rows.forEach(function(x){if(x.done)m[x.id]=1;});lsSet(m);return m;})
-      .catch(function(){return lsGet();});
+      .then(function(rows){
+        cloudOk=true;var m={},meta={};
+        rows.forEach(function(x){if(x.done){m[x.id]=1;meta[x.id]={by:x.by_name,at:x.at};}});
+        lsSet(m);return {done:m,meta:meta};
+      })
+      .catch(function(){return {done:lsGet(),meta:{}};});
+  }
+  /* everything ticked off, most recent deadline first — the reference log */
+  function completed(doneMap){
+    var out=[];
+    Object.keys(DATES).forEach(function(slug){
+      var s=schedule(slug);if(!s)return;
+      s.items.forEach(function(it){
+        if(doneMap[it.id])out.push({slug:slug,short:SHORT[slug]||slug,acc:ACC[slug]||"#531639",est:s.est,item:it});
+      });
+    });
+    out.sort(function(a,b){return b.item.date-a.item.date;});
+    return out;
   }
   function setDone(id,done){
     var m=lsGet();if(done)m[id]=1;else delete m[id];lsSet(m);
@@ -96,5 +113,5 @@ window.StudioMilestones=(function(){
   }
   return {TEMPLATE:TEMPLATE,DATES:DATES,SHORT:SHORT,ACC:ACC,
     schedule:schedule,next:next,fmt:fmt,status:status,
-    linkFor:linkFor,loadDone:loadDone,setDone:setDone,agendaOfTheWeek:agendaOfTheWeek};
+    linkFor:linkFor,loadDone:loadDone,setDone:setDone,agendaOfTheWeek:agendaOfTheWeek,completed:completed};
 })();

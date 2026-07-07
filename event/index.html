@@ -84,7 +84,7 @@ div.card.off h3{color:#8a8088}
   </section>
   <a class="back" href="../">← All events</a>
 </div>
-<script src="../assets/milestones.js?v=2"></script>
+<script src="../assets/milestones.js?v=3"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -145,7 +145,7 @@ document.getElementById("socGrid").innerHTML=ev.social?
     });
   }
   render();
-  M.loadDone().then(m=>{doneMap=m;render();});
+  M.loadDone().then(r=>{doneMap=r.done;render();});
   note.textContent="The standard CapLink production timeline, computed from the event date"+(s.est?" (date is estimated — deadlines shift when the date is confirmed)":"")+". Tick things off as they finish — everyone sees the same list. Tell Lara if a deadline needs to move.";
 })();
 (async()=>{
