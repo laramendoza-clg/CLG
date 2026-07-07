@@ -99,7 +99,7 @@
    }
   ],
   "lockImg": "",
-  "speakersStyle": "grid",
+  "speakersStyle": "list",
   "speakersTitle": "Past Confirmed Speakers Include",
   "speakersSub": "A selection of the investors, operators and advisers who have joined CapLink summits"
  },
@@ -583,6 +583,246 @@
  "speakersList": [
   {
    "img": "",
+   "name": "Swetha Gopinath",
+   "title": "EMEA Private Equity Reporter",
+   "firm": "Bloomberg"
+  },
+  {
+   "img": "",
+   "name": "Anthony Tutrone",
+   "title": "Global Head of NB Alternatives",
+   "firm": "Neuberger Berman"
+  },
+  {
+   "img": "",
+   "name": "Shonnel Malani",
+   "title": "Managing Partner, Head of UK",
+   "firm": "Advent"
+  },
+  {
+   "img": "",
+   "name": "Paddy Moser",
+   "title": "UK Head of Private Equity",
+   "firm": "EY"
+  },
+  {
+   "img": "",
+   "name": "David Atterbury",
+   "title": "Head of EMEA, Managing Director",
+   "firm": "HarbourVest"
+  },
+  {
+   "img": "",
+   "name": "Stephane Etroy",
+   "title": "Head of European Private Equity, Partner",
+   "firm": "Ares Management"
+  },
+  {
+   "img": "",
+   "name": "James Redmayne",
+   "title": "Head of European Private Equity, Partner",
+   "firm": "Searchlight Capital"
+  },
+  {
+   "img": "",
+   "name": "Karsten Langer",
+   "title": "Head of Europe, Managing Partner",
+   "firm": "Riverside"
+  },
+  {
+   "img": "",
+   "name": "Carlo Pirzio-Biroli",
+   "title": "Global Head of Secondaries",
+   "firm": "CVC Secondary Partners"
+  },
+  {
+   "img": "",
+   "name": "Francois Aguerre",
+   "title": "Partner, Co-Head of Investment & Global Head of Origination",
+   "firm": "Coller Capital"
+  },
+  {
+   "img": "",
+   "name": "Nicolas Petitjean",
+   "title": "Co-Head Private Equity Partnership Investments",
+   "firm": "Partners Group"
+  },
+  {
+   "img": "",
+   "name": "Philippe Ferneini",
+   "title": "Partner, EMEA Head Secondaries",
+   "firm": "StepStone"
+  },
+  {
+   "img": "",
+   "name": "Selim Loukil",
+   "title": "Managing Director, Head of Portfolio Support Group",
+   "firm": "Advent"
+  },
+  {
+   "img": "",
+   "name": "Bjørn Ruwald",
+   "title": "Partner, Head of Operational Support Group",
+   "firm": "Bridgepoint"
+  },
+  {
+   "img": "",
+   "name": "Adrian Mitri",
+   "title": "Operating Partner",
+   "firm": "Vitruvian Partners"
+  },
+  {
+   "img": "",
+   "name": "Martin Sjölund",
+   "title": "Partner, General Counsel",
+   "firm": "Summa Equity"
+  },
+  {
+   "img": "",
+   "name": "Alex Browning",
+   "title": "Head of Fund Formation & Compliance",
+   "firm": "Investindustrial"
+  },
+  {
+   "img": "",
+   "name": "Jenny Gabbai",
+   "title": "Managing Director, Head of International Legal",
+   "firm": "iCapital"
+  },
+  {
+   "img": "",
+   "name": "Katharina Neureiter",
+   "title": "Co-Head, Global Sustainability",
+   "firm": "Carlyle"
+  },
+  {
+   "img": "",
+   "name": "Caroline Löfgren",
+   "title": "Chief Sustainability Officer",
+   "firm": "HG"
+  },
+  {
+   "img": "",
+   "name": "Egle Sakalauskaite",
+   "title": "Head of Responsible Investing",
+   "firm": "Bregal Investments"
+  },
+  {
+   "img": "",
+   "name": "Elsa Palanza",
+   "title": "Global Head of Sustainability",
+   "firm": "ICG"
+  },
+  {
+   "img": "",
+   "name": "Severine de Wulf",
+   "title": "Managing Director",
+   "firm": "PAI Partners"
+  },
+  {
+   "img": "",
+   "name": "Christian Truempler",
+   "title": "Portfolio Talent Lead, Private Equity",
+   "firm": "Partners Group"
+  },
+  {
+   "img": "",
+   "name": "Bettina Siempelkamp",
+   "title": "Managing Director, Head of Global Talent Network",
+   "firm": "EQT Group"
+  },
+  {
+   "img": "",
+   "name": "Claire Hogg",
+   "title": "Talent & Human Capital Lead - EMEA",
+   "firm": "General Atlantic"
+  },
+  {
+   "img": "",
+   "name": "Stefano Questa",
+   "title": "Co-Head of European Alternative Credit, Partner",
+   "firm": "Ares Management"
+  },
+  {
+   "img": "",
+   "name": "Valérie Legat",
+   "title": "Managing Director, Digital",
+   "firm": "Astorg"
+  },
+  {
+   "img": "",
+   "name": "Esther Nayaar",
+   "title": "Managing Director, Value Creation",
+   "firm": "ICG"
+  },
+  {
+   "img": "",
+   "name": "José María Palicio",
+   "title": "Managing Director, Global Head of Tax",
+   "firm": "Permira"
+  },
+  {
+   "img": "",
+   "name": "Jill Hardie",
+   "title": "Head of Tax EMEA",
+   "firm": "Patria Investments"
+  },
+  {
+   "img": "",
+   "name": "Catherine Watkins-Wright",
+   "title": "Head of Transactions, Tax",
+   "firm": "Bridgepoint"
+  },
+  {
+   "img": "",
+   "name": "Alisha Peterle",
+   "title": "PE Operating Partner",
+   "firm": "KKR"
+  },
+  {
+   "img": "",
+   "name": "Robert Mangan",
+   "title": "Operating Partner",
+   "firm": "Bain Capital"
+  },
+  {
+   "img": "",
+   "name": "Thomas Dixon",
+   "title": "Managing Director, Operating Partner",
+   "firm": "Blackstone"
+  },
+  {
+   "img": "",
+   "name": "Keith Beattie",
+   "title": "Partner, Head of Operations",
+   "firm": "Astorg"
+  },
+  {
+   "img": "",
+   "name": "Mittu Sridhara",
+   "title": "Managing Director, Digital & Technology, Europe",
+   "firm": "CD&R"
+  },
+  {
+   "img": "",
+   "name": "Cameron Hulett",
+   "title": "Managing Director, Head of AI & Digital",
+   "firm": "BC Partners"
+  },
+  {
+   "img": "",
+   "name": "Jesse Thomas",
+   "title": "Senior Director, Head of Global Data Science",
+   "firm": "Advent"
+  },
+  {
+   "img": "",
+   "name": "Karen Guch",
+   "title": "Partner, Global Chair of Private Equity",
+   "firm": "Baker McKenzie"
+  },
+  {
+   "img": "",
    "name": "Christopher Good",
    "title": "Partner",
    "firm": "Macfarlanes"
@@ -590,7 +830,7 @@
   {
    "img": "",
    "name": "Fred Bürger",
-   "title": "Partner, EY Global Private Equity Value Creation Co-Leader",
+   "title": "Partner",
    "firm": "EY"
   },
   {
@@ -601,15 +841,27 @@
   },
   {
    "img": "",
-   "name": "Laura Underhill",
-   "title": "Partner",
-   "firm": "Clifford Chance"
-  },
-  {
-   "img": "",
    "name": "Diala Minott",
    "title": "Co-Chair Investment Funds & Private Capital",
    "firm": "Paul Hastings"
+  },
+  {
+   "img": "",
+   "name": "Matt Feehily",
+   "title": "Partner",
+   "firm": "Simpson Thacher"
+  },
+  {
+   "img": "",
+   "name": "Hein Knaapen",
+   "title": "Managing Partner - Europe",
+   "firm": "CEO.works"
+  },
+  {
+   "img": "",
+   "name": "Laura Underhill",
+   "title": "Partner",
+   "firm": "Clifford Chance"
   },
   {
    "img": "",
@@ -622,6 +874,78 @@
    "name": "James Tedman",
    "title": "Head of Product & Head of Europe",
    "firm": "Blueflame AI"
+  },
+  {
+   "img": "",
+   "name": "Brian Mason",
+   "title": "CIO Advisory",
+   "firm": "ECI"
+  },
+  {
+   "img": "",
+   "name": "William Banks",
+   "title": "Head of Secondaries",
+   "firm": "BMS"
+  },
+  {
+   "img": "",
+   "name": "Cosmo Lush",
+   "title": "Managing Director, Head of Private Equity",
+   "firm": "True"
+  },
+  {
+   "img": "",
+   "name": "Mark Weller",
+   "title": "Managing Director, Head of Portfolio Solutions",
+   "firm": "Broadridge"
+  },
+  {
+   "img": "",
+   "name": "Carrie Osman",
+   "title": "Founder, Chief Executive Officer",
+   "firm": "Cruxy"
+  },
+  {
+   "img": "",
+   "name": "Jason Clatworthy",
+   "title": "Managing Director",
+   "firm": "Alvarez & Marsal"
+  },
+  {
+   "img": "",
+   "name": "Natalia Tsitoura",
+   "title": "Partner, Head of Europe Origination, Private Credit",
+   "firm": "Apollo"
+  },
+  {
+   "img": "",
+   "name": "Mark Brenke",
+   "title": "Member of the Executive Committee, Head of Private Credit",
+   "firm": "Ardian"
+  },
+  {
+   "img": "",
+   "name": "Rakhi Williams",
+   "title": "Senior Managing Director",
+   "firm": "FTI Consulting"
+  },
+  {
+   "img": "",
+   "name": "Roja Buck",
+   "title": "Co-Founder",
+   "firm": "Rational Partners"
+  },
+  {
+   "img": "",
+   "name": "Mike Carruthers",
+   "title": "Senior Managing Director, European Head of Private Credit",
+   "firm": "Blackstone"
+  },
+  {
+   "img": "",
+   "name": "Ed Hammond",
+   "title": "Head of Tax",
+   "firm": "Coller Capital"
   }
  ]
 }
