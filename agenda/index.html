@@ -112,7 +112,7 @@ async function boot(){
     total=AgendaRender.buildDeck(document.getElementById("deck"),data);
     document.title=((data.meta&&data.meta.city)||"")+" Agenda · CapLink";
     const d=new Date(rows[0].updated_at);
-    document.getElementById("upd").textContent="Updated "+d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})+"  ·  v44";
+    document.getElementById("upd").textContent="Updated "+d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})+"  ·  v45";
     document.getElementById("msg").style.display="none";
     document.getElementById("bar").style.display="flex";
     let pref=null;try{pref=localStorage.getItem("agdk-book");}catch(_){}
@@ -131,10 +131,22 @@ async function loadPdfLibs(){
   if(!window.html2canvas)await loadScript("https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js");
   if(!window.jspdf)await loadScript("https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js");
 }
+/* The renderer's CSS is scoped to the deck's classes and theme variables —
+   any container we copy pages into must carry them or every rule stops
+   matching (this once produced completely unstyled PDFs). */
+function dressLikeDeck(el){
+  const deck=document.getElementById("deck");
+  el.className=(el.className?el.className+" ":"")+deck.className;
+  ["--pill","--ribbon","--accent"].forEach(v=>{
+    const val=deck.style.getPropertyValue(v);
+    if(val)el.style.setProperty(v,val);
+  });
+}
 function printFallback(){
   let pr=document.getElementById("printRoot");
   if(pr)pr.remove();
   pr=document.createElement("div");pr.id="printRoot";
+  dressLikeDeck(pr);
   document.querySelectorAll("#deck .sl").forEach(sl=>{
     const pg=document.createElement("div");pg.className="pg";
     const c=sl.cloneNode(true);
@@ -163,6 +175,7 @@ document.getElementById("pdf").onclick=async()=>{
     const slides=Array.from(document.querySelectorAll("#deck .sl"));
     holder=document.createElement("div");
     holder.style.cssText="position:fixed;left:-12000px;top:0;width:1000px;z-index:-1";
+    dressLikeDeck(holder);
     document.body.appendChild(holder);
     const pdf=new window.jspdf.jsPDF({orientation:"portrait",unit:"in",format:"letter"});
     for(let i=0;i<slides.length;i++){
