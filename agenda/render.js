@@ -236,11 +236,12 @@ var CSS=
 /* ---- landscape (legal, 14x8.5) overrides — active only with meta.orient:"landscape" ---- */
 ".agdk-land .sl{width:"+LW+"px;height:"+LH+"px}"+
 /* landscape cover: everything scaled UP for the wide legal page.
-   Lara's cover treatment (v67): ONE clean black gradient — solid at the
-   bottom (behind the partner logos and date), easing to transparent at
-   the very top. The old banded tint is disabled on this page. */
+   Lara's cover treatment (v72): a black CENTRE COLUMN that fades out to
+   the left and right edges — everything on the cover is horizontally
+   centred (title, date, partner rail), so the dark band sits behind all
+   of it while the photo's sides stay clean. No edges anywhere. */
 ".agdk-land .cov .tint{background:none}"+
-".agdk-land .cov-glow{top:0;height:100%;background:linear-gradient(0deg,rgba(0,0,0,.86) 0%,rgba(0,0,0,.55) 26%,rgba(0,0,0,.22) 52%,rgba(0,0,0,0) 100%)}"+
+".agdk-land .cov-glow{top:0;height:100%;background:linear-gradient(90deg,rgba(0,0,0,0) 0%,rgba(0,0,0,.28) 18%,rgba(0,0,0,.58) 36%,rgba(0,0,0,.62) 50%,rgba(0,0,0,.58) 64%,rgba(0,0,0,.28) 82%,rgba(0,0,0,0) 100%)}"+
 ".agdk-land .cov-cap{height:58px}"+
 ".agdk-land .cov-host .lbl{font-size:11px}"+
 ".agdk-land .cov-host img{max-width:480px}"+
@@ -281,11 +282,10 @@ var CSS=
 ".agdk-land .spk-row{grid-template-columns:repeat(4,1fr)}"+
 /* big headshots — Lara's composites carry the firm logo inside the photo,
    so the photo IS the identity; text is secondary */
-".agdk-land .spk-cell img{width:150px;height:150px}"+
+".agdk-land .spk-cell img{width:180px;height:180px}"+
 ".agdk-land .spk-cell .tt{font-size:9.5px}"+
-/* firms are the QUIETEST element in the cell — caps read optically ~20%
-   larger than lowercase, so they must sit well below the title size */
-".agdk-land .spk-cell .fm{font-size:6.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#98929c}"+
+/* firms: normal case (caps vetoed — read too big), smallest thing in the cell */
+".agdk-land .spk-cell .fm{font-size:6.5px;font-weight:500;letter-spacing:.02em;text-transform:none;color:#98929c}"+
 ".agdk-land .prow{grid-template-columns:repeat(5,1fr)}"+
 ".agdk-land .rec2-photo{flex:0 0 520px}"+
 ".agdk-land .sp-grid{grid-template-columns:repeat(3,1fr)}"+
