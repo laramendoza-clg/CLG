@@ -48,6 +48,13 @@ div.card.off h3{color:#8a8088}
 .ms.soon .d,.ms.soon .lb b{color:#7a4d0f}
 .ms.future .st{background:#f1ecef;color:#6b6068}
 .ms.nextup{box-shadow:inset 4px 0 0 var(--acc)}
+.ms .tick{flex:0 0 20px;width:20px;height:20px;border:2px solid #d6cdd2;border-radius:50%;background:#fff;cursor:pointer;padding:0;font-size:12px;line-height:1;color:#fff;align-self:center}
+.ms .tick:hover{border-color:#2e7d4f;background:#eaf4ee}
+.ms .tick.on{background:#2e7d4f;border-color:#2e7d4f}
+.ms.done .lb b{text-decoration:line-through}
+.ms.done .st{background:#e6f2ea;color:#2e7d4f}
+.ms .msgo{flex:0 0 auto;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);text-decoration:none;padding:4px 9px;border:1px solid var(--line);border-radius:6px;align-self:center}
+.ms .msgo:hover{border-color:var(--acc)}
 </style>
 </head>
 <body>
@@ -77,7 +84,7 @@ div.card.off h3{color:#8a8088}
   </section>
   <a class="back" href="../">← All events</a>
 </div>
-<script src="../assets/milestones.js?v=1"></script>
+<script src="../assets/milestones.js?v=2"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -109,19 +116,37 @@ document.getElementById("socGrid").innerHTML=ev.social?
   const M=window.StudioMilestones,s=M&&M.schedule(slug);
   const list=document.getElementById("msList"),note=document.getElementById("msNote");
   if(!s){list.innerHTML='<div class="ms"><div class="lb"><b>No date set for this event yet</b><span>Add it to assets/milestones.js and the full schedule appears here.</span></div></div>';return;}
-  const now=new Date();
-  let nextIdx=-1;
-  s.items.forEach((m,i)=>{if(nextIdx<0&&M.status(m.date,now)!=="past")nextIdx=i;});
-  list.innerHTML=s.items.map((m,i)=>{
-    const st=M.status(m.date,now);
-    const chip=st==="past"?"Passed":(st==="soon"?"Due soon":"Upcoming");
-    return '<div class="ms '+st+(i===nextIdx?' nextup':'')+'">'+
-      '<div class="d">'+M.fmt(m.date)+'</div>'+
-      '<div class="wk">'+(m.w===0?"Event":m.w+" wk"+(m.w>1?"s":"")+" out")+'</div>'+
-      '<div class="lb"><b>'+m.label+'</b>'+(m.detail?'<span>'+m.detail+'</span>':'')+'</div>'+
-      '<div class="st">'+chip+'</div></div>';
-  }).join("");
-  note.textContent="The standard CapLink production timeline, computed from the event date"+(s.est?" (date is estimated — deadlines shift when the date is confirmed)":"")+". Tell Lara if a deadline needs to move — the standard lives in one file and updates every event.";
+  let doneMap={};
+  function render(){
+    const now=new Date();
+    let nextIdx=-1;
+    s.items.forEach((m,i)=>{if(nextIdx<0&&!doneMap[m.id]&&M.status(m.date,now)!=="past")nextIdx=i;});
+    list.innerHTML=s.items.map((m,i)=>{
+      const done=!!doneMap[m.id];
+      const st=done?"done":M.status(m.date,now);
+      const chip=done?"Done ✓":(st==="past"?"Still open":(st==="soon"?"Due soon":"Upcoming"));
+      const stCls=done?"past done":(st==="past"?"soon":st);
+      return '<div class="ms '+stCls+(i===nextIdx?' nextup':'')+'" data-id="'+m.id+'">'+
+        '<button class="tick'+(done?' on':'')+'" title="'+(done?"Mark as not done":"Mark done")+'">'+(done?"✓":"")+'</button>'+
+        '<div class="d">'+M.fmt(m.date)+'</div>'+
+        '<div class="wk">'+(m.w===0?"Event":m.w+" wk"+(m.w>1?"s":"")+" out")+'</div>'+
+        '<div class="lb"><b>'+m.label+'</b>'+(m.detail?'<span>'+m.detail+'</span>':'')+'</div>'+
+        (m.w!==0&&!done?'<a class="msgo" href="'+M.linkFor(slug,m,"../")+'">Go</a>':"")+
+        '<div class="st">'+chip+'</div></div>';
+    }).join("");
+    list.querySelectorAll(".tick").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const id=btn.closest(".ms").dataset.id;
+        const nowDone=!doneMap[id];
+        if(nowDone)doneMap[id]=1;else delete doneMap[id];
+        M.setDone(id,nowDone);
+        render();
+      });
+    });
+  }
+  render();
+  M.loadDone().then(m=>{doneMap=m;render();});
+  note.textContent="The standard CapLink production timeline, computed from the event date"+(s.est?" (date is estimated — deadlines shift when the date is confirmed)":"")+". Tick things off as they finish — everyone sees the same list. Tell Lara if a deadline needs to move.";
 })();
 (async()=>{
   try{

@@ -41,6 +41,24 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
 .nextms b{color:var(--cat);font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:2px}
 .nextms.overdue b{color:#B7791F}
 
+/* the This-week panel */
+.now{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 18px 8px;margin:0 0 28px;box-shadow:0 10px 30px rgba(42,18,40,.06)}
+.now-head{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
+.now-title{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--plum)}
+.now-sub{font-size:11.5px;color:var(--mute)}
+.nowi{display:flex;align-items:center;gap:12px;padding:9px 2px;border-top:1px solid #f4f0f2}
+.nowi:first-child{border-top:none}
+.nowi .tick{flex:0 0 20px;width:20px;height:20px;border:2px solid #d6cdd2;border-radius:50%;background:#fff;cursor:pointer;padding:0}
+.nowi .tick:hover{border-color:#2e7d4f;background:#eaf4ee}
+.nowi .ev{flex:0 0 auto;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--evc);padding:3px 8px;border-radius:9px}
+.nowi .what{flex:1;min-width:0;font-size:13.5px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nowi .when{flex:0 0 auto;font-size:11.5px;font-variant-numeric:tabular-nums;color:var(--mute)}
+.nowi.late .when{color:#B7791F;font-weight:700}
+.nowi .jump{flex:0 0 auto;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);text-decoration:none;padding:5px 9px;border:1px solid var(--line);border-radius:6px}
+.nowi .jump:hover{border-color:var(--accent)}
+.now-empty{padding:10px 2px 14px;font-size:13px;color:#6b6068}
+@media(max-width:560px){.nowi .jump{display:none}}
+
 .section{margin-top:34px}
 .section h2{display:flex;align-items:center;gap:11px;margin:0 0 16px;
   font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--plum)}
@@ -103,6 +121,11 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
 </header>
 
 <div class="wrap">
+  <div id="nowPanel" class="now" style="display:none">
+    <div class="now-head"><span class="now-title">This week</span><span class="now-sub" id="nowSub"></span></div>
+    <div id="nowList"></div>
+  </div>
+
   <h1 class="ask">Which event are you working on?</h1>
   <p class="lead">Pick an event to get everything for it in one place &mdash; its agenda, website pieces and social cards.</p>
 
@@ -148,18 +171,54 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
     <a class="backstage" href="./backstage/">Backstage &rarr;</a>
   </div>
 </div>
-<script src="./assets/milestones.js?v=1"></script>
+<script src="./assets/milestones.js?v=2"></script>
 <script>
-document.querySelectorAll(".evcard[data-e]").forEach(function(cardEl){
-  var M=window.StudioMilestones,slot=cardEl.querySelector(".nextms");
-  if(!M||!slot)return;
-  var n=M.next(cardEl.dataset.e);
-  if(!n){slot.innerHTML="<b>Next deadline</b>Date TBC";return;}
-  var days=Math.round((n.item.date-new Date())/864e5);
-  var when=n.item.w===0?"Event day":M.fmt(n.item.date)+(n.est?" (est.)":"")+" · "+(days<=0?"today":days+" day"+(days>1?"s":""));
-  if(days<=14&&n.item.w!==0)slot.classList.add("overdue");
-  slot.innerHTML="<b>Next deadline"+(days<=14&&n.item.w!==0?" — due soon":"")+"</b>"+n.item.label+"<br>"+when;
-});
+(function(){
+  var M=window.StudioMilestones;if(!M)return;
+  var doneMap={};
+  function ago(days){
+    if(days===0)return "today";
+    if(days<0)return (-days)+" day"+(days<-1?"s":"")+" ago";
+    return "in "+days+" day"+(days>1?"s":"");
+  }
+  function renderCards(){
+    document.querySelectorAll(".evcard[data-e]").forEach(function(cardEl){
+      var slot=cardEl.querySelector(".nextms");if(!slot)return;
+      var s=M.schedule(cardEl.dataset.e);
+      if(!s){slot.innerHTML="<b>Next deadline</b>Date TBC";return;}
+      var it=null;
+      for(var j=0;j<s.items.length;j++){if(!doneMap[s.items[j].id]){it=s.items[j];break;}}
+      if(!it){slot.innerHTML="<b>All done</b>Everything on the standard timeline is checked off.";return;}
+      var days=Math.round((it.date-new Date())/864e5);
+      slot.classList.toggle("overdue",days<=14&&it.w!==0);
+      slot.innerHTML="<b>Next deadline"+(days<0?" — overdue":(days<=14&&it.w!==0?" — due soon":""))+"</b>"+it.label+"<br>"+M.fmt(it.date)+(s.est?" (est.)":"")+" · "+ago(days);
+    });
+  }
+  function renderNow(){
+    var panel=document.getElementById("nowPanel"),list=document.getElementById("nowList"),sub=document.getElementById("nowSub");
+    var items=M.agendaOfTheWeek(doneMap).slice(0,7);
+    panel.style.display="block";
+    sub.textContent=new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"});
+    if(!items.length){list.innerHTML='<div class="now-empty">Nothing due in the next three weeks — you’re ahead. ✨</div>';return;}
+    list.innerHTML=items.map(function(n){
+      return '<div class="nowi'+(n.days<0?' late':'')+'" data-id="'+n.item.id+'">'+
+        '<button class="tick" title="Mark done"></button>'+
+        '<span class="ev" style="--evc:'+n.acc+'">'+n.short+'</span>'+
+        '<span class="what">'+n.item.label+'</span>'+
+        '<span class="when">'+M.fmt(n.item.date)+(n.est?" (est.)":"")+' · '+ago(n.days)+'</span>'+
+        '<a class="jump" href="'+M.linkFor(n.slug,n.item,"./")+'">Go</a></div>';
+    }).join("");
+    list.querySelectorAll(".tick").forEach(function(btn){
+      btn.addEventListener("click",function(){
+        var id=btn.closest(".nowi").dataset.id;
+        doneMap[id]=1;M.setDone(id,true);
+        renderNow();renderCards();
+      });
+    });
+  }
+  renderCards();
+  M.loadDone().then(function(m){doneMap=m;renderCards();renderNow();});
+})();
 </script>
 <script src="./assets/studio-nav.js?v=4"></script>
 </body>
