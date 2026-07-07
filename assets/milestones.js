@@ -8,65 +8,65 @@ window.StudioMilestones=(function(){
      "w" = weeks before the event (negative = after). "to" says where the
      work happens: agenda → that event's editor, event → its workspace. */
   var TEMPLATE=[
-    {w:30,phase:"T-7 months",label:"Date and venue confirmed",to:"event"},
-    {w:30,phase:"T-7 months",label:"Agenda launch",detail:"The agenda document goes live with the event skeleton",to:"agenda"},
-    {w:30,phase:"T-7 months",label:"Website live",to:"event"},
-    {w:30,phase:"T-7 months",label:"Speaker outreach begins",to:"event"},
-    {w:30,phase:"T-7 months",label:"Event branding and assets prepared",detail:"Event lockup, colours, theme, key art",to:"event"},
+    {w:30,phase:"T-7 months",label:"Date and venue confirmed",track:"production",to:"event"},
+    {w:30,phase:"T-7 months",label:"Agenda launch",track:"design",detail:"The agenda document goes live with the event skeleton",to:"agenda"},
+    {w:30,phase:"T-7 months",label:"Website live",track:"marketing",to:"event"},
+    {w:30,phase:"T-7 months",label:"Speaker outreach begins",track:"production",to:"event"},
+    {w:30,phase:"T-7 months",label:"Event branding and assets prepared",track:"design",detail:"Event lockup, colours, theme, key art",to:"event"},
 
-    {w:26,phase:"T-6 months",label:"Agenda 20–40% done",detail:"And continuously updated from here on",to:"agenda"},
-    {w:26,phase:"T-6 months",label:"Website updated with confirmed speakers",to:"event"},
-    {w:26,phase:"T-6 months",label:"Marketing campaigns launched",to:"event"},
-    {w:26,phase:"T-6 months",label:"Sponsor prospecting continues",to:"event"},
+    {w:26,phase:"T-6 months",label:"Agenda 20–40% done",track:"production",detail:"And continuously updated from here on",to:"agenda"},
+    {w:26,phase:"T-6 months",label:"Website updated with confirmed speakers",track:"marketing",to:"event"},
+    {w:26,phase:"T-6 months",label:"Marketing campaigns launched",track:"marketing",to:"event"},
+    {w:26,phase:"T-6 months",label:"Sponsor prospecting continues",track:"sales",to:"event"},
 
-    {w:22,phase:"T-5 months",label:"Agenda 80% done",detail:"Four speakers on each panel",to:"agenda"},
-    {w:22,phase:"T-5 months",label:"Delegate outreach begins",detail:"Focus on CFOs, Operating Partners, Tax, GCs, Talent, etc.",to:"event"},
-    {w:22,phase:"T-5 months",label:"Initial sponsor confirmations",to:"event"},
+    {w:22,phase:"T-5 months",label:"Agenda 80% done",track:"production",detail:"Four speakers on each panel",to:"agenda"},
+    {w:22,phase:"T-5 months",label:"Delegate outreach begins",track:"sales",detail:"Focus on CFOs, Operating Partners, Tax, GCs, Talent, etc.",to:"event"},
+    {w:22,phase:"T-5 months",label:"Initial sponsor confirmations",track:"sales",to:"event"},
 
-    {w:17,phase:"T-4 months",label:"Majority of speakers & moderators confirmed",to:"agenda"},
-    {w:17,phase:"T-4 months",label:"Majority of agenda complete",to:"agenda"},
-    {w:17,phase:"T-4 months",label:"Delegate outreach ramps up",to:"event"},
-    {w:17,phase:"T-4 months",label:"Sponsor deliverables requested",to:"event"},
-    {w:17,phase:"T-4 months",label:"Bios & headshots — collection begins",detail:"Production starts collecting / chasing",to:"agenda"},
+    {w:17,phase:"T-4 months",label:"Majority of speakers & moderators confirmed",track:"production",to:"agenda"},
+    {w:17,phase:"T-4 months",label:"Majority of agenda complete",track:"production",to:"agenda"},
+    {w:17,phase:"T-4 months",label:"Delegate outreach ramps up",track:"sales",to:"event"},
+    {w:17,phase:"T-4 months",label:"Sponsor deliverables requested",track:"sales",to:"event"},
+    {w:17,phase:"T-4 months",label:"Bios & headshots — collection begins",track:"production",detail:"Production starts collecting / chasing",to:"agenda"},
 
-    {w:13,phase:"T-3 months",label:"Final speaker recruitment (keynotes)",to:"agenda"},
-    {w:13,phase:"T-3 months",label:"Remaining agenda gaps filled",to:"agenda"},
-    {w:13,phase:"T-3 months",label:"Bios & headshots — keep chasing",to:"agenda"},
-    {w:13,phase:"T-3 months",label:"Sponsor deliverables followed up",to:"event"},
-    {w:13,phase:"T-3 months",label:"Initial AV requirements collected",to:"event"},
-    {w:13,phase:"T-3 months",label:"AUMs & notes on the ML — keep filling in",to:"event"},
-    {w:13,phase:"T-3 months",label:"Initial app planning",to:"event"},
+    {w:13,phase:"T-3 months",label:"Final speaker recruitment (keynotes)",track:"production",to:"agenda"},
+    {w:13,phase:"T-3 months",label:"Remaining agenda gaps filled",track:"production",to:"agenda"},
+    {w:13,phase:"T-3 months",label:"Bios & headshots — keep chasing",track:"production",to:"agenda"},
+    {w:13,phase:"T-3 months",label:"Sponsor deliverables followed up",track:"sales",to:"event"},
+    {w:13,phase:"T-3 months",label:"Initial AV requirements collected",track:"production",to:"event"},
+    {w:13,phase:"T-3 months",label:"AUMs & notes on the ML — keep filling in",track:"sales",to:"event"},
+    {w:13,phase:"T-3 months",label:"Initial app planning",track:"production",to:"event"},
 
-    {w:9,phase:"T-2 months",label:"Speaker & guest reconfirmations",to:"event"},
-    {w:9,phase:"T-2 months",label:"Final request for bios & headshots",to:"agenda"},
-    {w:9,phase:"T-2 months",label:"Event app build begins",to:"event"},
-    {w:9,phase:"T-2 months",label:"Speaker pages uploaded",to:"event"},
-    {w:9,phase:"T-2 months",label:"Marketing push",to:"event"},
-    {w:9,phase:"T-2 months",label:"Final sponsor assets requested",to:"event"},
-    {w:9,phase:"T-2 months",label:"Podcast preferences & scheduling",detail:"Sales asks sponsors for preferences; podcasts scheduled",to:"event"},
-    {w:9,phase:"T-2 months",label:"Print & staging designs done",detail:"Lanyards, badges, signage, backdrop/staging — final artwork approved",to:"event"},
+    {w:9,phase:"T-2 months",label:"Speaker & guest reconfirmations",track:"production",to:"event"},
+    {w:9,phase:"T-2 months",label:"Final request for bios & headshots",track:"production",to:"agenda"},
+    {w:9,phase:"T-2 months",label:"Event app build begins",track:"production",to:"event"},
+    {w:9,phase:"T-2 months",label:"Speaker pages uploaded",track:"marketing",to:"event"},
+    {w:9,phase:"T-2 months",label:"Marketing push",track:"marketing",to:"event"},
+    {w:9,phase:"T-2 months",label:"Final sponsor assets requested",track:"sales",to:"event"},
+    {w:9,phase:"T-2 months",label:"Podcast preferences & scheduling",track:"sales",detail:"Sales asks sponsors for preferences; podcasts scheduled",to:"event"},
+    {w:9,phase:"T-2 months",label:"Print & staging designs done",track:"design",detail:"Lanyards, badges, signage, backdrop/staging — final artwork approved",to:"event"},
 
-    {w:4,phase:"T-1 month",label:"Delegate list shared with sponsors",to:"event"},
-    {w:4,phase:"T-1 month",label:"All attendee AUMs & company notes completed",to:"event"},
-    {w:4,phase:"T-1 month",label:"Panel preparation calls scheduled",detail:"For roughly two weeks before the event",to:"event"},
-    {w:4,phase:"T-1 month",label:"Moderator briefing preparation",to:"event"},
-    {w:4,phase:"T-1 month",label:"Final agenda published",to:"agenda"},
-    {w:4,phase:"T-1 month",label:"Registration push",to:"event"},
-    {w:4,phase:"T-1 month",label:"Final event app review",to:"event"},
-    {w:4,phase:"T-1 month",label:"Name badge data finalised",to:"event"},
-    {w:4,phase:"T-1 month",label:"Printing requirements confirmed · orders placed",detail:"All print and staging orders with the vendor; delivery dates confirmed",to:"event"},
-    {w:4,phase:"T-1 month",label:"Holding slides & screen content designed",detail:"Walk-in loop, session holding slides, sponsor reel",to:"event"},
+    {w:4,phase:"T-1 month",label:"Delegate list shared with sponsors",track:"sales",to:"event"},
+    {w:4,phase:"T-1 month",label:"All attendee AUMs & company notes completed",track:"sales",to:"event"},
+    {w:4,phase:"T-1 month",label:"Panel preparation calls scheduled",track:"production",detail:"For roughly two weeks before the event",to:"event"},
+    {w:4,phase:"T-1 month",label:"Moderator briefing preparation",track:"production",to:"event"},
+    {w:4,phase:"T-1 month",label:"Final agenda published",track:"design",to:"agenda"},
+    {w:4,phase:"T-1 month",label:"Registration push",track:"marketing",to:"event"},
+    {w:4,phase:"T-1 month",label:"Final event app review",track:"production",to:"event"},
+    {w:4,phase:"T-1 month",label:"Name badge data finalised",track:"production",to:"event"},
+    {w:4,phase:"T-1 month",label:"Printing requirements confirmed · orders placed",track:"design",detail:"All print and staging orders with the vendor; delivery dates confirmed",to:"event"},
+    {w:4,phase:"T-1 month",label:"Holding slides & screen content designed",track:"design",detail:"Walk-in loop, session holding slides, sponsor reel",to:"event"},
 
-    {w:2,phase:"T-2 weeks",label:"Panel preparation calls",to:"event"},
-    {w:2,phase:"T-2 weeks",label:"Final delegate list",to:"event"},
-    {w:2,phase:"T-2 weeks",label:"Seating plans",to:"event"},
-    {w:2,phase:"T-2 weeks",label:"Name badges printed",detail:"Mark on the ML what didn't make the final print run — those print on site",to:"event"},
-    {w:2,phase:"T-2 weeks",label:"Print materials completed",to:"event"},
-    {w:2,phase:"T-2 weeks",label:"Final operational review & event-day plan",to:"event"},
+    {w:2,phase:"T-2 weeks",label:"Panel preparation calls",track:"production",to:"event"},
+    {w:2,phase:"T-2 weeks",label:"Final delegate list",track:"sales",to:"event"},
+    {w:2,phase:"T-2 weeks",label:"Seating plans",track:"production",to:"event"},
+    {w:2,phase:"T-2 weeks",label:"Name badges printed",track:"production",detail:"Mark on the ML what didn't make the final print run — those print on site",to:"event"},
+    {w:2,phase:"T-2 weeks",label:"Print materials completed",track:"production",to:"event"},
+    {w:2,phase:"T-2 weeks",label:"Final operational review & event-day plan",track:"production",to:"event"},
 
-    {w:0,phase:"Event day",label:"Event day",detail:"Speaker & moderator check-ins · registration desk · AV testing · sponsor check-ins · green room · on-site badge printing · live execution & troubleshooting",to:"event"},
+    {w:0,phase:"Event day",label:"Event day",track:"production",detail:"Speaker & moderator check-ins · registration desk · AV testing · sponsor check-ins · green room · on-site badge printing · live execution & troubleshooting",to:"event"},
 
-    {w:-1,phase:"Post event",label:"Thank-yous & follow-ups",detail:"Speaker thank-you emails · sponsor follow-up · delegate follow-up",to:"event"}
+    {w:-1,phase:"Post event",label:"Thank-yous & follow-ups",track:"production",detail:"Speaker thank-you emails · sponsor follow-up · delegate follow-up",to:"event"}
   ];
   var SHORT={"dubai-2026":"Dubai","newyork-2026":"New York","ai-data-breakfast-2026":"AI / Data","europe-2027":"Europe","mit-2027":"MIT"};
   var ACC={"dubai-2026":"#2f5d63","newyork-2026":"#A15D50","ai-data-breakfast-2026":"#8A7547","europe-2027":"#6b2554","mit-2027":"#5E1A2E"};
@@ -81,7 +81,7 @@ window.StudioMilestones=(function(){
     var e=DATES[slug];if(!e)return null;
     var ev=new Date(e.date+"T12:00:00");
     return {event:ev,est:!!e.est,items:TEMPLATE.map(function(m,i){
-      return {w:m.w,phase:m.phase,label:m.label,detail:m.detail,to:m.to,
+      return {w:m.w,phase:m.phase,label:m.label,detail:m.detail,to:m.to,track:m.track,
         id:slug+"#"+m.w+"#"+i,
         date:new Date(ev.getTime()-m.w*7*864e5)};
     })};
@@ -136,12 +136,12 @@ window.StudioMilestones=(function(){
   function newTaskId(){return "t"+Math.random().toString(36).slice(2,10)+Date.now().toString(36);}
 
   /* everything ticked off, most recent deadline first — the reference log */
-  function completed(doneMap){
+  function completed(doneMap,tracks){
     var out=[];
     Object.keys(DATES).forEach(function(slug){
       var s=schedule(slug);if(!s)return;
       s.items.forEach(function(it){
-        if(doneMap[it.id])out.push({slug:slug,short:SHORT[slug]||slug,acc:ACC[slug]||"#531639",est:s.est,item:it});
+        if(doneMap[it.id]&&inTracks(it,tracks))out.push({slug:slug,short:SHORT[slug]||slug,acc:ACC[slug]||"#531639",est:s.est,item:it});
       });
     });
     out.sort(function(a,b){return b.item.date-a.item.date;});
@@ -155,14 +155,17 @@ window.StudioMilestones=(function(){
       headers:{apikey:SUPA_KEY,"Content-Type":"application/json",Prefer:"resolution=merge-duplicates"},
       body:JSON.stringify({id:id,done:!!done,by_name:by})}).catch(function(){});
   }
-  /* Everything still open across all events, soonest first. */
-  function agendaOfTheWeek(doneMap,now,horizonDays){
+  var TRACKS={design:"Design",marketing:"Marketing",production:"Production",sales:"Sales"};
+  function inTracks(item,tracks){return !tracks||tracks.indexOf(item.track)>=0;}
+  /* Everything still open across all events, soonest first.
+     tracks (optional array) narrows to a lane, e.g. ["design","marketing"]. */
+  function agendaOfTheWeek(doneMap,now,horizonDays,tracks){
     now=now||new Date();horizonDays=horizonDays==null?21:horizonDays;
     var out=[];
     Object.keys(DATES).forEach(function(slug){
       var s=schedule(slug);if(!s)return;
       s.items.forEach(function(it){
-        if(doneMap[it.id])return;
+        if(doneMap[it.id]||!inTracks(it,tracks))return;
         var days=(it.date-now)/864e5;
         /* the daily list shows the recent past and near future; older
            still-open items live on the event page timeline */
@@ -187,7 +190,7 @@ window.StudioMilestones=(function(){
     }
     return null;
   }
-  return {TEMPLATE:TEMPLATE,DATES:DATES,SHORT:SHORT,ACC:ACC,
+  return {TEMPLATE:TEMPLATE,DATES:DATES,SHORT:SHORT,ACC:ACC,TRACKS:TRACKS,
     schedule:schedule,next:next,fmt:fmt,status:status,
     linkFor:linkFor,loadDone:loadDone,setDone:setDone,agendaOfTheWeek:agendaOfTheWeek,completed:completed,
     loadTasks:loadTasks,saveTask:saveTask,removeTask:removeTask,newTaskId:newTaskId};

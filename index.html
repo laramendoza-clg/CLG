@@ -202,10 +202,11 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
     <a class="backstage" href="./backstage/">Backstage &rarr;</a>
   </div>
 </div>
-<script src="./assets/milestones.js?v=5"></script>
+<script src="./assets/milestones.js?v=6"></script>
 <script>
 (function(){
   var M=window.StudioMilestones;if(!M)return;
+  var MY_TRACKS=["design","marketing"]; /* this dashboard shows the design & marketing lane */
   var doneMap={};
   function ago(days){
     if(days===0)return "today";
@@ -218,7 +219,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
       var s=M.schedule(cardEl.dataset.e);
       if(!s){slot.innerHTML="<b>Next deadline</b>Date TBC";return;}
       var it=null;
-      for(var j=0;j<s.items.length;j++){if(!doneMap[s.items[j].id]){it=s.items[j];break;}}
+      for(var j=0;j<s.items.length;j++){var c=s.items[j];if(!doneMap[c.id]&&MY_TRACKS.indexOf(c.track)>=0){it=c;break;}}
       if(!it){slot.innerHTML="<b>All done</b>Everything on the standard timeline is checked off.";return;}
       var days=Math.round((it.date-new Date())/864e5);
       slot.classList.toggle("overdue",days<=14&&it.w!==0);
@@ -247,7 +248,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
       sub.textContent=new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"});
       var openTasks=tasks.filter(function(t){return !t.done;}).map(taskRow)
         .filter(function(r){return r.days==null||r.days<=21;});
-      var items=M.agendaOfTheWeek(doneMap).concat(openTasks);
+      var items=M.agendaOfTheWeek(doneMap,null,21,MY_TRACKS).concat(openTasks);
       items.sort(function(a,b){
         if(!a.item.date&&!b.item.date)return 0;
         if(!a.item.date)return -1;if(!b.item.date)return 1;
@@ -268,7 +269,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
       }).join("");
     }else{
       sub.textContent="Everything ticked off — click ✓ to put one back";
-      var done=M.completed(doneMap).concat(tasks.filter(function(t){return t.done;}).map(taskRow));
+      var done=M.completed(doneMap,MY_TRACKS).concat(tasks.filter(function(t){return t.done;}).map(taskRow));
       if(!done.length){rowsHtml='<div class="now-empty">Nothing completed yet.</div>';}
       else rowsHtml=done.map(function(n){
         var meta=n.task?{by:n.task.by_name}:doneMeta[n.item.id];
