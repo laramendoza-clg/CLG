@@ -33,6 +33,8 @@ div.card.off h3{color:#8a8088}
 .back{display:inline-block;margin-top:26px;font-size:12.5px;font-weight:600;color:var(--acc);text-decoration:none}
 /* milestones timeline */
 .mslist{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.msph{display:flex;justify-content:space-between;align-items:baseline;padding:10px 16px 8px;background:#faf7f9;border-bottom:1px solid #f1ecef;font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--acc)}
+.msph span:last-child{font-size:10.5px;letter-spacing:.04em;color:var(--mute);font-variant-numeric:tabular-nums}
 .ms{display:flex;align-items:baseline;gap:14px;padding:11px 16px;border-bottom:1px solid #f1ecef}
 .ms:last-child{border-bottom:none}
 .ms .d{flex:0 0 96px;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
@@ -84,7 +86,7 @@ div.card.off h3{color:#8a8088}
   </section>
   <a class="back" href="../">← All events</a>
 </div>
-<script src="../assets/milestones.js?v=4"></script>
+<script src="../assets/milestones.js?v=5"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -121,19 +123,26 @@ document.getElementById("socGrid").innerHTML=ev.social?
     const now=new Date();
     let nextIdx=-1;
     s.items.forEach((m,i)=>{if(nextIdx<0&&!doneMap[m.id]&&M.status(m.date,now)!=="past")nextIdx=i;});
-    list.innerHTML=s.items.map((m,i)=>{
+    let html="",lastPhase=null;
+    s.items.forEach((m,i)=>{
+      if(m.phase&&m.phase!==lastPhase){
+        lastPhase=m.phase;
+        html+='<div class="msph"><span>'+m.phase+'</span><span>'+M.fmt(m.date)+'</span></div>';
+      }
       const done=!!doneMap[m.id];
       const st=done?"done":M.status(m.date,now);
       const chip=done?"Done ✓":(st==="past"?"Still open":(st==="soon"?"Due soon":"Upcoming"));
       const stCls=done?"past done":(st==="past"?"soon":st);
-      return '<div class="ms '+stCls+(i===nextIdx?' nextup':'')+'" data-id="'+m.id+'">'+
+      const wk=m.w===0?"Event":(m.w<0?(-m.w)+" wk after":m.w+" wk"+(m.w>1?"s":"")+" out");
+      html+='<div class="ms '+stCls+(i===nextIdx?' nextup':'')+'" data-id="'+m.id+'">'+
         '<button class="tick'+(done?' on':'')+'" title="'+(done?"Mark as not done":"Mark done")+'">'+(done?"✓":"")+'</button>'+
         '<div class="d">'+M.fmt(m.date)+'</div>'+
-        '<div class="wk">'+(m.w===0?"Event":m.w+" wk"+(m.w>1?"s":"")+" out")+'</div>'+
+        '<div class="wk">'+wk+'</div>'+
         '<div class="lb"><b>'+m.label+'</b>'+(m.detail?'<span>'+m.detail+'</span>':'')+'</div>'+
         (m.w!==0&&!done?'<a class="msgo" href="'+M.linkFor(slug,m,"../")+'">Go</a>':"")+
         '<div class="st">'+chip+'</div></div>';
-    }).join("");
+    });
+    list.innerHTML=html;
     list.querySelectorAll(".tick").forEach(btn=>{
       btn.addEventListener("click",()=>{
         const id=btn.closest(".ms").dataset.id;

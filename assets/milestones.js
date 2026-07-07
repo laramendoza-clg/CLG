@@ -3,21 +3,70 @@
    event date. Every event page and the dashboard compute real calendar
    deadlines from these. Change the numbers here and every event updates. */
 window.StudioMilestones=(function(){
-  /* "to" says where the work happens: agenda → that event's editor,
-     event → the event workspace page. */
+  /* The CapLink standard event production timeline — based on Doina's
+     draft (production), July 2026, plus the design/print deadlines.
+     "w" = weeks before the event (negative = after). "to" says where the
+     work happens: agenda → that event's editor, event → its workspace. */
   var TEMPLATE=[
-    {w:16,label:"Event website live · registration open",detail:"Landing page up, save-the-date sent, first outreach wave",to:"event"},
-    {w:12,label:"Brand kit & sponsor tiers locked",detail:"Event lockup, colours, theme; sponsor packages confirmed",to:"event"},
-    {w:10,label:"Preliminary agenda published",detail:"Sessions and timings live on the agenda share link",to:"agenda"},
-    {w:8,label:"Speaker photos & bios collected",detail:"Every confirmed speaker: square headshot, title, firm, short bio",to:"agenda"},
-    {w:8,label:"Social campaign starts",detail:"“I'm Attending” and speaker announcement cards rolling out",to:"event"},
-    {w:6,label:"Print designs DONE",detail:"Lanyards, badges, signage, staging/backdrop, banners — final artwork approved",to:"event"},
-    {w:5,label:"Print sent to vendor & ordered",detail:"All print and staging orders placed; delivery dates confirmed in writing",to:"event"},
-    {w:4,label:"Event app content complete",detail:"Agenda, speakers, sponsors loaded into the app and tested",to:"event"},
-    {w:3,label:"Holding slides & screen content designed",detail:"Walk-in loop, session holding slides, sponsor reel",to:"event"},
-    {w:2,label:"Final agenda published · last reprint window",detail:"Late changes close; vendor deliveries reconfirmed",to:"agenda"},
-    {w:1,label:"Show-ready",detail:"Slides loaded, run-of-show locked, staging plan final, team briefed",to:"event"},
-    {w:0,label:"Event day",detail:"",to:"event"}
+    {w:30,phase:"T-7 months",label:"Date and venue confirmed",to:"event"},
+    {w:30,phase:"T-7 months",label:"Agenda launch",detail:"The agenda document goes live with the event skeleton",to:"agenda"},
+    {w:30,phase:"T-7 months",label:"Website live",to:"event"},
+    {w:30,phase:"T-7 months",label:"Speaker outreach begins",to:"event"},
+    {w:30,phase:"T-7 months",label:"Event branding and assets prepared",detail:"Event lockup, colours, theme, key art",to:"event"},
+
+    {w:26,phase:"T-6 months",label:"Agenda 20–40% done",detail:"And continuously updated from here on",to:"agenda"},
+    {w:26,phase:"T-6 months",label:"Website updated with confirmed speakers",to:"event"},
+    {w:26,phase:"T-6 months",label:"Marketing campaigns launched",to:"event"},
+    {w:26,phase:"T-6 months",label:"Sponsor prospecting continues",to:"event"},
+
+    {w:22,phase:"T-5 months",label:"Agenda 80% done",detail:"Four speakers on each panel",to:"agenda"},
+    {w:22,phase:"T-5 months",label:"Delegate outreach begins",detail:"Focus on CFOs, Operating Partners, Tax, GCs, Talent, etc.",to:"event"},
+    {w:22,phase:"T-5 months",label:"Initial sponsor confirmations",to:"event"},
+
+    {w:17,phase:"T-4 months",label:"Majority of speakers & moderators confirmed",to:"agenda"},
+    {w:17,phase:"T-4 months",label:"Majority of agenda complete",to:"agenda"},
+    {w:17,phase:"T-4 months",label:"Delegate outreach ramps up",to:"event"},
+    {w:17,phase:"T-4 months",label:"Sponsor deliverables requested",to:"event"},
+    {w:17,phase:"T-4 months",label:"Bios & headshots — collection begins",detail:"Production starts collecting / chasing",to:"agenda"},
+
+    {w:13,phase:"T-3 months",label:"Final speaker recruitment (keynotes)",to:"agenda"},
+    {w:13,phase:"T-3 months",label:"Remaining agenda gaps filled",to:"agenda"},
+    {w:13,phase:"T-3 months",label:"Bios & headshots — keep chasing",to:"agenda"},
+    {w:13,phase:"T-3 months",label:"Sponsor deliverables followed up",to:"event"},
+    {w:13,phase:"T-3 months",label:"Initial AV requirements collected",to:"event"},
+    {w:13,phase:"T-3 months",label:"AUMs & notes on the ML — keep filling in",to:"event"},
+    {w:13,phase:"T-3 months",label:"Initial app planning",to:"event"},
+
+    {w:9,phase:"T-2 months",label:"Speaker & guest reconfirmations",to:"event"},
+    {w:9,phase:"T-2 months",label:"Final request for bios & headshots",to:"agenda"},
+    {w:9,phase:"T-2 months",label:"Event app build begins",to:"event"},
+    {w:9,phase:"T-2 months",label:"Speaker pages uploaded",to:"event"},
+    {w:9,phase:"T-2 months",label:"Marketing push",to:"event"},
+    {w:9,phase:"T-2 months",label:"Final sponsor assets requested",to:"event"},
+    {w:9,phase:"T-2 months",label:"Podcast preferences & scheduling",detail:"Sales asks sponsors for preferences; podcasts scheduled",to:"event"},
+    {w:9,phase:"T-2 months",label:"Print & staging designs done",detail:"Lanyards, badges, signage, backdrop/staging — final artwork approved",to:"event"},
+
+    {w:4,phase:"T-1 month",label:"Delegate list shared with sponsors",to:"event"},
+    {w:4,phase:"T-1 month",label:"All attendee AUMs & company notes completed",to:"event"},
+    {w:4,phase:"T-1 month",label:"Panel preparation calls scheduled",detail:"For roughly two weeks before the event",to:"event"},
+    {w:4,phase:"T-1 month",label:"Moderator briefing preparation",to:"event"},
+    {w:4,phase:"T-1 month",label:"Final agenda published",to:"agenda"},
+    {w:4,phase:"T-1 month",label:"Registration push",to:"event"},
+    {w:4,phase:"T-1 month",label:"Final event app review",to:"event"},
+    {w:4,phase:"T-1 month",label:"Name badge data finalised",to:"event"},
+    {w:4,phase:"T-1 month",label:"Printing requirements confirmed · orders placed",detail:"All print and staging orders with the vendor; delivery dates confirmed",to:"event"},
+    {w:4,phase:"T-1 month",label:"Holding slides & screen content designed",detail:"Walk-in loop, session holding slides, sponsor reel",to:"event"},
+
+    {w:2,phase:"T-2 weeks",label:"Panel preparation calls",to:"event"},
+    {w:2,phase:"T-2 weeks",label:"Final delegate list",to:"event"},
+    {w:2,phase:"T-2 weeks",label:"Seating plans",to:"event"},
+    {w:2,phase:"T-2 weeks",label:"Name badges printed",detail:"Mark on the ML what didn't make the final print run — those print on site",to:"event"},
+    {w:2,phase:"T-2 weeks",label:"Print materials completed",to:"event"},
+    {w:2,phase:"T-2 weeks",label:"Final operational review & event-day plan",to:"event"},
+
+    {w:0,phase:"Event day",label:"Event day",detail:"Speaker & moderator check-ins · registration desk · AV testing · sponsor check-ins · green room · on-site badge printing · live execution & troubleshooting",to:"event"},
+
+    {w:-1,phase:"Post event",label:"Thank-yous & follow-ups",detail:"Speaker thank-you emails · sponsor follow-up · delegate follow-up",to:"event"}
   ];
   var SHORT={"dubai-2026":"Dubai","newyork-2026":"New York","ai-data-breakfast-2026":"AI / Data","europe-2027":"Europe","mit-2027":"MIT"};
   var ACC={"dubai-2026":"#2f5d63","newyork-2026":"#A15D50","ai-data-breakfast-2026":"#8A7547","europe-2027":"#6b2554","mit-2027":"#5E1A2E"};
@@ -32,7 +81,7 @@ window.StudioMilestones=(function(){
     var e=DATES[slug];if(!e)return null;
     var ev=new Date(e.date+"T12:00:00");
     return {event:ev,est:!!e.est,items:TEMPLATE.map(function(m,i){
-      return {w:m.w,label:m.label,detail:m.detail,to:m.to,
+      return {w:m.w,phase:m.phase,label:m.label,detail:m.detail,to:m.to,
         id:slug+"#"+m.w+"#"+i,
         date:new Date(ev.getTime()-m.w*7*864e5)};
     })};
@@ -115,7 +164,9 @@ window.StudioMilestones=(function(){
       s.items.forEach(function(it){
         if(doneMap[it.id])return;
         var days=(it.date-now)/864e5;
-        if(days<=horizonDays)out.push({slug:slug,short:SHORT[slug]||slug,acc:ACC[slug]||"#531639",est:s.est,item:it,days:Math.round(days)});
+        /* the daily list shows the recent past and near future; older
+           still-open items live on the event page timeline */
+        if(days>=-28&&days<=horizonDays)out.push({slug:slug,short:SHORT[slug]||slug,acc:ACC[slug]||"#531639",est:s.est,item:it,days:Math.round(days)});
       });
     });
     out.sort(function(a,b){return a.item.date-b.item.date;});
