@@ -105,14 +105,22 @@ var CSS=
 /* speakers */
 ".agdk .spk-badge{position:absolute;top:150px;left:64px;background:var(--pill);color:#fff;font-size:10px;font-weight:700;letter-spacing:.24em;padding:8px 20px;border-radius:16px;text-transform:uppercase}"+
 ".agdk .spk-sub{position:absolute;top:198px;left:66px;right:64px;font-size:12.5px;font-style:italic;font-weight:400;color:#8a7f86;letter-spacing:.02em}"+
-".agdk .spk-wrap{position:absolute;top:206px;left:64px;right:64px;bottom:72px;display:flex;gap:40px}"+
+/* positioning (spk-wrap) and scaling (spk-zoom) are DELIBERATELY separate
+   elements — CSS zoom scales the box it's set on, INCLUDING its own
+   top/left/right/bottom offsets, so a zoom placed on the same positioned
+   box as "top" silently pulls it toward the page's origin (a long speaker
+   list that has to shrink to fit was rendering its whole grid up over the
+   badge/subtitle above it — v95 bug, fixed by never combining the two) */
+".agdk .spk-wrap{position:absolute;top:206px;left:64px;right:64px;bottom:72px;overflow:hidden}"+
+".agdk .spk-zoom{display:flex;gap:40px}"+
 ".agdk .spk-col{flex:1;min-width:0}"+
 /* one line, no wrap — long entries auto-shrink (zoom) instead of wrapping */
 ".agdk .spke1{font-size:11.6px;line-height:1.5;margin-bottom:10px;color:#5a5460;white-space:nowrap;transform-origin:left top}"+
 ".agdk .spke1 b{color:#241020;font-weight:700}"+
 ".agdk .spke1 i{font-weight:400}"+
 ".agdk .spke1 .f{font-weight:700;color:#38323c}"+
-".agdk .spk-gridwrap{position:absolute;top:206px;left:64px;right:64px;bottom:72px;display:flex;flex-direction:column;gap:20px}"+
+".agdk .spk-gridwrap{position:absolute;top:206px;left:64px;right:64px;bottom:72px;overflow:hidden}"+
+".agdk .spk-gridzoom{display:flex;flex-direction:column;gap:20px}"+
 ".agdk .spk-row{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 22px}"+
 ".agdk .spk-cell{display:flex;gap:11px;align-items:flex-start;min-width:0}"+
 ".agdk-edit .spk-cell{position:relative}"+
@@ -805,7 +813,7 @@ function speakersGridSlides(root,d,startN){
   var PAGE=(LAND?722:1004)-(wrapTop-206);
   var rows=[];
   for(var i=0;i<cells.length;i+=per)rows.push('<div class="spk-row">'+cells.slice(i,i+per).join("")+'</div>');
-  var hs=measureBlocks(root,rows,"spk-gridwrap",MW);
+  var hs=measureBlocks(root,rows,"spk-gridzoom",MW);
   var total=0,q;for(q=0;q<hs.length;q++)total+=hs[q]+20;
   /* Scale to FILL the page — up as well as down — so a short list never
      leaves a sea of white space. Zoom changes the effective layout width,
@@ -815,11 +823,11 @@ function speakersGridSlides(root,d,startN){
   var MAXS=LAND?1.12:1.45;
   var scale=Math.max(0.6,Math.min(MAXS,PAGE/total*0.98));
   if(scale>1.001){
-    hs=measureBlocks(root,rows,"spk-gridwrap",Math.round(MW/scale));
+    hs=measureBlocks(root,rows,"spk-gridzoom",Math.round(MW/scale));
     total=0;for(q=0;q<hs.length;q++)total+=hs[q]+20;
     scale=Math.min(scale,Math.max(0.6,PAGE/total*0.98));
   }
-  return [slide("",header(d.meta)+spkHead(d.meta)+'<div class="spk-gridwrap" style="zoom:'+scale.toFixed(3)+(subOn?';top:'+wrapTop+'px':'')+'">'+rows.join("")+'</div>'+foot(d.meta,startN))];
+  return [slide("",header(d.meta)+spkHead(d.meta)+'<div class="spk-gridwrap"'+(subOn?' style="top:'+wrapTop+'px"':'')+'><div class="spk-gridzoom" style="zoom:'+scale.toFixed(3)+'">'+rows.join("")+'</div></div>'+foot(d.meta,startN))];
 }
 function speakersSlides(root,d,startN){
   if(d.meta.showSpeakers===false)return[];
@@ -857,7 +865,7 @@ function speakersSlides(root,d,startN){
   /* last-resort: even the narrowest column layout is too tall (very long
      lists) — zoom the whole block down rather than let it hit the footer */
   var scale=res.maxH>COL_H?Math.max(0.7,COL_H/res.maxH*0.99):1;
-  var inner='<div class="spk-wrap" style="zoom:'+scale.toFixed(3)+';gap:'+(cols>=4?22:(cols===3?26:40))+'px'+(subOn?';top:'+wrapTop+'px':'')+'">'+res.colArr.map(function(c){return '<div class="spk-col">'+c+'</div>';}).join("")+'</div>';
+  var inner='<div class="spk-wrap"'+(subOn?' style="top:'+wrapTop+'px"':'')+'><div class="spk-zoom" style="zoom:'+scale.toFixed(3)+';gap:'+(cols>=4?22:(cols===3?26:40))+'px">'+res.colArr.map(function(c){return '<div class="spk-col">'+c+'</div>';}).join("")+'</div></div>';
   return [slide("",header(d.meta)+spkHead(d.meta)+inner+foot(d.meta,startN))];
 }
 
@@ -888,5 +896,5 @@ function buildDeck(root,data,opts){
   return root.querySelectorAll(".sl").length;
 }
 
-window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:95};
+window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:96};
 })();
