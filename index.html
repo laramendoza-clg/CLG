@@ -17,18 +17,6 @@
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--cream);color:var(--ink);font-family:'Raleway',system-ui,-apple-system,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
 
-/* ---- hero / brand header ---- */
-header{position:relative;overflow:hidden;color:var(--cream);padding:42px 26px 36px;
-  background:radial-gradient(130% 150% at 16% -10%,#42284f 0%,#2A1228 46%,#190b18 100%)}
-header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
-  background:linear-gradient(90deg,var(--social),var(--email),var(--app),var(--web))}
-.brand{display:flex;align-items:center;gap:18px;max-width:980px;margin:0 auto}
-.brand .mark-logo{height:56px;width:auto;display:block;filter:brightness(0) invert(1)}
-.wordmark{font-size:26px;letter-spacing:.03em;line-height:1;color:#fff}
-.wordmark .w1{font-weight:300;opacity:.92}
-.wordmark .w2{font-weight:700}
-.tagline{margin-top:10px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.58);font-weight:500}
-
 /* ---- layout ---- */
 .wrap{max-width:980px;margin:0 auto;padding:34px 22px 10px}
 .ask{margin:0 0 8px;font-size:25px;font-weight:700;letter-spacing:.005em}
@@ -77,6 +65,14 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
   .nowi .when{order:2}.nowi .jump{order:2}.nowi .who{order:2}.nowi .del{order:2;margin-left:auto}
 }
 @media(max-width:560px){.nowi .jump{display:none}}
+.undo-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(8px);z-index:500;
+  background:#241020;color:#fff;font-size:13px;line-height:1.4;padding:12px 10px 12px 18px;border-radius:9px;
+  box-shadow:0 14px 34px rgba(0,0,0,.32);display:flex;align-items:center;gap:16px;max-width:min(90vw,420px);
+  opacity:0;pointer-events:none;transition:opacity .18s ease,transform .18s ease}
+.undo-toast.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.undo-toast span{min-width:0}
+.undo-toast button{flex:0 0 auto;font-family:inherit;background:none;border:none;color:#f2c14e;font-weight:700;font-size:13px;letter-spacing:.03em;cursor:pointer;padding:6px 8px;border-radius:5px}
+.undo-toast button:hover{background:rgba(255,255,255,.12);color:#fff}
 
 .section{margin-top:34px}
 .section h2{display:flex;align-items:center;gap:11px;margin:0 0 16px;
@@ -123,22 +119,9 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
 .foot p{margin:0;font-size:11px;color:var(--mute);line-height:1.6;flex:1}
 .foot .backstage{font-size:11px;font-weight:600;color:var(--mute);text-decoration:none;letter-spacing:.06em}
 .foot .backstage:hover{color:var(--accent)}
-@media(max-width:560px){
-  header{padding:30px 20px 26px}
-  .brand{gap:14px}.brand .mark-logo{height:44px}.wordmark{font-size:22px}
-}
 </style>
 </head>
 <body>
-<header>
-  <div class="brand">
-    <div>
-      <img class="mark-logo" src="https://images.squarespace-cdn.com/content/5dc9f095a5705651ea40e08b/7a1e92c4-a7c8-4d34-b62e-bd2bbaef4550/CapLink+Studio+-+logo.png?content-type=image%2Fpng" alt="CapLink Studio">
-      <div class="tagline">Creative generators</div>
-    </div>
-  </div>
-</header>
-
 <div class="wrap">
   <div id="nowPanel" class="now" style="display:none">
     <div class="now-head">
@@ -207,6 +190,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
     <a class="backstage" href="./backstage/">Backstage &rarr;</a>
   </div>
 </div>
+<div id="undoToast" class="undo-toast"></div>
 <script src="./assets/milestones.js?v=8"></script>
 <script>
 (function(){
@@ -233,6 +217,18 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
   }
   var doneMeta={},tasks=[],view="week";
   function esc(x){return String(x==null?"":x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+  var undoTimer=null;
+  function showUndo(label,undoFn){
+    var t=document.getElementById("undoToast");
+    clearTimeout(undoTimer);
+    t.innerHTML='<span>'+esc(label)+'</span><button>Undo</button>';
+    t.classList.add("show");
+    t.querySelector("button").onclick=function(){
+      t.classList.remove("show");clearTimeout(undoTimer);
+      undoFn();
+    };
+    undoTimer=setTimeout(function(){t.classList.remove("show");},6500);
+  }
   function taskRow(t){
     var slugged=t.slug&&M.SHORT[t.slug];
     return {slug:t.slug||"",short:slugged?M.SHORT[t.slug]:"Task",acc:slugged?M.ACC[t.slug]:"#6b6068",est:false,task:t,
@@ -265,7 +261,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
         var when=n.item.date?M.fmt(n.item.date)+(n.est?" (est.)":"")+" · "+ago(n.days):"no date";
         var go=n.task?(n.slug?'<a class="jump" href="./event/?e='+encodeURIComponent(n.slug)+'">Go</a>':"")
                      :'<a class="jump" href="'+M.linkFor(n.slug,n.item,"./")+'">Go</a>';
-        return '<div class="nowi'+(n.days!=null&&n.days<0?' late':'')+'" data-id="'+esc(n.item.id)+'" data-track="'+esc(n.item.track||"")+'"'+(n.task?' data-task="1"':'')+'>'+
+        return '<div class="nowi'+(n.days!=null&&n.days<0?' late':'')+'" data-id="'+esc(n.item.id)+'" data-track="'+esc(n.item.track||"")+'" data-label="'+esc(n.item.label)+'"'+(n.task?' data-task="1"':'')+'>'+
           '<button class="tick" title="Mark done"></button>'+
           '<span class="ev" style="--evc:'+n.acc+'">'+esc(n.short)+'</span>'+
           '<span class="what">'+esc(n.item.label)+'</span>'+
@@ -280,7 +276,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
         var meta=n.task?{by:n.task.by_name}:doneMeta[n.item.id];
         var who=meta&&meta.by?'<span class="who">by '+esc(meta.by)+'</span>':"";
         var when=n.item.date?"was due "+M.fmt(n.item.date):"";
-        return '<div class="nowi donei" data-id="'+esc(n.item.id)+'"'+(n.task?' data-task="1"':'')+'>'+
+        return '<div class="nowi donei" data-id="'+esc(n.item.id)+'" data-label="'+esc(n.item.label)+'"'+(n.task?' data-task="1"':'')+'>'+
           '<button class="tick" title="Put back on the list">✓</button>'+
           '<span class="ev" style="--evc:'+n.acc+'">'+esc(n.short)+'</span>'+
           '<span class="what">'+esc(n.item.label)+'</span>'+who+
@@ -304,16 +300,25 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
     });
     list.querySelectorAll(".del").forEach(function(btn){
       btn.addEventListener("click",function(){
-        var id=btn.closest(".nowi").dataset.id;
+        var row=btn.closest(".nowi"),id=row.dataset.id,label=row.dataset.label||"that item";
         if(btn.classList.contains("lane")){
-          M.laneToggle({id:id,track:btn.closest(".nowi").dataset.track||""});
+          var itemRef={id:id,track:row.dataset.track||""};
+          M.laneToggle(itemRef);
           renderNow();renderCards();
+          showUndo("Took “"+label+"” off your list",function(){
+            M.laneToggle(itemRef);
+            renderNow();renderCards();
+          });
           return;
         }
         if(!confirm("Delete this task completely?"))return;
+        var delTask=tasks.find(function(x){return x.id===id;});
         tasks=tasks.filter(function(x){return x.id!==id;});
         M.removeTask(id);
         renderNow();
+        if(delTask)showUndo("Deleted “"+label+"”",function(){
+          tasks.push(delTask);M.saveTask(delTask);renderNow();
+        });
       });
     });
   }
@@ -337,6 +342,6 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
   });
 })();
 </script>
-<script src="./assets/studio-nav.js?v=4"></script>
+<script src="./assets/studio-nav.js?v=5"></script>
 </body>
 </html>

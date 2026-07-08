@@ -28,6 +28,18 @@
       "letter-spacing:.06em;color:rgba(255,255,255,.78);padding:9px 13px;border-radius:6px}"+
     "#studio-nav .sn-links a:hover{color:#fff;background:rgba(255,255,255,.1)}"+
     "#studio-nav .sn-links a.on{color:#fff;background:rgba(255,255,255,.16)}"+
+    "#studio-nav .sn-toggle{display:none;margin-left:auto;flex:0 0 auto;background:none;border:none;"+
+      "color:#fff;font-size:19px;line-height:1;cursor:pointer;padding:8px 4px 8px 12px}"+
+    /* under ~640px the link strip was an undiscoverable horizontal-scroll
+       row — it becomes a hamburger-toggled dropdown instead */
+    "@media(max-width:640px){"+
+      "#studio-nav .sn-toggle{display:block}"+
+      "#studio-nav .sn-links{display:none;position:absolute;top:58px;left:0;right:0;"+
+        "flex-direction:column;gap:0;overflow-x:visible;background:rgba(18,8,18,.99);"+
+        "border-bottom:1px solid rgba(255,255,255,.1);padding:6px;max-height:calc(100vh - 58px);overflow-y:auto}"+
+      "#studio-nav .sn-links.open{display:flex}"+
+      "#studio-nav .sn-links a{padding:13px 14px;border-radius:6px}"+
+    "}"+
     "@media print{#studio-nav{display:none!important}}";
   var st=document.createElement("style");
   st.textContent=css;
@@ -42,7 +54,17 @@
     return "<a"+on+' href="'+href+'">'+l[1]+"</a>";
   }).join("");
   var LOGO="https://images.squarespace-cdn.com/content/5dc9f095a5705651ea40e08b/7a1e92c4-a7c8-4d34-b62e-bd2bbaef4550/CapLink+Studio+-+logo.png?content-type=image%2Fpng";
-  nav.innerHTML='<a class="sn-brand" href="'+base+'"><img src="'+LOGO+'" alt="CapLink Studio"></a><div class="sn-links">'+links+"</div>";
-  function mount(){document.body.insertBefore(nav,document.body.firstChild);}
+  nav.innerHTML='<a class="sn-brand" href="'+base+'"><img src="'+LOGO+'" alt="CapLink Studio"></a>'+
+    '<div class="sn-links">'+links+"</div>"+
+    '<button class="sn-toggle" aria-label="Menu" aria-expanded="false">☰</button>';
+  function mount(){
+    document.body.insertBefore(nav,document.body.firstChild);
+    var toggle=nav.querySelector(".sn-toggle"),linksEl=nav.querySelector(".sn-links");
+    toggle.addEventListener("click",function(){
+      var open=linksEl.classList.toggle("open");
+      toggle.setAttribute("aria-expanded",open?"true":"false");
+      toggle.textContent=open?"✕":"☰";
+    });
+  }
   if(document.body)mount();else document.addEventListener("DOMContentLoaded",mount);
 })();
