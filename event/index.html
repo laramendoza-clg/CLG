@@ -20,10 +20,18 @@ header .meta{font-size:12.5px;font-weight:300;color:rgba(255,255,255,.75);letter
 .sec{margin-top:30px}
 .sec h2{display:flex;align-items:center;gap:11px;margin:0 0 14px;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--plum)}
 .sec h2::after{content:'';flex:1;height:1px;background:var(--line)}
-.msfilter{display:flex;gap:4px}
-.msfilter button{font-family:inherit;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);background:none;border:1px solid var(--line);cursor:pointer;padding:4px 10px;border-radius:12px}
-.msfilter button.on{color:#fff;background:var(--acc);border-color:var(--acc)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+/* secondary tools — deliberately quieter than Agenda/Milestones: a
+   compact link list, not full cards */
+.sec-tools h2{color:var(--mute)}
+.toolrow{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.toolrow a,.toolrow .off{display:flex;align-items:baseline;gap:10px;padding:11px 15px;text-decoration:none;color:var(--ink);border-bottom:1px solid #f1ecef;font-size:12.5px}
+.toolrow a:last-child,.toolrow .off:last-child{border-bottom:none}
+.toolrow a:hover{background:#faf7f9}
+.toolrow .tn{font-weight:700;flex:0 0 auto}
+.toolrow .td{color:var(--mute);flex:1;min-width:0}
+.toolrow .off .tn{color:#8a8088}
+.toolrow .off .td{font-style:italic}
 a.card,div.card{display:flex;flex-direction:column;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);border-left:4px solid var(--acc);border-radius:8px;padding:18px 19px 16px;transition:box-shadow .18s,transform .18s}
 a.card:hover{box-shadow:0 14px 34px rgba(42,18,40,.15);transform:translateY(-2px)}
 .card h3{margin:0 0 5px;font-size:16px;font-weight:700}
@@ -64,6 +72,18 @@ div.card.off h3{color:#8a8088}
 .ms .msgo:hover{border-color:var(--acc)}
 .ms .tr{flex:0 0 76px;font-size:8.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-align:right}
 .tr-design{color:#6b2554}.tr-marketing{color:#A15D50}.tr-production{color:#2F5D63}.tr-sales{color:#8A7547}
+/* the expand toggle + the quiet "other teams" reference list underneath —
+   not a real checklist: no ticks/stars/Go links, just small grey lines */
+.msmore{display:block;width:100%;text-align:left;font-family:inherit;font-size:11.5px;font-weight:700;letter-spacing:.06em;color:var(--mute);background:#faf7f9;border:1px solid var(--line);border-radius:8px;padding:9px 16px;cursor:pointer;margin-top:8px}
+.msmore:hover{color:var(--acc);background:#f4eff2}
+.msextra{margin-top:2px;padding:6px 4px 2px}
+.msextra .mxph{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#b3a8b0;margin:10px 0 4px}
+.msextra .mxph:first-child{margin-top:0}
+.mx{display:flex;align-items:baseline;gap:10px;padding:3px 0;font-size:11.5px;color:#9a8f96}
+.mx .d{flex:0 0 68px;font-variant-numeric:tabular-nums}
+.mx .lb{flex:1;min-width:0}
+.mx .lb.done{text-decoration:line-through}
+.mx .tr{flex:0 0 auto;font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.75}
 @media(max-width:640px){
   .ms{flex-wrap:wrap;row-gap:6px;padding:12px 14px}
   .ms .wk{display:none}
@@ -86,17 +106,15 @@ div.card.off h3{color:#8a8088}
     <p class="status" id="agStatus"></p>
   </section>
   <section class="sec">
-    <h2>Website</h2>
-    <div class="grid" id="webGrid"></div>
-  </section>
-  <section class="sec">
-    <h2>Social media</h2>
-    <div class="grid" id="socGrid"></div>
-  </section>
-  <section class="sec">
-    <h2>Milestones &amp; deadlines <span class="msfilter"><button id="fltAll" class="on">Everything</button><button id="fltMine">Just mine</button></span></h2>
+    <h2>Milestones &amp; deadlines</h2>
     <div id="msList" class="mslist"></div>
+    <button id="msMoreBtn" class="msmore"></button>
+    <div id="msExtra" class="msextra" style="display:none"></div>
     <p class="status" id="msNote"></p>
+  </section>
+  <section class="sec sec-tools">
+    <h2>More tools</h2>
+    <div class="toolrow" id="toolRow"></div>
   </section>
   <a class="back" href="../">← All events</a>
 </div>
@@ -121,41 +139,41 @@ function card(href,title,desc,cta){return '<a class="card" href="'+href+'"><h3>'
 document.getElementById("agGrid").innerHTML=
   card("../agenda-generator/?e="+encodeURIComponent(slug),"✏️ Edit the agenda","Google-Slides-style editor — click anything on the page to change it. Publish makes it live for everyone.","Open editor")+
   card("../agenda/?e="+encodeURIComponent(slug),"👁 View & share","The live document your guests see — always the newest published version, with built-in PDF download.","Open share link");
-document.getElementById("webGrid").innerHTML=
-  card("../sponsor-generator/","Sponsor Section","Build the sponsor roster block for this event's web page — tiers, logos, bios, copy-paste code.","Open")+
-  card("../logo-sizes/","Sponsor Logo Sizes","The shared size dictionary — check before adding or resizing any sponsor logo.","Open");
-document.getElementById("socGrid").innerHTML=ev.social?
-  card("../dubai-pcs-card/","“I'm Attending” Card","Personalised 1080×1350 attendance card, with optional headshot.","Open")+
-  card("../speaker-card/","Speaker & Panel Card","1200×675 announcement card for speakers, panellists and moderators.","Open")
-  :'<div class="card off"><h3>Not set up for this event yet</h3><p>The attendance and speaker cards are built for Dubai 2026 so far — tell Lara when this event needs its own social cards and they get cloned with this event’s branding.</p></div>';
+function trow(href,name,desc){return '<a href="'+href+'"><span class="tn">'+name+'</span><span class="td">'+desc+'</span></a>';}
+document.getElementById("toolRow").innerHTML=
+  trow("../sponsor-generator/","Sponsor Section","Build the sponsor roster block for this event's web page.")+
+  trow("../logo-sizes/","Sponsor Logo Sizes","The shared size dictionary — check before adding a logo.")+
+  (ev.social?
+    trow("../dubai-pcs-card/","“I'm Attending” Card","Personalised 1080×1350 attendance card.")+
+    trow("../speaker-card/","Speaker &amp; Panel Card","1200×675 announcement card for speakers.")
+    :'<div class="off"><span class="tn">Social cards</span><span class="td">Not set up for this event yet — tell Lara when it needs its own.</span></div>');
 (function(){
   const M=window.StudioMilestones,s=M&&M.schedule(slug);
   const list=document.getElementById("msList"),note=document.getElementById("msNote");
-  if(!s){list.innerHTML='<div class="ms"><div class="lb"><b>No date set for this event yet</b><span>Add it to assets/milestones.js and the full schedule appears here.</span></div></div>';return;}
-  let doneMap={},justMine=false;
-  try{justMine=localStorage.getItem("studio-ms-flt")==="mine";}catch(_){}
+  const moreBtn=document.getElementById("msMoreBtn"),extra=document.getElementById("msExtra");
+  if(!s){list.innerHTML='<div class="ms"><div class="lb"><b>No date set for this event yet</b><span>Add it to assets/milestones.js and the full schedule appears here.</span></div></div>';moreBtn.style.display="none";return;}
+  let doneMap={},expanded=false;
+  try{expanded=localStorage.getItem("studio-ms-expand")==="1";}catch(_){}
   function render(){
     const now=new Date();
-    document.getElementById("fltAll").classList.toggle("on",!justMine);
-    document.getElementById("fltMine").classList.toggle("on",justMine);
+    const mineIdx=[],otherIdx=[];
+    s.items.forEach((m,i)=>(M.laneHas(m)?mineIdx:otherIdx).push(i));
     let nextIdx=-1;
-    s.items.forEach((m,i)=>{if(nextIdx<0&&!doneMap[m.id]&&M.status(m.date,now)!=="past"&&(!justMine||M.laneHas(m)))nextIdx=i;});
+    mineIdx.forEach(i=>{if(nextIdx<0&&!doneMap[s.items[i].id]&&M.status(s.items[i].date,now)!=="past")nextIdx=i;});
+
+    /* --- mine: the real checklist --- */
     let html="",lastPhase=null,headerHtml=null;
-    s.items.forEach((m,i)=>{
-      if(m.phase&&m.phase!==lastPhase){
-        lastPhase=m.phase;
-        headerHtml='<div class="msph"><span>'+m.phase+'</span><span>'+M.fmt(m.date)+'</span></div>';
-      }
-      if(justMine&&!M.laneHas(m))return;
+    mineIdx.forEach(i=>{
+      const m=s.items[i];
+      if(m.phase&&m.phase!==lastPhase){lastPhase=m.phase;headerHtml='<div class="msph"><span>'+m.phase+'</span><span>'+M.fmt(m.date)+'</span></div>';}
       if(headerHtml){html+=headerHtml;headerHtml=null;}
       const done=!!doneMap[m.id];
       const st=done?"done":M.status(m.date,now);
       const chip=done?"Done ✓":(st==="past"?"Still open":(st==="soon"?"Due soon":"Upcoming"));
       const stCls=done?"past done":(st==="past"?"soon":st);
       const wk=m.w===0?"Event":(m.w<0?(-m.w)+" wk after":m.w+" wk"+(m.w>1?"s":"")+" out");
-      const mine=M.laneHas(m);
       html+='<div class="ms '+stCls+(i===nextIdx?' nextup':'')+'" data-id="'+m.id+'" data-i="'+i+'">'+
-        '<button class="star'+(mine?' on':'')+'" title="'+(mine?"On my dashboard list — click to take it off":"Add to my dashboard list")+'">'+(mine?"★":"☆")+'</button>'+
+        '<button class="star on" title="On your list — click to take it off">★</button>'+
         '<button class="tick'+(done?' on':'')+'" title="'+(done?"Mark as not done":"Mark done")+'">'+(done?"✓":"")+'</button>'+
         '<div class="d">'+M.fmt(m.date)+'</div>'+
         '<div class="wk">'+wk+'</div>'+
@@ -164,7 +182,7 @@ document.getElementById("socGrid").innerHTML=ev.social?
         (m.w!==0&&!done?'<a class="msgo" href="'+M.linkFor(slug,m,"../")+'">Go</a>':"")+
         '<div class="st">'+chip+'</div></div>';
     });
-    if(!html)html='<div class="ms"><div class="lb"><b>Nothing in your lane for this event</b><span>Switch to Everything and star ★ the items that are yours.</span></div></div>';
+    if(!html)html='<div class="ms"><div class="lb"><b>Nothing in your lane for this event yet</b><span>Expand below and star ★ anything that\'s yours.</span></div></div>';
     list.innerHTML=html;
     list.querySelectorAll(".tick").forEach(btn=>{
       btn.addEventListener("click",()=>{
@@ -181,13 +199,43 @@ document.getElementById("socGrid").innerHTML=ev.social?
         render();
       });
     });
+
+    /* --- other teams: quiet reference lines, not a checklist —
+       a tiny star is the only interactive bit, to promote something
+       onto your own list if it turns out to be yours after all --- */
+    moreBtn.style.display=otherIdx.length?"block":"none";
+    moreBtn.textContent=expanded?"– Hide other teams' milestones":"+ Show "+otherIdx.length+" more for other teams";
+    extra.style.display=expanded?"block":"none";
+    if(expanded){
+      let xhtml="",xlastPhase=null;
+      otherIdx.forEach(i=>{
+        const m=s.items[i];
+        if(m.phase&&m.phase!==xlastPhase){xlastPhase=m.phase;xhtml+='<div class="mxph">'+m.phase+'</div>';}
+        const done=!!doneMap[m.id];
+        xhtml+='<div class="mx" data-i="'+i+'">'+
+          '<button class="star" style="font-size:11px;color:inherit;opacity:.6" title="Not on your list — click to add it">☆</button>'+
+          '<span class="d">'+M.fmt(m.date)+'</span>'+
+          '<span class="lb'+(done?' done':'')+'">'+m.label+'</span>'+
+          (m.track?'<span class="tr">'+(M.TRACKS[m.track]||m.track)+'</span>':"")+
+          '</div>';
+      });
+      extra.innerHTML=xhtml;
+      extra.querySelectorAll(".star").forEach(btn=>{
+        btn.addEventListener("click",()=>{
+          M.laneToggle(s.items[+btn.closest(".mx").dataset.i]);
+          render();
+        });
+      });
+    }
   }
-  function setFlt(v){justMine=v;try{localStorage.setItem("studio-ms-flt",v?"mine":"all");}catch(_){}render();}
-  document.getElementById("fltAll").addEventListener("click",()=>setFlt(false));
-  document.getElementById("fltMine").addEventListener("click",()=>setFlt(true));
+  moreBtn.addEventListener("click",()=>{
+    expanded=!expanded;
+    try{localStorage.setItem("studio-ms-expand",expanded?"1":"0");}catch(_){}
+    render();
+  });
   render();
   M.loadDone().then(r=>{doneMap=r.done;render();});
-  note.textContent="The standard event timeline, computed from the event date"+(s.est?" (date is estimated — deadlines shift when the date is confirmed)":"")+". Tick things off as they finish — everyone sees the same ticks. The lane labels are only suggestions: star ★ anything to put it on your own dashboard list, or unstar to take it off.";
+  note.textContent="The standard event timeline, computed from the event date"+(s.est?" (date is estimated — deadlines shift when the date is confirmed)":"")+". Tick things off as they finish — everyone sees the same ticks. Shown here is just your lane (design + marketing by default) — star ★ anything to add it, or unstar to take it off.";
 })();
 (async()=>{
   try{
