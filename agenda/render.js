@@ -137,8 +137,8 @@ var CSS=
 /* agenda rows */
 ".agdk .rows{position:absolute;top:44px;left:56px;right:56px;bottom:60px;overflow:hidden;display:flex;flex-direction:column}"+
 ".agdk .rows.fill{justify-content:space-between}"+
-".agdk .row{background:#f7f6f7;border-radius:8px;margin-bottom:12px;padding:0 28px;position:relative}"+
-".agdk .rhead{display:flex;align-items:center;gap:22px;min-height:62px;padding:12px 0}"+
+".agdk .row{background:#f7f6f7;border-radius:8px;margin-bottom:16px;padding:0 30px;position:relative}"+
+".agdk .rhead{display:flex;align-items:center;gap:22px;min-height:64px;padding:14px 0}"+
 ".agdk .pill{background:var(--pill);color:#fff;font-size:14px;font-weight:700;letter-spacing:.04em;border-radius:20px;padding:9px 19px;white-space:nowrap;font-variant-numeric:tabular-nums}"+
 ".agdk .rtitle{font-size:21px;font-weight:700;color:#241f26;flex:1;line-height:1.28}"+
 ".agdk .rnote{font-size:11.5px;color:#8d8791;font-style:italic;white-space:nowrap}"+
@@ -154,17 +154,19 @@ var CSS=
 ".agdk .rspon img{max-width:150px;object-fit:contain}"+
 ".agdk .rspon .snm{font-size:13px;font-weight:700;color:#38323c}"+
 ".agdk .rl{font-size:8.5px;letter-spacing:.26em;color:#a09aa5;font-weight:600;margin-bottom:7px;text-transform:uppercase}"+
-".agdk .rdesc{font-size:12.4px;line-height:1.62;color:#6e6873;padding:2px 4px 14px}"+
-".agdk .prow{display:grid;grid-template-columns:repeat(3,1fr);gap:20px 24px;padding:6px 4px 24px}"+
+".agdk .rdesc{font-size:12.4px;line-height:1.72;color:#6e6873;padding:4px 4px 18px}"+
+".agdk .prow{display:grid;grid-template-columns:repeat(3,1fr);gap:22px 26px;padding:10px 4px 26px}"+
 ".agdk .pcell{display:flex;gap:13px;align-items:flex-start;min-width:0}"+
 ".agdk .pcell img{width:68px;height:68px;object-fit:cover;border-radius:0;flex:0 0 auto;border:1px solid #e8e5e9}"+
 ".agdk .pcell .mtag{font-size:9px;letter-spacing:.2em;color:var(--accent);font-weight:700;text-transform:uppercase;margin-bottom:3px}"+
 ".agdk .pcell .nm{font-size:12.8px;font-weight:700;color:#241f26;line-height:1.28}"+
 ".agdk .pcell .tt{font-size:11px;color:#7f7984;line-height:1.38;margin-top:2px}"+
 ".agdk .pcell .fm{font-size:11.2px;font-weight:700;color:#38323c;margin-top:3px;line-height:1.28}"+
-/* moderator column — sits left of the description + panelist grid */
-".agdk .pblock{display:flex;gap:26px;align-items:flex-start}"+
-".agdk .pmod{flex:0 0 190px;min-width:0;border-right:1px solid #ece7ea;padding-right:22px}"+
+/* moderator column — sits left of the description + panelist grid, centred
+   on the whole block (description+panelists) rather than pinned to the top,
+   so it doesn't read as floating above the row it belongs to */
+".agdk .pblock{display:flex;gap:30px;align-items:center}"+
+".agdk .pmod{flex:0 0 190px;min-width:0;border-right:1px solid #ece7ea;padding-right:26px}"+
 ".agdk .pmod-cell img{width:80px;height:80px;object-fit:cover;border:1px solid #e8e5e9;display:block;margin-bottom:10px}"+
 ".agdk .pmod-cell .mtag{font-size:9px;letter-spacing:.2em;color:var(--accent);font-weight:700;text-transform:uppercase;margin-bottom:3px}"+
 ".agdk .pmod-cell .nm{font-size:12.8px;font-weight:700;color:#241f26;line-height:1.28}"+
@@ -173,12 +175,17 @@ var CSS=
 ".agdk .pmain{flex:1;min-width:0}"+
 ".agdk .pmain .rdesc{padding-top:0}"+
 ".agdk-edit .ghost.pmod-add{flex:0 0 190px;min-height:170px;margin:0}"+
-/* roundtables */
-".agdk .tbl-wrap{display:flex;gap:44px;padding:8px 4px 18px}"+
-".agdk .tbl-col{flex:1}"+
-".agdk .tbl{margin-bottom:13px;font-size:11.5px;line-height:1.5}"+
-".agdk .tbl .tp{color:#38323c}.agdk .tbl .tp b{font-weight:700}.agdk .tbl .tp i{font-weight:400}"+
-".agdk .tbl .hb{font-size:9.8px;font-weight:700;color:#241f26;margin-top:2px}"+
+/* roundtables — each table is its own card (numbered badge + topic +
+   optional host) instead of a bare line of text, so a page of 5+ tables
+   reads as a scannable list rather than a wall of small italic type */
+".agdk .tbl-wrap{display:flex;gap:20px;padding:10px 4px 18px}"+
+".agdk .tbl-col{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px}"+
+".agdk .tbl{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid #eae5e8;border-radius:8px;padding:12px 16px}"+
+".agdk .tbl .tnum{flex:0 0 auto;width:24px;height:24px;border-radius:50%;background:var(--pill);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}"+
+".agdk .tbl .tbody{min-width:0}"+
+".agdk .tbl .tp{font-size:12.8px;font-weight:700;color:#241f26;line-height:1.4}"+
+".agdk .tbl .hb{font-size:10px;color:#8d8791;font-weight:600;margin-top:4px}"+
+".agdk .tbl .hb b{color:#38323c;font-weight:700}"+
 /* reception */
 ".agdk .rec2{display:flex;gap:30px;padding:8px 4px 24px;align-items:stretch}"+
 ".agdk .rec2-cols{flex:1;display:flex;flex-direction:column;justify-content:center;gap:24px;min-width:0}"+
@@ -345,14 +352,16 @@ var CSS=
 ".agdk-land .pill{font-size:16px;padding:10px 22px}"+
 ".agdk-land .rtitle{font-size:24px}"+
 ".agdk-land .rnote{font-size:13px}"+
-".agdk-land .rdesc{font-size:14px;line-height:1.66}"+
+".agdk-land .rdesc{font-size:14px;line-height:1.76}"+
 ".agdk-land .rl{font-size:10px}"+
 ".agdk-land .pcell img{width:88px;height:88px}"+
 ".agdk-land .pcell .mtag{font-size:10.5px}"+
 ".agdk-land .pcell .nm{font-size:14.5px}"+
 ".agdk-land .pcell .tt{font-size:12.5px}"+
 ".agdk-land .pcell .fm{font-size:13px}"+
-".agdk-land .tbl{font-size:13px}"+
+".agdk-land .tbl{padding:14px 18px}"+
+".agdk-land .tbl .tnum{width:28px;height:28px;font-size:12.5px}"+
+".agdk-land .tbl .tp{font-size:14.5px}"+
 ".agdk-land .tbl .hb{font-size:11.5px}"+
 ".agdk-land .rec2 p{font-size:14px}"+
 ".agdk-land .rec2 h4{font-size:12px}"+
@@ -475,7 +484,12 @@ function sessionHtml(s,i,isLast){
     if(s.desc||EDIT)body+='<div class="rdesc"'+de(b+".desc",1)+'>'+esc(s.desc||"")+'</div>';
     var half=Math.ceil(s.tables.length/2),c1="",c2="";
     s.tables.forEach(function(t,j){
-      var h='<div class="tbl"><div class="tp"><b>Table '+(j+1)+':</b> <i'+de(b+".tables."+j+".topic")+'>'+esc(t.topic)+'</i></div><div class="hb">Hosted By: <span'+de(b+".tables."+j+".host")+'>'+esc(t.host||"")+'</span></div></div>';
+      /* "Hosted by" only renders when there's an actual name (or we're in
+         the builder, where an empty slot stays clickable) — a published
+         page previously always showed a dangling "Hosted By:" label with
+         nothing after it whenever a table had no host set yet */
+      var hostHtml=(t.host||EDIT)?'<div class="hb">Hosted by <b'+de(b+".tables."+j+".host")+'>'+esc(t.host||(EDIT?"— add —":""))+'</b></div>':"";
+      var h='<div class="tbl"><div class="tnum">'+(j+1)+'</div><div class="tbody"><div class="tp"'+de(b+".tables."+j+".topic")+'>'+esc(t.topic)+'</div>'+hostHtml+'</div></div>';
       if(j<half)c1+=h;else c2+=h;
     });
     if(EDIT)c2+='<div class="ghost gt" data-op="addtable" data-i="'+i+'">+ Add table</div>';
@@ -900,5 +914,5 @@ function buildDeck(root,data,opts){
   return root.querySelectorAll(".sl").length;
 }
 
-window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:98};
+window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:99};
 })();
