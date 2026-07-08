@@ -315,7 +315,7 @@ var CSS=
 ".agdk-land .ab-head{font-size:26px}"+
 ".agdk-land .ab-sub{font-size:11.5px}"+
 ".agdk-land .ab-body{font-size:15px}"+
-".agdk-land .spk-row{grid-template-columns:repeat(4,1fr)}"+
+".agdk-land .spk-row{grid-template-columns:repeat(5,1fr)}"+
 /* big headshots — Lara's composites carry the firm logo inside the photo,
    so the photo IS the identity; text is secondary */
 /* renders ~151px after page zoom (measured) — 86px read too small, 205px too big */
@@ -808,7 +808,7 @@ function speakersGridSlides(root,d,startN){
   if(!cells.length)return[];
   if(EDIT&&curatedSpk(d))cells.push('<div class="ghost" data-op="spkadd" style="min-height:56px">+ Add person</div>');
   var subOn=!!d.meta.speakersSub;
-  var per=LAND?4:3,MW=LAND?1519:872;
+  var per=LAND?5:3,MW=LAND?1519:872;
   var wrapTop=spkSubReserve(root,d.meta);
   var PAGE=(LAND?722:1004)-(wrapTop-206);
   var rows=[];
@@ -896,5 +896,5 @@ function buildDeck(root,data,opts){
   return root.querySelectorAll(".sl").length;
 }
 
-window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:96};
+window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:97};
 })();
