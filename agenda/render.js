@@ -251,7 +251,11 @@ var CSS=
 ".agdk .cl2-head{position:absolute;top:154px;left:107px;right:410px}"+
 ".agdk .cl2-head .h1{font-size:36px;font-weight:700;color:#241020;letter-spacing:.01em;line-height:1.24}"+
 ".agdk .cl2-head .h2{font-size:29px;font-weight:300;font-style:italic;color:#8a7f86;line-height:1.32;margin-top:2px}"+
-".agdk .cl2-grid{position:absolute;top:338px;left:107px;right:404px;bottom:96px;display:grid;grid-template-columns:1fr 1fr;gap:44px 50px;align-content:start}"+
+/* centred (not pinned to the top) — a short contact list otherwise leaves
+   a large dead zone at the bottom of this box on a landscape page */
+".agdk .cl2-grid{position:absolute;top:338px;left:107px;right:404px;bottom:96px;display:grid;grid-template-columns:1fr 1fr;gap:44px 50px;align-content:center}"+
+/* optional caption above a company's block of contacts (meta.contacts[i].groupLabel) */
+".agdk .cl2-glabel{grid-column:1/-1;font-size:9.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-top:6px}"+
 ".agdk .cl2-p .nm{font-size:15px;font-weight:700;color:#241020;letter-spacing:.01em}"+
 ".agdk .cl2-p .rl{font-size:8.5px;letter-spacing:.22em;color:#9a8f96;text-transform:uppercase;margin:4px 0 7px;font-weight:600}"+
 ".agdk .cl2-p .ln{font-size:11.3px;font-weight:400;color:#5a5460;line-height:1.6;letter-spacing:.02em;font-variant-numeric:tabular-nums;word-break:break-word}"+
@@ -698,8 +702,11 @@ function closingSlide(m){
       /* optional groupBreak (e.g. JV events: keep each company's people
          together) forces this person to start a fresh row, whatever column
          the grid would otherwise have placed them in — absent → exactly the
-         old single flowing grid */
-      return '<div class="cl2-p"'+(c.groupBreak?' style="grid-column-start:1"':'')+'><div class="nm"'+de(b+".name")+'>'+esc(c.name)+'</div><div class="rl"'+de(b+".role")+'>'+esc(c.role)+'</div><div class="ln em"'+de(b+".email")+'>'+esc(c.email)+'</div>'+ph+'</div>';
+         old single flowing grid. An optional groupLabel (e.g. "150 Media")
+         also implies a break and prints a small caption above the block. */
+      var brk=c.groupBreak||c.groupLabel;
+      var label=c.groupLabel?'<div class="cl2-glabel"'+de(b+".groupLabel")+'>'+esc(c.groupLabel)+'</div>':"";
+      return label+'<div class="cl2-p"'+(brk?' style="grid-column-start:1"':'')+'><div class="nm"'+de(b+".name")+'>'+esc(c.name)+'</div><div class="rl"'+de(b+".role")+'>'+esc(c.role)+'</div><div class="ln em"'+de(b+".email")+'>'+esc(c.email)+'</div>'+ph+'</div>';
     }).join("")+'</div>';
   }
   return slide("",inner);
@@ -914,5 +921,5 @@ function buildDeck(root,data,opts){
   return root.querySelectorAll(".sl").length;
 }
 
-window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:99};
+window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:100};
 })();
