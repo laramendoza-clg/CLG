@@ -70,7 +70,12 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
 .addtask select,.addtask input[type=date]{font-family:inherit;font-size:12px;padding:8px 8px;border:1px solid var(--line);border-radius:7px;background:#fff;color:#5a5460}
 .addtask button{font-family:inherit;font-size:12px;font-weight:700;letter-spacing:.06em;padding:9px 16px;border:none;border-radius:7px;background:var(--plum);color:#fff;cursor:pointer}
 .addtask button:hover{background:var(--accent)}
-@media(max-width:640px){.addtask{flex-wrap:wrap}.addtask input[type=text]{flex-basis:100%}}
+@media(max-width:640px){
+  .addtask{flex-wrap:wrap}.addtask input[type=text]{flex-basis:100%}
+  .nowi{flex-wrap:wrap;row-gap:4px}
+  .nowi .what{flex:1 1 100%;white-space:normal;order:1}
+  .nowi .when{order:2}.nowi .jump{order:2}.nowi .who{order:2}.nowi .del{order:2;margin-left:auto}
+}
 @media(max-width:560px){.nowi .jump{display:none}}
 
 .section{margin-top:34px}
