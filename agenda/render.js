@@ -681,7 +681,11 @@ function closingSlide(m){
       /* one line per number — T and M never share a line */
       if(c.t||EDIT)ph+='<div class="ln"><span class="lk">T</span> <span'+de(b+".t")+'>'+esc(c.t)+'</span></div>';
       if(c.m||EDIT)ph+='<div class="ln"><span class="lk">M</span> <span'+de(b+".m")+'>'+esc(c.m)+'</span></div>';
-      return '<div class="cl2-p"><div class="nm"'+de(b+".name")+'>'+esc(c.name)+'</div><div class="rl"'+de(b+".role")+'>'+esc(c.role)+'</div><div class="ln em"'+de(b+".email")+'>'+esc(c.email)+'</div>'+ph+'</div>';
+      /* optional groupBreak (e.g. JV events: keep each company's people
+         together) forces this person to start a fresh row, whatever column
+         the grid would otherwise have placed them in — absent → exactly the
+         old single flowing grid */
+      return '<div class="cl2-p"'+(c.groupBreak?' style="grid-column-start:1"':'')+'><div class="nm"'+de(b+".name")+'>'+esc(c.name)+'</div><div class="rl"'+de(b+".role")+'>'+esc(c.role)+'</div><div class="ln em"'+de(b+".email")+'>'+esc(c.email)+'</div>'+ph+'</div>';
     }).join("")+'</div>';
   }
   return slide("",inner);
@@ -896,5 +900,5 @@ function buildDeck(root,data,opts){
   return root.querySelectorAll(".sl").length;
 }
 
-window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:97};
+window.AgendaRender={buildDeck:buildDeck,THEMES:THEMES,SIL:SIL,W:W,H:H,CUR:{W:W,H:H,land:false},V:98};
 })();
