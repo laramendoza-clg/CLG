@@ -53,6 +53,11 @@ div.card.off h3{color:#8a8088}
 .ms .lb{flex:1;min-width:0}
 .ms .lb b{font-size:13.5px;font-weight:600;color:var(--ink)}
 .ms .lb span{display:block;font-size:11.5px;color:#8a8088;line-height:1.45;margin-top:1px}
+/* editable per-event name on a spotlight email row (e.g. which panel) */
+.ms .msname{display:block;width:100%;margin-top:2px;font-family:inherit;font-size:12px;font-weight:600;color:#7a4d0f;line-height:1.4;border:none;background:transparent;padding:2px 5px;border-radius:5px;cursor:text}
+.ms .msname:hover{background:#f6eee2}
+.ms .msname:focus{outline:1px solid #c9a0bd;background:#fff;color:#241f26}
+.ms .msname::placeholder{color:#c0b6bd;font-weight:400;font-style:italic}
 .ms .st{flex:0 0 auto;font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border-radius:10px}
 .ms.past{opacity:.5}
 .ms.past .st{background:#efeaed;color:#8a8088}
@@ -118,7 +123,7 @@ div.card.off h3{color:#8a8088}
   </section>
   <a class="back" href="../">← All events</a>
 </div>
-<script src="../assets/milestones.js?v=10"></script>
+<script src="../assets/milestones.js?v=11"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -152,8 +157,9 @@ document.getElementById("toolRow").innerHTML=
   const list=document.getElementById("msList"),note=document.getElementById("msNote");
   const moreBtn=document.getElementById("msMoreBtn"),extra=document.getElementById("msExtra");
   if(!s){list.innerHTML='<div class="ms"><div class="lb"><b>No date set for this event yet</b><span>Add it to assets/milestones.js and the full schedule appears here.</span></div></div>';moreBtn.style.display="none";return;}
-  let doneMap={},expanded=false;
+  let doneMap={},nameMap={},expanded=false;
   try{expanded=localStorage.getItem("studio-ms-expand")==="1";}catch(_){}
+  function escA(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
   function render(){
     const now=new Date();
     const mineIdx=[],otherIdx=[];
@@ -173,12 +179,17 @@ document.getElementById("toolRow").innerHTML=
       const chip=cf?("Sent · "+M.fmt(new Date(cf.at+"T12:00:00"))):(done?"Done ✓":(st==="past"?"Still open":(st==="soon"?"Due soon":"Upcoming")));
       const stCls=done?"past done":(st==="past"?"soon":st);
       const wk=m.w===0?"Event":(m.w<0?(-m.w)+" wk after":m.w+" wk"+(m.w>1?"s":"")+" out");
+      /* spotlight emails get an editable "which panel" name that saves */
+      const isSpot=/Panel spotlight/.test(m.label||"");
+      const lbBody=isSpot
+        ?'<input class="msname" data-id="'+m.id+'" placeholder="+ name this panel" value="'+escA(nameMap[m.id]||"")+'">'
+        :(m.detail?'<span>'+m.detail+'</span>':'');
       html+='<div class="ms '+stCls+(i===nextIdx?' nextup':'')+'" data-id="'+m.id+'" data-i="'+i+'">'+
         '<button class="star on" title="On your list — click to take it off">★</button>'+
         '<button class="tick'+(done?' on':'')+'" title="'+(done?"Mark as not done":"Mark done")+'">'+(done?"✓":"")+'</button>'+
         '<div class="d">'+M.fmt(m.date)+'</div>'+
         '<div class="wk">'+wk+'</div>'+
-        '<div class="lb"><b>'+m.label+'</b>'+(m.detail?'<span>'+m.detail+'</span>':'')+'</div>'+
+        '<div class="lb"><b>'+m.label+'</b>'+lbBody+'</div>'+
         (m.track?'<div class="tr tr-'+m.track+'">'+(M.TRACKS[m.track]||m.track)+'</div>':"")+
         (m.w!==0&&!done?'<a class="msgo" href="'+M.linkFor(slug,m,"../")+'">Go</a>':"")+
         '<div class="st">'+chip+'</div></div>';
@@ -198,6 +209,13 @@ document.getElementById("toolRow").innerHTML=
       btn.addEventListener("click",()=>{
         M.laneToggle(s.items[+btn.closest(".ms").dataset.i]);
         render();
+      });
+    });
+    list.querySelectorAll(".msname").forEach(inp=>{
+      inp.addEventListener("change",()=>{        /* fires on blur / Enter */
+        const id=inp.dataset.id,v=inp.value.trim();
+        if(v)nameMap[id]=v;else delete nameMap[id];
+        M.saveLabel(id,v,slug);
       });
     });
 
@@ -235,7 +253,9 @@ document.getElementById("toolRow").innerHTML=
     render();
   });
   render();
-  M.loadDone().then(r=>{doneMap=r.done;render();});
+  Promise.all([M.loadDone(),M.loadLabels?M.loadLabels():Promise.resolve({})]).then(res=>{
+    doneMap=res[0].done;nameMap=res[1]||{};render();
+  });
   note.textContent="The standard event timeline, computed from the event date"+(s.est?" (date is estimated — deadlines shift when the date is confirmed)":"")+". Tick things off as they finish — everyone sees the same ticks. Shown here is just your lane (design + marketing by default) — star ★ anything to add it, or unstar to take it off.";
 })();
 (async()=>{

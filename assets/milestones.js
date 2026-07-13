@@ -120,13 +120,13 @@ window.StudioMilestones=(function(){
      load, never clears anything. e.g. email campaigns verified as sent in
      Mailchimp. ---- */
   var CONFIRMED={
-    "dubai-2026#26#email-launch-registration-op":{at:"2026-05-05",by:"Mailchimp"}, /* Wk1 Launch */
-    "dubai-2026#22#email-panel-spotlight":{at:"2026-05-15",by:"Mailchimp"},        /* Keynote — Hazem */
-    "dubai-2026#18#email-panel-spotlight":{at:"2026-05-20",by:"Mailchimp"},        /* Legal Counsel */
-    "dubai-2026#15#email-panel-spotlight":{at:"2026-06-03",by:"Mailchimp"},        /* Dealmakers */
-    "dubai-2026#13#email-panel-spotlight":{at:"2026-06-10",by:"Mailchimp"},        /* Fundraising Panel */
-    "dubai-2026#8#email-early-bird-final-week":{at:"2026-06-25",by:"Mailchimp"},   /* Early-bird — final week */
-    "dubai-2026#7#email-early-bird-closes-fina":{at:"2026-07-01",by:"Mailchimp"}   /* Early-bird — final day */
+    "dubai-2026#26#email-launch-registration-op":{at:"2026-05-05",by:"Mailchimp"},
+    "dubai-2026#22#email-panel-spotlight":{at:"2026-05-15",by:"Mailchimp",name:"Keynote — Hazem"},
+    "dubai-2026#18#email-panel-spotlight":{at:"2026-05-20",by:"Mailchimp",name:"Legal Counsel"},
+    "dubai-2026#15#email-panel-spotlight":{at:"2026-06-03",by:"Mailchimp",name:"Dealmakers"},
+    "dubai-2026#13#email-panel-spotlight":{at:"2026-06-10",by:"Mailchimp",name:"Fundraising Panel"},
+    "dubai-2026#8#email-early-bird-final-week":{at:"2026-06-25",by:"Mailchimp"},
+    "dubai-2026#7#email-early-bird-closes-fina":{at:"2026-07-01",by:"Mailchimp"}
   };
   function mergeConfirmed(done,meta){
     Object.keys(CONFIRMED).forEach(function(id){
@@ -178,6 +178,36 @@ window.StudioMilestones=(function(){
     fetch(SUPA_URL+"/rest/v1/tasks?id=eq."+encodeURIComponent(id),{method:"DELETE",headers:{apikey:SUPA_KEY}}).catch(function(){});
   }
   function newTaskId(){return "t"+Math.random().toString(36).slice(2,10)+Date.now().toString(36);}
+
+  /* ---- per-event editable names for a milestone (e.g. which panel a
+     "Panel spotlight" email actually covers). Shared via Supabase if a
+     milestone_labels table exists, otherwise saved per-device via
+     localStorage — the fetch just falls back on a 404, so it starts local
+     and auto-upgrades to shared the moment the table is added, no code
+     change. CONFIRMED names seed the defaults; a saved value overrides. ---- */
+  var LS_L="studio-ms-labels",cloudLabelsOk=false;
+  function llGet(){try{return JSON.parse(localStorage.getItem(LS_L))||{};}catch(_){return {};}}
+  function llSet(m){try{localStorage.setItem(LS_L,JSON.stringify(m));}catch(_){}}
+  function withLabelDefaults(saved){
+    var out={};
+    Object.keys(CONFIRMED).forEach(function(id){if(CONFIRMED[id].name)out[id]=CONFIRMED[id].name;});
+    Object.keys(saved).forEach(function(id){if(saved[id])out[id]=saved[id];});
+    return out;
+  }
+  function loadLabels(){
+    return fetch(SUPA_URL+"/rest/v1/milestone_labels?select=id,text",{headers:{apikey:SUPA_KEY}})
+      .then(function(r){if(!r.ok)throw 0;return r.json();})
+      .then(function(rows){cloudLabelsOk=true;var m={};rows.forEach(function(x){if(x.text)m[x.id]=x.text;});llSet(m);return withLabelDefaults(m);})
+      .catch(function(){return withLabelDefaults(llGet());});
+  }
+  function saveLabel(id,text,slug){
+    var m=llGet();if(text)m[id]=text;else delete m[id];llSet(m);
+    if(!cloudLabelsOk)return;
+    var by=null;try{var p=JSON.parse(localStorage.getItem("caplink-profile")||"null");by=p&&p.name||null;}catch(_){}
+    fetch(SUPA_URL+"/rest/v1/milestone_labels",{method:"POST",
+      headers:{apikey:SUPA_KEY,"Content-Type":"application/json",Prefer:"resolution=merge-duplicates"},
+      body:JSON.stringify({id:id,text:text||"",slug:slug||"",by_name:by})}).catch(function(){});
+  }
 
   /* everything ticked off, most recent deadline first — the reference log */
   function completed(doneMap,tracks){
@@ -264,5 +294,6 @@ window.StudioMilestones=(function(){
     DEFAULT_LANE:DEFAULT_LANE,laneHas:laneHas,laneToggle:laneToggle,
     schedule:schedule,next:next,fmt:fmt,status:status,
     linkFor:linkFor,loadDone:loadDone,setDone:setDone,agendaOfTheWeek:agendaOfTheWeek,completed:completed,
-    loadTasks:loadTasks,saveTask:saveTask,removeTask:removeTask,newTaskId:newTaskId};
+    loadTasks:loadTasks,saveTask:saveTask,removeTask:removeTask,newTaskId:newTaskId,
+    loadLabels:loadLabels,saveLabel:saveLabel};
 })();
