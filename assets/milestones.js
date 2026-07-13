@@ -19,14 +19,15 @@ window.StudioMilestones=(function(){
     {w:26,phase:"T-6 months",label:"Website updated with confirmed speakers",track:"marketing",to:"event"},
     {w:26,phase:"T-6 months",label:"Marketing campaigns launched",track:"marketing",detail:"Campaign plan live across channels",to:"event"},
     {w:26,phase:"T-6 months",label:"LinkedIn posting begins",track:"marketing",detail:"Steady cadence from here: 1–2 posts a week",to:"event"},
-    {w:26,phase:"T-6 months",label:"Email campaign #1 — event announcement",track:"marketing",detail:"First blast to the database",to:"event"},
+    {w:26,phase:"T-6 months",label:"Email — Launch (registration open)",track:"marketing",detail:"Full launch: theme, venue, first speakers. Every send lists all speakers + a request-agenda button",to:"event"},
     {w:26,phase:"T-6 months",label:"Sponsor prospecting continues",track:"sales",to:"event"},
 
     {w:22,phase:"T-5 months",label:"Agenda 80% done",track:"production",detail:"Four speakers on each panel",to:"agenda"},
     {w:22,phase:"T-5 months",label:"Delegate outreach begins",track:"sales",detail:"Focus on CFOs, Operating Partners, Tax, GCs, Talent, etc.",to:"event"},
     {w:22,phase:"T-5 months",label:"Initial sponsor confirmations",track:"sales",to:"event"},
     {w:22,phase:"T-5 months",label:"Speaker announcement posts begin",track:"marketing",detail:"Speaker cards roll out as confirmations land",to:"event"},
-    {w:22,phase:"T-5 months",label:"Email campaign #2 — first speakers & early agenda",track:"marketing",to:"event"},
+    {w:22,phase:"T-5 months",label:"Email — Panel spotlight",track:"marketing",detail:"Spotlight a panel or keynote (all speakers + request-agenda on every send)",to:"event"},
+    {w:18,phase:"T-5 months",label:"Email — Panel spotlight",track:"marketing",detail:"Next panel",to:"event"},
 
     {w:17,phase:"T-4 months",label:"Majority of speakers & moderators confirmed",track:"production",to:"agenda"},
     {w:17,phase:"T-4 months",label:"Majority of agenda complete",track:"production",to:"agenda"},
@@ -34,6 +35,8 @@ window.StudioMilestones=(function(){
     {w:17,phase:"T-4 months",label:"Sponsor deliverables requested",track:"sales",to:"event"},
     {w:17,phase:"T-4 months",label:"Bios & headshots — collection begins",track:"production",detail:"Production starts collecting / chasing",to:"agenda"},
     {w:17,phase:"T-4 months",label:"Promo video — brief & script",track:"design",detail:"Concept, script, footage/asset list agreed",to:"event"},
+    {w:16,phase:"T-4 months",label:"Email — Sponsor spotlight",track:"marketing",detail:"Filler: spotlight a sponsor / partner",to:"event"},
+    {w:15,phase:"T-4 months",label:"Email — Panel spotlight",track:"marketing",detail:"Next panel",to:"event"},
 
     {w:13,phase:"T-3 months",label:"Final speaker recruitment (keynotes)",track:"production",to:"agenda"},
     {w:13,phase:"T-3 months",label:"Remaining agenda gaps filled",track:"production",to:"agenda"},
@@ -43,25 +46,30 @@ window.StudioMilestones=(function(){
     {w:13,phase:"T-3 months",label:"AUMs & notes on the ML — keep filling in",track:"sales",to:"event"},
     {w:13,phase:"T-3 months",label:"Initial app planning",track:"production",to:"event"},
     {w:13,phase:"T-3 months",label:"Promo video — produced & launched",track:"marketing",detail:"Cut, approved, posted to LinkedIn + embedded on the website",to:"event"},
-    {w:13,phase:"T-3 months",label:"Email campaign #3 — agenda highlights",track:"marketing",to:"event"},
+    {w:13,phase:"T-3 months",label:"Email — Panel spotlight",track:"marketing",detail:"Next panel",to:"event"},
     {w:13,phase:"T-3 months",label:"Event app — design & branding assets delivered",track:"design",detail:"Splash, banners, icons, colours handed to the app build",to:"event"},
+    {w:11,phase:"T-3 months",label:"Email — Panel spotlight",track:"marketing",detail:"Next panel",to:"event"},
 
     {w:9,phase:"T-2 months",label:"Speaker & guest reconfirmations",track:"production",to:"event"},
     {w:9,phase:"T-2 months",label:"Final request for bios & headshots",track:"production",to:"agenda"},
     {w:9,phase:"T-2 months",label:"Event app build begins",track:"production",to:"event"},
     {w:9,phase:"T-2 months",label:"Speaker pages uploaded",track:"marketing",to:"event"},
     {w:9,phase:"T-2 months",label:"Marketing push",track:"marketing",detail:"LinkedIn steps up to 2–3 posts a week — speaker cards, sponsor spotlights, countdown content",to:"event"},
-    {w:9,phase:"T-2 months",label:"Email campaign #4 — registration push",track:"marketing",detail:"Plus sponsor spotlight block",to:"event"},
+    {w:9,phase:"T-2 months",label:"Email — Panel spotlight",track:"marketing",detail:"Next panel",to:"event"},
     {w:9,phase:"T-2 months",label:"Final sponsor assets requested",track:"sales",to:"event"},
     {w:9,phase:"T-2 months",label:"Podcast preferences & scheduling",track:"sales",detail:"Sales asks sponsors for preferences; podcasts scheduled",to:"event"},
     {w:9,phase:"T-2 months",label:"Print & staging designs done",track:"design",detail:"Lanyards, badges, signage, backdrop/staging — final artwork approved",to:"event"},
+    {w:8,phase:"T-2 months",label:"Email — Early-bird: final week",track:"marketing",detail:"Filler: early-bird pricing ends soon",to:"event"},
+    {w:7,phase:"T-2 months",label:"Email — Early-bird closes (final day)",track:"marketing",detail:"Filler: last day for early-bird pricing",to:"event"},
+    {w:6,phase:"T-2 months",label:"Email — Who's in the room",track:"marketing",detail:"Filler: the delegate mix — firm types, seniority, capital in the room",to:"event"},
+    {w:5,phase:"T-2 months",label:"Email — Panel spotlight",track:"marketing",detail:"Next panel",to:"event"},
 
     {w:4,phase:"T-1 month",label:"Delegate list shared with sponsors",track:"sales",to:"event"},
     {w:4,phase:"T-1 month",label:"All attendee AUMs & company notes completed",track:"sales",to:"event"},
     {w:4,phase:"T-1 month",label:"Panel preparation calls scheduled",track:"production",detail:"For roughly two weeks before the event",to:"event"},
     {w:4,phase:"T-1 month",label:"Moderator briefing preparation",track:"production",to:"event"},
     {w:4,phase:"T-1 month",label:"Final agenda published",track:"design",to:"agenda"},
-    {w:4,phase:"T-1 month",label:"Registration push",track:"marketing",detail:"Final-call emails; near-daily LinkedIn in the last stretch",to:"event"},
+    {w:4,phase:"T-1 month",label:"Email — Final call / last chance",track:"marketing",detail:"Final-call emails; near-daily LinkedIn in the last stretch",to:"event"},
     {w:4,phase:"T-1 month",label:"Final event app review",track:"production",to:"event"},
     {w:4,phase:"T-1 month",label:"Name badge data finalised",track:"production",to:"event"},
     {w:4,phase:"T-1 month",label:"Printing requirements confirmed · orders placed",track:"design",detail:"All print and staging orders with the vendor; delivery dates confirmed",to:"event"},
@@ -112,10 +120,13 @@ window.StudioMilestones=(function(){
      load, never clears anything. e.g. email campaigns verified as sent in
      Mailchimp. ---- */
   var CONFIRMED={
-    "dubai-2026#26#email-campaign-1-event-annou":{at:"2026-05-05",by:"Mailchimp"}, /* Wk1 Launch */
-    "dubai-2026#22#email-campaign-2-first-speak":{at:"2026-05-15",by:"Mailchimp"}, /* Keynote — Hazem */
-    "dubai-2026#13#email-campaign-3-agenda-high":{at:"2026-05-20",by:"Mailchimp"}, /* Legal Counsel */
-    "dubai-2026#9#email-campaign-4-registratio":{at:"2026-06-03",by:"Mailchimp"}   /* Dealmakers */
+    "dubai-2026#26#email-launch-registration-op":{at:"2026-05-05",by:"Mailchimp"}, /* Wk1 Launch */
+    "dubai-2026#22#email-panel-spotlight":{at:"2026-05-15",by:"Mailchimp"},        /* Keynote — Hazem */
+    "dubai-2026#18#email-panel-spotlight":{at:"2026-05-20",by:"Mailchimp"},        /* Legal Counsel */
+    "dubai-2026#15#email-panel-spotlight":{at:"2026-06-03",by:"Mailchimp"},        /* Dealmakers */
+    "dubai-2026#13#email-panel-spotlight":{at:"2026-06-10",by:"Mailchimp"},        /* Fundraising Panel */
+    "dubai-2026#8#email-early-bird-final-week":{at:"2026-06-25",by:"Mailchimp"},   /* Early-bird — final week */
+    "dubai-2026#7#email-early-bird-closes-fina":{at:"2026-07-01",by:"Mailchimp"}   /* Early-bird — final day */
   };
   function mergeConfirmed(done,meta){
     Object.keys(CONFIRMED).forEach(function(id){
