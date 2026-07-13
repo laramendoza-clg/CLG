@@ -105,6 +105,26 @@ window.StudioMilestones=(function(){
                              :prefix+"event/?e="+encodeURIComponent(slug);
   }
 
+  /* ---- confirmed done outside the tick UI, with the REAL date the work
+     actually happened (not when someone clicked a box). Recorded here so
+     the date is preserved and everyone sees these ticked without needing
+     the shared table. Purely additive — merged into the done state on
+     load, never clears anything. e.g. email campaigns verified as sent in
+     Mailchimp. ---- */
+  var CONFIRMED={
+    "dubai-2026#26#email-campaign-1-event-annou":{at:"2026-05-05",by:"Mailchimp"}, /* Wk1 Launch */
+    "dubai-2026#22#email-campaign-2-first-speak":{at:"2026-05-15",by:"Mailchimp"}, /* Keynote — Hazem */
+    "dubai-2026#13#email-campaign-3-agenda-high":{at:"2026-05-20",by:"Mailchimp"}, /* Legal Counsel */
+    "dubai-2026#9#email-campaign-4-registratio":{at:"2026-06-03",by:"Mailchimp"}   /* Dealmakers */
+  };
+  function mergeConfirmed(done,meta){
+    Object.keys(CONFIRMED).forEach(function(id){
+      done[id]=1;
+      if(!meta[id])meta[id]={by:CONFIRMED[id].by,at:CONFIRMED[id].at};
+    });
+    return {done:done,meta:meta};
+  }
+
   /* ---- done state: shared via Supabase when the table exists, else
      quietly per-device via localStorage ---- */
   var SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
@@ -119,9 +139,9 @@ window.StudioMilestones=(function(){
       .then(function(rows){
         cloudOk=true;var m={},meta={};
         rows.forEach(function(x){if(x.done){m[x.id]=1;meta[x.id]={by:x.by_name,at:x.at};}});
-        lsSet(m);return {done:m,meta:meta};
+        lsSet(m);return mergeConfirmed(m,meta);
       })
-      .catch(function(){return {done:lsGet(),meta:{}};});
+      .catch(function(){return mergeConfirmed(lsGet(),{});});
   }
   /* ---- one-off tasks (quick-added from the dashboard) ---- */
   var LS_T="studio-tasks",cloudTasksOk=false;
@@ -229,7 +249,7 @@ window.StudioMilestones=(function(){
     }
     return null;
   }
-  return {TEMPLATE:TEMPLATE,DATES:DATES,SHORT:SHORT,ACC:ACC,TRACKS:TRACKS,
+  return {TEMPLATE:TEMPLATE,DATES:DATES,SHORT:SHORT,ACC:ACC,TRACKS:TRACKS,CONFIRMED:CONFIRMED,
     DEFAULT_LANE:DEFAULT_LANE,laneHas:laneHas,laneToggle:laneToggle,
     schedule:schedule,next:next,fmt:fmt,status:status,
     linkFor:linkFor,loadDone:loadDone,setDone:setDone,agendaOfTheWeek:agendaOfTheWeek,completed:completed,

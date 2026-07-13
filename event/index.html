@@ -118,7 +118,7 @@ div.card.off h3{color:#8a8088}
   </section>
   <a class="back" href="../">← All events</a>
 </div>
-<script src="../assets/milestones.js?v=8"></script>
+<script src="../assets/milestones.js?v=9"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -169,7 +169,8 @@ document.getElementById("toolRow").innerHTML=
       if(headerHtml){html+=headerHtml;headerHtml=null;}
       const done=!!doneMap[m.id];
       const st=done?"done":M.status(m.date,now);
-      const chip=done?"Done ✓":(st==="past"?"Still open":(st==="soon"?"Due soon":"Upcoming"));
+      const cf=done&&M.CONFIRMED&&M.CONFIRMED[m.id];
+      const chip=cf?("Sent · "+M.fmt(new Date(cf.at+"T12:00:00"))):(done?"Done ✓":(st==="past"?"Still open":(st==="soon"?"Due soon":"Upcoming")));
       const stCls=done?"past done":(st==="past"?"soon":st);
       const wk=m.w===0?"Event":(m.w<0?(-m.w)+" wk after":m.w+" wk"+(m.w>1?"s":"")+" out");
       html+='<div class="ms '+stCls+(i===nextIdx?' nextup':'')+'" data-id="'+m.id+'" data-i="'+i+'">'+
