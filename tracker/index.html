@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Tracker · CapLink Studio</title>
+<style>
+:root{color-scheme:light;--plum:#2A1228;--terra:#7a3028;--ink:#241a22;--muted:#8a7c84;--line:#ece6ea;
+--todo:#6b7280;--prog:#b06d2c;--block:#b03a3a;--done:#3f8a5a}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f4f1f3;color:var(--ink);padding:22px 16px 70px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto}
+h1{font-size:22px;font-weight:800;letter-spacing:-.3px}
+.sub{color:var(--muted);font-size:13px;margin-top:3px}
+.bar{height:9px;background:#e7e0e5;border-radius:6px;overflow:hidden;margin:16px 0 6px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--terra),#a15d50);width:0;transition:width .4s}
+.barlbl{font-size:12px;color:var(--muted);margin-bottom:16px}
+.summary{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pill{font-size:12px;font-weight:600;padding:6px 12px;border-radius:20px;border:1px solid var(--line);background:#fff;cursor:pointer;color:var(--muted);display:flex;gap:7px;align-items:center}
+.pill .n{font-weight:800;color:var(--ink)}
+.pill.on{border-color:var(--plum);box-shadow:0 0 0 1px var(--plum) inset}
+.dot{width:8px;height:8px;border-radius:50%}
+.viewtog{display:flex;gap:0;border:1px solid var(--line);border-radius:9px;overflow:hidden;margin-bottom:14px;width:fit-content}
+.viewtog button{border:none;background:#fff;font-family:inherit;font-size:12.5px;font-weight:600;color:var(--muted);padding:8px 16px;cursor:pointer}
+.viewtog button.on{background:var(--plum);color:#fff}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.search{flex:1;min-width:160px;padding:10px 12px;border:1px solid var(--line);border-radius:9px;font-size:16px;font-family:inherit;background:#fff}
+.group{margin-bottom:22px}
+.group h2{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--terra);font-weight:800;margin:0 0 4px;display:flex;justify-content:space-between;align-items:center}
+.group h2 .gc{color:var(--muted);font-weight:600;letter-spacing:0}
+.task{display:flex;gap:11px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:11px;padding:12px 13px;margin-top:8px}
+.task.done{opacity:.55}
+.cb{flex:0 0 26px;height:26px;border:2px solid #cfc3ca;border-radius:7px;cursor:pointer;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:.15s}
+.cb.on{background:var(--done);border-color:var(--done)}
+.cb svg{width:15px;height:15px;color:#fff;display:none}.cb.on svg{display:block}
+.tbody{flex:1;min-width:0}
+.ttl{font-weight:600;font-size:14.5px;line-height:1.35}
+.task.done .ttl{text-decoration:line-through}
+.note{font-size:12.5px;color:#6d6068;margin-top:4px;line-height:1.5}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.status{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:4px 9px;border-radius:5px;color:#fff;cursor:pointer}
+.s-todo{background:var(--todo)}.s-in-progress{background:var(--prog)}.s-blocked{background:var(--block)}.s-done{background:var(--done)}
+.src{font-size:10.5px;color:var(--muted);background:#f3eef1;padding:3px 8px;border-radius:5px}
+.tagcat{font-size:10.5px;color:#7a5c70;background:#f1e8ee;padding:3px 8px;border-radius:5px;font-weight:600}
+.add{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;background:#fff;border:1px dashed #d8cdd4;border-radius:11px;padding:12px}
+.add input{flex:1;min-width:150px;padding:10px 11px;border:1px solid var(--line);border-radius:8px;font-size:16px;font-family:inherit}
+.add select{padding:9px;border:1px solid var(--line);border-radius:8px;font-size:13px;font-family:inherit;background:#fff;max-width:170px}
+.add button{background:var(--plum);color:#fff;border:none;border-radius:8px;padding:10px 16px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit}
+.foot{margin-top:24px;font-size:12px;color:var(--muted);line-height:1.6;border-top:1px solid var(--line);padding-top:14px}
+.empty{color:var(--muted);font-size:13px;padding:20px;text-align:center}
+.syncnote{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);background:var(--plum);color:#fff;font-size:12px;font-weight:600;padding:8px 16px;border-radius:20px;opacity:0;transition:opacity .3s;pointer-events:none}
+.syncnote.show{opacity:.95}
+#gate{position:fixed;inset:0;background:linear-gradient(135deg,#1a0b18,#2A1228 55%,#3d1c38);display:flex;align-items:center;justify-content:center;padding:24px;z-index:50}
+#gate .card{background:#fff;border-radius:14px;padding:34px 28px;max-width:360px;width:100%;text-align:center}
+#gate h2{font-size:17px;font-weight:800;color:var(--plum)}
+#gate p{font-size:12.5px;color:var(--muted);margin-top:6px}
+#gate input{width:100%;margin-top:18px;padding:12px;border:1px solid var(--line);border-radius:9px;font-size:16px;text-align:center;font-family:inherit}
+#gate button{width:100%;margin-top:12px;background:var(--plum);color:#fff;border:none;border-radius:9px;padding:12px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
+#gate .err{color:var(--block);font-size:12px;margin-top:10px;min-height:15px}
+.hidden{display:none !important}
+</style></head>
+<body>
+<div id="gate"><div class="card">
+<h2>CapLink Studio · Tracker</h2>
+<p>Enter the tracker passcode.</p>
+<input id="keyIn" type="password" placeholder="Passcode" autocomplete="current-password">
+<button onclick="tryKey()">Open</button>
+<div class="err" id="keyErr"></div>
+</div></div>
+
+<div class="wrap hidden" id="app">
+<h1>CapLink Task Tracker</h1>
+<div class="sub">Live everywhere. Claude reads and updates this list directly. <span id="upd"></span></div>
+<div class="bar"><i id="barFill"></i></div>
+<div class="barlbl" id="barLbl"></div>
+<div class="summary" id="summary"></div>
+<div class="viewtog">
+  <button id="vPriority" class="on" onclick="setView('priority')">Priority order</button>
+  <button id="vArea" onclick="setView('area')">By area</button>
+</div>
+<div class="controls"><input class="search" id="search" placeholder="Search tasks..."></div>
+<div id="list"></div>
+<div class="add">
+  <input id="newTitle" placeholder="Add a task...">
+  <select id="newCat"></select>
+  <button onclick="addTask()">Add</button>
+</div>
+<div class="foot">Check a task to mark it done. Tap a status pill to cycle To&nbsp;do → In&nbsp;progress → Blocked. Everything saves to the shared database instantly, on every device, and Claude sees it live. New meeting tasks land here automatically from the daily 5pm sweep.</div>
+</div>
+<div class="syncnote" id="sync">Saved</div>
+
+<script>
+const SB_URL='https://buijepdhgvcfmclztjez.supabase.co';
+const SB_KEY='sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg';
+const SS={todo:"To do","in-progress":"In progress",blocked:"Blocked",done:"Done"};
+let KEY=localStorage.getItem('clg_tracker_key')||'';
+let TASKS=[],view=localStorage.getItem('clg_tracker_view')||'priority',filterStatus=null,q='';
+
+async function rpc(fn,args){
+  const r=await fetch(SB_URL+'/rest/v1/rpc/'+fn,{method:'POST',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'},body:JSON.stringify(args)});
+  if(!r.ok){throw new Error(await r.text())}
+  const t=await r.text();return t?JSON.parse(t):null;
+}
+function toast(msg){const s=document.getElementById('sync');s.textContent=msg||'Saved';s.classList.add('show');setTimeout(()=>s.classList.remove('show'),1200)}
+async function load(){
+  TASKS=await rpc('tracker_get',{p_key:KEY});
+  document.getElementById('gate').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  render();
+}
+window.tryKey=async()=>{
+  KEY=document.getElementById('keyIn').value.trim();
+  try{await load();localStorage.setItem('clg_tracker_key',KEY)}
+  catch(e){document.getElementById('keyErr').textContent='Wrong passcode.'}
+};
+document.getElementById('keyIn').addEventListener('keydown',e=>{if(e.key==='Enter')tryKey()});
+
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function cats(){const seen=[];TASKS.forEach(t=>{if(!seen.includes(t.cat))seen.push(t.cat)});if(!seen.includes('Other'))seen.push('Other');return seen}
+function taskHTML(t){const d=t.status==='done';
+ return `<div class="task${d?' done':''}" data-id="${t.id}">
+  <div class="cb ${d?'on':''}" onclick="toggleDone('${t.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
+  <div class="tbody"><div class="ttl">${esc(t.title)}</div>${t.note?`<div class="note">${esc(t.note)}</div>`:''}
+  <div class="meta"><span class="status s-${t.status}" onclick="cycle('${t.id}')">${SS[t.status]}</span><span class="tagcat">${esc(t.cat)}</span>${t.src?`<span class="src">${esc(t.src)}</span>`:''}</div></div></div>`}
+function render(){
+ const done=TASKS.filter(t=>t.status==='done').length,total=TASKS.length;
+ document.getElementById('barFill').style.width=(total?Math.round(done/total*100):0)+'%';
+ document.getElementById('barLbl').textContent=done+' of '+total+' done';
+ const counts={todo:0,'in-progress':0,blocked:0,done:0};TASKS.forEach(t=>counts[t.status]++);
+ document.getElementById('summary').innerHTML=Object.keys(SS).map(s=>`<div class="pill ${filterStatus===s?'on':''}" onclick="toggleS('${s}')"><span class="dot" style="background:var(--${s==='in-progress'?'prog':s==='todo'?'todo':s==='blocked'?'block':'done'})"></span>${SS[s]} <span class="n">${counts[s]}</span></div>`).join('');
+ document.getElementById('vPriority').classList.toggle('on',view==='priority');
+ document.getElementById('vArea').classList.toggle('on',view==='area');
+ let main=TASKS.filter(t=>(!filterStatus||t.status===filterStatus)&&((t.title||'')+(t.note||'')).toLowerCase().includes(q));
+ const L=document.getElementById('list');L.innerHTML='';
+ if(view==='priority'){
+  L.innerHTML=main.map(taskHTML).join('')||'<div class="empty">Nothing here.</div>';
+ }else{
+  cats().filter(c=>main.some(t=>t.cat===c)).forEach(cat=>{
+   const ts=main.filter(t=>t.cat===cat);
+   const g=document.createElement('div');g.className='group';
+   g.innerHTML=`<h2>${esc(cat)} <span class="gc">${ts.filter(t=>t.status==='done').length}/${ts.length}</span></h2>`+ts.map(taskHTML).join('');
+   L.appendChild(g)});
+  if(!main.length)L.innerHTML='<div class="empty">Nothing matches.</div>';
+ }
+ document.getElementById('newCat').innerHTML=cats().map(c=>`<option>${esc(c)}</option>`).join('');
+ document.getElementById('upd').textContent='';
+}
+window.toggleDone=async id=>{
+ const t=TASKS.find(x=>x.id===id);const ns=t.status==='done'?'todo':'done';
+ t.status=ns;render();
+ try{await rpc('tracker_set_status',{p_key:KEY,p_id:id,p_status:ns});toast()}catch(e){toast('Save failed');}
+};
+window.cycle=async id=>{
+ const order=['todo','in-progress','blocked'];const t=TASKS.find(x=>x.id===id);
+ let cur=t.status==='done'?'todo':t.status;const ns=order[(order.indexOf(cur)+1)%order.length];
+ t.status=ns;render();
+ try{await rpc('tracker_set_status',{p_key:KEY,p_id:id,p_status:ns});toast()}catch(e){toast('Save failed');}
+};
+window.toggleS=s=>{filterStatus=filterStatus===s?null:s;render()};
+window.setView=v=>{view=v;localStorage.setItem('clg_tracker_view',v);render()};
+document.getElementById('search').addEventListener('input',e=>{q=e.target.value.toLowerCase();render()});
+window.addTask=async()=>{
+ const ti=document.getElementById('newTitle').value.trim();if(!ti)return;
+ const cat=document.getElementById('newCat').value||'Other';
+ const id='u'+Date.now().toString(36);
+ const sort=Math.max(0,...TASKS.map(t=>t.sort||0))+10;
+ const t={id:id,cat:cat,title:ti,note:null,src:'Added by Lara',status:'todo',sort:sort};
+ TASKS.push(t);document.getElementById('newTitle').value='';render();
+ try{await rpc('tracker_upsert',{p_key:KEY,p_tasks:[t]});toast()}catch(e){toast('Save failed')}
+};
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&KEY&&!document.getElementById('app').classList.contains('hidden')){rpc('tracker_get',{p_key:KEY}).then(t=>{TASKS=t;render()}).catch(()=>{})}});
+if(KEY){load().catch(()=>{localStorage.removeItem('clg_tracker_key');KEY=''})}
+</script></body></html>
