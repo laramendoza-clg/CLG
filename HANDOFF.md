@@ -102,6 +102,15 @@ that's for Bitrix; Lara owns only her lane.
   (id,done,by_name,at — confirmed run) and `tasks`
   (id,label,slug,due,done,by_name,at — given, unconfirmed) are public-write
   like presence and back the dashboard ticks / quick-add tasks.
+  `milestone_labels(id,text,slug,by_name,at)` holds editable per-event
+  milestone names, and `studio_state(key,data jsonb,by_name,updated_at)` is a
+  generic KV store shared by the graphics tools (keys like
+  `panelspotlight:newyork-2026`, `speakergrid:dubai-2026`). All four
+  public-write tables + policies are in **`supabase/schema.sql`** — an
+  idempotent script to paste into the Supabase SQL editor. The client helper
+  is `assets/studio-store.js` (`StudioStore.get/set`); every tool mirrors to
+  localStorage and falls back to it, so nothing breaks before the SQL is run
+  and it auto-upgrades to shared the moment the tables exist.
 - **Builder** `/agenda-generator/?e=<slug>`: loads newest published version;
   Google-Slides-style editing (click text on the page to type; click
   photos/logos for upload/URL/size popover; hover a session for

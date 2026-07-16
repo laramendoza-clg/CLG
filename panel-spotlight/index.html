@@ -144,6 +144,7 @@ button:hover{filter:brightness(1.12);}
 </div></div></div>
 </div>
 <script src="../assets/vendor/modern-screenshot.js"></script>
+<script src="../assets/studio-store.js?v=1"></script>
 <script>
 const $=id=>document.getElementById(id), art=$('art');
 let HS=1;
@@ -208,8 +209,11 @@ function htmlDoc(){const css=document.querySelector('style').innerHTML;return '<
 function copyCode(){navigator.clipboard.writeText(htmlDoc()).then(()=>{const b=event.target,o=b.textContent;b.textContent='Copied';setTimeout(()=>b.textContent=o,1400);});}
 function dlHtml(){const blob=new Blob([htmlDoc()],{type:'text/html'});const a=document.createElement('a');a.download='panel-spotlight.html';a.href=URL.createObjectURL(blob);a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);}
 
-// ---- per-event persistence (auto-saves; reloads on next open) ----
-const PKEY='caplink_panelspotlight_ny_v1';
+// ---- persistence: shared via Supabase (studio_state) when reachable, and
+//      always mirrored to localStorage so it works offline / before the SQL
+//      is run. Cloud wins on load when it has a saved version. ----
+const PKEY='caplink_panelspotlight_ny_v1';   // localStorage key
+const CKEY='panelspotlight:newyork-2026';    // shared studio_state key
 const TXT=['t1','t2','meta','chip','slab','plab'];
 const RNG=['r_hh','r_fs','r_ft','r_py','r_pz','r_pb','r_lh','r_mt','r_ct','r_tmt','r_ts','r_tmb','r_smt','r_hs','r_nm','r_ro','r_fm','r_pmt','r_ps'];
 // level 0 = everything, 1 = drop big hero/partner art (keep headshots), 2 = text/layout only
@@ -223,28 +227,35 @@ function collect(level){
 }
 function saveState(){
   for(let lv=0;lv<=2;lv++){
-    try{localStorage.setItem(PKEY,JSON.stringify(collect(lv)));return;}catch(e){}
+    try{localStorage.setItem(PKEY,JSON.stringify(collect(lv)));break;}catch(e){}
+  }
+  if(window.StudioStore&&StudioStore.set){
+    StudioStore.set(CKEY,collect(0)).then(ok=>{if(!ok)StudioStore.set(CKEY,collect(1));});
   }
 }
-function loadState(){
-  let raw; try{raw=localStorage.getItem(PKEY);}catch(e){return;}
-  if(!raw)return;
-  let st; try{st=JSON.parse(raw);}catch(e){return;}
+function applyState(st){
+  if(!st)return;
   if(Array.isArray(st.SP)&&st.SP.length)SP=st.SP;
   if(st.txt)TXT.forEach(id=>{if(st.txt[id]!=null)$(id).value=st.txt[id];});
   if(st.rng)RNG.forEach(id=>{const el=$(id);if(el&&st.rng[id]!=null){el.value=st.rng[id];el.dispatchEvent(new Event('input'));}});
   if(st.hero){$('herophoto').src=st.hero;$('herophoto').style.opacity=st.heroOn||'1';const sc=document.querySelector('#art .scrim');if(sc)sc.style.opacity=st.heroOn||'1';}
   if(st.plogo){$('a_plogo').src=st.plogo;$('a_plogo').style.display=st.plogoOn||'inline-block';}
 }
-function resetAll(){if(!confirm('Clear this panel and start over? Your saved version will be erased.'))return;try{localStorage.removeItem(PKEY);}catch(e){}location.reload();}
+function localState(){
+  let raw; try{raw=localStorage.getItem(PKEY);}catch(e){return null;}
+  if(!raw)return null;
+  try{return JSON.parse(raw);}catch(e){return null;}
+}
+function resetAll(){if(!confirm('Clear this panel and start over? Your saved version will be erased.'))return;try{localStorage.removeItem(PKEY);}catch(e){}if(window.StudioStore&&StudioStore.set)StudioStore.set(CKEY,{});location.reload();}
 
 let _sv; function saveDebounced(){clearTimeout(_sv);_sv=setTimeout(saveState,400);}
 document.querySelector('.panel').addEventListener('input',saveDebounced);
 document.querySelector('.panel').addEventListener('change',saveDebounced);
 
-loadState();
-render();
-buildControls();
+// cloud-first init: use the shared version if there is one, else this device's
+(window.StudioStore&&StudioStore.get?StudioStore.get(CKEY):Promise.resolve(null))
+  .catch(()=>null)
+  .then(cloud=>{applyState(cloud||localState());render();buildControls();});
 </script>
 <script src="../assets/studio-nav.js?v=5"></script>
 </body></html>
