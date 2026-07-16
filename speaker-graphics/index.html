@@ -58,13 +58,16 @@ h3{font-size:13px;color:#9fb3b8;margin:16px 0 4px;text-transform:uppercase;lette
 <div id="spk"></div>
 
 <div id="onlyF">
+<h3>Cover image</h3>
+<div class="panel"><div class="fld"><label>cover</label><input type="file" id="coverUp" accept="image/*"><button id="coverR" style="background:none;border:1px solid #3a545c;color:#9fb3b8;border-radius:6px;font-size:11px;padding:2px 8px">reset</button></div><div class="note">Upload this event’s cover (2160×2700) to preview it. This is a local preview only — to publish it for everyone, send the file to add as assets/covers/&lt;event&gt;.jpg.</div></div>
 <h3>Panel title</h3>
 <div class="panel"><div class="fld"><label>title</label><input type="text" id="eTitle" value="Building the Middle East PE Fund of the Future"></div><div class="note">Size &amp; up/down for the title live under “Spacing and size → Title”. Font is Raleway.</div></div>
 <h3>Partnership logo</h3>
 <div class="panel"><div class="fld"><label>logo image</label><input type="file" id="plogo" accept="image/*"><button id="plogoR" style="background:none;border:1px solid #3a545c;color:#9fb3b8;border-radius:6px;font-size:11px;padding:2px 8px">reset</button></div></div>
 <h3>Spacing and size</h3>
 <div id="panels"></div>
-<div class="bar"><button id="rs" class="gy">Reset all sliders</button><button id="dl" class="gr">Download flyer PNG</button></div>
+<div class="bar"><button id="rs" class="gy">Reset all sliders</button><button id="cpL" class="gy">Copy layout</button><button id="dl" class="gr">Download flyer PNG</button></div>
+<textarea id="layoutBox" readonly style="width:100%;height:120px;background:#0e1a1f;color:#9fd0c8;border:1px solid #33494f;border-radius:6px;font-size:11px;margin-top:8px;display:none"></textarea>
 <div id="vals"></div>
 </div>
 
@@ -97,13 +100,14 @@ GROUPS.forEach(g=>{g.dy=0;g.s=1;});
 SPK.forEach(s=>{s.photoImg=null;s.logoImg=null;});
 let partnerLogo=null;
 const EVENTS=[
- {slug:'dubai-2026',label:'Dubai — Private Capital Summit',accent:'#2f5d63',sub:'Dubai Private Capital Summit  ·  September 15, 2026  ·  The Lana, Dubai'},
- {slug:'newyork-2026',label:'New York — Private Capital Summit',accent:'#A15D50',sub:'New York Private Capital Summit  ·  October 14, 2026  ·  WELL& + Nasdaq, New York'},
- {slug:'ai-data-breakfast-2026',label:'AI / Data & Insight — Private Capital Breakfast',accent:'#8A7547',sub:'AI / Data & Insight Private Capital Breakfast  ·  November 18, 2026  ·  The May Fair, London'},
- {slug:'europe-2027',label:'Europe — Private Capital Summit',accent:'#6b2554',sub:'European Private Capital Summit  ·  February 2027  ·  London'},
- {slug:'mit-2027',label:'MIT — Talent Leadership Summit',accent:'#5E1A2E',sub:'Talent Leadership Summit  ·  February 24, 2027  ·  MIT, Cambridge'}
+ {slug:'dubai-2026',label:'Dubai — Private Capital Summit',accent:'#2f5d63',grad:[['#0C1A1E',0],['#12303c',40],['#20474C',75],['#2f5d63',100]],sub:'Dubai Private Capital Summit  ·  September 15, 2026  ·  The Lana, Dubai'},
+ {slug:'newyork-2026',label:'New York — Private Capital Summit',accent:'#A15D50',grad:[['#130E15',0],['#472E40',40],['#7B4349',75],['#A15D50',100]],sub:'New York Private Capital Summit  ·  October 14, 2026  ·  WELL& + Nasdaq, New York'},
+ {slug:'ai-data-breakfast-2026',label:'AI / Data & Insight — Private Capital Breakfast',accent:'#8A7547',grad:[['#0A0F1C',0],['#1A2033',40],['#5C4E30',78],['#8A7547',100]],sub:'AI / Data & Insight Private Capital Breakfast  ·  November 18, 2026  ·  The May Fair, London'},
+ {slug:'europe-2027',label:'Europe — Private Capital Summit',accent:'#6b2554',grad:[['#140811',0],['#2A1228',40],['#4A1B3E',75],['#6b2554',100]],sub:'European Private Capital Summit  ·  February 2027  ·  London'},
+ {slug:'mit-2027',label:'MIT — Talent Leadership Summit',accent:'#5E1A2E',grad:[['#150710',0],['#3A1420',45],['#4E1727',78],['#5E1A2E',100]],sub:'Talent Leadership Summit  ·  February 24, 2027  ·  MIT, Cambridge'}
 ];
 let curEv=EVENTS[0];
+const upCovers={};
 function shade(hex,f){const n=parseInt(hex.slice(1),16);const r=Math.round(((n>>16)&255)*f),g=Math.round(((n>>8)&255)*f),b=Math.round((n&255)*f);return 'rgb('+r+','+g+','+b+')';}
 function shadeHex(hex,f){const n=parseInt(hex.slice(1),16);const r=Math.round(((n>>16)&255)*f),g=Math.round(((n>>8)&255)*f),b=Math.round((n&255)*f);return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);}
 
@@ -119,8 +123,8 @@ const raleB=new FontFace('Raleway','url('+RALE7+')',{weight:'700'});
 const fontR=new FontFace('LibReg','url('+A.freg+')');
 const fontB=new FontFace('LibBold','url('+A.fbold+')');
 let ready=false;
-function loadCover(slug){const img=new Image();img.onload=()=>{imgs.base=img;draw();};img.onerror=()=>{imgs.base=null;draw();};img.src='../assets/covers/'+slug+'.jpg';}
-function drawCoverFallback(){const gr=ctxF.createLinearGradient(0,0,0,1300);gr.addColorStop(0,shade(curEv.accent,0.5));gr.addColorStop(1,shade(curEv.accent,0.16));ctxF.fillStyle=shade(curEv.accent,0.16);ctxF.fillRect(0,0,2160,2700);ctxF.fillStyle=gr;ctxF.fillRect(0,0,2160,1300);ctxF.fillStyle='rgba(255,255,255,0.5)';ctxF.font='500 40px Raleway';ctxF.textAlign='center';ctxF.textBaseline='middle';ctxF.fillText('\u2039 add cover art: assets/covers/'+curEv.slug+'.jpg \u203a',1080,650);}
+function loadCover(slug){if(upCovers[slug]){imgs.base=upCovers[slug];draw();return;}const img=new Image();img.onload=()=>{imgs.base=img;draw();};img.onerror=()=>{imgs.base=null;draw();};img.src='../assets/covers/'+slug+'.jpg';}
+function drawCoverFallback(){const dark=curEv.grad[0][0];ctxF.fillStyle=dark;ctxF.fillRect(0,0,2160,2700);const gr=ctxF.createLinearGradient(0,0,2160,1300);curEv.grad.forEach(cs=>gr.addColorStop(cs[1]/100,cs[0]));ctxF.fillStyle=gr;ctxF.fillRect(0,0,2160,1300);ctxF.fillStyle='rgba(255,255,255,0.6)';ctxF.font='600 40px Raleway';ctxF.textAlign='center';ctxF.textBaseline='middle';ctxF.fillText('\u2039 add cover art: assets/covers/'+curEv.slug+'.jpg \u203a',1080,650);}
 function drawTitle(){const t=(document.getElementById('eTitle').value||'').trim();if(!t)return;const cx=1080,top=1010,maxw=1520,size=96;const lines=wrap(t,'600 '+size+'px Raleway',maxw);drawLines(lines,'600 '+size+'px Raleway','#ffffff',cx,top,size*1.12);}
 Promise.all([
  load(A.badge),load(A.header),load(A.clabel),load(A.clogo),
@@ -265,16 +269,16 @@ function drawEmail(){
  const totalH = headH + rowH.reduce((a,b)=>a+b,0) + 30;
  if(cvE.height!==Math.round(totalH)) cvE.height=Math.round(totalH);
  // bg gradient
- const gr=ctx.createLinearGradient(0,0,0,cvE.height);
- gr.addColorStop(0,shade(curEv.accent,0.55));gr.addColorStop(1,shade(curEv.accent,0.34));
+ const gr=ctx.createLinearGradient(0,0,Wm,cvE.height);
+ curEv.grad.forEach(cs=>gr.addColorStop(cs[1]/100,cs[0]));
  ctx.fillStyle=gr;ctx.fillRect(0,0,Wm,cvE.height);
  // heading
  const head=document.getElementById('eHead').value;
  const sub=document.getElementById('eSub').value;
- const tw=lsText(head,600,74,30,10,'rgb(228,233,234)');
+ const tw=lsText(head,600,74,30,10,'#ffffff');
  ctx.strokeStyle='rgba(255,255,255,0.25)';ctx.lineWidth=2;
  ctx.beginPath();ctx.moveTo(70,90);ctx.lineTo(600-tw/2-40,90);ctx.moveTo(600+tw/2+40,90);ctx.lineTo(1130,90);ctx.stroke();
- if(sub.trim()){ctx.font='22px LibReg';ctx.fillStyle='rgb(160,178,183)';ctx.textAlign='center';ctx.textBaseline='top';ctx.fillText(sub,600,132);}
+ if(sub.trim()){ctx.font='22px LibReg';ctx.fillStyle='rgba(255,255,255,0.45)';ctx.textAlign='center';ctx.textBaseline='top';ctx.fillText(sub,600,132);}
  // grid
  let y=headH;
  rows.forEach((r,ri)=>{
@@ -309,7 +313,7 @@ function snippet(){
   rowsHtml+=`<tr>${cells}</tr>\n`;
  }
  return `<!-- CapLink speaker grid -->
-<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" align="center" style="background:${shadeHex(curEv.accent,0.30)};background:linear-gradient(180deg,${shadeHex(curEv.accent,0.42)},${shadeHex(curEv.accent,0.24)});">
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" align="center" style="background:${curEv.grad[0][0]};background:linear-gradient(135deg,${curEv.grad.map(cs=>cs[0]+' '+cs[1]+'%').join(', ')});">
  <tr><td align="center" style="padding:28px 20px 6px;font-family:Arial,Helvetica,sans-serif;font-size:16px;letter-spacing:5px;color:#e4e9ea;">${head}</td></tr>
  ${sub?`<tr><td align="center" style="padding:0 20px 10px;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#a0b2b7;">${sub}</td></tr>`:''}
  <tr><td style="padding:6px 10px 20px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -356,6 +360,9 @@ document.getElementById('plogo').onchange=e=>{
  const img=new Image();img.onload=()=>{partnerLogo=img;draw();};img.src=URL.createObjectURL(fl);
 };
 document.getElementById('plogoR').onclick=()=>{partnerLogo=null;document.getElementById('plogo').value='';draw();};
+document.getElementById('coverUp').onchange=e=>{const fl=e.target.files[0];if(!fl)return;const img=new Image();img.onload=()=>{upCovers[curEv.slug]=img;imgs.base=img;draw();};img.src=URL.createObjectURL(fl);};
+document.getElementById('coverR').onclick=()=>{delete upCovers[curEv.slug];document.getElementById('coverUp').value='';loadCover(curEv.slug);};
+document.getElementById('cpL').onclick=()=>{const lines=['Speaker Graphics layout — '+curEv.label,'Title text: "'+(document.getElementById('eTitle').value||'').trim()+'"'];GROUPS.forEach(g=>lines.push(g.label+': '+(g.dy>0?'+':'')+g.dy+'px, '+Math.round(g.s*100)+'%'));const txt=lines.join('\n');const box=document.getElementById('layoutBox');box.style.display='block';box.value=txt;box.select();const btn=document.getElementById('cpL');if(navigator.clipboard)navigator.clipboard.writeText(txt).then(()=>{btn.textContent='Copied';setTimeout(()=>btn.textContent='Copy layout',1500);});};
 ['eHead','eSub'].forEach(id=>document.getElementById(id).oninput=()=>drawEmail());
 const evSel=document.getElementById('evSel');
 EVENTS.forEach(e=>{const o=document.createElement('option');o.value=e.slug;o.textContent=e.label;evSel.appendChild(o);});
