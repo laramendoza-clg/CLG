@@ -95,15 +95,16 @@ const GROUPS = [
  {key:'header', label:'Speakers header',        x:140, y:1534},
  {key:'row',    label:'Speaker row',            cx:1080, cy:1885},
  {key:'credit', label:'Partnership credit',     cx:1080, cy:2291},
+ {key:'lockup', label:'Event lockup',          cx:1080, cy:560},
 ];
 GROUPS.forEach(g=>{g.dy=0;g.s=1;});
 SPK.forEach(s=>{s.photoImg=null;s.logoImg=null;});
 let partnerLogo=null;
 const EVENTS=[
- {slug:'dubai-2026',label:'Dubai — Private Capital Summit',accent:'#2f5d63',grad:[['#0C1A1E',0],['#12303c',40],['#20474C',75],['#2f5d63',100]],sub:'Dubai Private Capital Summit  ·  September 15, 2026  ·  The Lana, Dubai'},
- {slug:'newyork-2026',label:'New York — Private Capital Summit',accent:'#A15D50',grad:[['#130E15',0],['#472E40',40],['#7B4349',75],['#A15D50',100]],sub:'New York Private Capital Summit  ·  October 14, 2026  ·  WELL& + Nasdaq, New York'},
+ {slug:'dubai-2026',label:'Dubai — Private Capital Summit',accent:'#2f5d63',grad:[['#0C1A1E',0],['#12303c',40],['#20474C',75],['#2f5d63',100]],cover:{city:'DUBAI',ev:['PRIVATE','CAPITAL','SUMMIT'],date:'SEPTEMBER 15, 2026  ·  THE LANA, DUBAI'},sub:'Dubai Private Capital Summit  ·  September 15, 2026  ·  The Lana, Dubai'},
+ {slug:'newyork-2026',label:'New York — Private Capital Summit',accent:'#A15D50',grad:[['#130E15',0],['#472E40',40],['#7B4349',75],['#A15D50',100]],cover:{city:'NEW YORK',ev:['PRIVATE','CAPITAL','SUMMIT'],date:'OCTOBER 14, 2026  ·  NEW YORK'},sub:'New York Private Capital Summit  ·  October 14, 2026  ·  WELL& + Nasdaq, New York'},
  {slug:'ai-data-breakfast-2026',label:'AI / Data & Insight — Private Capital Breakfast',accent:'#8A7547',grad:[['#0A0F1C',0],['#1A2033',40],['#5C4E30',78],['#8A7547',100]],sub:'AI / Data & Insight Private Capital Breakfast  ·  November 18, 2026  ·  The May Fair, London'},
- {slug:'europe-2027',label:'Europe — Private Capital Summit',accent:'#6b2554',grad:[['#140811',0],['#2A1228',40],['#4A1B3E',75],['#6b2554',100]],sub:'European Private Capital Summit  ·  February 2027  ·  London'},
+ {slug:'europe-2027',label:'Europe — Private Capital Summit',accent:'#6b2554',grad:[['#140811',0],['#2A1228',40],['#4A1B3E',75],['#6b2554',100]],cover:{city:'EUROPEAN',ev:['PRIVATE','CAPITAL','SUMMIT'],date:'FEBRUARY 2027  ·  LONDON'},sub:'European Private Capital Summit  ·  February 2027  ·  London'},
  {slug:'mit-2027',label:'MIT — Talent Leadership Summit',accent:'#5E1A2E',grad:[['#150710',0],['#3A1420',45],['#4E1727',78],['#5E1A2E',100]],sub:'Talent Leadership Summit  ·  February 24, 2027  ·  MIT, Cambridge'}
 ];
 let curEv=EVENTS[0];
@@ -126,6 +127,11 @@ let ready=false;
 function loadCover(slug){if(upCovers[slug]){imgs.base=upCovers[slug];draw();return;}const img=new Image();img.onload=()=>{imgs.base=img;draw();};img.onerror=()=>{imgs.base=null;draw();};img.src='../assets/covers/'+slug+'.jpg';}
 function drawCoverFallback(){const dark=curEv.grad[0][0];ctxF.fillStyle=dark;ctxF.fillRect(0,0,2160,2700);const gr=ctxF.createLinearGradient(0,0,2160,1300);curEv.grad.forEach(cs=>gr.addColorStop(cs[1]/100,cs[0]));ctxF.fillStyle=gr;ctxF.fillRect(0,0,2160,1300);ctxF.fillStyle='rgba(255,255,255,0.6)';ctxF.font='600 40px Raleway';ctxF.textAlign='center';ctxF.textBaseline='middle';ctxF.fillText('\u2039 add cover art: assets/covers/'+curEv.slug+'.jpg \u203a',1080,650);}
 function drawTitle(){const t=(document.getElementById('eTitle').value||'').trim();if(!t)return;const cx=1080,top=1010,maxw=1520,size=96;const lines=wrap(t,'600 '+size+'px Raleway',maxw);drawLines(lines,'600 '+size+'px Raleway','#ffffff',cx,top,size*1.12);}
+function hexToRgb(h){const n=parseInt(h.slice(1),16);return [(n>>16)&255,(n>>8)&255,n&255];}
+function drawFade(){const c=hexToRgb(curEv.grad[0][0]),rgb=c[0]+','+c[1]+','+c[2];const gr=ctxF.createLinearGradient(0,0,0,2700);gr.addColorStop(0,'rgba('+rgb+',0)');gr.addColorStop(0.22,'rgba('+rgb+',0)');gr.addColorStop(0.40,'rgba('+rgb+',0.92)');gr.addColorStop(0.47,'rgba('+rgb+',1)');gr.addColorStop(1,'rgba('+rgb+',1)');ctxF.fillStyle=gr;ctxF.fillRect(0,0,2160,2700);const sc=ctxF.createLinearGradient(0,0,0,780);sc.addColorStop(0,'rgba('+rgb+',0.38)');sc.addColorStop(1,'rgba('+rgb+',0)');ctxF.fillStyle=sc;ctxF.fillRect(0,0,2160,780);}
+function drawBranding(){const cv=curEv.cover;if(!cv)return;const cityF='600 100px Raleway',evF='700 90px Raleway',lh=104,midY=415;ctx.textBaseline='middle';ctx.font=cityF;const cityW=ctx.measureText(cv.city).width;ctx.font=evF;let evW=0;cv.ev.forEach(w=>{evW=Math.max(evW,ctx.measureText(w).width);});const gap=40,barW=5,barH=lh*(cv.ev.length-1)+82;const total=cityW+gap+barW+gap+evW,x0=1080-total/2;ctx.font=cityF;ctx.fillStyle='#fff';ctx.textAlign='right';ctx.fillText(cv.city,x0+cityW,midY);ctx.fillStyle='rgba(255,255,255,0.92)';ctx.fillRect(x0+cityW+gap,midY-barH/2,barW,barH);ctx.font=evF;ctx.textAlign='left';ctx.fillStyle='#fff';const evX=x0+cityW+gap+barW+gap,sY=midY-(cv.ev.length-1)*lh/2;cv.ev.forEach((w,i)=>ctx.fillText(w,evX,sY+i*lh));ctx.font='700 40px Raleway';ctx.fillStyle='rgba(255,255,255,0.95)';ctx.textBaseline='middle';const dt=cv.date,ls=8;let tw=0;for(const ch of dt){tw+=ctx.measureText(ch).width+ls;}tw-=ls;let xx=1080-tw/2;ctx.textAlign='left';for(const ch of dt){ctx.fillText(ch,xx,735);xx+=ctx.measureText(ch).width+ls;}}
+function drawFooter(){ctxF.textBaseline='middle';ctxF.font='600 24px Raleway';ctxF.fillStyle='rgba(255,255,255,0.5)';const ls=4;let xx=140;ctxF.textAlign='left';const l='POWERED BY   CAPLINK GROUP';for(const ch of l){ctxF.fillText(ch,xx,2560);xx+=ctxF.measureText(ch).width+ls;}const u='CAPLINK-GROUP.COM';let tw=0;for(const ch of u){tw+=ctxF.measureText(ch).width+ls;}tw-=ls;let ux=2020-tw;for(const ch of u){ctxF.fillText(ch,ux,2560);ux+=ctxF.measureText(ch).width+ls;}}
+function drawSkyHint(){ctxF.fillStyle='rgba(255,255,255,0.5)';ctxF.font='600 38px Raleway';ctxF.textAlign='center';ctxF.textBaseline='middle';ctxF.fillText('\u2039 upload this event\u2019s sky (or add assets/covers/'+curEv.slug+'.jpg) \u203a',1080,175);}
 Promise.all([
  load(A.badge),load(A.header),load(A.clabel),load(A.clogo),
  ...PHOTOS.map(load), ...OVERHANGS.map(load),
@@ -219,7 +225,11 @@ function draw(){
  if(!ready)return;
  ctx=ctxF;
  ctx.clearRect(0,0,2160,2700);
- if(imgs.base)ctx.drawImage(imgs.base,0,0); else drawCoverFallback();
+ ctxF.fillStyle=curEv.grad[0][0];ctxF.fillRect(0,0,2160,2700);
+ if(imgs.base)coverDraw(imgs.base,0,0,2160,1400);
+ if(curEv.cover)drawFade();
+ if(!imgs.base)drawSkyHint();
+ if(curEv.cover){group(GROUPS[5],drawBranding);drawFooter();}
  group(GROUPS[0],()=>ctx.drawImage(imgs.badge,GROUPS[0].x,GROUPS[0].y));
  group(GROUPS[1],drawTitle);
  group(GROUPS[2],()=>ctx.drawImage(imgs.header,GROUPS[2].x,GROUPS[2].y));

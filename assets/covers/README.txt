@@ -1,9 +1,10 @@
-Speaker Graphics — event cover art
-Drop one 2160x2700 JPG per event, named by slug:
-  dubai-2026.jpg              (Dubai — Private Capital Summit)
-  newyork-2026.jpg           (New York — Private Capital Summit)
-  ai-data-breakfast-2026.jpg (AI / Data & Insight — Private Capital Breakfast)
-  europe-2027.jpg            (Europe — Private Capital Summit)
-  mit-2027.jpg               (MIT — Talent Leadership Summit)
-The image is the full flyer cover: sky + city lockup + date line + accent.
-The tool overlays the panel badge, title, speakers and credit on top.
+Speaker Graphics — event cover skies
+Drop one city SKY photo per event (no text on it), named by slug.
+The tool draws the "CITY | PRIVATE CAPITAL SUMMIT" lockup, the date line,
+the accent fade and the CapLink footer on top automatically (Raleway).
+  dubai-2026.jpg              (Dubai)      — raw Dubai skyline
+  newyork-2026.jpg           (New York)   — raw NYC skyline
+  europe-2027.jpg            (Europe)     — raw skyline (London)
+Portrait-ish or wide both work — the sky is cover-cropped into the top band.
+(ai-data-breakfast-2026 and mit-2027 are not auto-branded yet — pending
+their lockup wording.)
