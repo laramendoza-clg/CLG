@@ -99,18 +99,24 @@ that's for Bitrix; Lara owns only her lane.
   `publish_agenda(p_slug,p_data,p_key)` which checks the team password in
   `studio_secrets`. Optional `presence` table powers live "who's editing"
   avatars (SQL was given to Lara — confirm it was run). `milestones`
-  (id,done,by_name,at — confirmed run) and `tasks`
-  (id,label,slug,due,done,by_name,at — given, unconfirmed) are public-write
-  like presence and back the dashboard ticks / quick-add tasks.
+  (id,done,by_name,at — confirmed run) backs the dashboard ticks.
   `milestone_labels(id,text,slug,by_name,at)` holds editable per-event
   milestone names, and `studio_state(key,data jsonb,by_name,updated_at)` is a
-  generic KV store shared by the graphics tools (keys like
-  `panelspotlight:newyork-2026`, `speakergrid:dubai-2026`). All four
-  public-write tables + policies are in **`supabase/schema.sql`** — an
-  idempotent script to paste into the Supabase SQL editor. The client helper
-  is `assets/studio-store.js` (`StudioStore.get/set`); every tool mirrors to
-  localStorage and falls back to it, so nothing breaks before the SQL is run
-  and it auto-upgrades to shared the moment the tables exist.
+  generic KV store the graphics tools sync through (keys like
+  `panelspotlight:newyork-2026`, `speakergrid:dubai-2026`) via
+  `assets/studio-store.js` (`StudioStore.get/set`), mirrored to localStorage
+  so it works offline. All three carry a permissive `studio_public_all`
+  policy (anon read+write) — the "easy security win" later is to tighten these
+  to select-only and route writes through key-checked RPCs, like the tracker
+  already does.
+  NOTE: `public.tasks` is the TRACKER's table
+  (id,cat,title,note,src,status,sort,…), NOT a studio-tasks table. The old
+  dashboard "quick-add task" widget POSTed a different shape (label/slug/due)
+  and conflicts with it — that widget is being retired in favour of the
+  dedicated `/tracker/` page (passcode `tracker_key` in `studio_secrets`,
+  all access via `tracker_*` SECURITY DEFINER RPCs). The whole studio +
+  tracker run on the ONE Supabase project (`caplink-studio`); there is no
+  second backend.
 - **Builder** `/agenda-generator/?e=<slug>`: loads newest published version;
   Google-Slides-style editing (click text on the page to type; click
   photos/logos for upload/URL/size popover; hover a session for
