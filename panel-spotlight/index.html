@@ -54,11 +54,11 @@ button:hover{filter:brightness(1.12);}
 
 /* ===== ARTBOARD 1080x1350 ===== */
 #art{
-  --hero-h:32%; --hero-pb:26px; --fade-start:44%; --fade-top:.28; --photo-y:0%; --photo-zoom:1;
-  --lockup-h:150px; --meta-mt:26px; --chip-mt:26px;
-  --title-mt:14px; --title-size:56px; --title-mb:30px;
-  --spk-mt:0px; --nm:22px; --ro:14px; --fm:16px;
-  --partner-mt:30px; --partner-size:52px;
+  --hero-h:38%; --hero-pb:0px; --fade-start:50%; --fade-top:.28; --photo-y:0%; --photo-zoom:1;
+  --lockup-h:190px; --meta-mt:50px; --meta-size:24px; --chip-mt:58px;
+  --title-mt:44px; --title-size:71px; --title-mb:36px;
+  --spk-mt:11px; --nm:22px; --ro:14px; --fm:16px;
+  --partner-mt:53px; --partner-size:52px;
   width:1080px;height:1350px;position:relative;overflow:hidden;display:flex;flex-direction:column;
   background:linear-gradient(135deg,#130E15 0%,#472E40 40%,#7B4349 75%,#A15D50 100%);font-variant-numeric:lining-nums;}
 #art .hero{position:relative;height:var(--hero-h);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:0 72px var(--hero-pb);overflow:hidden;}
@@ -66,7 +66,7 @@ button:hover{filter:brightness(1.12);}
 #art .scrim{position:absolute;inset:0;opacity:0;background:linear-gradient(180deg,rgba(19,14,21,var(--fade-top)) 0%,transparent 55%);}
 #art .hero>.z{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;}
 #art .lockup{height:var(--lockup-h);}
-#art .meta{margin-top:var(--meta-mt);font-size:16px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.94);text-align:center;}
+#art .meta{margin-top:var(--meta-mt);font-size:var(--meta-size);font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.94);text-align:center;}
 #art .chip{margin-top:var(--chip-mt);border:1px solid rgba(255,255,255,.45);border-radius:2px;padding:11px 24px;font-size:13px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:#fff;}
 #art .content{flex:1;background:transparent;padding:0 64px 40px;display:flex;flex-direction:column;}
 #art .title{text-align:center;margin-top:var(--title-mt);margin-bottom:var(--title-mb);}
@@ -76,7 +76,7 @@ button:hover{filter:brightness(1.12);}
 #art .marker{display:flex;align-items:center;gap:22px;margin-top:var(--spk-mt);margin-bottom:26px;}
 #art .marker .rule{flex:1;height:1px;background:rgba(255,255,255,.2);}
 #art .marker .lab{font-size:12px;font-weight:700;letter-spacing:.4em;text-transform:uppercase;color:rgba(255,255,255,.8);}
-#art .spk{display:flex;justify-content:center;gap:24px;}
+#art .spk{display:flex;flex-wrap:wrap;justify-content:center;gap:30px 24px;}
 #art .person{text-align:center;position:relative;}
 #art .person .pw{position:relative;width:100%;overflow:hidden;background:#d9dde0;}
 #art .person .pw img.hs{width:100%;height:100%;object-fit:cover;display:block;}
@@ -126,28 +126,29 @@ button:hover{filter:brightness(1.12);}
 
   <details><summary>Layout &amp; size</summary><div class="body">
     <b style="font-size:10px;color:#c88;letter-spacing:.12em">HERO / PHOTO</b>
-    <label>Hero height <span class="v" id="lv_hh">32%</span></label><input type="range" id="r_hh" min="20" max="46" value="32" data-var="--hero-h" data-unit="%">
-    <label>Photo fade start <span class="v" id="lv_fs">44%</span></label><input type="range" id="r_fs" min="0" max="90" value="44" data-var="--fade-start" data-unit="%">
+    <label>Hero height <span class="v" id="lv_hh">38%</span></label><input type="range" id="r_hh" min="20" max="46" value="38" data-var="--hero-h" data-unit="%">
+    <label>Photo fade start <span class="v" id="lv_fs">50%</span></label><input type="range" id="r_fs" min="0" max="90" value="50" data-var="--fade-start" data-unit="%">
     <label>Photo top darkness <span class="v" id="lv_ft">28%</span></label><input type="range" id="r_ft" min="0" max="80" value="28" data-var="--fade-top" data-unit="/100">
     <label>Photo vertical <span class="v" id="lv_py">0%</span></label><input type="range" id="r_py" min="-40" max="40" value="0" data-var="--photo-y" data-unit="%">
     <label>Photo zoom <span class="v" id="lv_pz">100%</span></label><input type="range" id="r_pz" min="100" max="200" value="100" data-var="--photo-zoom" data-unit="/100">
-    <label>Header block up/down <span class="v" id="lv_pb">26</span></label><input type="range" id="r_pb" min="0" max="120" value="26" data-var="--hero-pb" data-unit="px">
+    <label>Header block up/down <span class="v" id="lv_pb">0</span></label><input type="range" id="r_pb" min="0" max="120" value="0" data-var="--hero-pb" data-unit="px">
     <b style="font-size:10px;color:#c88;letter-spacing:.12em">LOCKUP</b>
-    <label>Lockup size <span class="v" id="lv_lh">150</span></label><input type="range" id="r_lh" min="80" max="230" value="150" data-var="--lockup-h" data-unit="px">
-    <label>Date gap <span class="v" id="lv_mt">26</span></label><input type="range" id="r_mt" min="0" max="80" value="26" data-var="--meta-mt" data-unit="px">
-    <label>Chip gap <span class="v" id="lv_ct">26</span></label><input type="range" id="r_ct" min="0" max="80" value="26" data-var="--chip-mt" data-unit="px">
+    <label>Lockup size <span class="v" id="lv_lh">190</span></label><input type="range" id="r_lh" min="80" max="230" value="190" data-var="--lockup-h" data-unit="px">
+    <label>Date gap <span class="v" id="lv_mt">50</span></label><input type="range" id="r_mt" min="0" max="80" value="50" data-var="--meta-mt" data-unit="px">
+    <label>Date size <span class="v" id="lv_ms">24</span></label><input type="range" id="r_ms" min="12" max="40" value="24" data-var="--meta-size" data-unit="px">
+    <label>Chip gap <span class="v" id="lv_ct">58</span></label><input type="range" id="r_ct" min="0" max="80" value="58" data-var="--chip-mt" data-unit="px">
     <b style="font-size:10px;color:#c88;letter-spacing:.12em">TITLE</b>
-    <label>Title space above <span class="v" id="lv_tmt">14</span></label><input type="range" id="r_tmt" min="0" max="120" value="14" data-var="--title-mt" data-unit="px">
-    <label>Title size <span class="v" id="lv_ts">56</span></label><input type="range" id="r_ts" min="34" max="76" value="56" data-var="--title-size" data-unit="px">
-    <label>Title space below <span class="v" id="lv_tmb">30</span></label><input type="range" id="r_tmb" min="0" max="120" value="30" data-var="--title-mb" data-unit="px">
+    <label>Title space above <span class="v" id="lv_tmt">44</span></label><input type="range" id="r_tmt" min="0" max="120" value="44" data-var="--title-mt" data-unit="px">
+    <label>Title size <span class="v" id="lv_ts">71</span></label><input type="range" id="r_ts" min="34" max="76" value="71" data-var="--title-size" data-unit="px">
+    <label>Title space below <span class="v" id="lv_tmb">36</span></label><input type="range" id="r_tmb" min="0" max="120" value="36" data-var="--title-mb" data-unit="px">
     <b style="font-size:10px;color:#c88;letter-spacing:.12em">SPEAKERS</b>
-    <label>Speakers space above <span class="v" id="lv_smt">0</span></label><input type="range" id="r_smt" min="0" max="120" value="0" data-var="--spk-mt" data-unit="px">
+    <label>Speakers space above <span class="v" id="lv_smt">11</span></label><input type="range" id="r_smt" min="0" max="120" value="11" data-var="--spk-mt" data-unit="px">
     <label>Headshot size <span class="v" id="lv_hs">100%</span></label><input type="range" id="r_hs" min="70" max="120" value="100">
     <label>Name size <span class="v" id="lv_nm">22</span></label><input type="range" id="r_nm" min="14" max="30" value="22" data-var="--nm" data-unit="px">
     <label>Role size <span class="v" id="lv_ro">14</span></label><input type="range" id="r_ro" min="10" max="20" value="14" data-var="--ro" data-unit="px">
     <label>Firm size <span class="v" id="lv_fm">16</span></label><input type="range" id="r_fm" min="11" max="24" value="16" data-var="--fm" data-unit="px">
     <b style="font-size:10px;color:#c88;letter-spacing:.12em">PARTNER / SPONSOR</b>
-    <label>Partner space above <span class="v" id="lv_pmt">30</span></label><input type="range" id="r_pmt" min="0" max="120" value="30" data-var="--partner-mt" data-unit="px">
+    <label>Partner space above <span class="v" id="lv_pmt">53</span></label><input type="range" id="r_pmt" min="0" max="120" value="53" data-var="--partner-mt" data-unit="px">
     <label>Partner logo size <span class="v" id="lv_ps">52</span></label><input type="range" id="r_ps" min="24" max="90" value="52" data-var="--partner-size" data-unit="px">
   </div></details>
 
@@ -185,7 +186,9 @@ function render(){
   $('a_meta').textContent=$('meta').value; $('a_chip').textContent=$('chip').value; $('a_t1').textContent=$('t1').value;
   let t2=$('t2').value, m=t2.match(/^(.*?)(\.*)$/); $('a_t2').innerHTML=esc(m[1])+(m[2]?'<span class="p">'+m[2]+'</span>':'');
   $('a_slab').textContent=$('slab').value; $('a_plab').textContent=$('plab').value;
-  const N=SP.length, inner=1080-128, gap=24, w=Math.floor(((inner-(N-1)*gap)/N)*HS);
+  const N=SP.length, inner=1080-128, gap=24;
+  const perRow=N>5?Math.ceil(N/2):N;                 // 6–7 speakers wrap to two rows
+  const w=Math.floor(((inner-(perRow-1)*gap)/perRow)*HS);
   const anyMod=SP.some(s=>s.mod);
   const spk=$('a_spk'); spk.innerHTML='';
   SP.forEach((s,i)=>{
@@ -251,7 +254,8 @@ const DEFAULT_SP=[
  {n:'First Last',r:'Title',f:'Firm',mod:false,hs:'',fl:''}
 ];
 const TXT=['t1','t2','meta','chip','slab','plab'];
-const RNG=['r_hh','r_fs','r_ft','r_py','r_pz','r_pb','r_lh','r_mt','r_ct','r_tmt','r_ts','r_tmb','r_smt','r_hs','r_nm','r_ro','r_fm','r_pmt','r_ps'];
+const RNG=['r_hh','r_fs','r_ft','r_py','r_pz','r_pb','r_lh','r_mt','r_ms','r_ct','r_tmt','r_ts','r_tmb','r_smt','r_hs','r_nm','r_ro','r_fm','r_pmt','r_ps'];
+function resetLayout(){RNG.forEach(id=>{const el=$(id);if(el){el.value=el.getAttribute('value');el.dispatchEvent(new Event('input'));}});}
 let curEvent='newyork-2026', CUR=null;
 
 function escg(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
@@ -344,7 +348,7 @@ function savePanel(){
 function newPanel(){
   autoSave();CUR=null;SP=JSON.parse(JSON.stringify(DEFAULT_SP));
   $('panelName').value='';['t1','t2','meta'].forEach(id=>$(id).value='');
-  resetHeroPlogo();applyChrome();render();buildControls();renderLib();autoSave();
+  resetLayout();resetHeroPlogo();applyChrome();render();buildControls();renderLib();autoSave();
 }
 function delPanel(e,id){
   if(e&&e.stopPropagation)e.stopPropagation();
