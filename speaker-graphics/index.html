@@ -21,8 +21,8 @@ h1 small{color:#7d9298;font-weight:400}
  #right canvas{max-height:38vh}
 }
 #stage{text-align:center}
-#preview{background:#e7ecef;padding:18px;border-radius:10px;overflow:auto;max-width:100%}
-#preview .container{margin:0 auto;box-shadow:0 6px 24px rgba(0,0,0,.18)}
+#preview{background:#fff;padding:14px;border-radius:10px;overflow-x:hidden;overflow-y:auto;max-width:100%}
+#preview .container{margin:0 auto}
 #preview .pc{position:relative}
 #preview .pf{outline:none;border-radius:3px;padding:0 2px;cursor:text;transition:box-shadow .12s,background .12s}
 #preview .pf:hover{background:#f4eee9}
@@ -452,7 +452,10 @@ ${blurb?`<p style="margin:0 0 18px;font-family:Raleway,Arial,sans-serif;color:#4
 <tr><td align="left" style="padding:6px 44px 40px;"><table width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table>
 <button class="paddspk">+ Add speaker</button></td></tr>
 </table>`;
+  fitPreview();
 }
+function fitPreview(){const host=document.getElementById('preview');if(!host)return;const cont=host.querySelector('.container');if(!cont)return;const avail=host.clientWidth-28;cont.style.zoom=Math.min(1,avail/600);}
+window.addEventListener('resize',fitPreview);
 // one-time wiring: edit text / set photo / drag-reorder / add-remove, all on the preview
 (function wirePreview(){
   const host=document.getElementById('preview'); if(!host)return;
