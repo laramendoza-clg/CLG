@@ -5,26 +5,38 @@
 <meta name="googlebot" content="noindex, nofollow">
 <title>Email Speaker Grid · CapLink Studio</title>
 <style>
-body{margin:0;background:#101c20;color:#dfe6e8;font-family:-apple-system,Segoe UI,Roboto,sans-serif}
+body{margin:0;background:#191a1c;color:#dfe6e8;font-family:-apple-system,Segoe UI,Roboto,sans-serif}
 .wrap{max-width:1280px;margin:0 auto;padding:12px}
 h1{font-size:17px;font-weight:600;margin:6px 0 10px;letter-spacing:.5px}
 h1 small{color:#7d9298;font-weight:400}
 .tabs{display:flex;gap:8px;margin:0 0 12px}
-.tabs button{flex:1;padding:10px;border-radius:8px;border:1px solid #2c4048;background:#16262c;color:#9fb3b8;font-size:14px}
+.tabs button{flex:1;padding:10px;border-radius:8px;border:1px solid #35363a;background:#212225;color:#9fb3b8;font-size:14px}
 .tabs button.act{background:#2e6f6a;color:#fff;border-color:#2e6f6a}
 .cols{display:flex;flex-direction:row-reverse;gap:16px;align-items:flex-start}
 #right{width:46%;position:sticky;top:68px;align-self:flex-start}
 #left{flex:1;min-width:0}
 @media(max-width:760px){
  .cols{display:block}
- #right{width:auto;position:sticky;top:58px;z-index:5;background:#101c20;padding:4px 0;border-bottom:1px solid #22343a}
+ #right{width:auto;position:sticky;top:58px;z-index:5;background:#191a1c;padding:4px 0;border-bottom:1px solid #303236}
  #right canvas{max-height:38vh}
 }
 #stage{text-align:center}
 #preview{background:#e7ecef;padding:18px;border-radius:10px;overflow:auto;max-width:100%}
 #preview .container{margin:0 auto;box-shadow:0 6px 24px rgba(0,0,0,.18)}
-canvas{max-width:100%;max-height:88vh;border:1px solid #2c4048;border-radius:6px}
-.panel{background:#16262c;border:1px solid #2c4048;border-radius:10px;padding:10px 14px;margin:10px 0}
+#preview .pc{position:relative}
+#preview .pf{outline:none;border-radius:3px;padding:0 2px;cursor:text;transition:box-shadow .12s,background .12s}
+#preview .pf:hover{background:#f4eee9}
+#preview .pf:focus{background:#fff;box-shadow:0 0 0 2px #7a3028}
+#preview .pdrag{position:absolute;top:3px;left:5px;cursor:grab;color:#c4c4c4;font-size:12px;user-select:none;opacity:0;transition:opacity .12s}
+#preview .pdel{position:absolute;top:1px;right:5px;border:none;background:none;color:#d3a29a;font-size:16px;line-height:1;cursor:pointer;opacity:0;transition:opacity .12s}
+#preview .pc:hover .pdrag,#preview .pc:hover .pdel{opacity:1}
+#preview .pdel:hover{color:#b3271b}
+#preview .pc.dragover{outline:2px dashed #7a3028;outline-offset:-2px}
+#preview .pimg:hover{outline:2px solid #7a3028;outline-offset:2px}
+#preview .paddspk{display:block;margin:6px auto 0;background:#4a5560;color:#fff;border:none;border-radius:6px;padding:8px 18px;cursor:pointer;font-family:inherit;font-size:13px}
+.pvhint{font-size:11.5px;color:#8a9095;margin:0 0 8px;text-align:center}
+canvas{max-width:100%;max-height:88vh;border:1px solid #35363a;border-radius:6px}
+.panel{background:#212225;border:1px solid #35363a;border-radius:10px;padding:10px 14px;margin:10px 0}
 .panel h2{font-size:14px;margin:2px 0 8px;font-weight:600;display:flex;justify-content:space-between;align-items:center;gap:8px}
 .panel h2 .onoff{display:flex;align-items:center;gap:6px;font-size:12px;color:#9fb3b8;font-weight:400}
 .panel h2 button{background:none;border:1px solid #3a545c;color:#9fb3b8;border-radius:6px;font-size:11px;padding:2px 8px}
@@ -37,7 +49,7 @@ canvas{max-width:100%;max-height:88vh;border:1px solid #2c4048;border-radius:6px
 .ctl span{width:52px;text-align:right;font-size:12px;font-variant-numeric:tabular-nums}
 .fld{display:flex;align-items:center;gap:8px;margin:6px 0}
 .fld label{width:74px;font-size:12px;color:#9fb3b8;flex-shrink:0}
-.fld input[type=text]{flex:1;background:#0e1a1f;border:1px solid #33494f;border-radius:6px;color:#e8eeef;padding:7px 9px;font-size:14px;min-width:0}
+.fld input[type=text]{flex:1;background:#151618;border:1px solid #3b3d42;border-radius:6px;color:#e8eeef;padding:7px 9px;font-size:14px;min-width:0}
 .fld input[type=file]{flex:1;font-size:11px;color:#9fb3b8;min-width:0}
 .fld input[type=checkbox]{width:18px;height:18px}
 .bar{display:flex;gap:10px;margin:12px 0}
@@ -47,7 +59,7 @@ canvas{max-width:100%;max-height:88vh;border:1px solid #2c4048;border-radius:6px
 #vals{font-size:11px;color:#7d9298;word-break:break-word;margin-bottom:24px}
 h3{font-size:13px;color:#9fb3b8;margin:16px 0 4px;text-transform:uppercase;letter-spacing:1px}
 .off .fld{opacity:.45}
-#snipBox{width:100%;height:150px;background:#0e1a1f;color:#9fd0c8;border:1px solid #33494f;border-radius:6px;font-size:11px;margin-top:8px;display:none}
+#snipBox{width:100%;height:150px;background:#151618;color:#9fd0c8;border:1px solid #3b3d42;border-radius:6px;font-size:11px;margin-top:8px;display:none}
 .note{font-size:12px;color:#7d9298;margin:6px 0}
 </style></head><body><div class="wrap">
 <h1>CapLink Studio <small>email speaker grid</small></h1>
@@ -58,9 +70,9 @@ h3{font-size:13px;color:#9fb3b8;margin:16px 0 4px;text-transform:uppercase;lette
 <div id="preview"></div>
 </div></div>
 <div id="left">
-<div class="panel" style="margin-top:0"><div class="fld"><label>event</label><select id="evSel" style="flex:1;background:#0e1a1f;border:1px solid #33494f;border-radius:6px;color:#e8eeef;padding:8px 9px;font-size:14px"></select></div></div>
-<h3>Speakers</h3>
-<div id="spk"></div>
+<div class="panel" style="margin-top:0"><div class="fld"><label>event</label><select id="evSel" style="flex:1;background:#151618;border:1px solid #3b3d42;border-radius:6px;color:#e8eeef;padding:8px 9px;font-size:14px"></select></div></div>
+<p class="pvhint" style="text-align:left;margin:10px 2px 0">Edit right on the preview → click any name/title/firm to type, click a photo to set its URL, drag <b>⠿</b> to reorder, <b>×</b> to remove, <b>+ Add speaker</b> at the bottom.</p>
+<div id="spk" style="display:none"></div>
 
 <div id="onlyF">
 <h3>Cover image</h3>
@@ -72,7 +84,7 @@ h3{font-size:13px;color:#9fb3b8;margin:16px 0 4px;text-transform:uppercase;lette
 <h3>Spacing and size</h3>
 <div id="panels"></div>
 <div class="bar"><button id="rs" class="gy">Reset all sliders</button><button id="cpL" class="gy">Copy layout</button><button id="dl" class="gr">Download flyer PNG</button></div>
-<textarea id="layoutBox" readonly style="width:100%;height:120px;background:#0e1a1f;color:#9fd0c8;border:1px solid #33494f;border-radius:6px;font-size:11px;margin-top:8px;display:none"></textarea>
+<textarea id="layoutBox" readonly style="width:100%;height:120px;background:#151618;color:#9fd0c8;border:1px solid #3b3d42;border-radius:6px;font-size:11px;margin-top:8px;display:none"></textarea>
 <div id="vals"></div>
 </div>
 
@@ -410,7 +422,56 @@ ${grid}
   </tr>
 </table>`;
 }
-function renderPreview(){const el=document.getElementById('preview');if(el)el.innerHTML=snippet();}
+const PH="data:image/svg+xml;utf8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="108" height="108"><rect width="108" height="108" fill="#dde1e4"/><text x="54" y="58" fill="#8a9095" font-family="Arial" font-size="11" text-anchor="middle">click to add</text></svg>');
+let pvDrag=null;
+function renderPreview(){
+  const el=document.getElementById('preview'); if(!el)return;
+  const inc=included();
+  const eyebrow=esc(document.getElementById('eHead').value);
+  const headline=esc((document.getElementById('eHl')||{value:''}).value);
+  const blurb=esc(document.getElementById('eSub').value);
+  const tds=inc.map(idx=>{const sp=SPK[idx];const img=sp.url?esc(sp.url):PH;
+    return `<td class="pc" data-idx="${idx}" width="25%" style="padding:16px 6px;text-align:center;vertical-align:top;">
+<span class="pdrag" draggable="true" title="Drag to move">⠿</span><button class="pdel" title="Remove speaker">×</button>
+<img class="pimg" src="${img}" width="108" style="display:block;width:108px;height:auto;margin:0 auto 8px;border:0;cursor:pointer;">
+<div class="pf" contenteditable="true" data-idx="${idx}" data-f="name" style="font-family:Raleway,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#0d0d0d;line-height:1.25;">${esc(sp.name)}</div>
+<div style="font-family:Raleway,Arial,sans-serif;font-size:10.5px;color:#4a4a4a;line-height:14px;margin-top:3px;"><span class="pf" contenteditable="true" data-idx="${idx}" data-f="role" style="font-style:italic;">${esc(sp.role)}</span><br><span class="pf" contenteditable="true" data-idx="${idx}" data-f="company" style="color:#7a3028;font-weight:700;">${esc(sp.company)}</span></div>
+</td>`;});
+  let rows='';
+  for(let i=0;i<tds.length;i+=4){
+    let row=tds.slice(i,i+4).join('');
+    for(let k=tds.slice(i,i+4).length;k<4;k++) row+='<td width="25%">&nbsp;</td>';
+    rows+='<tr>'+row+'</tr>';
+  }
+  el.innerHTML=`<table class="container" width="600" cellspacing="0" cellpadding="0" border="0" bgcolor="#fff" style="width:600px;max-width:600px;">
+<tr><td align="center" style="padding:8px 40px 6px;border-top:1px solid #f0e3e0;">
+<p style="margin:24px 0 8px;font-family:Raleway,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7a3028;">${eyebrow}</p>
+${headline?`<p style="margin:0 0 6px;font-family:Raleway,Arial,sans-serif;font-weight:700;font-size:20px;color:#0d0d0d;">${headline}</p>`:''}
+${blurb?`<p style="margin:0 0 18px;font-family:Raleway,Arial,sans-serif;color:#4a4a4a;font-size:14px;line-height:1.5;">${blurb}</p>`:''}
+</td></tr>
+<tr><td align="left" style="padding:6px 44px 40px;"><table width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table>
+<button class="paddspk">+ Add speaker</button></td></tr>
+</table>`;
+}
+// one-time wiring: edit text / set photo / drag-reorder / add-remove, all on the preview
+(function wirePreview(){
+  const host=document.getElementById('preview'); if(!host)return;
+  host.addEventListener('input',e=>{const t=e.target;if(!t.classList||!t.classList.contains('pf'))return;
+    const i=+t.dataset.idx, f=t.dataset.f; if(SPK[i]){SPK[i][f]=t.textContent;saveDebounced();}});
+  host.addEventListener('click',e=>{const t=e.target;
+    if(t.classList.contains('pimg')){const td=t.closest('.pc');const i=+td.dataset.idx;
+      const u=prompt('Paste this speaker’s hosted headshot URL:', SPK[i].url||'');
+      if(u!==null){SPK[i].url=u.trim();renderPreview();saveCur();}return;}
+    if(t.classList.contains('pdel')){const i=+t.closest('.pc').dataset.idx;
+      if(SPK.length>1){SPK.splice(i,1);renderPreview();buildSpeakerCards();saveCur();}return;}
+    if(t.classList.contains('paddspk')){SPK.push({name:'First Last',role:'Title',company:'Firm',url:'',mod:false,on:true,photoImg:null,logoImg:null});renderPreview();buildSpeakerCards();saveCur();
+      const cells=host.querySelectorAll('.pc');if(cells.length)cells[cells.length-1].scrollIntoView({block:'center'});return;}});
+  host.addEventListener('dragstart',e=>{const h=e.target;if(h.classList&&h.classList.contains('pdrag')){pvDrag=+h.closest('.pc').dataset.idx;e.dataTransfer.effectAllowed='move';try{e.dataTransfer.setData('text/plain','');}catch(_){}}});
+  host.addEventListener('dragover',e=>{const td=e.target.closest&&e.target.closest('.pc');if(td&&pvDrag!==null){e.preventDefault();td.classList.add('dragover');}});
+  host.addEventListener('dragleave',e=>{const td=e.target.closest&&e.target.closest('.pc');if(td)td.classList.remove('dragover');});
+  host.addEventListener('drop',e=>{const td=e.target.closest&&e.target.closest('.pc');if(!td||pvDrag===null)return;e.preventDefault();
+    const to=+td.dataset.idx;if(to!==pvDrag){const m=SPK.splice(pvDrag,1)[0];SPK.splice(to,0,m);renderPreview();buildSpeakerCards();saveCur();}pvDrag=null;});
+})();
 
 // tabs
 function setTab(){ // email-only tool now; the flyer tab was retired
