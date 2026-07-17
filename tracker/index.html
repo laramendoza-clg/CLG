@@ -58,15 +58,7 @@ h1{font-size:22px;font-weight:800;letter-spacing:-.3px}
 .hidden{display:none !important}
 </style></head>
 <body>
-<div id="gate"><div class="card">
-<h2>CapLink Studio · Tracker</h2>
-<p>Enter the tracker passcode.</p>
-<input id="keyIn" type="password" placeholder="Passcode" autocomplete="current-password">
-<button onclick="tryKey()">Open</button>
-<div class="err" id="keyErr"></div>
-</div></div>
-
-<div class="wrap hidden" id="app">
+<div class="wrap" id="app">
 <h1>CapLink Task Tracker</h1>
 <div class="sub">Live everywhere. Claude reads and updates this list directly. <span id="upd"></span></div>
 <div class="bar"><i id="barFill"></i></div>
@@ -91,27 +83,20 @@ h1{font-size:22px;font-weight:800;letter-spacing:-.3px}
 const SB_URL='https://buijepdhgvcfmclztjez.supabase.co';
 const SB_KEY='sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg';
 const SS={todo:"To do","in-progress":"In progress",blocked:"Blocked",done:"Done"};
-let KEY=localStorage.getItem('clg_tracker_key')||'';
 let TASKS=[],view=localStorage.getItem('clg_tracker_view')||'priority',filterStatus=null,q='';
 
-async function rpc(fn,args){
-  const r=await fetch(SB_URL+'/rest/v1/rpc/'+fn,{method:'POST',headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'},body:JSON.stringify(args)});
+const H={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'};
+async function api(path,opts){opts=opts||{};
+  const r=await fetch(SB_URL+'/rest/v1/'+path,{method:opts.method||'GET',headers:Object.assign({},H,opts.headers||{}),body:opts.body});
   if(!r.ok){throw new Error(await r.text())}
   const t=await r.text();return t?JSON.parse(t):null;
 }
+const TASKQ='tasks?select=*&order=sort.asc,created_at.asc';
 function toast(msg){const s=document.getElementById('sync');s.textContent=msg||'Saved';s.classList.add('show');setTimeout(()=>s.classList.remove('show'),1200)}
 async function load(){
-  TASKS=await rpc('tracker_get',{p_key:KEY});
-  document.getElementById('gate').classList.add('hidden');
-  document.getElementById('app').classList.remove('hidden');
+  TASKS=await api(TASKQ)||[];
   render();
 }
-window.tryKey=async()=>{
-  KEY=document.getElementById('keyIn').value.trim();
-  try{await load();localStorage.setItem('clg_tracker_key',KEY)}
-  catch(e){document.getElementById('keyErr').textContent='Wrong passcode.'}
-};
-document.getElementById('keyIn').addEventListener('keydown',e=>{if(e.key==='Enter')tryKey()});
 
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}
 function cats(){const seen=[];TASKS.forEach(t=>{if(!seen.includes(t.cat))seen.push(t.cat)});if(!seen.includes('Other'))seen.push('Other');return seen}
@@ -143,16 +128,17 @@ function render(){
  document.getElementById('newCat').innerHTML=cats().map(c=>`<option>${esc(c)}</option>`).join('');
  document.getElementById('upd').textContent='';
 }
+async function setStatus(id,ns){
+ try{await api('tasks?id=eq.'+encodeURIComponent(id),{method:'PATCH',body:JSON.stringify({status:ns,done_at:ns==='done'?new Date().toISOString():null})});toast()}catch(e){toast('Save failed')}
+}
 window.toggleDone=async id=>{
  const t=TASKS.find(x=>x.id===id);const ns=t.status==='done'?'todo':'done';
- t.status=ns;render();
- try{await rpc('tracker_set_status',{p_key:KEY,p_id:id,p_status:ns});toast()}catch(e){toast('Save failed');}
+ t.status=ns;render();setStatus(id,ns);
 };
 window.cycle=async id=>{
  const order=['todo','in-progress','blocked'];const t=TASKS.find(x=>x.id===id);
  let cur=t.status==='done'?'todo':t.status;const ns=order[(order.indexOf(cur)+1)%order.length];
- t.status=ns;render();
- try{await rpc('tracker_set_status',{p_key:KEY,p_id:id,p_status:ns});toast()}catch(e){toast('Save failed');}
+ t.status=ns;render();setStatus(id,ns);
 };
 window.toggleS=s=>{filterStatus=filterStatus===s?null:s;render()};
 window.setView=v=>{view=v;localStorage.setItem('clg_tracker_view',v);render()};
@@ -164,8 +150,8 @@ window.addTask=async()=>{
  const sort=Math.max(0,...TASKS.map(t=>t.sort||0))+10;
  const t={id:id,cat:cat,title:ti,note:null,src:'Added by Lara',status:'todo',sort:sort};
  TASKS.push(t);document.getElementById('newTitle').value='';render();
- try{await rpc('tracker_upsert',{p_key:KEY,p_tasks:[t]});toast()}catch(e){toast('Save failed')}
+ try{await api('tasks',{method:'POST',headers:{'Prefer':'resolution=merge-duplicates'},body:JSON.stringify(t)});toast()}catch(e){toast('Save failed')}
 };
-document.addEventListener('visibilitychange',()=>{if(!document.hidden&&KEY&&!document.getElementById('app').classList.contains('hidden')){rpc('tracker_get',{p_key:KEY}).then(t=>{TASKS=t;render()}).catch(()=>{})}});
-if(KEY){load().catch(()=>{localStorage.removeItem('clg_tracker_key');KEY=''})}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){api(TASKQ).then(t=>{TASKS=t||[];render()}).catch(()=>{})}});
+load().catch(e=>{document.getElementById('list').innerHTML='<div class="empty">Could not reach the database. If it was paused in Supabase, restore it and refresh.</div>';});
 </script></body></html>
