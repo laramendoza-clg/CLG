@@ -67,10 +67,10 @@ button:hover{filter:brightness(1.12);}
 #art .person{text-align:center;position:relative;}
 #art .person .pw{position:relative;width:100%;overflow:hidden;background:#d9dde0;}
 #art .person .pw img.hs{width:100%;height:100%;object-fit:cover;display:block;}
-#art .person .mod{margin-top:14px;font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#c98a7f;white-space:nowrap;}
+#art .person .modslot{display:flex;align-items:center;justify-content:center;min-height:30px;margin-bottom:13px;}
+#art .person .mod{display:inline-block;border:1px solid rgba(255,255,255,.45);border-radius:2px;padding:5px 13px;font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#fff;white-space:nowrap;}
 #art .person .flogo{position:absolute;left:8px;bottom:8px;max-width:44%;max-height:26px;background:#fff;padding:4px 6px;}
 #art .person .nm{margin-top:16px;font-size:var(--nm);font-weight:600;line-height:1.15;color:#fff;}
-#art .person .mod+.nm{margin-top:4px;}
 #art .person .ro{margin-top:5px;font-size:var(--ro);font-weight:400;line-height:1.3;color:rgba(255,255,255,.86);}
 #art .person .fm{margin-top:7px;font-size:var(--fm);font-weight:700;letter-spacing:.02em;color:#fff;}
 #art .partner{text-align:center;margin-top:var(--partner-mt);}
@@ -162,10 +162,11 @@ function render(){
   let t2=$('t2').value, m=t2.match(/^(.*?)(\.*)$/); $('a_t2').innerHTML=esc(m[1])+(m[2]?'<span class="p">'+m[2]+'</span>':'');
   $('a_slab').textContent=$('slab').value; $('a_plab').textContent=$('plab').value;
   const N=SP.length, inner=1080-128, gap=24, w=Math.floor(((inner-(N-1)*gap)/N)*HS);
+  const anyMod=SP.some(s=>s.mod);
   const spk=$('a_spk'); spk.innerHTML='';
   SP.forEach((s,i)=>{
     const d=document.createElement('div'); d.className='person'; d.style.width=w+'px';
-    d.innerHTML=`<div class="pw"><img class="hs" src="${s.hs||ph()}">${s.fl?`<img class="flogo" src="${s.fl}">`:''}</div>${s.mod?'<div class="mod">Moderator</div>':''}<div class="nm">${esc(s.n)}</div><div class="ro">${esc(s.r)}</div><div class="fm">${esc(s.f)}</div>`;
+    d.innerHTML=`${anyMod?`<div class="modslot">${s.mod?'<div class="mod">Moderator</div>':''}</div>`:''}<div class="pw"><img class="hs" src="${s.hs||ph()}">${s.fl?`<img class="flogo" src="${s.fl}">`:''}</div><div class="nm">${esc(s.n)}</div><div class="ro">${esc(s.r)}</div><div class="fm">${esc(s.f)}</div>`;
     spk.appendChild(d); d.querySelector('.pw').style.height=w+'px';
   });
 }
