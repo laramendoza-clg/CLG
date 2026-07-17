@@ -52,14 +52,9 @@ html,body{margin:0;background:var(--cream);color:var(--ink);font-family:'Raleway
 .now-empty{padding:10px 2px 14px;font-size:13px;color:#6b6068}
 .nowi .del{flex:0 0 auto;border:none;background:none;color:#c9bec5;font-size:13px;cursor:pointer;padding:2px 5px;border-radius:4px}
 .nowi .del:hover{color:#a33;background:#f9eef0}
-.addtask{display:flex;gap:8px;align-items:center;padding:11px 2px 12px;border-top:1px solid #f4f0f2;margin-top:2px}
-.addtask input[type=text]{flex:1;min-width:0;font-family:inherit;font-size:13px;padding:9px 11px;border:1px solid var(--line);border-radius:7px;background:#fbf9fa}
-.addtask input[type=text]:focus{outline:none;border-color:var(--accent);background:#fff}
-.addtask select,.addtask input[type=date]{font-family:inherit;font-size:12px;padding:8px 8px;border:1px solid var(--line);border-radius:7px;background:#fff;color:#5a5460}
-.addtask button{font-family:inherit;font-size:12px;font-weight:700;letter-spacing:.06em;padding:9px 16px;border:none;border-radius:7px;background:var(--plum);color:#fff;cursor:pointer}
-.addtask button:hover{background:var(--accent)}
+.tracklink{display:inline-block;margin-top:12px;padding-top:11px;border-top:1px solid #f4f0f2;font-size:12.5px;font-weight:600;color:var(--accent);text-decoration:none}
+.tracklink:hover{text-decoration:underline}
 @media(max-width:640px){
-  .addtask{flex-wrap:wrap}.addtask input[type=text]{flex-basis:100%}
   .nowi{flex-wrap:wrap;row-gap:4px}
   .nowi .what{flex:1 1 100%;white-space:normal;order:1}
   .nowi .when{order:2}.nowi .jump{order:2}.nowi .who{order:2}.nowi .del{order:2;margin-left:auto}
@@ -130,19 +125,7 @@ html,body{margin:0;background:var(--cream);color:var(--ink);font-family:'Raleway
       <span class="now-sub" id="nowSub"></span>
     </div>
     <div id="nowList"></div>
-    <div class="addtask" id="addTask">
-      <input type="text" id="tkLabel" placeholder="+ Add a task… (e.g. “Send Nawshad the banner mockups”)" maxlength="140">
-      <select id="tkEvent">
-        <option value="">General</option>
-        <option value="dubai-2026">Dubai</option>
-        <option value="newyork-2026">New York</option>
-        <option value="ai-data-breakfast-2026">AI / Data</option>
-        <option value="europe-2027">Europe</option>
-        <option value="mit-2027">MIT</option>
-      </select>
-      <input type="date" id="tkDue" title="Due date (optional)">
-      <button id="tkAdd">Add</button>
-    </div>
+    <a class="tracklink" href="./tracker/">Your task list lives in the Tracker →</a>
   </div>
 
   <h1 class="ask">Which event are you working on?</h1>
@@ -243,7 +226,6 @@ html,body{margin:0;background:var(--cream);color:var(--ink);font-family:'Raleway
     var td=document.getElementById("tabDone");
     td.classList.toggle("on",view==="done");
     td.textContent="Completed"+(doneCount?" ("+doneCount+")":"");
-    document.getElementById("addTask").style.display=view==="week"?"flex":"none";
     var rowsHtml;
     if(view==="week"){
       sub.textContent=new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"});
@@ -331,17 +313,15 @@ html,body{margin:0;background:var(--cream);color:var(--ink);font-family:'Raleway
     renderNow();
     lab.focus();
   }
-  document.getElementById("tkAdd").addEventListener("click",addTask);
-  document.getElementById("tkLabel").addEventListener("keydown",function(e){if(e.key==="Enter")addTask();});
   document.getElementById("tabWeek").addEventListener("click",function(){view="week";renderNow();});
   document.getElementById("tabDone").addEventListener("click",function(){view="done";renderNow();});
   renderCards();
-  Promise.all([M.loadDone(),M.loadTasks()]).then(function(res){
-    doneMap=res[0].done;doneMeta=res[0].meta;tasks=res[1]||[];
+  M.loadDone().then(function(res){
+    doneMap=res.done;doneMeta=res.meta;
     renderCards();renderNow();
   });
 })();
 </script>
-<script src="./assets/studio-nav.js?v=5"></script>
+<script src="./assets/studio-nav.js?v=6"></script>
 </body>
 </html>

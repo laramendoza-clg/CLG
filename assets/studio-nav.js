@@ -14,7 +14,8 @@
     ["event/?e=newyork-2026","New York 2026"],
     ["event/?e=ai-data-breakfast-2026","AI / Data 2026"],
     ["event/?e=europe-2027","Europe 2027"],
-    ["event/?e=mit-2027","MIT 2027"]
+    ["event/?e=mit-2027","MIT 2027"],
+    ["tracker/","Tracker"]
   ];
   var css=
     "#studio-nav{position:sticky;top:0;z-index:99999;display:flex;align-items:center;gap:22px;"+
