@@ -21,6 +21,8 @@ h1 small{color:#7d9298;font-weight:400}
  #right canvas{max-height:38vh}
 }
 #stage{text-align:center}
+#preview{background:#e7ecef;padding:18px;border-radius:10px;overflow:auto;max-width:100%}
+#preview .container{margin:0 auto;box-shadow:0 6px 24px rgba(0,0,0,.18)}
 canvas{max-width:100%;max-height:88vh;border:1px solid #2c4048;border-radius:6px}
 .panel{background:#16262c;border:1px solid #2c4048;border-radius:10px;padding:10px 14px;margin:10px 0}
 .panel h2{font-size:14px;margin:2px 0 8px;font-weight:600;display:flex;justify-content:space-between;align-items:center;gap:8px}
@@ -51,12 +53,12 @@ h3{font-size:13px;color:#9fb3b8;margin:16px 0 4px;text-transform:uppercase;lette
 <h1>CapLink Studio <small>email speaker grid</small></h1>
 <div class="cols">
 <div id="right"><div id="stage">
-<canvas id="cv" width="2160" height="2700"></canvas>
+<canvas id="cv" width="2160" height="2700" style="display:none"></canvas>
 <canvas id="cvE" width="1200" height="1200" style="display:none"></canvas>
+<div id="preview"></div>
 </div></div>
 <div id="left">
 <div class="panel" style="margin-top:0"><div class="fld"><label>event</label><select id="evSel" style="flex:1;background:#0e1a1f;border:1px solid #33494f;border-radius:6px;color:#e8eeef;padding:8px 9px;font-size:14px"></select></div></div>
-<div class="tabs"><button id="tabF" class="act">Event flyer</button><button id="tabE">Email speaker grid</button></div>
 <h3>Speakers</h3>
 <div id="spk"></div>
 
@@ -77,11 +79,12 @@ h3{font-size:13px;color:#9fb3b8;margin:16px 0 4px;text-transform:uppercase;lette
 <div id="onlyE" style="display:none">
 <h3>Email grid options</h3>
 <div class="panel">
-<div class="fld"><label>heading</label><input type="text" id="eHead" value="MEET THE SPEAKERS"></div>
-<div class="fld"><label>subheading</label><input type="text" id="eSub" value="Dubai Private Capital Summit  ·  September 15, 2026  ·  The Lana, Dubai"></div>
+<div class="fld"><label>eyebrow</label><input type="text" id="eHead" value="Confirmed Speakers"></div>
+<div class="fld"><label>headline</label><input type="text" id="eHl" value="Featuring industry leaders"></div>
+<div class="fld"><label>blurb</label><input type="text" id="eSub" value="Senior fund managers, allocators, and advisors from across the global private capital landscape."></div>
 </div>
-<div class="bar"><button id="dlE" class="gr">Download grid PNG</button><button id="dlEH" class="gy">Download HTML</button><button id="cpE" class="gy">Copy HTML snippet</button></div>
-<div class="note">The PNG drops straight into any email. The HTML snippet renders as live text in the email, you just replace each image src with your hosted headshot URL before sending.</div>
+<div class="bar"><button id="dlEH" class="gr">Download HTML</button><button id="cpE" class="gy">Copy HTML snippet</button></div>
+<div class="note">This is the “Confirmed Speakers” block for the emails — copy the HTML and paste it into Mailchimp. Put each speaker's hosted headshot URL in the field so the images show; the preview on the right is exactly what sends.</div>
 <textarea id="snipBox" readonly></textarea>
 </div>
 
@@ -112,10 +115,11 @@ let STORE={}; try{STORE=JSON.parse(localStorage.getItem(SGKEY)||'{}')||{};}catch
 function imgFrom(src,set){if(!src)return;const im=new Image();im.onload=()=>{set(im);if(ready)drawAll();};im.src=src;}
 function snapshot(){
   return {
-    spk:SPK.map(s=>({name:s.name,role:s.role,company:s.company,mod:s.mod,on:s.on,photo:s.photo||'',logo:s.logo||''})),
+    spk:SPK.map(s=>({name:s.name,role:s.role,company:s.company,mod:s.mod,on:s.on,url:s.url||'',photo:s.photo||'',logo:s.logo||''})),
     groups:GROUPS.map(g=>({key:g.key,dy:g.dy,s:g.s})),
     title:(document.getElementById('eTitle')||{}).value||'',
     eHead:(document.getElementById('eHead')||{}).value||'',
+    eHl:(document.getElementById('eHl')||{}).value||'',
     eSub:(document.getElementById('eSub')||{}).value||'',
     cover:(upCovers[curEv.slug]&&upCovers[curEv.slug]._src)||''
   };
@@ -141,17 +145,17 @@ function saveCur(){
 let _sg; function saveDebounced(){clearTimeout(_sg);_sg=setTimeout(saveCur,400);}
 function hydrateFrom(st){
   if(st){
-    SPK=st.spk.map(s=>({name:s.name,role:s.role,company:s.company,mod:s.mod,on:s.on,photo:s.photo||'',logo:s.logo||'',photoImg:null,logoImg:null}));
-    SPK.forEach(s=>{imgFrom(s.photo,im=>s.photoImg=im);imgFrom(s.logo,im=>s.logoImg=im);});
+    SPK=st.spk.map(s=>({name:s.name,role:s.role,company:s.company,mod:s.mod,on:s.on,url:s.url||'',photo:s.photo||'',logo:s.logo||'',photoImg:null,logoImg:null}));
     const gm={}; (st.groups||[]).forEach(g=>gm[g.key]=g); GROUPS.forEach(g=>{const v=gm[g.key];g.dy=v?v.dy:0;g.s=v?v.s:1;});
   }else{
-    SPK=JSON.parse(JSON.stringify(DEFAULT_SPK)); SPK.forEach(s=>{s.photoImg=null;s.logoImg=null;s.photo='';s.logo='';});
+    SPK=JSON.parse(JSON.stringify(DEFAULT_SPK)); SPK.forEach(s=>{s.photoImg=null;s.logoImg=null;s.url='';s.photo='';s.logo='';});
     GROUPS.forEach(g=>{g.dy=0;g.s=1;});
   }
-  const et=document.getElementById('eTitle'), eh=document.getElementById('eHead'), es=document.getElementById('eSub');
+  const et=document.getElementById('eTitle'), eh=document.getElementById('eHead'), es=document.getElementById('eSub'), ehl=document.getElementById('eHl');
   if(et)et.value=(st&&st.title)||et.getAttribute('value')||et.value;
-  if(eh)eh.value=(st&&st.eHead)||'MEET THE SPEAKERS';
-  if(es)es.value=(st&&st.eSub)||curEv.sub;
+  if(eh)eh.value=(st&&st.eHead)||'Confirmed Speakers';
+  if(ehl)ehl.value=(st&&st.eHl)||'Featuring industry leaders';
+  if(es)es.value=(st&&st.eSub)||'Senior fund managers, allocators, and advisors from across the global private capital landscape.';
   if(st&&st.cover){imgFrom(st.cover,im=>{im._src=st.cover;upCovers[curEv.slug]=im;imgs.base=im;if(ready)draw();});}
   buildSpeakerCards();
   syncSliderUI();
@@ -365,51 +369,54 @@ function drawEmail(){
   y+=rowH[ri];
  });
 }
-function drawAll(){draw();drawEmail();}
+function drawAll(){renderPreview();}
 
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function snippet(){
  const inc=included();
- const head=esc(document.getElementById('eHead').value);
- const sub=esc(document.getElementById('eSub').value);
- const cols = inc.length<=3 ? Math.max(inc.length,1) : (inc.length==4?2:3);
- const cw=Math.floor(600/cols);
- let rowsHtml='';
- for(let i=0;i<inc.length;i+=cols){
-  const slice=inc.slice(i,i+cols);
-  let cells=slice.map(idx=>{
-   const sp=SPK[idx];
-   const modTag=sp.mod?`<div style="display:inline-block;border:1px solid rgba(255,255,255,0.55);color:#ffffff;font-size:10px;letter-spacing:2px;padding:3px 8px;margin-bottom:8px;">MODERATOR</div><br>`:'';
-   return `<td align="center" valign="top" width="${cw}" style="padding:14px 8px;">
-    ${modTag}<img src="REPLACE-WITH-HOSTED-HEADSHOT-URL" alt="${esc(sp.name)}" width="150" height="150" style="display:block;margin:0 auto 12px;background:#d7dadc;">
-    <div style="font-family:Arial,Helvetica,sans-serif;font-size:17px;font-weight:bold;color:#fefefe;line-height:1.3;">${esc(sp.name)}</div>
-    <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#dee2e3;line-height:1.4;padding-top:3px;">${esc(sp.role)}</div>
-    <div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;color:#fefefe;line-height:1.4;padding-top:6px;">${esc(sp.company)}</div>
-   </td>`;}).join('\n');
-  if(slice.length<cols){const pad=Math.floor((cols-slice.length)*cw/2);cells=`<td width="${pad}">&nbsp;</td>`+cells+`<td width="${pad}">&nbsp;</td>`;}
-  rowsHtml+=`<tr>${cells}</tr>\n`;
- }
- return `<!-- CapLink speaker grid -->
-<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" align="center" style="background:${curEv.grad[0][0]};background:linear-gradient(135deg,${curEv.grad.map(cs=>cs[0]+' '+cs[1]+'%').join(', ')});">
- <tr><td align="center" style="padding:28px 20px 6px;font-family:Arial,Helvetica,sans-serif;font-size:16px;letter-spacing:5px;color:#e4e9ea;">${head}</td></tr>
- ${sub?`<tr><td align="center" style="padding:0 20px 10px;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#a0b2b7;">${sub}</td></tr>`:''}
- <tr><td style="padding:6px 10px 20px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-${rowsHtml} </table></td></tr>
+ const eyebrow=esc(document.getElementById('eHead').value);
+ const headline=esc((document.getElementById('eHl')||{value:''}).value);
+ const blurb=esc(document.getElementById('eSub').value);
+ const rows=[]; for(let i=0;i<inc.length;i+=4) rows.push(inc.slice(i,i+4));
+ const cellsFor=r=>{
+  let c=r.map(idx=>{const sp=SPK[idx];
+   const img=sp.url?esc(sp.url):'REPLACE-WITH-HOSTED-HEADSHOT-URL';
+   return `<td align="center" valign="top" width="25%" style="padding:16px 6px;">
+<img src="${img}" width="108" alt="${esc(sp.name)}" style="display:block;width:108px;max-width:108px;height:auto;margin:0 auto;border:0;">
+<p style="margin:10px 0 0 0; font-family:'Raleway',Arial,sans-serif; font-weight:600; font-size:12.5px; color:#0d0d0d; line-height:1.25;">${esc(sp.name)}</p>
+<p style="margin:3px 0 0 0; font-family:'Raleway',Arial,sans-serif; font-size:10.5px; color:#4a4a4a; line-height:14px;"><em>${esc(sp.role)}</em><br><strong style="color:#7a3028;">${esc(sp.company)}</strong></p>
+</td>`;}).join('\n');
+  for(let k=r.length;k<4;k++) c+=`\n<td width="25%" style="padding:16px 6px;">&nbsp;</td>`;   // keep 4 columns aligned
+  return c;
+ };
+ const grid=rows.map(r=>`<tr>${cellsFor(r)}</tr>`).join('\n');
+ return `<!-- CapLink confirmed speakers -->
+<table role="presentation" class="container" width="600" cellspacing="0" cellpadding="0" border="0" bgcolor="#fff" style="width:600px; max-width:600px;">
+  <tr>
+    <td align="center" style="padding:8px 40px 6px 40px; border-top:1px solid #f0e3e0;">
+      <p style="margin:24px 0 8px 0; font-family:'Raleway',Arial,sans-serif; font-weight:700; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#7a3028;">${eyebrow}</p>
+      ${headline?`<p style="margin:0 0 6px 0; font-family:'Raleway',Arial,sans-serif; font-weight:700; font-size:20px; color:#0d0d0d;">${headline}</p>`:''}
+      ${blurb?`<p style="margin:0 0 18px 0; font-family:'Raleway',Arial,sans-serif; color:#4a4a4a; font-size:14px; line-height:1.5;">${blurb}</p>`:''}
+    </td>
+  </tr>
+  <tr>
+    <td align="left" style="padding:6px 44px 56px 44px;">
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+${grid}
+      </table>
+    </td>
+  </tr>
 </table>`;
 }
+function renderPreview(){const el=document.getElementById('preview');if(el)el.innerHTML=snippet();}
 
 // tabs
-const tabF=document.getElementById('tabF'), tabE=document.getElementById('tabE');
-function setTab(email){
- tabF.className=email?'':'act'; tabE.className=email?'act':'';
- document.getElementById('onlyF').style.display=email?'none':'';
- document.getElementById('onlyE').style.display=email?'':'none';
- cvF.style.display=email?'none':'';
- cvE.style.display=email?'':'none';
+function setTab(){ // email-only tool now; the flyer tab was retired
+ const f=document.getElementById('onlyF'); if(f)f.style.display='none';
+ const e=document.getElementById('onlyE'); if(e)e.style.display='';
  drawAll();
 }
-tabF.onclick=()=>setTab(false);
-tabE.onclick=()=>setTab(true);
+setTab();
 
 // speaker cards
 const spkDiv=document.getElementById('spk');
@@ -423,16 +430,9 @@ function buildSpeakerCards(){
   <div class="fld"><label>name</label><input type="text" data-k="name" value="${esch(sp.name)}"></div>
   <div class="fld"><label>title</label><input type="text" data-k="role" value="${esch(sp.role)}"></div>
   <div class="fld"><label>company</label><input type="text" data-k="company" value="${esch(sp.company)}"></div>
-  <div class="fld"><label>headshot</label><input type="file" accept="image/*" data-k="photo"></div>
-  <div class="fld"><label>logo</label><input type="file" accept="image/*" data-k="logo"></div>
-  <div class="fld"><label>moderator</label><input type="checkbox" data-k="mod" ${sp.mod?'checked':''}></div>`;
+  <div class="fld"><label>headshot URL</label><input type="text" data-k="url" value="${esch(sp.url||'')}" placeholder="https://…/photo.png"></div>`;
   p.querySelectorAll('input[type=text]').forEach(inp=>inp.oninput=()=>{sp[inp.dataset.k]=inp.value;drawAll();saveDebounced();});
-  p.querySelector('input[data-k=mod]').onchange=e=>{sp.mod=e.target.checked;drawAll();saveCur();};
   p.querySelector('input[data-k=on]').onchange=e=>{sp.on=e.target.checked;p.className='panel'+(sp.on?'':' off');drawAll();saveCur();};
-  p.querySelectorAll('input[type=file]').forEach(inp=>inp.onchange=e=>{
-   const fl=e.target.files[0];if(!fl)return;
-   const rd=new FileReader();rd.onload=ev=>{const src=ev.target.result;const img=new Image();img.onload=()=>{if(inp.dataset.k==='photo'){sp.photoImg=img;sp.photo=src;}else{sp.logoImg=img;sp.logo=src;}drawAll();saveCur();};img.src=src;};rd.readAsDataURL(fl);
-  });
   const h=p.querySelector('.dragh');
   h.addEventListener('dragstart',e=>{dragFrom=i;e.dataTransfer.effectAllowed='move';try{e.dataTransfer.setData('text/plain','');}catch(_){}});
   p.addEventListener('dragover',e=>{e.preventDefault();p.classList.add('dragover');});
@@ -450,13 +450,11 @@ document.getElementById('plogoR').onclick=()=>{partnerLogo=null;document.getElem
 document.getElementById('coverUp').onchange=e=>{const fl=e.target.files[0];if(!fl)return;const rd=new FileReader();rd.onload=ev=>{const src=ev.target.result;const img=new Image();img.onload=()=>{img._src=src;upCovers[curEv.slug]=img;imgs.base=img;draw();saveCur();};img.src=src;};rd.readAsDataURL(fl);};
 document.getElementById('coverR').onclick=()=>{delete upCovers[curEv.slug];document.getElementById('coverUp').value='';loadCover(curEv.slug);saveCur();};
 document.getElementById('cpL').onclick=()=>{const lines=['Speaker Graphics layout — '+curEv.label,'Title text: "'+(document.getElementById('eTitle').value||'').trim()+'"'];GROUPS.forEach(g=>lines.push(g.label+': '+(g.dy>0?'+':'')+g.dy+'px, '+Math.round(g.s*100)+'%'));const txt=lines.join('\n');const box=document.getElementById('layoutBox');box.style.display='block';box.value=txt;box.select();const btn=document.getElementById('cpL');if(navigator.clipboard)navigator.clipboard.writeText(txt).then(()=>{btn.textContent='Copied';setTimeout(()=>btn.textContent='Copy layout',1500);});};
-['eHead','eSub'].forEach(id=>document.getElementById(id).oninput=()=>{drawEmail();saveDebounced();});
+['eHead','eHl','eSub'].forEach(id=>{const el=document.getElementById(id);if(el)el.oninput=()=>{drawAll();saveDebounced();};});
 const evSel=document.getElementById('evSel');
 EVENTS.forEach(e=>{const o=document.createElement('option');o.value=e.slug;o.textContent=e.label;evSel.appendChild(o);});
 evSel.value=curEv.slug;
-document.getElementById('eSub').value=curEv.sub;
-evSel.onchange=()=>{saveCur();curEv=EVENTS.find(e=>e.slug===evSel.value)||EVENTS[0];applyEvent(curEv.slug);if(!(STORE[curEv.slug]&&STORE[curEv.slug].cover))loadCover(curEv.slug);drawAll();};
-document.getElementById('eTitle').oninput=()=>{draw();saveDebounced();};
+evSel.onchange=()=>{saveCur();curEv=EVENTS.find(e=>e.slug===evSel.value)||EVENTS[0];applyEvent(curEv.slug);drawAll();};
 
 // sliders
 const panels=document.getElementById('panels');
@@ -482,9 +480,6 @@ document.getElementById('rs').onclick=()=>{
 applyEvent(curEv.slug);
 document.getElementById('dl').onclick=()=>{
  cvF.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='flyer.png';a.click();},'image/png');
-};
-document.getElementById('dlE').onclick=()=>{
- cvE.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='speaker-grid-email.png';a.click();},'image/png');
 };
 document.getElementById('cpE').onclick=()=>{
  const s=snippet();
