@@ -110,20 +110,12 @@ div.card.off h3{color:#8a8088}
     <div class="grid" id="agGrid"></div>
     <p class="status" id="agStatus"></p>
   </section>
-  <section class="sec">
-    <h2>Milestones &amp; deadlines</h2>
-    <div id="msList" class="mslist"></div>
-    <button id="msMoreBtn" class="msmore"></button>
-    <div id="msExtra" class="msextra" style="display:none"></div>
-    <p class="status" id="msNote"></p>
-  </section>
   <section class="sec sec-tools">
     <h2>More tools</h2>
     <div class="toolrow" id="toolRow"></div>
   </section>
   <a class="back" href="../">← All events</a>
 </div>
-<script src="../assets/milestones.js?v=11"></script>
 <script>
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
@@ -154,112 +146,6 @@ document.getElementById("toolRow").innerHTML=
     trow("../dubai-pcs-card/","“I'm Attending” Card","Personalised 1080×1350 attendance card.")+
     trow("../speaker-card/","Speaker &amp; Panel Card","1200×675 announcement card for speakers.")
     :'<div class="off"><span class="tn">Social cards</span><span class="td">Not set up for this event yet — tell Lara when it needs its own.</span></div>');
-(function(){
-  const M=window.StudioMilestones,s=M&&M.schedule(slug);
-  const list=document.getElementById("msList"),note=document.getElementById("msNote");
-  const moreBtn=document.getElementById("msMoreBtn"),extra=document.getElementById("msExtra");
-  if(!s){list.innerHTML='<div class="ms"><div class="lb"><b>No date set for this event yet</b><span>Add it to assets/milestones.js and the full schedule appears here.</span></div></div>';moreBtn.style.display="none";return;}
-  let doneMap={},nameMap={},expanded=false;
-  try{expanded=localStorage.getItem("studio-ms-expand")==="1";}catch(_){}
-  function escA(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
-  function render(){
-    const now=new Date();
-    const mineIdx=[],otherIdx=[];
-    s.items.forEach((m,i)=>(M.laneHas(m)?mineIdx:otherIdx).push(i));
-    let nextIdx=-1;
-    mineIdx.forEach(i=>{if(nextIdx<0&&!doneMap[s.items[i].id]&&M.status(s.items[i].date,now)!=="past")nextIdx=i;});
-
-    /* --- mine: the real checklist --- */
-    let html="",lastPhase=null,headerHtml=null;
-    mineIdx.forEach(i=>{
-      const m=s.items[i];
-      if(m.phase&&m.phase!==lastPhase){lastPhase=m.phase;headerHtml='<div class="msph"><span>'+m.phase+'</span><span>'+M.fmt(m.date)+'</span></div>';}
-      if(headerHtml){html+=headerHtml;headerHtml=null;}
-      const done=!!doneMap[m.id];
-      const st=done?"done":M.status(m.date,now);
-      const cf=done&&M.CONFIRMED&&M.CONFIRMED[m.id];
-      const chip=cf?("Sent · "+M.fmt(new Date(cf.at+"T12:00:00"))):(done?"Done ✓":(st==="past"?"Still open":(st==="soon"?"Due soon":"Upcoming")));
-      const stCls=done?"past done":(st==="past"?"soon":st);
-      const wk=m.w===0?"Event":(m.w<0?(-m.w)+" wk after":m.w+" wk"+(m.w>1?"s":"")+" out");
-      /* spotlight emails get an editable "which panel" name that saves */
-      const isSpot=/Panel spotlight/.test(m.label||"");
-      const lbBody=isSpot
-        ?'<input class="msname" data-id="'+m.id+'" placeholder="+ name this panel" value="'+escA(nameMap[m.id]||"")+'">'
-        :(m.detail?'<span>'+m.detail+'</span>':'');
-      html+='<div class="ms '+stCls+(i===nextIdx?' nextup':'')+'" data-id="'+m.id+'" data-i="'+i+'">'+
-        '<button class="star on" title="On your list — click to take it off">★</button>'+
-        '<button class="tick'+(done?' on':'')+'" title="'+(done?"Mark as not done":"Mark done")+'">'+(done?"✓":"")+'</button>'+
-        '<div class="d">'+M.fmt(m.date)+'</div>'+
-        '<div class="wk">'+wk+'</div>'+
-        '<div class="lb"><b>'+m.label+'</b>'+lbBody+'</div>'+
-        (m.track?'<div class="tr tr-'+m.track+'">'+(M.TRACKS[m.track]||m.track)+'</div>':"")+
-        (m.w!==0&&!done?'<a class="msgo" href="'+M.linkFor(slug,m,"../")+'">Go</a>':"")+
-        '<div class="st">'+chip+'</div></div>';
-    });
-    if(!html)html='<div class="ms"><div class="lb"><b>Nothing in your lane for this event yet</b><span>Expand below and star ★ anything that\'s yours.</span></div></div>';
-    list.innerHTML=html;
-    list.querySelectorAll(".tick").forEach(btn=>{
-      btn.addEventListener("click",()=>{
-        const id=btn.closest(".ms").dataset.id;
-        const nowDone=!doneMap[id];
-        if(nowDone)doneMap[id]=1;else delete doneMap[id];
-        M.setDone(id,nowDone);
-        render();
-      });
-    });
-    list.querySelectorAll(".star").forEach(btn=>{
-      btn.addEventListener("click",()=>{
-        M.laneToggle(s.items[+btn.closest(".ms").dataset.i]);
-        render();
-      });
-    });
-    list.querySelectorAll(".msname").forEach(inp=>{
-      inp.addEventListener("change",()=>{        /* fires on blur / Enter */
-        const id=inp.dataset.id,v=inp.value.trim();
-        if(v)nameMap[id]=v;else delete nameMap[id];
-        M.saveLabel(id,v,slug);
-      });
-    });
-
-    /* --- other teams: quiet reference lines, not a checklist —
-       a tiny star is the only interactive bit, to promote something
-       onto your own list if it turns out to be yours after all --- */
-    moreBtn.style.display=otherIdx.length?"block":"none";
-    moreBtn.textContent=expanded?"– Hide other teams' milestones":"+ Show "+otherIdx.length+" more for other teams";
-    extra.style.display=expanded?"block":"none";
-    if(expanded){
-      let xhtml="",xlastPhase=null;
-      otherIdx.forEach(i=>{
-        const m=s.items[i];
-        if(m.phase&&m.phase!==xlastPhase){xlastPhase=m.phase;xhtml+='<div class="mxph">'+m.phase+'</div>';}
-        const done=!!doneMap[m.id];
-        xhtml+='<div class="mx" data-i="'+i+'">'+
-          '<button class="star" style="font-size:11px;color:inherit;opacity:.6" title="Not on your list — click to add it">☆</button>'+
-          '<span class="d">'+M.fmt(m.date)+'</span>'+
-          '<span class="lb'+(done?' done':'')+'">'+m.label+'</span>'+
-          (m.track?'<span class="tr">'+(M.TRACKS[m.track]||m.track)+'</span>':"")+
-          '</div>';
-      });
-      extra.innerHTML=xhtml;
-      extra.querySelectorAll(".star").forEach(btn=>{
-        btn.addEventListener("click",()=>{
-          M.laneToggle(s.items[+btn.closest(".mx").dataset.i]);
-          render();
-        });
-      });
-    }
-  }
-  moreBtn.addEventListener("click",()=>{
-    expanded=!expanded;
-    try{localStorage.setItem("studio-ms-expand",expanded?"1":"0");}catch(_){}
-    render();
-  });
-  render();
-  Promise.all([M.loadDone(),M.loadLabels?M.loadLabels():Promise.resolve({})]).then(res=>{
-    doneMap=res[0].done;nameMap=res[1]||{};render();
-  });
-  note.textContent="The standard event timeline, computed from the event date"+(s.est?" (date is estimated — deadlines shift when the date is confirmed)":"")+". Tick things off as they finish — everyone sees the same ticks. Shown here is just your lane (design + marketing by default) — star ★ anything to add it, or unstar to take it off.";
-})();
 (async()=>{
   try{
     const r=await fetch(SUPA_URL+"/rest/v1/agendas?slug=eq."+encodeURIComponent(slug)+"&select=updated_at",{headers:{apikey:SUPA_KEY}});
