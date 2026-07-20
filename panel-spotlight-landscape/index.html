@@ -92,6 +92,7 @@ button:hover{filter:brightness(1.12);}
 #art .marker .lab{font-size:15px;font-weight:700;letter-spacing:.4em;text-transform:uppercase;color:rgba(255,255,255,.8);}
 #art .spk{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--grow) var(--gcol);}
 #art .person{text-align:center;position:relative;}
+#art .person.is-mod{box-shadow:0 0 0 11px rgba(255,255,255,.05),0 0 0 12px rgba(255,255,255,.5);}
 #art .person .modslot{display:flex;align-items:center;justify-content:center;min-height:28px;margin-bottom:10px;}
 #art .person .mod{display:inline-block;border:1px solid rgba(255,255,255,.45);border-radius:2px;padding:5px 12px;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap;}
 #art .person .pw{position:relative;width:100%;aspect-ratio:1/1;overflow:hidden;background:#d9dde0;}
@@ -192,7 +193,7 @@ function render(){
   const anyMod=SP.some(s=>s.mod);
   const spk=$('a_spk'); spk.innerHTML='';
   SP.forEach((s,i)=>{
-    const d=document.createElement('div'); d.className='person';
+    const d=document.createElement('div'); d.className='person'+(s.mod?' is-mod':'');
     d.innerHTML=`${anyMod?`<div class="modslot">${s.mod?'<div class="mod">Moderator</div>':''}</div>`:''}<div class="pw"><img class="hs" src="${s.hs||ph()}">${s.fl?`<img class="flogo" src="${s.fl}">`:''}</div><div class="nm">${typo(s.n)}</div><div class="ro">${typo(s.r)}</div><div class="fm">${typo(s.f)}</div>`;
     spk.appendChild(d);
   });
