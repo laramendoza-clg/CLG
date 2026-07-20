@@ -219,7 +219,29 @@ function buildControls(){
     c.appendChild(el);
   });
 }
-function up(e,i,k){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{SP[i][k]=ev.target.result;render();saveState();};r.readAsDataURL(f);}
+// downscale + re-encode uploads so a full panel (7 headshots + logos + hero) fits localStorage/cloud and actually persists
+function compressFile(file,maxW,maxH,mime,q){
+  return new Promise((res,rej)=>{
+    const r=new FileReader();
+    r.onload=()=>{
+      const im=new Image();
+      im.onload=()=>{
+        const sc=Math.min(1,maxW/im.width,maxH/im.height);
+        const cw=Math.max(1,Math.round(im.width*sc)),ch=Math.max(1,Math.round(im.height*sc));
+        const c=document.createElement('canvas');c.width=cw;c.height=ch;
+        const ctx=c.getContext('2d');
+        if(mime==='image/jpeg'){ctx.fillStyle='#fff';ctx.fillRect(0,0,cw,ch);}   // flatten transparency for JPEG
+        ctx.drawImage(im,0,0,cw,ch);
+        let out;try{out=c.toDataURL(mime,q);}catch(_){out=r.result;}
+        res(out&&out.length<r.result.length?out:r.result);                        // never inflate an already-small file
+      };
+      im.onerror=()=>res(r.result);
+      im.src=r.result;
+    };
+    r.onerror=rej; r.readAsDataURL(file);
+  });
+}
+function up(e,i,k){const f=e.target.files[0];if(!f)return;const o=k==='hs'?[520,520,'image/jpeg',0.82]:[280,140,'image/png',1];compressFile(f,o[0],o[1],o[2],o[3]).then(d=>{SP[i][k]=d;render();saveState();});}
 function addSpk(){if(SP.length>=7){alert('Max 7');return;}SP.push({n:'First Last',r:'Title',f:'Firm',mod:false,hs:'',fl:''});render();buildControls();saveState();}
 function delSpk(i){if(SP.length<=1)return;SP.splice(i,1);render();buildControls();saveState();}
 ['t1','t2','meta','chip','slab','plab'].forEach(id=>$(id).addEventListener('input',render));
@@ -233,8 +255,8 @@ document.querySelectorAll('input[type=range][data-var]').forEach(r=>{
 });
 $('r_hs').addEventListener('input',()=>{HS=$('r_hs').value/100;$('lv_hs').textContent=$('r_hs').value+'%';render();});
 $('r_sgap').addEventListener('input',()=>{SPKGAP=+$('r_sgap').value;art.style.setProperty('--spk-gap',SPKGAP+'px');$('lv_sgap').textContent=$('r_sgap').value;render();});
-$('f_hero').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{const src=ev.target.result;EVHERO[curEvent]=src;$('herophoto').src=src;$('herophoto').style.opacity='1';document.querySelector('#art .scrim').style.opacity='1';saveEvHero();saveState();};r.readAsDataURL(f);});
-$('f_partner').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{$('a_plogo').src=ev.target.result;$('a_plogo').style.display='inline-block';saveState();};r.readAsDataURL(f);});
+$('f_hero').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;compressFile(f,1400,1000,'image/jpeg',0.82).then(src=>{EVHERO[curEvent]=src;$('herophoto').src=src;$('herophoto').style.opacity='1';document.querySelector('#art .scrim').style.opacity='1';saveEvHero();saveState();});});
+$('f_partner').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;compressFile(f,640,320,'image/png',1).then(src=>{$('a_plogo').src=src;$('a_plogo').style.display='inline-block';saveState();});});
 function dl(){const btn=event&&event.target;if(btn)btn.textContent='…';document.fonts.ready.then(()=>modernScreenshot.domToPng(art,{width:1080,height:1350,scale:2})).then(url=>{const a=document.createElement('a');a.download='panel-spotlight.png';a.href=url;a.click();if(btn)btn.textContent='Download PNG';}).catch(e=>{alert('Export failed: '+e);if(btn)btn.textContent='Download PNG';});}
 function htmlDoc(){const css=document.querySelector('style').innerHTML;return '<!doctype html>\n<meta charset="utf-8">\n<style>\n'+css+'\n</style>\n'+art.outerHTML;}
 function copyCode(){navigator.clipboard.writeText(htmlDoc()).then(()=>{const b=event.target,o=b.textContent;b.textContent='Copied';setTimeout(()=>b.textContent=o,1400);});}
@@ -393,7 +415,7 @@ function delPanel(e,id){
 }
 function resetAll(){if(!confirm('Delete every saved panel on THIS device and start fresh? Cloud copies are kept.'))return;try{Object.keys(localStorage).filter(k=>k.indexOf('caplink_ps_')===0).forEach(k=>localStorage.removeItem(k));}catch(e){}location.reload();}
 
-$('f_lockup').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev2=>{const src=ev2.target.result;EVLOCKUP[curEvent]=src;$('a_lockup').src=src;$('a_lockup').style.display='';saveEvLockup();autoSave();};r.readAsDataURL(f);});
+$('f_lockup').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;compressFile(f,960,340,'image/png',1).then(src=>{EVLOCKUP[curEvent]=src;$('a_lockup').src=src;$('a_lockup').style.display='';saveEvLockup();autoSave();});});
 $('evSel').innerHTML=EVORDER.map(k=>'<option value="'+k+'">'+escg(EVENTS[k].label)+'</option>').join('');
 $('evSel').addEventListener('change',()=>switchEvent($('evSel').value));
 if(LOCKED){
