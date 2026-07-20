@@ -98,11 +98,12 @@ button:hover{filter:brightness(1.12);}
 <div class="cols">
 <div class="panel">
   <h1>Panel Spotlight</h1>
-  <p class="sub">Pick an event, build a panel, name it and <b>Save</b>. Each saved panel reopens later so you only tweak what changed. Drag <b>⠿</b> to reorder speakers. Everything auto-saves as you go.</p>
+  <p class="sub" id="subLine">Pick an event, build a panel, name it and <b>Save</b>. Each saved panel reopens later so you only tweak what changed. Drag <b>⠿</b> to reorder speakers. Everything auto-saves as you go.</p>
 
   <div class="lib">
-    <label>Event</label>
-    <select id="evSel"></select>
+    <div id="evRow"><label>Event</label>
+    <select id="evSel"></select></div>
+    <div id="evName" style="display:none;font-weight:700;font-size:15px;letter-spacing:.02em;margin:0 0 4px"></div>
     <label style="margin-top:9px">This panel's name</label>
     <div class="librow"><input type="text" id="panelName" placeholder="e.g. Legal &amp; Regulatory panel"><button onclick="savePanel()">Save</button></div>
     <button class="addbtn" onclick="newPanel()">＋ New panel for this event</button>
@@ -246,6 +247,10 @@ const EVENTS={
  'mit-2027':{label:'MIT — Talent Leadership Summit',grad:'linear-gradient(135deg,#150710 0%,#3A1420 45%,#4E1727 78%,#5E1A2E 100%)'}
 };
 const EVORDER=['dubai-2026','newyork-2026','ai-data-breakfast-2026','europe-2027','mit-2027'];
+// each event can open as its own locked generator via ?event=<key|slug> — no dropdown, its colours/logos/library only
+const EVSLUG={dubai:'dubai-2026',newyork:'newyork-2026','new-york':'newyork-2026',ny:'newyork-2026','ai-data-breakfast':'ai-data-breakfast-2026',aidata:'ai-data-breakfast-2026',breakfast:'ai-data-breakfast-2026',europe:'europe-2027',mit:'mit-2027'};
+function lockedEvent(){try{const u=new URLSearchParams(location.search);let e=(u.get('event')||u.get('e')||'').trim().toLowerCase();if(!e)return null;if(EVENTS[e])return e;if(EVSLUG[e]&&EVENTS[EVSLUG[e]])return EVSLUG[e];}catch(_){}return null;}
+const LOCKED=lockedEvent();
 const NY_LOCKUP=$('a_lockup').getAttribute('src')||'';
 const EVLOCKUP={'newyork-2026':NY_LOCKUP};   // last-used lockup image per event
 const EVHERO={};                             // last-used hero/background photo per event
@@ -257,7 +262,7 @@ const DEFAULT_SP=[
 const TXT=['t1','t2','meta','chip','slab','plab'];
 const RNG=['r_hh','r_fs','r_ft','r_py','r_pz','r_pb','r_lh','r_mt','r_ms','r_ct','r_tmt','r_ts','r_tmb','r_smt','r_hs','r_nm','r_ro','r_fm','r_pmt','r_ps'];
 function resetLayout(){RNG.forEach(id=>{const el=$(id);if(el){el.value=el.getAttribute('value');el.dispatchEvent(new Event('input'));}});}
-let curEvent='newyork-2026', CUR=null;
+let curEvent=LOCKED||'newyork-2026', CUR=null;
 
 function escg(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function nowT(){return (new Date()).getTime();}
@@ -290,7 +295,7 @@ function collect(level){
 }
 function applyState(st){
   st=st||{};
-  if(st.event&&EVENTS[st.event])curEvent=st.event;
+  if(!LOCKED&&st.event&&EVENTS[st.event])curEvent=st.event;
   $('evSel').value=curEvent;
   if(st.lockup)EVLOCKUP[curEvent]=st.lockup;
   applyChrome();
@@ -309,6 +314,8 @@ function applyState(st){
 const LK={idx:'caplink_ps_index',pan:id=>'caplink_ps_p_'+id,draft:ev=>'caplink_ps_draft_'+ev,last:'caplink_ps_last',evl:'caplink_ps_evlockup',evh:'caplink_ps_evhero'};
 const CK={idx:'panelspotlight:index',pan:id=>'panelspotlight:p:'+id,draft:ev=>'panelspotlight:draft:'+ev,evl:'panelspotlight:evlockup',evh:'panelspotlight:evhero'};
 let LIB=[];
+// union of local + cloud libraries by id (newest wins) — so a lagging/empty copy of one never wipes panels saved in the other
+function mergeIndex(a,b){const out={};[a,b].forEach(list=>{if(Array.isArray(list))list.forEach(p=>{if(p&&p.id){const ex=out[p.id];if(!ex||(p.updatedAt||0)>=(ex.updatedAt||0))out[p.id]=p;}});});return Object.values(out);}
 function lget(k){try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}}
 function lset(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true;}catch(e){return false;}}
 function cloudSet(k,v){if(window.StudioStore&&StudioStore.set)StudioStore.set(k,v).catch(()=>{});}
@@ -351,7 +358,7 @@ function _openFirstOrDraft(ev){
   return _load(LK.draft(ev),CK.draft(ev),null);
 }
 function openPanel(id){autoSave();_load(LK.pan(id),CK.pan(id),id);}
-function switchEvent(ev){if(!EVENTS[ev])return;autoSave();curEvent=ev;$('evSel').value=ev;_openFirstOrDraft(ev);}
+function switchEvent(ev){if(LOCKED)return;if(!EVENTS[ev])return;autoSave();curEvent=ev;$('evSel').value=ev;_openFirstOrDraft(ev);}
 function savePanel(){
   if(!CUR){CUR=uid();LIB.push({id:CUR,event:curEvent,name:$('panelName').value||'Untitled panel',updatedAt:nowT()});}
   autoSave();renderLib();
@@ -375,6 +382,12 @@ function resetAll(){if(!confirm('Delete every saved panel on THIS device and sta
 $('f_lockup').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev2=>{const src=ev2.target.result;EVLOCKUP[curEvent]=src;$('a_lockup').src=src;$('a_lockup').style.display='';saveEvLockup();autoSave();};r.readAsDataURL(f);});
 $('evSel').innerHTML=EVORDER.map(k=>'<option value="'+k+'">'+escg(EVENTS[k].label)+'</option>').join('');
 $('evSel').addEventListener('change',()=>switchEvent($('evSel').value));
+if(LOCKED){
+  const row=$('evRow'); if(row)row.style.display='none';
+  const nm=$('evName'); if(nm){nm.textContent=EVENTS[LOCKED].label;nm.style.display='';}
+  const sub=$('subLine'); if(sub)sub.innerHTML='Build a panel, name it and <b>Save</b>. Each saved panel reopens later so you only tweak what changed. Drag <b>⠿</b> to reorder speakers. Everything auto-saves as you go.';
+  document.title='Panel Spotlight — '+EVENTS[LOCKED].label;
+}
 document.querySelector('.panel').addEventListener('input',saveDebounced);
 document.querySelector('.panel').addEventListener('change',saveDebounced);
 
@@ -383,12 +396,13 @@ readKV(LK.evl,CK.evl)
   .then(m=>{if(m&&typeof m==='object'&&!Array.isArray(m))Object.assign(EVLOCKUP,m);})
   .then(()=>readKV(LK.evh,CK.evh))
   .then(m=>{if(m&&typeof m==='object'&&!Array.isArray(m))Object.assign(EVHERO,m);})
-  .then(()=>readKV(LK.idx,CK.idx))
-  .then(idx=>{LIB=Array.isArray(idx)?idx:[];})
+  .then(()=>cloudGet(CK.idx))
+  .then(cld=>{LIB=mergeIndex(lget(LK.idx),cld);lset(LK.idx,LIB);cloudSet(CK.idx,LIB);})   // never let a lagging store wipe saved panels; heal both copies
   .then(()=>{
     const last=lget(LK.last)||{};
-    const ev=EVENTS[last.event]?last.event:'newyork-2026';curEvent=ev;$('evSel').value=ev;
-    if(last.cur&&LIB.find(x=>x.id===last.cur))return _load(LK.pan(last.cur),CK.pan(last.cur),last.cur);
+    const ev=LOCKED||(EVENTS[last.event]?last.event:'newyork-2026');curEvent=ev;$('evSel').value=ev;
+    const reopen=last.cur&&LIB.find(x=>x.id===last.cur&&(!LOCKED||x.event===ev));
+    if(reopen)return _load(LK.pan(last.cur),CK.pan(last.cur),last.cur);
     return _openFirstOrDraft(ev);
   });
 </script>
