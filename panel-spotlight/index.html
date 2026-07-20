@@ -230,7 +230,7 @@ document.querySelectorAll('input[type=range][data-var]').forEach(r=>{
   });
 });
 $('r_hs').addEventListener('input',()=>{HS=$('r_hs').value/100;$('lv_hs').textContent=$('r_hs').value+'%';render();});
-$('f_hero').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{$('herophoto').src=ev.target.result;$('herophoto').style.opacity='1';document.querySelector('#art .scrim').style.opacity='1';saveState();};r.readAsDataURL(f);});
+$('f_hero').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{const src=ev.target.result;EVHERO[curEvent]=src;$('herophoto').src=src;$('herophoto').style.opacity='1';document.querySelector('#art .scrim').style.opacity='1';saveEvHero();saveState();};r.readAsDataURL(f);});
 $('f_partner').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{$('a_plogo').src=ev.target.result;$('a_plogo').style.display='inline-block';saveState();};r.readAsDataURL(f);});
 function dl(){const btn=event&&event.target;if(btn)btn.textContent='…';document.fonts.ready.then(()=>modernScreenshot.domToPng(art,{width:1080,height:1350,scale:2})).then(url=>{const a=document.createElement('a');a.download='panel-spotlight.png';a.href=url;a.click();if(btn)btn.textContent='Download PNG';}).catch(e=>{alert('Export failed: '+e);if(btn)btn.textContent='Download PNG';});}
 function htmlDoc(){const css=document.querySelector('style').innerHTML;return '<!doctype html>\n<meta charset="utf-8">\n<style>\n'+css+'\n</style>\n'+art.outerHTML;}
@@ -248,6 +248,7 @@ const EVENTS={
 const EVORDER=['dubai-2026','newyork-2026','ai-data-breakfast-2026','europe-2027','mit-2027'];
 const NY_LOCKUP=$('a_lockup').getAttribute('src')||'';
 const EVLOCKUP={'newyork-2026':NY_LOCKUP};   // last-used lockup image per event
+const EVHERO={};                             // last-used hero/background photo per event
 const DEFAULT_SP=[
  {n:'First Last',r:'Title',f:'Firm',mod:true,hs:'',fl:''},
  {n:'First Last',r:'Title',f:'Firm',mod:false,hs:'',fl:''},
@@ -261,12 +262,19 @@ let curEvent='newyork-2026', CUR=null;
 function escg(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function nowT(){return (new Date()).getTime();}
 function fmtWhen(t){if(!t)return'';const d=Math.round((nowT()-t)/864e5);if(d<=0)return'today';if(d===1)return'yesterday';if(d<30)return d+' days ago';return (new Date(t)).toLocaleDateString();}
+function applyEventHero(){                    // per-event background photo, remembered like the lockup
+  const src=EVHERO[curEvent]||'', hp=$('herophoto'), sc=document.querySelector('#art .scrim');
+  if(src){hp.src=src;hp.style.opacity='1';if(sc)sc.style.opacity='1';}
+  else{hp.removeAttribute('src');hp.style.opacity='0';if(sc)sc.style.opacity='0';}
+}
 function applyChrome(){
   art.style.background=(EVENTS[curEvent]||EVENTS['newyork-2026']).grad;
   const lk=EVLOCKUP[curEvent]||'', img=$('a_lockup');
   if(lk){img.src=lk;img.style.display='';}else{img.removeAttribute('src');img.style.display='none';}
+  applyEventHero();
 }
-function resetHeroPlogo(){const sc=document.querySelector('#art .scrim');$('herophoto').removeAttribute('src');$('herophoto').style.opacity='0';if(sc)sc.style.opacity='0';$('a_plogo').removeAttribute('src');$('a_plogo').style.display='none';}
+function resetPlogo(){$('a_plogo').removeAttribute('src');$('a_plogo').style.display='none';}
+function resetHeroPlogo(){applyEventHero();resetPlogo();}
 
 // ---- one panel's full state ----
 // level 0 = everything, 1 = drop hero/partner art (keep headshots), 2 = text/layout only
@@ -274,7 +282,8 @@ function collect(level){
   const st={event:curEvent,name:$('panelName').value,SP:level>=2?SP.map(s=>({...s,hs:'',fl:''})):SP,txt:{},rng:{}};
   TXT.forEach(id=>st.txt[id]=$(id).value);
   RNG.forEach(id=>{const el=$(id);if(el)st.rng[id]=el.value;});
-  const hp=$('herophoto'); st.heroOn=hp.style.opacity; if(level<1)st.hero=hp.getAttribute('src')||'';
+  const hp=$('herophoto'); st.heroOn=hp.style.opacity;
+  if(level<1){const h=hp.getAttribute('src')||''; st.hero=(h&&h===EVHERO[curEvent])?'':h;}  // event default falls back on load; only a custom hero is stored per panel
   const pl=$('a_plogo'); st.plogoOn=pl.style.display; if(level<1)st.plogo=pl.getAttribute('src')||'';
   if(level<1)st.lockup=$('a_lockup').getAttribute('src')||'';
   return st;
@@ -289,15 +298,16 @@ function applyState(st){
   SP=(Array.isArray(st.SP)&&st.SP.length)?st.SP:JSON.parse(JSON.stringify(DEFAULT_SP));
   if(st.txt)TXT.forEach(id=>{if(st.txt[id]!=null)$(id).value=st.txt[id];});
   if(st.rng)RNG.forEach(id=>{const el=$(id);if(el&&st.rng[id]!=null){el.value=st.rng[id];el.dispatchEvent(new Event('input'));}});
+  // hero: applyChrome() already set the event's remembered background; a panel's own hero overrides it
   const sc=document.querySelector('#art .scrim');
   if(st.hero){$('herophoto').src=st.hero;$('herophoto').style.opacity=st.heroOn||'1';if(sc)sc.style.opacity=st.heroOn||'1';}
-  else resetHeroPlogo.call(null);
   if(st.plogo){$('a_plogo').src=st.plogo;$('a_plogo').style.display=st.plogoOn||'inline-block';}
+  else resetPlogo();
 }
 
 // ---- storage: local mirror + shared studio_state; index (metadata) + per-panel ----
-const LK={idx:'caplink_ps_index',pan:id=>'caplink_ps_p_'+id,draft:ev=>'caplink_ps_draft_'+ev,last:'caplink_ps_last',evl:'caplink_ps_evlockup'};
-const CK={idx:'panelspotlight:index',pan:id=>'panelspotlight:p:'+id,draft:ev=>'panelspotlight:draft:'+ev,evl:'panelspotlight:evlockup'};
+const LK={idx:'caplink_ps_index',pan:id=>'caplink_ps_p_'+id,draft:ev=>'caplink_ps_draft_'+ev,last:'caplink_ps_last',evl:'caplink_ps_evlockup',evh:'caplink_ps_evhero'};
+const CK={idx:'panelspotlight:index',pan:id=>'panelspotlight:p:'+id,draft:ev=>'panelspotlight:draft:'+ev,evl:'panelspotlight:evlockup',evh:'panelspotlight:evhero'};
 let LIB=[];
 function lget(k){try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}}
 function lset(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true;}catch(e){return false;}}
@@ -311,6 +321,7 @@ function writeCurrent(lk,ck){
 }
 function saveIndex(){lset(LK.idx,LIB);cloudSet(CK.idx,LIB);}
 function saveEvLockup(){lset(LK.evl,EVLOCKUP);cloudSet(CK.evl,EVLOCKUP);}
+function saveEvHero(){lset(LK.evh,EVHERO);cloudSet(CK.evh,EVHERO);}
 function saveLast(){lset(LK.last,{event:curEvent,cur:CUR});}
 
 function autoSave(){
@@ -370,6 +381,8 @@ document.querySelector('.panel').addEventListener('change',saveDebounced);
 // init: pull the per-event lockups + the panel index, then open the last panel
 readKV(LK.evl,CK.evl)
   .then(m=>{if(m&&typeof m==='object'&&!Array.isArray(m))Object.assign(EVLOCKUP,m);})
+  .then(()=>readKV(LK.evh,CK.evh))
+  .then(m=>{if(m&&typeof m==='object'&&!Array.isArray(m))Object.assign(EVHERO,m);})
   .then(()=>readKV(LK.idx,CK.idx))
   .then(idx=>{LIB=Array.isArray(idx)?idx:[];})
   .then(()=>{
