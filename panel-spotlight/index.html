@@ -187,7 +187,7 @@ function render(){
   let t2=$('t2').value, m=t2.match(/^(.*?)(\.*)$/); $('a_t2').innerHTML=esc(m[1])+(m[2]?'<span class="p">'+m[2]+'</span>':'');
   $('a_slab').textContent=$('slab').value; $('a_plab').textContent=$('plab').value;
   const N=SP.length, inner=1080-128, gap=24;
-  const perRow=N>5?Math.ceil(N/2):N;                 // 6–7 speakers wrap to two rows
+  const perRow=N;                                    // always one row: square photos scale down so any count fits the 1350px height
   const w=Math.floor(((inner-(perRow-1)*gap)/perRow)*HS);
   const anyMod=SP.some(s=>s.mod);
   const spk=$('a_spk'); spk.innerHTML='';
