@@ -57,7 +57,7 @@ button:hover{filter:brightness(1.12);}
   --hero-h:38%; --hero-pb:0px; --fade-start:50%; --fade-top:.28; --photo-y:0%; --photo-zoom:1;
   --lockup-h:190px; --meta-mt:50px; --meta-size:24px; --chip-mt:58px;
   --title-mt:44px; --title-size:71px; --title-mb:36px;
-  --spk-mt:11px; --nm:22px; --ro:14px; --fm:16px; --spk-gap:24px;
+  --spk-mt:11px; --nm:22px; --ro:14px; --fm:14px; --spk-gap:24px;
   --partner-mt:53px; --partner-size:52px;
   width:1080px;height:1350px;position:relative;overflow:hidden;display:flex;flex-direction:column;
   background:linear-gradient(135deg,#130E15 0%,#472E40 40%,#7B4349 75%,#A15D50 100%);font-variant-numeric:lining-nums;}
@@ -83,9 +83,9 @@ button:hover{filter:brightness(1.12);}
 #art .person .modslot{display:flex;align-items:center;justify-content:center;min-height:30px;margin-bottom:13px;}
 #art .person .mod{display:inline-block;border:1px solid rgba(255,255,255,.45);border-radius:2px;padding:5px 13px;font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#fff;white-space:nowrap;}
 #art .person .flogo{position:absolute;left:8px;bottom:8px;max-width:44%;max-height:26px;background:#fff;padding:4px 6px;}
-#art .person .nm{margin-top:16px;font-size:var(--nm);font-weight:600;line-height:1.15;color:#fff;}
-#art .person .ro{margin-top:5px;font-size:var(--ro);font-weight:400;line-height:1.3;color:rgba(255,255,255,.86);}
-#art .person .fm{margin-top:7px;font-size:var(--fm);font-weight:700;letter-spacing:.02em;color:#fff;}
+#art .person .nm{margin-top:16px;font-size:var(--nm);font-weight:600;letter-spacing:-.01em;line-height:1.15;color:#fff;}
+#art .person .ro{margin-top:5px;font-size:var(--ro);font-weight:400;font-style:italic;line-height:1.3;color:rgba(255,255,255,.82);}
+#art .person .fm{margin-top:10px;font-size:var(--fm);font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.72);}
 #art .partner{text-align:center;margin-top:var(--partner-mt);}
 #art .partner .plab{font-size:12px;font-weight:700;letter-spacing:.4em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:14px;}
 #art .partner img{max-height:var(--partner-size);max-width:240px;}
@@ -148,7 +148,7 @@ button:hover{filter:brightness(1.12);}
     <label>Speaker spacing <span class="v" id="lv_sgap">24</span></label><input type="range" id="r_sgap" min="8" max="60" value="24">
     <label>Name size <span class="v" id="lv_nm">22</span></label><input type="range" id="r_nm" min="14" max="30" value="22" data-var="--nm" data-unit="px">
     <label>Role size <span class="v" id="lv_ro">14</span></label><input type="range" id="r_ro" min="10" max="20" value="14" data-var="--ro" data-unit="px">
-    <label>Firm size <span class="v" id="lv_fm">16</span></label><input type="range" id="r_fm" min="11" max="24" value="16" data-var="--fm" data-unit="px">
+    <label>Firm size <span class="v" id="lv_fm">14</span></label><input type="range" id="r_fm" min="11" max="24" value="14" data-var="--fm" data-unit="px">
     <b style="font-size:10px;color:#c88;letter-spacing:.12em">PARTNER / SPONSOR</b>
     <label>Partner space above <span class="v" id="lv_pmt">53</span></label><input type="range" id="r_pmt" min="0" max="120" value="53" data-var="--partner-mt" data-unit="px">
     <label>Partner logo size <span class="v" id="lv_ps">52</span></label><input type="range" id="r_ps" min="24" max="90" value="52" data-var="--partner-size" data-unit="px">

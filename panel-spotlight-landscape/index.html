@@ -56,7 +56,7 @@ button:hover{filter:brightness(1.12);}
 #art{
   --logo-h:150px; --meta-mt:58px; --meta-size:26px; --chip-mt:44px;
   --title-mt:72px; --title-size:58px;
-  --nm:23px; --ro:15px; --fm:17px;
+  --nm:23px; --ro:15px; --fm:14px;
   --grow:30px; --gcol:28px; --partner-size:54px;
   width:1920px;height:1080px;position:relative;overflow:hidden;display:flex;
   background:linear-gradient(135deg,#130E15 0%,#472E40 40%,#7B4349 75%,#A15D50 100%);
@@ -94,9 +94,9 @@ button:hover{filter:brightness(1.12);}
 #art .person .pw{position:relative;width:100%;aspect-ratio:1/1;overflow:hidden;background:#d9dde0;}
 #art .person .pw img.hs{width:100%;height:100%;object-fit:cover;display:block;}
 #art .person .flogo{position:absolute;left:8px;bottom:8px;max-width:46%;max-height:26px;background:#fff;padding:4px 6px;}
-#art .person .nm{margin-top:15px;font-size:var(--nm);font-weight:600;line-height:1.14;}
-#art .person .ro{margin-top:5px;font-size:var(--ro);font-weight:400;line-height:1.3;color:rgba(255,255,255,.86);}
-#art .person .fm{margin-top:7px;font-size:var(--fm);font-weight:700;}
+#art .person .nm{margin-top:15px;font-size:var(--nm);font-weight:600;letter-spacing:-.01em;line-height:1.14;}
+#art .person .ro{margin-top:5px;font-size:var(--ro);font-weight:400;font-style:italic;line-height:1.3;color:rgba(255,255,255,.82);}
+#art .person .fm{margin-top:11px;font-size:var(--fm);font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.72);}
 </style></head><body>
 <div class="cols">
 <div class="panel">
@@ -142,7 +142,7 @@ button:hover{filter:brightness(1.12);}
     <label>Column gap <span class="v" id="lv_gcol">28</span></label><input type="range" id="r_gcol" min="8" max="60" value="28" data-var="--gcol" data-unit="px">
     <label>Name size <span class="v" id="lv_nm">23</span></label><input type="range" id="r_nm" min="14" max="34" value="23" data-var="--nm" data-unit="px">
     <label>Role size <span class="v" id="lv_ro">15</span></label><input type="range" id="r_ro" min="10" max="24" value="15" data-var="--ro" data-unit="px">
-    <label>Firm size <span class="v" id="lv_fm">17</span></label><input type="range" id="r_fm" min="11" max="26" value="17" data-var="--fm" data-unit="px">
+    <label>Firm size <span class="v" id="lv_fm">14</span></label><input type="range" id="r_fm" min="11" max="26" value="14" data-var="--fm" data-unit="px">
     <b style="font-size:10px;color:#c88;letter-spacing:.12em">PARTNER / SPONSOR</b>
     <label>Partner logo size <span class="v" id="lv_ps">54</span></label><input type="range" id="r_ps" min="24" max="90" value="54" data-var="--partner-size" data-unit="px">
   </div></details>
