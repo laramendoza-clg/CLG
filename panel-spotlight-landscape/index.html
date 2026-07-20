@@ -382,7 +382,7 @@ function renderLib(){
   const box=$('libList');
   const items=LIB.filter(p=>p.event===curEvent).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
   if(!items.length){box.innerHTML='<div class="libempty">No saved panels for this event yet. Build one, name it, hit Save.</div>';return;}
-  box.innerHTML=items.map(p=>'<div class="libitem'+(p.id===CUR?' on':'')+'"><span onclick="openPanel(\''+p.id+'\')">'+escg(p.name||'Untitled panel')+'<small>updated '+fmtWhen(p.updatedAt)+'</small></span><button title="Delete panel" onclick="delPanel(event,\''+p.id+'\')">✕</button></div>').join('');
+  box.innerHTML=items.map(p=>'<div class="libitem'+(p.id===CUR?' on':'')+'"><span onclick="openPanel(\''+p.id+'\')">'+escg(p.name||'Untitled panel')+'<small>updated '+fmtWhen(p.updatedAt)+'</small></span><button title="Rename panel" onclick="renamePanel(event,\''+p.id+'\')">✎</button><button title="Delete panel" onclick="delPanel(event,\''+p.id+'\')">✕</button></div>').join('');
 }
 function uid(){return 'p'+Math.random().toString(36).slice(2,9)+nowT().toString(36);}
 function _load(lk,ck,id){return readKV(lk,ck).then(st=>{CUR=id||null;applyState(st||{event:curEvent});render();buildControls();renderLib();saveLast();});}
@@ -403,6 +403,7 @@ function newPanel(){
   $('panelName').value='';['t1','t2','meta'].forEach(id=>$(id).value='');
   resetLayout();resetHeroPlogo();applyChrome();render();buildControls();renderLib();autoSave();
 }
+function renamePanel(e,id){if(e&&e.stopPropagation)e.stopPropagation();var p=LIB.find(function(x){return x.id===id;});if(!p)return;var name=(prompt('Rename this panel',p.name||'Untitled panel')||'').trim();if(!name)return;if(id===CUR){$('panelName').value=name;autoSave();renderLib();return;}p.name=name;p.updatedAt=nowT();saveIndex();renderLib();readKV(LK.pan(id),CK.pan(id)).then(function(st){st=st||{};st.name=name;lset(LK.pan(id),st);cloudSet(CK.pan(id),st);});}
 function delPanel(e,id){
   if(e&&e.stopPropagation)e.stopPropagation();
   const p=LIB.find(x=>x.id===id);
