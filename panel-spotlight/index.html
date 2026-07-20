@@ -57,7 +57,7 @@ button:hover{filter:brightness(1.12);}
   --hero-h:38%; --hero-pb:0px; --fade-start:50%; --fade-top:.28; --photo-y:0%; --photo-zoom:1;
   --lockup-h:190px; --meta-mt:50px; --meta-size:24px; --chip-mt:58px;
   --title-mt:44px; --title-size:71px; --title-mb:36px;
-  --spk-mt:11px; --nm:22px; --ro:14px; --fm:16px;
+  --spk-mt:11px; --nm:22px; --ro:14px; --fm:16px; --spk-gap:24px;
   --partner-mt:53px; --partner-size:52px;
   width:1080px;height:1350px;position:relative;overflow:hidden;display:flex;flex-direction:column;
   background:linear-gradient(135deg,#130E15 0%,#472E40 40%,#7B4349 75%,#A15D50 100%);font-variant-numeric:lining-nums;}
@@ -76,7 +76,7 @@ button:hover{filter:brightness(1.12);}
 #art .marker{display:flex;align-items:center;gap:22px;margin-top:var(--spk-mt);margin-bottom:26px;}
 #art .marker .rule{flex:1;height:1px;background:rgba(255,255,255,.2);}
 #art .marker .lab{font-size:12px;font-weight:700;letter-spacing:.4em;text-transform:uppercase;color:rgba(255,255,255,.8);}
-#art .spk{display:flex;flex-wrap:wrap;justify-content:center;gap:30px 24px;}
+#art .spk{display:flex;flex-wrap:wrap;justify-content:center;gap:30px var(--spk-gap);}
 #art .person{text-align:center;position:relative;}
 #art .person .pw{position:relative;width:100%;overflow:hidden;background:#d9dde0;}
 #art .person .pw img.hs{width:100%;height:100%;object-fit:cover;display:block;}
@@ -145,6 +145,7 @@ button:hover{filter:brightness(1.12);}
     <b style="font-size:10px;color:#c88;letter-spacing:.12em">SPEAKERS</b>
     <label>Speakers space above <span class="v" id="lv_smt">11</span></label><input type="range" id="r_smt" min="0" max="120" value="11" data-var="--spk-mt" data-unit="px">
     <label>Headshot size <span class="v" id="lv_hs">100%</span></label><input type="range" id="r_hs" min="70" max="120" value="100">
+    <label>Speaker spacing <span class="v" id="lv_sgap">24</span></label><input type="range" id="r_sgap" min="8" max="60" value="24">
     <label>Name size <span class="v" id="lv_nm">22</span></label><input type="range" id="r_nm" min="14" max="30" value="22" data-var="--nm" data-unit="px">
     <label>Role size <span class="v" id="lv_ro">14</span></label><input type="range" id="r_ro" min="10" max="20" value="14" data-var="--ro" data-unit="px">
     <label>Firm size <span class="v" id="lv_fm">16</span></label><input type="range" id="r_fm" min="11" max="24" value="16" data-var="--fm" data-unit="px">
@@ -173,7 +174,7 @@ button:hover{filter:brightness(1.12);}
 <script src="../assets/studio-store.js?v=2"></script>
 <script>
 const $=id=>document.getElementById(id), art=$('art');
-let HS=1;
+let HS=1, SPKGAP=24;
 let SP=[
  {n:'Skye Smith',r:'Partner',f:'Skadden',mod:true,hs:'',fl:''},
  {n:'Hadi N. El Kadi',r:'Group Chief Legal Officer',f:'Habtoor Group',mod:false,hs:'',fl:''},
@@ -187,7 +188,7 @@ function render(){
   $('a_meta').textContent=$('meta').value; $('a_chip').textContent=$('chip').value; $('a_t1').textContent=$('t1').value;
   let t2=$('t2').value, m=t2.match(/^(.*?)(\.*)$/); $('a_t2').innerHTML=esc(m[1])+(m[2]?'<span class="p">'+m[2]+'</span>':'');
   $('a_slab').textContent=$('slab').value; $('a_plab').textContent=$('plab').value;
-  const N=SP.length, inner=1080-128, gap=24;
+  const N=SP.length, inner=1080-128, gap=SPKGAP;
   const perRow=N;                                    // always one row: square photos scale down so any count fits the 1350px height
   const w=Math.floor(((inner-(perRow-1)*gap)/perRow)*HS);
   const anyMod=SP.some(s=>s.mod);
@@ -231,6 +232,7 @@ document.querySelectorAll('input[type=range][data-var]').forEach(r=>{
   });
 });
 $('r_hs').addEventListener('input',()=>{HS=$('r_hs').value/100;$('lv_hs').textContent=$('r_hs').value+'%';render();});
+$('r_sgap').addEventListener('input',()=>{SPKGAP=+$('r_sgap').value;art.style.setProperty('--spk-gap',SPKGAP+'px');$('lv_sgap').textContent=$('r_sgap').value;render();});
 $('f_hero').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{const src=ev.target.result;EVHERO[curEvent]=src;$('herophoto').src=src;$('herophoto').style.opacity='1';document.querySelector('#art .scrim').style.opacity='1';saveEvHero();saveState();};r.readAsDataURL(f);});
 $('f_partner').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{$('a_plogo').src=ev.target.result;$('a_plogo').style.display='inline-block';saveState();};r.readAsDataURL(f);});
 function dl(){const btn=event&&event.target;if(btn)btn.textContent='…';document.fonts.ready.then(()=>modernScreenshot.domToPng(art,{width:1080,height:1350,scale:2})).then(url=>{const a=document.createElement('a');a.download='panel-spotlight.png';a.href=url;a.click();if(btn)btn.textContent='Download PNG';}).catch(e=>{alert('Export failed: '+e);if(btn)btn.textContent='Download PNG';});}
@@ -261,7 +263,7 @@ const DEFAULT_SP=[
  {n:'First Last',r:'Title',f:'Firm',mod:false,hs:'',fl:''}
 ];
 const TXT=['t1','t2','meta','chip','slab','plab'];
-const RNG=['r_hh','r_fs','r_ft','r_py','r_pz','r_pb','r_lh','r_mt','r_ms','r_ct','r_tmt','r_ts','r_tmb','r_smt','r_hs','r_nm','r_ro','r_fm','r_pmt','r_ps'];
+const RNG=['r_hh','r_fs','r_ft','r_py','r_pz','r_pb','r_lh','r_mt','r_ms','r_ct','r_tmt','r_ts','r_tmb','r_smt','r_hs','r_sgap','r_nm','r_ro','r_fm','r_pmt','r_ps'];
 function resetLayout(){RNG.forEach(id=>{const el=$(id);if(el){el.value=el.getAttribute('value');el.dispatchEvent(new Event('input'));}});}
 let curEvent=LOCKED||'newyork-2026', CUR=null;
 
