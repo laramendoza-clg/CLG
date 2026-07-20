@@ -253,7 +253,8 @@ function lockedEvent(){try{const u=new URLSearchParams(location.search);let e=(u
 const LOCKED=lockedEvent();
 const NY_LOCKUP=$('a_lockup').getAttribute('src')||'';
 const EVLOCKUP={'newyork-2026':NY_LOCKUP};   // last-used lockup image per event
-const EVHERO={};                             // last-used hero/background photo per event
+const EVHERO={};                             // user-set hero/background photo per event (overrides the repo cover)
+const COVER_CACHE={};                        // in-memory data-URI of each event's repo cover (assets/covers/<event>.jpg); not persisted
 const DEFAULT_SP=[
  {n:'First Last',r:'Title',f:'Firm',mod:true,hs:'',fl:''},
  {n:'First Last',r:'Title',f:'Firm',mod:false,hs:'',fl:''},
@@ -267,10 +268,20 @@ let curEvent=LOCKED||'newyork-2026', CUR=null;
 function escg(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function nowT(){return (new Date()).getTime();}
 function fmtWhen(t){if(!t)return'';const d=Math.round((nowT()-t)/864e5);if(d<=0)return'today';if(d===1)return'yesterday';if(d<30)return d+' days ago';return (new Date(t)).toLocaleDateString();}
-function applyEventHero(){                    // per-event background photo, remembered like the lockup
-  const src=EVHERO[curEvent]||'', hp=$('herophoto'), sc=document.querySelector('#art .scrim');
-  if(src){hp.src=src;hp.style.opacity='1';if(sc)sc.style.opacity='1';}
-  else{hp.removeAttribute('src');hp.style.opacity='0';if(sc)sc.style.opacity='0';}
+function applyEventHero(){                    // background photo: a user upload wins, else the event's repo cover (assets/covers/<event>.jpg)
+  const hp=$('herophoto'), sc=document.querySelector('#art .scrim');
+  const custom=EVHERO[curEvent]||'';
+  const on=s=>{hp.src=s;hp.style.opacity='1';if(sc)sc.style.opacity='1';};
+  const off=()=>{hp.removeAttribute('src');hp.style.opacity='0';if(sc)sc.style.opacity='0';};
+  if(custom){on(custom);return;}
+  if(COVER_CACHE[curEvent]){on(COVER_CACHE[curEvent]);return;}
+  if(COVER_CACHE[curEvent]===null){off();return;}                 // known: no cover for this event
+  off();                                                          // until the cover loads
+  const ev=curEvent;                                              // fetch the repo cover once, embed as data URI so PNG/HTML exports stay self-contained
+  fetch('../assets/covers/'+ev+'.jpg').then(r=>{if(!r.ok)throw 0;return r.blob();})
+    .then(b=>new Promise(res=>{const fr=new FileReader();fr.onload=()=>res(fr.result);fr.readAsDataURL(b);}))
+    .then(d=>{COVER_CACHE[ev]=d;if(curEvent===ev&&!(EVHERO[curEvent]||''))on(d);})
+    .catch(()=>{COVER_CACHE[ev]=null;if(curEvent===ev&&!(EVHERO[curEvent]||''))off();});
 }
 function applyChrome(){
   art.style.background=(EVENTS[curEvent]||EVENTS['newyork-2026']).grad;
@@ -288,7 +299,7 @@ function collect(level){
   TXT.forEach(id=>st.txt[id]=$(id).value);
   RNG.forEach(id=>{const el=$(id);if(el)st.rng[id]=el.value;});
   const hp=$('herophoto'); st.heroOn=hp.style.opacity;
-  if(level<1){const h=hp.getAttribute('src')||''; st.hero=(h&&h===EVHERO[curEvent])?'':h;}  // event default falls back on load; only a custom hero is stored per panel
+  if(level<1){const h=hp.getAttribute('src')||''; const isDefault=(EVHERO[curEvent]&&h===EVHERO[curEvent])||(COVER_CACHE[curEvent]&&h===COVER_CACHE[curEvent]); st.hero=(h&&!isDefault)?h:'';}  // never store the event default / repo cover per panel; only a truly custom hero
   const pl=$('a_plogo'); st.plogoOn=pl.style.display; if(level<1)st.plogo=pl.getAttribute('src')||'';
   if(level<1)st.lockup=$('a_lockup').getAttribute('src')||'';
   return st;
