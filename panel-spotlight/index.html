@@ -352,6 +352,7 @@ function renderLib(){
 }
 function uid(){return 'p'+Math.random().toString(36).slice(2,9)+nowT().toString(36);}
 function _load(lk,ck,id){return readKV(lk,ck).then(st=>{CUR=id||null;applyState(st||{event:curEvent});render();buildControls();renderLib();saveLast();});}
+function _applyLocal(lk,id){CUR=id||null;applyState(lget(lk)||{event:curEvent});render();buildControls();renderLib();saveLast();}   // instant paint from localStorage, no DB round-trip
 function _openFirstOrDraft(ev){
   const items=LIB.filter(p=>p.event===ev).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
   if(items.length)return _load(LK.pan(items[0].id),CK.pan(items[0].id),items[0].id);
@@ -391,20 +392,29 @@ if(LOCKED){
 document.querySelector('.panel').addEventListener('input',saveDebounced);
 document.querySelector('.panel').addEventListener('change',saveDebounced);
 
-// init: pull the per-event lockups + the panel index, then open the last panel
-readKV(LK.evl,CK.evl)
-  .then(m=>{if(m&&typeof m==='object'&&!Array.isArray(m))Object.assign(EVLOCKUP,m);})
-  .then(()=>readKV(LK.evh,CK.evh))
-  .then(m=>{if(m&&typeof m==='object'&&!Array.isArray(m))Object.assign(EVHERO,m);})
-  .then(()=>cloudGet(CK.idx))
-  .then(cld=>{LIB=mergeIndex(lget(LK.idx),cld);lset(LK.idx,LIB);cloudSet(CK.idx,LIB);})   // never let a lagging store wipe saved panels; heal both copies
-  .then(()=>{
-    const last=lget(LK.last)||{};
-    const ev=LOCKED||(EVENTS[last.event]?last.event:'newyork-2026');curEvent=ev;$('evSel').value=ev;
-    const reopen=last.cur&&LIB.find(x=>x.id===last.cur&&(!LOCKED||x.event===ev));
-    if(reopen)return _load(LK.pan(last.cur),CK.pan(last.cur),last.cur);
-    return _openFirstOrDraft(ev);
-  });
+// init — paint instantly from localStorage (never blocks on the throttled DB), then reconcile with the cloud in the background
+Object.assign(EVLOCKUP, lget(LK.evl)||{});
+Object.assign(EVHERO, lget(LK.evh)||{});
+LIB = mergeIndex(lget(LK.idx), []);
+(function boot(){
+  const last=lget(LK.last)||{};
+  const ev=LOCKED||(EVENTS[last.event]?last.event:'newyork-2026');curEvent=ev;$('evSel').value=ev;
+  const items=LIB.filter(p=>p.event===ev).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+  const reopen=last.cur&&LIB.find(x=>x.id===last.cur&&(!LOCKED||x.event===ev));
+  if(reopen)_applyLocal(LK.pan(last.cur),last.cur);
+  else if(items.length)_applyLocal(LK.pan(items[0].id),items[0].id);
+  else _applyLocal(LK.draft(ev),null);
+})();
+// background: fold in cloud copies (cross-device sync + heal), without disturbing what's already painted
+Promise.all([cloudGet(CK.evl),cloudGet(CK.evh),cloudGet(CK.idx)]).then(function(r){
+  const evl=r[0],evh=r[1],idx=r[2];
+  if(evl&&typeof evl==='object'&&!Array.isArray(evl)){Object.assign(EVLOCKUP,evl);lset(LK.evl,EVLOCKUP);}
+  if(evh&&typeof evh==='object'&&!Array.isArray(evh)){Object.assign(EVHERO,evh);lset(LK.evh,EVHERO);}
+  LIB=mergeIndex(LIB,idx);lset(LK.idx,LIB);cloudSet(CK.idx,LIB);
+  const lk=EVLOCKUP[curEvent]||'',img=$('a_lockup');   // refresh only the per-event lockup if the cloud has one (leaves hero/panel untouched)
+  if(lk){img.src=lk;img.style.display='';}
+  renderLib();
+}).catch(function(){});
 </script>
 <script src="../assets/studio-nav.js?v=6"></script>
 </body></html>
