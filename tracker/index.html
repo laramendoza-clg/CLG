@@ -86,10 +86,20 @@ const SS={todo:"To do","in-progress":"In progress",blocked:"Blocked",done:"Done"
 let TASKS=[],view=localStorage.getItem('clg_tracker_view')||'priority',filterStatus=null,q='';
 
 const H={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'};
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+// transient states (free-tier IO throttle / brief unavailability) — retry rather than fail
+const retriable=s=>s===0||s===429||s===500||s===502||s===503||s===504;
 async function api(path,opts){opts=opts||{};
-  const r=await fetch(SB_URL+'/rest/v1/'+path,{method:opts.method||'GET',headers:Object.assign({},H,opts.headers||{}),body:opts.body});
-  if(!r.ok){throw new Error(await r.text())}
-  const t=await r.text();return t?JSON.parse(t):null;
+  const delays=[500,1400,3000];
+  for(let i=0;;i++){
+    let r,neterr=false;
+    try{r=await fetch(SB_URL+'/rest/v1/'+path,{method:opts.method||'GET',headers:Object.assign({},H,opts.headers||{}),body:opts.body});}
+    catch(e){neterr=true;}
+    if(!neterr&&r.ok){const t=await r.text();return t?JSON.parse(t):null;}
+    const status=neterr?0:r.status;
+    if(i<delays.length&&retriable(status)){await sleep(delays[i]);continue;}
+    throw new Error(neterr?'network error':await r.text());
+  }
 }
 const TASKQ='tasks?select=*&order=sort.asc,created_at.asc';
 function toast(msg){const s=document.getElementById('sync');s.textContent=msg||'Saved';s.classList.add('show');setTimeout(()=>s.classList.remove('show'),1200)}

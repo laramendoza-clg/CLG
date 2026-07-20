@@ -169,7 +169,7 @@ button:hover{filter:brightness(1.12);}
 </div></div></div>
 </div>
 <script src="../assets/vendor/modern-screenshot.js"></script>
-<script src="../assets/studio-store.js?v=1"></script>
+<script src="../assets/studio-store.js?v=2"></script>
 <script>
 const $=id=>document.getElementById(id), art=$('art');
 let HS=1;
@@ -335,7 +335,7 @@ function autoSave(){
   saveLast();
 }
 function saveState(){autoSave();}   // alias for the many existing callers
-let _sv; function saveDebounced(){clearTimeout(_sv);_sv=setTimeout(autoSave,450);}
+let _sv; function saveDebounced(){clearTimeout(_sv);_sv=setTimeout(autoSave,1200);}  // fewer, larger-gap cloud writes (studio-store coalesces + retries)
 
 function renderLib(){
   const box=$('libList');
