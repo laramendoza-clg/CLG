@@ -92,6 +92,8 @@ button:hover{filter:brightness(1.12);}
 #art .marker .lab{font-size:15px;font-weight:700;letter-spacing:.4em;text-transform:uppercase;color:rgba(255,255,255,.8);}
 #art .spk{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--grow) var(--gcol);}
 #art .person{text-align:center;position:relative;}
+#art .person.is-mod{z-index:0;}
+#art .person.is-mod::before{content:'';position:absolute;left:-16px;right:-16px;top:-34px;bottom:-34px;z-index:-1;border-radius:10px;background:radial-gradient(ellipse at 50% 50%,rgba(228,196,142,.24) 0%,rgba(228,196,142,.11) 46%,rgba(228,196,142,0) 76%);}
 #art .person.is-mod .mod{border-color:#E4C48E;background:#E4C48E;color:#12303c;}
 #art .person.is-mod .nm{color:#E4C48E;}
 #art .person.is-mod .nm::after{content:'';display:block;width:34px;height:2px;background:#E4C48E;margin:9px auto 0;}
