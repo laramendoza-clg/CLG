@@ -54,7 +54,7 @@ button:hover{filter:brightness(1.12);}
 
 /* ===== ARTBOARD 1920x1080 (landscape) ===== */
 #art{
-  --logo-h:150px; --meta-mt:58px; --meta-size:26px; --chip-mt:44px;
+  --logo-h:150px; --meta-mt:58px; --meta-size:26px; --chip-mt:44px; --photo-x:50%;
   --title-mt:72px; --title-size:58px;
   --nm:23px; --ro:15px; --fm:14px;
   --grow:30px; --gcol:28px; --partner-size:54px;
@@ -65,7 +65,7 @@ button:hover{filter:brightness(1.12);}
 /* typography: no orphan/widow words — rebalance any wrapped line */
 #art .t1,#art .t2,#art .person .nm,#art .person .ro,#art .person .fm,#art .meta,#art .partner .plab{text-wrap:balance;}
 #art .left{position:relative;width:45%;padding:72px 58px;display:flex;flex-direction:column;}
-#art .herophoto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;opacity:0;
+#art .herophoto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--photo-x) top;opacity:0;
   -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 26%,transparent 70%);mask-image:linear-gradient(180deg,#000 0%,#000 26%,transparent 70%);}
 #art .scrim{position:absolute;inset:0;opacity:0;background:linear-gradient(180deg,rgba(19,14,21,.35) 0%,transparent 60%);}
 
@@ -134,6 +134,8 @@ button:hover{filter:brightness(1.12);}
   </div></details>
 
   <details><summary>Layout &amp; size</summary><div class="body">
+    <b style="font-size:10px;color:#c88;letter-spacing:.12em">EVENT PHOTO</b>
+    <label>Photo horizontal <span class="v" id="lv_px">50</span></label><input type="range" id="r_px" min="0" max="100" value="50" data-var="--photo-x" data-unit="%">
     <b style="font-size:10px;color:#c88;letter-spacing:.12em">LEFT — HEADER</b>
     <label>Logo size <span class="v" id="lv_logo">150</span></label><input type="range" id="r_logo" min="90" max="230" value="150" data-var="--logo-h" data-unit="px">
     <label>Date gap <span class="v" id="lv_mt">58</span></label><input type="range" id="r_mt" min="0" max="120" value="58" data-var="--meta-mt" data-unit="px">
@@ -283,7 +285,7 @@ const DEFAULT_SP=[
  {n:'First Last',r:'Title',f:'Firm',mod:false,hs:'',fl:''}
 ];
 const TXT=['t1','t2','meta','chip','slab','plab'];
-const RNG=['r_logo','r_mt','r_ms','r_ct','r_tmt','r_ts','r_grow','r_gcol','r_nm','r_ro','r_fm','r_ps'];
+const RNG=['r_px','r_logo','r_mt','r_ms','r_ct','r_tmt','r_ts','r_grow','r_gcol','r_nm','r_ro','r_fm','r_ps'];
 function resetLayout(){RNG.forEach(id=>{const el=$(id);if(el){el.value=el.getAttribute('value');el.dispatchEvent(new Event('input'));}});}
 let curEvent=LOCKED||'newyork-2026', CUR=null;
 

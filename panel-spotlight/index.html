@@ -54,7 +54,7 @@ button:hover{filter:brightness(1.12);}
 
 /* ===== ARTBOARD 1080x1350 ===== */
 #art{
-  --hero-h:38%; --hero-pb:0px; --fade-start:50%; --fade-top:.28; --photo-y:0%; --photo-zoom:1;
+  --hero-h:38%; --hero-pb:0px; --fade-start:50%; --fade-top:.28; --photo-y:0%; --photo-x:50%; --photo-zoom:1;
   --lockup-h:190px; --meta-mt:50px; --meta-size:24px; --chip-mt:58px;
   --title-mt:44px; --title-size:71px; --title-mb:36px;
   --spk-mt:11px; --nm:22px; --ro:14px; --fm:14px; --spk-gap:24px;
@@ -65,7 +65,7 @@ button:hover{filter:brightness(1.12);}
 /* typography: no orphan/widow words — rebalance any wrapped line */
 #art .t1,#art .t2,#art .person .nm,#art .person .ro,#art .person .fm,#art .meta,#art .partner .plab{text-wrap:balance;}
 #art .hero{position:relative;height:var(--hero-h);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:0 72px var(--hero-pb);overflow:hidden;}
-#art .herophoto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:translateY(var(--photo-y)) scale(var(--photo-zoom));opacity:0;-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 var(--fade-start),transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 var(--fade-start),transparent 100%);}
+#art .herophoto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--photo-x) 50%;transform:translateY(var(--photo-y)) scale(var(--photo-zoom));opacity:0;-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 var(--fade-start),transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 var(--fade-start),transparent 100%);}
 #art .scrim{position:absolute;inset:0;opacity:0;background:linear-gradient(180deg,rgba(19,14,21,var(--fade-top)) 0%,transparent 55%);}
 #art .hero>.z{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;}
 #art .lockup{height:var(--lockup-h);}
@@ -136,6 +136,7 @@ button:hover{filter:brightness(1.12);}
     <label>Photo fade start <span class="v" id="lv_fs">50%</span></label><input type="range" id="r_fs" min="0" max="90" value="50" data-var="--fade-start" data-unit="%">
     <label>Photo top darkness <span class="v" id="lv_ft">28%</span></label><input type="range" id="r_ft" min="0" max="80" value="28" data-var="--fade-top" data-unit="/100">
     <label>Photo vertical <span class="v" id="lv_py">0%</span></label><input type="range" id="r_py" min="-40" max="40" value="0" data-var="--photo-y" data-unit="%">
+    <label>Photo horizontal <span class="v" id="lv_px">50%</span></label><input type="range" id="r_px" min="0" max="100" value="50" data-var="--photo-x" data-unit="%">
     <label>Photo zoom <span class="v" id="lv_pz">100%</span></label><input type="range" id="r_pz" min="100" max="200" value="100" data-var="--photo-zoom" data-unit="/100">
     <label>Header block up/down <span class="v" id="lv_pb">0</span></label><input type="range" id="r_pb" min="0" max="120" value="0" data-var="--hero-pb" data-unit="px">
     <b style="font-size:10px;color:#c88;letter-spacing:.12em">LOCKUP</b>
@@ -292,7 +293,7 @@ const DEFAULT_SP=[
  {n:'First Last',r:'Title',f:'Firm',mod:false,hs:'',fl:''}
 ];
 const TXT=['t1','t2','meta','chip','slab','plab'];
-const RNG=['r_hh','r_fs','r_ft','r_py','r_pz','r_pb','r_lh','r_mt','r_ms','r_ct','r_tmt','r_ts','r_tmb','r_smt','r_hs','r_sgap','r_nm','r_ro','r_fm','r_pmt','r_ps'];
+const RNG=['r_hh','r_fs','r_ft','r_py','r_px','r_pz','r_pb','r_lh','r_mt','r_ms','r_ct','r_tmt','r_ts','r_tmb','r_smt','r_hs','r_sgap','r_nm','r_ro','r_fm','r_pmt','r_ps'];
 function resetLayout(){RNG.forEach(id=>{const el=$(id);if(el){el.value=el.getAttribute('value');el.dispatchEvent(new Event('input'));}});}
 let curEvent=LOCKED||'newyork-2026', CUR=null;
 
