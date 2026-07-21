@@ -81,6 +81,8 @@ button:hover{filter:brightness(1.12);}
 #art .marker .lab{font-size:12px;font-weight:700;letter-spacing:.4em;text-transform:uppercase;color:rgba(255,255,255,.8);}
 #art .spk{display:flex;flex-wrap:wrap;justify-content:center;gap:30px var(--spk-gap);}
 #art .person{text-align:center;position:relative;}
+#art .person.is-mod{z-index:0;}
+#art .person.is-mod::before{content:'';position:absolute;left:-12px;right:-12px;top:-16px;bottom:-16px;z-index:-1;border-radius:4px;background:rgba(130,200,205,.16);}
 #art .person .pw{position:relative;width:100%;overflow:hidden;background:#d9dde0;}
 #art .person .pw img.hs{width:100%;height:100%;object-fit:cover;display:block;}
 #art .person .modslot{display:flex;align-items:center;justify-content:center;min-height:30px;margin-bottom:13px;}
