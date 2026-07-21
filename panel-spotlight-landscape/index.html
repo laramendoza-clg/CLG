@@ -68,7 +68,7 @@ button:hover{filter:brightness(1.12);}
 #art .herophoto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;opacity:0;
   -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 26%,transparent 70%);mask-image:linear-gradient(180deg,#000 0%,#000 26%,transparent 70%);}
 #art .scrim{position:absolute;inset:0;opacity:0;background:linear-gradient(180deg,rgba(19,14,21,.35) 0%,transparent 60%);}
-#art .skydim{position:absolute;inset:0;z-index:1;background:linear-gradient(160deg,rgba(12,26,30,.52) 0%,rgba(18,48,60,.5) 55%,rgba(32,71,76,.5) 100%);}
+
 #art .divider{position:absolute;top:9%;bottom:9%;right:0;width:1px;background:rgba(255,255,255,.16);z-index:2;}
 #art .z{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;}
 #art .lockup{height:var(--logo-h);object-fit:contain;object-position:left center;align-self:flex-start;max-width:100%;}
@@ -262,7 +262,7 @@ function dlHtml(){const blob=new Blob([htmlDoc()],{type:'text/html'});const a=do
 
 // ---- events: gradient + lockup per event; every panel is tagged with one ----
 const EVENTS={
- 'dubai-2026':{label:'Dubai — Private Capital Summit',grad:'linear-gradient(135deg,#0C1A1E 0%,#12303c 40%,#20474C 75%,#2f5d63 100%)'},
+ 'dubai-2026':{label:'Dubai — Private Capital Summit',grad:'linear-gradient(135deg,#08141A 0%,#0D2329 42%,#123239 74%,#184248 100%)'},
  'newyork-2026':{label:'New York — Private Capital Summit',grad:'linear-gradient(135deg,#130E15 0%,#472E40 40%,#7B4349 75%,#A15D50 100%)'},
  'ai-data-breakfast-2026':{label:'AI / Data & Insight — Breakfast',grad:'linear-gradient(135deg,#0A0F1C 0%,#1A2033 40%,#5C4E30 78%,#8A7547 100%)'},
  'europe-2027':{label:'Europe — Private Capital Summit',grad:'linear-gradient(135deg,#140811 0%,#2A1228 40%,#4A1B3E 75%,#6b2554 100%)'},
