@@ -81,9 +81,6 @@ button:hover{filter:brightness(1.12);}
 #art .marker .lab{font-size:12px;font-weight:700;letter-spacing:.4em;text-transform:uppercase;color:rgba(255,255,255,.8);}
 #art .spk{display:flex;flex-wrap:wrap;justify-content:center;gap:30px var(--spk-gap);}
 #art .person{text-align:center;position:relative;}
-#art .person.is-mod{z-index:0;}
-#art .person.is-mod::before{content:'';position:absolute;left:-12px;right:-12px;top:-16px;bottom:-16px;z-index:-1;border-radius:4px;background:rgba(228,196,142,.1);}
-#art .person.is-mod .mod{border-color:#E4C48E;background:#E4C48E;color:#12303c;}
 #art .person .pw{position:relative;width:100%;overflow:hidden;background:#d9dde0;}
 #art .person .pw img.hs{width:100%;height:100%;object-fit:cover;display:block;}
 #art .person .modslot{display:flex;align-items:center;justify-content:center;min-height:30px;margin-bottom:13px;}
@@ -458,6 +455,13 @@ Promise.all([cloudGet(CK.evl),cloudGet(CK.evh),cloudGet(CK.idx)]).then(function(
   const lk=EVLOCKUP[curEvent]||'',img=$('a_lockup');   // refresh only the per-event lockup if the cloud has one (leaves hero/panel untouched)
   if(lk){img.src=lk;img.style.display='';}
   renderLib();
+}).catch(function(){});
+// recover speaker photos + partner logo from the cloud if the local copy was trimmed to fit the storage quota
+cloudGet(CUR?CK.pan(CUR):CK.draft(curEvent)).then(function(cs){
+  if(!cs||typeof cs!=='object')return; var ch=false;
+  if(Array.isArray(cs.SP))cs.SP.forEach(function(c,i){if(SP[i]&&c){if(!SP[i].hs&&c.hs){SP[i].hs=c.hs;ch=true;}if(!SP[i].fl&&c.fl){SP[i].fl=c.fl;ch=true;}}});
+  var pl=$('a_plogo'); if(cs.plogo&&!pl.getAttribute('src')){pl.src=cs.plogo;pl.style.display=cs.plogoOn||'inline-block';ch=true;}
+  if(ch)render();
 }).catch(function(){});
 </script>
 <script src="../assets/studio-nav.js?v=6"></script>
