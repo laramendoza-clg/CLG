@@ -120,8 +120,8 @@ div.card.off h3{color:#8a8088}
 const SUPA_URL="https://buijepdhgvcfmclztjez.supabase.co";
 const SUPA_KEY="sb_publishable_wWAcHfVy2dX0PZoxJ4NgrQ_-QhhFfGg";
 const EVENTS={
-  "dubai-2026":{name:"Dubai Private Capital Summit 2026",meta:"September 15, 2026 · The Lana · Dubai",acc:"#2f5d63",social:true},
-  "newyork-2026":{name:"New York Private Capital Summit 2026",meta:"October 14, 2026 · WELL& by Durst + Nasdaq · New York",acc:"#A15D50",social:false},
+  "dubai-2026":{name:"Dubai Private Capital Summit 2026",meta:"September 15, 2026 · The Lana · Dubai",acc:"#2f5d63",social:true,card:"../dubai-pcs-card/",speakerCard:true},
+  "newyork-2026":{name:"New York Private Capital Summit 2026",meta:"October 14, 2026 · WELL& by Durst + Nasdaq · New York",acc:"#A15D50",social:true,card:"../newyork-pcs-card/"},
   "ai-data-breakfast-2026":{name:"AI / Data & Insight Private Capital Breakfast 2026",meta:"November 18, 2026 · The May Fair Hotel · London · with PE150",acc:"#8A7547",social:false},
   "europe-2027":{name:"European Private Capital Summit 2027",meta:"February 2027 · London",acc:"#6b2554",social:false},
   "mit-2027":{name:"Private Capital Talent Leadership Summit 2027",meta:"February 24, 2027 · MIT · Cambridge, MA",acc:"#5E1A2E",social:false}
@@ -143,8 +143,8 @@ document.getElementById("toolRow").innerHTML=
   trow("../panel-spotlight/","Panel Spotlight","The social panel graphic (1080×1350). Pick the event, save each panel to a library and reopen any one to tweak a speaker. Download PNG or HTML.")+
   trow("../speaker-graphics/","Email Speaker Grid","The “Confirmed Speakers” block for email campaigns — 4 per row, paste each speaker's hosted headshot URL, reorder, copy or download the HTML. Live preview, auto-saves per event.")+
   (ev.social?
-    trow("../dubai-pcs-card/","“I'm Attending” Card","Personalised 1080×1350 attendance card.")+
-    trow("../speaker-card/","Speaker &amp; Panel Card","1200×675 announcement card for speakers.")
+    (ev.card?trow(ev.card,"“I'm Attending” Card","Personalised 1080×1350 attendance card."):'')+
+    (ev.speakerCard?trow("../speaker-card/","Speaker &amp; Panel Card","1200×675 announcement card for speakers."):'')
     :'<div class="off"><span class="tn">Social cards</span><span class="td">Not set up for this event yet — tell Lara when it needs its own.</span></div>');
 (async()=>{
   try{
